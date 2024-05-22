@@ -1,9 +1,8 @@
 'use client';
 
-import { AppShell, Burger, Group } from '@mantine/core';
+import { AppShell } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { ReactNode } from 'react';
-import { Logo } from '@/components';
 import { Navbar } from '@/layout/Main/Navbar';
 import { Header } from '@/layout/Main/Header';
 

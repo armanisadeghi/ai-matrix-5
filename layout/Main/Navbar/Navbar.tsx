@@ -1,12 +1,8 @@
 import { Group, Code, ScrollArea, rem, Box, TextInput } from '@mantine/core';
 import {
-  IconNotes,
   IconCalendarStats,
   IconGauge,
   IconPresentationAnalytics,
-  IconFileAnalytics,
-  IconAdjustments,
-  IconLock,
   IconSearch,
   IconAi,
   IconTools,

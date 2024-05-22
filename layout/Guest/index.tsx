@@ -1,6 +1,6 @@
 'use client';
 
-import { AppShell, Burger, Button, Group, Skeleton } from '@mantine/core';
+import { AppShell, Burger, Button, Group } from '@mantine/core';
 import { useDisclosure, useHeadroom } from '@mantine/hooks';
 import { ReactNode } from 'react';
 import { Logo } from '@/components';

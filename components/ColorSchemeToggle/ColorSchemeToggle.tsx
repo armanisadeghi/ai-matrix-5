@@ -1,21 +1,13 @@
 'use client';
 
-import {
-  ActionIcon,
-  Group,
-  rem,
-  useComputedColorScheme,
-  useMantineColorScheme,
-  useMantineTheme,
-} from '@mantine/core';
-import { IconMoon, IconMoonStars, IconSun } from '@tabler/icons-react';
+import { ActionIcon, Group, useComputedColorScheme, useMantineColorScheme } from '@mantine/core';
+import { IconMoon, IconSun } from '@tabler/icons-react';
 import cx from 'clsx';
 import classes from './ColorSchemeToggle.module.css';
 
 export function ColorSchemeToggle() {
   const { setColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
-  const theme = useMantineTheme();
 
   return (
     <Group justify="center">

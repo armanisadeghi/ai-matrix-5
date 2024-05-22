@@ -1,7 +1,7 @@
 import React from 'react';
 import { ActionIcon, Burger, BurgerProps, Group, TextInput } from '@mantine/core';
-import { ColorSchemeToggle, Logo } from '@/components';
 import { IconBell, IconSearch } from '@tabler/icons-react';
+import { ColorSchemeToggle, Logo } from '@/components';
 
 type Props = {
   opened: BurgerProps['opened'];
