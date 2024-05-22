@@ -181,7 +181,7 @@ export function Navbar() {
       />
 
       <ScrollArea className={classes.links}>
-        <div className={classes.linksInner}>{links}</div>
+        <div>{links}</div>
       </ScrollArea>
 
       <div className={classes.footer}>
