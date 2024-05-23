@@ -22,13 +22,14 @@ import { LinksGroup, Logo } from '@/components';
 
 import classes from './Navbar.module.css';
 import { UserButton } from '@/components/UserButton';
+import {PATH_INTELLIGENCE, PATH_MATRIX} from "@/routes";
 
 const navItems = [
   {
     label: 'Intelligence',
     icon: IconGauge,
     links: [
-      { label: 'AI Chat', link: '/' },
+      { label: 'AI Chat', link: PATH_INTELLIGENCE.chatbot },
       { label: 'Custom Bots', link: '/' },
       { label: 'Bot Builder', link: '/' },
     ],
@@ -116,7 +117,7 @@ const navItems = [
     label: 'Matrix Apps',
     icon: IconGrid4x4,
     links: [
-      { label: 'App Builder', link: 'dashboard/matrix-apps/build/' },
+      { label: 'App Builder', link: PATH_MATRIX.build },
       { label: 'App Tester', link: '/' },
       { label: 'App Components', link: '/' },
     ],
