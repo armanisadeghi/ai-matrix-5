@@ -17,8 +17,6 @@ export function MainLayout(props: Props) {
     const tablet_match = useMediaQuery('(max-width: 992px)');
     const mobile_match = useMediaQuery('(min-width: 768px)');
 
-    console.log(tablet_match, mobile_match)
-
     return (
         <AppShell
             header={{height: 60}}

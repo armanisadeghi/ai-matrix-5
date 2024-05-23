@@ -1,12 +1,13 @@
 import {Avatar, Group, rem, Text, UnstyledButton, UnstyledButtonProps} from '@mantine/core';
 import {IconChevronRight} from '@tabler/icons-react';
 import classes from './UserButton.module.css';
+import {ReactElement} from "react";
 
 interface UserButtonProps extends Partial<UnstyledButtonProps> {
     collapsed?: boolean
 }
 
-export function UserButton({collapsed}: UserButtonProps): React.JSX.Element {
+export function UserButton({collapsed}: UserButtonProps): ReactElement {
     return (
         <UnstyledButton className={classes.user}>
             <Group>

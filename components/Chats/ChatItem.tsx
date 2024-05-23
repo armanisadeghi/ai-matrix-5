@@ -5,7 +5,7 @@ interface ChatItemProps {
     isMe?: boolean // if message is from user
 }
 
-export function ChatItem(props: ChatItemProps): React.JSX.Element {
+export function ChatItem(props: ChatItemProps): JSX.Element {
     const {message, isMe} = props
     const theme = useMantineTheme()
 
