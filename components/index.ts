@@ -4,3 +4,4 @@ export * from './ColorSchemeToggle';
 export * from './NavbarLinksGroup';
 export * from './UserButton';
 export * from './Chats';
+export * from './CollapsedNavLinks';

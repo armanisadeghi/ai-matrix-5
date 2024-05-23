@@ -1,5 +1,5 @@
-import React, { ReactNode } from 'react';
-import { Text, Space } from '@mantine/core';
+import React, {ReactNode} from 'react';
+import {Space} from '@mantine/core';
 
 interface LayoutProps {
     children: ReactNode;

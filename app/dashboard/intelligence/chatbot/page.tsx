@@ -9,7 +9,7 @@ export default function ChatbotPage() {
     return (
         <>
             <Container>
-                <Paper>
+                <Paper p="md">
                     <ScrollArea h={400}>
                         <ChatItem message="messsage"/>
                         <ChatItem message="messsage1" isMe/>

@@ -2,7 +2,7 @@ import React from 'react';
 import CustomFieldset from '../../../../../ui/fieldset/CustomFieldset';
 import TagsInput from '../../../../../ui/pills/TagsInput';
 import CustomCheckboxGroup from '../../../../../ui/checkbox/CustomCheckboxGroup';
-import { TextInput, Space, Textarea, Checkbox, Group } from '@mantine/core';
+import {Space, Textarea, TextInput} from '@mantine/core';
 
 
 const AppOverview = () => {

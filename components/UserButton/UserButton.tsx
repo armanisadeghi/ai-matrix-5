@@ -1,28 +1,36 @@
-import { UnstyledButton, Group, Avatar, Text, rem } from '@mantine/core';
-import { IconChevronRight } from '@tabler/icons-react';
+import {Avatar, Group, rem, Text, UnstyledButton, UnstyledButtonProps} from '@mantine/core';
+import {IconChevronRight} from '@tabler/icons-react';
 import classes from './UserButton.module.css';
 
-export function UserButton() {
-  return (
-    <UnstyledButton className={classes.user}>
-      <Group>
-        <Avatar
-          src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-5.png"
-          radius="xl"
-        />
+interface UserButtonProps extends Partial<UnstyledButtonProps> {
+    collapsed?: boolean
+}
 
-        <div style={{ flex: 1 }}>
-          <Text size="sm" fw={500}>
-            John Doe
-          </Text>
+export function UserButton({collapsed}: UserButtonProps): React.JSX.Element {
+    return (
+        <UnstyledButton className={classes.user}>
+            <Group>
+                <Avatar
+                    src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-5.png"
+                    radius="xl"
+                />
 
-          <Text c="dimmed" size="xs">
-            johndoe@hotmail.com
-          </Text>
-        </div>
+                {!collapsed &&
+                    <>
+                        <div style={{flex: 1}}>
+                            <Text size="sm" fw={500}>
+                                John Doe
+                            </Text>
 
-        <IconChevronRight style={{ width: rem(14), height: rem(14) }} stroke={1.5} />
-      </Group>
-    </UnstyledButton>
-  );
+                            <Text c="dimmed" size="xs">
+                                johndoe@hotmail.com
+                            </Text>
+                        </div>
+
+                        <IconChevronRight style={{width: rem(14), height: rem(14)}} stroke={1.5}/>
+                    </>
+                }
+            </Group>
+        </UnstyledButton>
+    );
 }
