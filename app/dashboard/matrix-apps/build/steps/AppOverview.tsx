@@ -16,15 +16,16 @@ const AppOverview = () => {
                 gap: '10px'
             }}>
 
-                <CustomFieldset legend="App Basics" buttonLabel="Save" showButton={false}>
+                <CustomFieldset legend="App Basics" layout="single" buttonLabel="Save" showButton={false}>
                     <TextInput label="Name" placeholder="My New App" withAsterisk/>
                     <Textarea
                         label="App Description"
                         placeholder="Describe your app so it's easy to find, and easy to identify by the Conductor Agent."
                         resize="vertical"
                     />
-                    <TagsInput initialTags={[]}
-                               onTagsChange={(tags) => console.log(tags)}/>
+
+                    <TagsInput initialTags={[]} onTagsChange={(tags) => console.log(tags)}/>
+
                 </CustomFieldset>
 
                 <CustomCheckboxGroup
@@ -42,38 +43,6 @@ const AppOverview = () => {
                     ]}
                 />
 
-            </div>
-            <div style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                gap: '10px'
-            }}>
-
-                <Space h="xs"/>
-                <CustomFieldset legend="More Details" layout="double" showButton={false}>
-                    <TextInput label="Name" placeholder="My New App"/>
-                    <TextInput label="Description" placeholder="Describe your app"/>
-                    <TextInput label="Name" placeholder="My New App"/>
-                    <TextInput label="Description" placeholder="Describe your app"/>
-                    <TextInput label="Name" placeholder="My New App"/>
-                    <TextInput label="Description" placeholder="Describe your app"/>
-                </CustomFieldset>
-            </div>
-            <div style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                gap: '10px'
-            }}>
-
-                <Space h="xs"/>
-                <CustomFieldset legend="More Details" layout="triple" showButton={false}>
-                    <TextInput label="Name" placeholder="My New App"/>
-                    <TextInput label="Description" placeholder="Describe your app"/>
-                    <TextInput label="Name" placeholder="My New App"/>
-                    <TextInput label="Description" placeholder="Describe your app"/>
-                    <TextInput label="Name" placeholder="My New App"/>
-                    <TextInput label="Description" placeholder="Describe your app"/>
-                </CustomFieldset>
             </div>
         </div>
     );

@@ -1,6 +1,7 @@
 // ui/checkbox/CustomCheckbox.tsx
 import { Checkbox, CheckboxProps, MantineProvider, createTheme, Tooltip } from '@mantine/core';
-interface CustomCheckboxProps extends CheckboxProps {
+
+interface CustomCheckboxProps extends Omit<CheckboxProps, 'radius' | 'size'> {
     tooltip?: string;
     pointerCursor?: boolean;
 }
@@ -10,7 +11,9 @@ const pointerTheme = createTheme({
 });
 
 function CustomCheckbox({ tooltip, pointerCursor, ...props }: CustomCheckboxProps) {
-    const checkboxElement = <Checkbox {...props} />;
+    const fixedProps = { radius: "xs", size: "sm" };
+    const allProps = { ...props, ...fixedProps };
+    const checkboxElement = <Checkbox {...allProps} />;
     const checkboxWithTooltip = tooltip ? (
         <Tooltip label={tooltip}>
             {checkboxElement}
@@ -27,4 +30,5 @@ function CustomCheckbox({ tooltip, pointerCursor, ...props }: CustomCheckboxProp
         checkboxWithTooltip
     );
 }
+
 export default CustomCheckbox;
