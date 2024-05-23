@@ -27,7 +27,6 @@ const navItems = [
   {
     label: 'Intelligence',
     icon: IconGauge,
-    initiallyOpened: true,
     links: [
       { label: 'AI Chat', link: '/' },
       { label: 'Custom Bots', link: '/' },
@@ -183,9 +182,8 @@ export function Navbar() {
           <TextInput
               placeholder="Search"
               size="xs"
-              leftSection={<IconSearch style={{ width: '10rem', height: '12rem' }} stroke={1.5} />} // Correct usage of CSS in JS
+              leftSection={<IconSearch style={{ width: rem(12), height: rem(12) }} stroke={1.5} />} // Correct usage of CSS in JS
               rightSectionWidth={70}
-              rightSection={<Code className={classes.searchCode}>Ctrl + K</Code>}
               styles={{ section: { pointerEvents: 'none' } }}
               mb="sm"
           />

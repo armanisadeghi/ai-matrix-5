@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {ReactElement, useState} from 'react';
 import { Group, Box, Collapse, ThemeIcon, Text, UnstyledButton, rem } from '@mantine/core';
 import { IconCalendarStats, IconChevronRight } from '@tabler/icons-react';
 import classes from './NavbarLinksGroup.module.css';
@@ -10,7 +10,7 @@ interface LinksGroupProps {
   links?: { label: string; link: string }[];
 }
 
-export function LinksGroup({ icon: Icon, label, initiallyOpened, links }: LinksGroupProps) {
+export function LinksGroup({ icon: Icon, label, initiallyOpened, links }: LinksGroupProps): ReactElement {
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);
   const items = (hasLinks ? links : []).map((link) => (
@@ -63,7 +63,7 @@ const mockdata = {
   ],
 };
 
-export function NavbarLinksGroup() {
+export function NavbarLinksGroup(): ReactElement {
   return (
     <Box mih={220} p="md">
       <LinksGroup {...mockdata} />

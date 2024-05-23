@@ -5,7 +5,7 @@ export function Logo() {
   const theme = useMantineTheme();
   return (
     <Group component={UnstyledButton}>
-      <IconBrain color={theme.colors.violet[6]} />
+      <IconBrain color={theme.colors.blue[6]} />
       <Highlight
         highlight="ai"
         fw={500}
