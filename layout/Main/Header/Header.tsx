@@ -19,7 +19,7 @@ export function Header(props: Props) {
       </Group>
       <Group>
         <TextInput
-          leftSection={<IconSearch size={16} />}
+          leftSection={<IconSearch size={14} />}
           placeholder="Search information, messages and resources"
           w={500}
         />

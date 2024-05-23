@@ -1,8 +1,12 @@
 import { Group, Code, ScrollArea, rem, Box, TextInput } from '@mantine/core';
 import {
+  IconNotes,
   IconCalendarStats,
   IconGauge,
   IconPresentationAnalytics,
+  IconFileAnalytics,
+  IconAdjustments,
+  IconLock,
   IconSearch,
   IconAi,
   IconTools,
@@ -19,13 +23,13 @@ import { LinksGroup, Logo } from '@/components';
 import classes from './Navbar.module.css';
 import { UserButton } from '@/components/UserButton';
 
-const mockdata = [
+const navItems = [
   {
     label: 'Intelligence',
     icon: IconGauge,
     initiallyOpened: true,
     links: [
-      { label: 'AI Cha', link: '/' },
+      { label: 'AI Chat', link: '/' },
       { label: 'Custom Bots', link: '/' },
       { label: 'Bot Builder', link: '/' },
     ],
@@ -49,17 +53,6 @@ const mockdata = [
   {
     label: 'Productivity',
     icon: IconCalendarStats,
-    links: [
-      { label: 'Messenger', link: '/' },
-      { label: 'Email', link: '/' },
-      { label: 'Task Manager', link: '/' },
-      { label: 'Calendar', link: '/' },
-      { label: 'Meetings', link: '/' },
-    ],
-  },
-  {
-    label: 'Analytics',
-    icon: IconPresentationAnalytics,
     links: [
       { label: 'Messenger', link: '/' },
       { label: 'Email', link: '/' },
@@ -96,7 +89,7 @@ const mockdata = [
     ],
   },
   {
-    label: 'Matrix Ending',
+    label: 'Matrix Engine',
     icon: IconGrid3x3,
     links: [
       { label: 'Prompt Playground', link: '/' },
@@ -117,15 +110,26 @@ const mockdata = [
       { label: 'Tasks', link: '/' },
       { label: 'Clusters', link: '/' },
       { label: 'Hyperclustures', link: '/' },
+      { label: 'Automation', link: '/' },
     ],
   },
   {
     label: 'Matrix Apps',
     icon: IconGrid4x4,
     links: [
-      { label: 'App Builder', link: '/' },
+      { label: 'App Builder', link: 'dashboard/matrix-apps/build/' },
       { label: 'App Tester', link: '/' },
       { label: 'App Components', link: '/' },
+    ],
+  },
+  {
+    label: 'Analytics',
+    icon: IconPresentationAnalytics,
+    links: [
+      { label: 'Google Analytics', link: '/' },
+      { label: 'Google Search Console', link: '/' },
+      { label: 'Social Media', link: '/' },
+      { label: 'AI Matrix Stats', link: '/' },
     ],
   },
   {
@@ -159,34 +163,41 @@ const mockdata = [
   },
 ];
 
+// TODO: Kevin - I made changes to make the navbar smaller, but we need to control the break points now
+// Ideally, we should have the big one for the dashboard, but this smaller one for the inner pages.
+// Also, we should have it first get tighter (less space and smaller text maybe. (truncate long text)
+// Then, it should only show the icons and then it should go away.
+
 export function Navbar() {
-  const links = mockdata.map((item) => <LinksGroup {...item} key={item.label} />);
+  const links = navItems.map((item) => <LinksGroup {...item} key={item.label} />);
 
   return (
-    <>
-      <Box hiddenFrom="sm" className={classes.header}>
-        <Group justify="space-between">
-          <Logo />
-        </Group>
-      </Box>
+      <>
+        <Box hiddenFrom="xs" className={classes.header}>
+          <Group justify="space-between">
+            <Logo />
+          </Group>
+        </Box>
 
-      <TextInput
-        placeholder="Search"
-        size="xs"
-        leftSection={<IconSearch style={{ width: rem(12), height: rem(12) }} stroke={1.5} />}
-        rightSectionWidth={70}
-        rightSection={<Code className={classes.searchCode}>Ctrl + K</Code>}
-        styles={{ section: { pointerEvents: 'none' } }}
-        mb="sm"
-      />
+        <div style={{ width: '100%', maxWidth: '250px' }}>
+          <TextInput
+              placeholder="Search"
+              size="xs"
+              leftSection={<IconSearch style={{ width: '10rem', height: '12rem' }} stroke={1.5} />} // Correct usage of CSS in JS
+              rightSectionWidth={70}
+              rightSection={<Code className={classes.searchCode}>Ctrl + K</Code>}
+              styles={{ section: { pointerEvents: 'none' } }}
+              mb="sm"
+          />
+        </div>
 
-      <ScrollArea className={classes.links}>
-        <div>{links}</div>
-      </ScrollArea>
+        <ScrollArea className={classes.links}>
+          <div className={classes.linksInner}>{links}</div>
+        </ScrollArea>
 
-      <div className={classes.footer}>
-        <UserButton />
-      </div>
-    </>
+        <div className={classes.footer}>
+          <UserButton />
+        </div>
+      </>
   );
 }

@@ -1,5 +1,3 @@
-'use client';
-
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
@@ -14,11 +12,18 @@ import '@mantine/notifications/styles.css';
 
 import './globals.css';
 
-// If loading a variable font, you don't need to specify the font weight
+export const metadata = {
+    title: 'AI Matrix | Next-Generation AI Automation Framework',
+    description: 'Bridging the gap between AI capabilities and real-world business.',
+};
+
+// If loading.tsx a variable font, you don't need to specify the font weight
 const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
 });
+
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={inter.className}>
@@ -27,7 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ColorSchemeScript defaultColorScheme="auto" />
       </head>
       <body>
-        <MantineProvider theme={theme} defaultColorScheme="light">
+        <MantineProvider theme={theme} defaultColorScheme="dark">
           <Notifications position="bottom-right" zIndex={1000} />
           <ModalsProvider>{children}</ModalsProvider>
         </MantineProvider>

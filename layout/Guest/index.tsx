@@ -24,10 +24,10 @@ export function GuestLayout(props: Props) {
             <Logo />
           </Group>
           <Group gap={2}>
-            <Button variant="subtle">About</Button>
-            <Button variant="subtle">Careers</Button>
-            <Button variant="subtle">Team</Button>
-            <Button variant="subtle">Syndicate</Button>
+            <Button variant="subtle">Features</Button>
+            <Button variant="subtle">Testimonials</Button>
+            <Button variant="subtle">Pricing</Button>
+            <Button variant="subtle">Sign In</Button>
           </Group>
         </Group>
       </AppShell.Header>

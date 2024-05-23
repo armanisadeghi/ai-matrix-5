@@ -10,17 +10,17 @@ export function GuestHero() {
         <div className={classes.content}>
           <Group gap="xs" mb="lg" className={classes.highlight}>
             <IconBrain />
-            <Text fw={500}>AI + Business</Text>
+            <Text fw={500}>AI MATRIX ENGINE</Text>
           </Group>
           <Title mb="lg" className={classes.title}>
-            Seamlessly AI Intergration for Business.
+            The Only No-Code <br />
+            Artificial Intelligence Business Automation Framework.
           </Title>
-          <Text c="dimmed" mb="lg">
-            We will help integrate AI models into your application or business process.
+          <Text c="dimmed" mb="lg" className={classes.subtitle}>
+            AI Matrix bridges the gap between current AI capabilities and your real-world business.
           </Text>
-
           <Group mt={30}>
-            <Button size="md" component={Link} href="/home">
+            <Button size="md" component={Link} href="/dashboard">
               Get started
             </Button>
             <Button size="md" variant="light" rightSection={<IconArrowUpRight />}>
