@@ -7,6 +7,7 @@ const ROOTS_MATRIX = ROOTS_DASHBOARD + "/matrix-apps";
 const ROOTS_INTELLIGENCE = ROOTS_DASHBOARD + "/intelligence";
 const ROOTS_AGENCY = "/agency";
 const ROOTS_ADMIN = "/admin";
+const ROOTS_ACCOUNT = "/account";
 
 export const PATH_DASHBOARD = {
   root: ROOTS_DASHBOARD,
@@ -41,4 +42,8 @@ export const PATH_ADMIN = {
     add: path(ROOTS_ADMIN, "/clients/add"),
     view: (id: string | number) => path(ROOTS_ADMIN, `/clients/view/${id}`),
   },
+};
+export const PATH_ACCOUNT = {
+  root: ROOTS_ACCOUNT,
+  settings: ROOTS_ACCOUNT + "/settings",
 };

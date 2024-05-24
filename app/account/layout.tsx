@@ -5,6 +5,6 @@ type Props = {
   children: ReactNode;
 };
 
-export default function AdminLayout({ children }: Props) {
+export default function AccountsLayout({ children }: Props) {
   return <MainLayout>{children}</MainLayout>;
 }
