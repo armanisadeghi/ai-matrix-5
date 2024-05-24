@@ -9,11 +9,10 @@ import {
 } from "react";
 import { useSocketManager } from '@/lib/socket';
 import { redirect } from "next/navigation";
-import ChatBSettings from "@/app/chat/ChatSettings";
 import ChatBotForm from "@/app/chat/ChatForm";
 import ChatBotSettings from "@/app/chat/ChatSettings";
 import { useChat } from "@/context/chatContext";
-import { IconSend, IconUserFilled, IconCirclesFilled } from "@tabler/icons-react";
+import { IconSend, IconCirclesFilled } from "@tabler/icons-react";
 import { eRoleType, iChat, iMessage } from "@/utils/types";
 import { Container, Group, Paper, Text, Button, Flex, Stack, Space, Input } from '@mantine/core';
 
@@ -48,11 +47,8 @@ function ChatForm() {
     const sendMessageHandler = useSocketManager(
         (response: string) => {
             setStreamText((prev) => prev + " " + response);
-
-
         }
     );
-
 
     const getChatHistory = () => {
         let data = "";
@@ -75,7 +71,6 @@ function ChatForm() {
         };
         setMsgHistory((prev) => [...prev, newMessage]);
     };
-
 
     const settings: Settings = {
         customOptions: false,
@@ -202,30 +197,27 @@ function ChatForm() {
 function ChatMessage({ chatMsg, idx, msgHistory, streamText }: any) {
     return (
         <Group>
-            <Flex align="center">
-                {chatMsg.role === eRoleType.USER ? (
-                    <IconUserFilled size={22} style={{ marginRight: '8px' }} />
-
-                ) : (
-                    <IconCirclesFilled size={22} style={{ marginRight: '8px' }} />
-                )}
-                <Text>
-                    {chatMsg.role === eRoleType.USER ? "You" : "AI Matrix"}
-                </Text>
-            </Flex>
-            <Space my={16} />
-
-            <Text>
-                {idx === msgHistory.length - 1 &&
-                    chatMsg.role === eRoleType.ASSISTANT &&
-                    streamText.length > 0 ? (
-                    streamText
-                ) : (
-                    chatMsg.content
-                )}
-            </Text>
+            {chatMsg.role === eRoleType.USER ? (
+                <UserMessage message={chatMsg.content} />
+            ) : (
+                <AssistantMessage message={chatMsg.content} />
+            )}
         </Group>
     );
+}
+
+function UserMessage({ message }: { message: string }) {
+    return (
+        <Flex align="center" justify="flex-end" p="xs" style={{ borderRadius: '8px', width: '100%', marginBottom: '8px' }}>
+            <Text size="sm" bg="gray" style={{ maxWidth: '60%', textAlign: 'right', padding: '8px', borderRadius: '8px' }}>
+                {message}
+            </Text>
+        </Flex>
+    );
+}
+
+function AssistantMessage({ message }: { message: string }) {
+    return <Text size="sm"><IconCirclesFilled size={16} style={{ marginRight: '8px' }} />{message}</Text>;
 }
 
 function ChatFormInput({ message, setMessage, submitHandler, isResponseLoading, errorText }: any) {
