@@ -5,6 +5,7 @@ import { IconAffiliate, IconMoodCog, IconSettings, IconUserCircle } from "@table
 import PersonalInformation from "@/app/account/settings/tabs/PersonalInformation";
 import Preferences from "@/app/account/settings/tabs/Preferences";
 import Integrations from "@/app/account/settings/tabs/Integrations";
+import Billing from "@/app/account/settings/tabs/Billing";
 
 const iconStyle = { width: rem(14), height: rem(14) };
 
@@ -13,7 +14,7 @@ const SettingsPage = () => {
         <>
             <Box>
                 <Title order={3} mb="md">
-                    Clients
+                    Settings
                 </Title>
                 <Tabs defaultValue="personal">
                     <Tabs.List mb="lg">
@@ -47,6 +48,10 @@ const SettingsPage = () => {
 
                     <Tabs.Panel value="integrations">
                         <Integrations />
+                    </Tabs.Panel>
+
+                    <Tabs.Panel value="billing">
+                        <Billing />
                     </Tabs.Panel>
                 </Tabs>
             </Box>
