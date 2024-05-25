@@ -1,6 +1,6 @@
 "use client";
 
-import { AppShell, Breadcrumbs, Text } from "@mantine/core";
+import { AppShell, Breadcrumbs, Text, useMantineTheme } from "@mantine/core";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { useState, useEffect, ReactNode } from "react";
 import { Navbar } from "@/layout/Main/Navbar";
@@ -26,6 +26,7 @@ export function MainLayout(props: Props) {
     const desktop_match = useMediaQuery("(min-width: 992px)");
     const tablet_match = useMediaQuery("(max-width: 992px)");
     const mobile_match = useMediaQuery("(min-width: 768px)");
+    const theme = useMantineTheme();
 
     const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -39,7 +40,7 @@ export function MainLayout(props: Props) {
 
     return (
         <AppShell
-            header={{ height: { base: 50, md: 60, lg: 70 } }}
+            header={{ height: { base: 60, md: 60, lg: 70 } }}
             navbar={{
                 width: { base: 60, md: 200, lg: 250 },
                 breakpoint: "sm",
@@ -51,11 +52,12 @@ export function MainLayout(props: Props) {
                 <Header opened={opened} toggle={toggle} />
             </AppShell.Header>
             <AppShell.Navbar
-                px="xs"
                 pt="md"
                 style={{
-                    width: isCollapsed ? '60px' : undefined,
-                    transition: 'width 0.3s',
+                    width: isCollapsed ? "60px" : undefined,
+                    transition: "width 0.3s",
+                    paddingLeft: isCollapsed ? 0 : theme.spacing.xs,
+                    paddingRight: isCollapsed ? 0 : theme.spacing.xs,
                 }}
             >
                 <Navbar
