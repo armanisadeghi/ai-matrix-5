@@ -19,7 +19,7 @@ const SettingsPage = () => {
                     Settings
                 </Title>
                 <Tabs defaultValue="personal">
-                    <Tabs.List mb="lg">
+                    <Tabs.List mb="lg" style={{ flexWrap: "nowrap", width: "100%", overflowY: "auto" }}>
                         <Tabs.Tab value="personal" leftSection={<IconUserCircle style={iconStyle} />}>
                             Personal Information
                         </Tabs.Tab>
