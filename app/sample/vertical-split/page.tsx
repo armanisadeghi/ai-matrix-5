@@ -1,7 +1,7 @@
 'use client';
 import { CSSProperties, useState, useRef } from 'react';
 import { Checkbox, Group } from '@mantine/core';
-import CustomCheckbox from '@/ui/checkbox/CustomCheckbox';
+import AmeCheckbox from '@/ui/checkbox/AmeCheckbox';
 import Split from 'react-split';
 
 const RunPage = () => {
@@ -67,12 +67,12 @@ const RunPage = () => {
                         withAsterisk
                     >
                         <Group mt="xs">
-                            <CustomCheckbox value="aimatrix" label="AI Matrix"/>
-                            <CustomCheckbox value="autogen" label="Microsoft Autogen"/>
-                            <CustomCheckbox value="langchain" label="Langchain"/>
-                            <CustomCheckbox value="crewai" label="Crew AI"/>
-                            <CustomCheckbox value="ollama" label="Ollama"/>
-                            <CustomCheckbox value="unsloth" label="Unsloth"/>
+                            <AmeCheckbox value="aimatrix" label="AI Matrix"/>
+                            <AmeCheckbox value="autogen" label="Microsoft Autogen"/>
+                            <AmeCheckbox value="langchain" label="Langchain"/>
+                            <AmeCheckbox value="crewai" label="Crew AI"/>
+                            <AmeCheckbox value="ollama" label="Ollama"/>
+                            <AmeCheckbox value="unsloth" label="Unsloth"/>
                         </Group>
                     </Checkbox.Group>
                 </div>
@@ -86,12 +86,12 @@ const RunPage = () => {
                         withAsterisk
                     >
                         <Group mt="xs">
-                            <CustomCheckbox value="aimatrix" label="AI Matrix"/>
-                            <CustomCheckbox value="autogen" label="Microsoft Autogen"/>
-                            <CustomCheckbox value="langchain" label="Langchain"/>
-                            <CustomCheckbox value="crewai" label="Crew AI"/>
-                            <CustomCheckbox value="ollama" label="Ollama"/>
-                            <CustomCheckbox value="unsloth" label="Unsloth"/>
+                            <AmeCheckbox value="aimatrix" label="AI Matrix"/>
+                            <AmeCheckbox value="autogen" label="Microsoft Autogen"/>
+                            <AmeCheckbox value="langchain" label="Langchain"/>
+                            <AmeCheckbox value="crewai" label="Crew AI"/>
+                            <AmeCheckbox value="ollama" label="Ollama"/>
+                            <AmeCheckbox value="unsloth" label="Unsloth"/>
                         </Group>
                     </Checkbox.Group>
                 </div>
@@ -104,12 +104,12 @@ const RunPage = () => {
                         withAsterisk
                     >
                         <Group mt="xs">
-                            <CustomCheckbox value="aimatrix" label="AI Matrix"/>
-                            <CustomCheckbox value="autogen" label="Microsoft Autogen"/>
-                            <CustomCheckbox value="langchain" label="Langchain"/>
-                            <CustomCheckbox value="crewai" label="Crew AI"/>
-                            <CustomCheckbox value="ollama" label="Ollama"/>
-                            <CustomCheckbox value="unsloth" label="Unsloth"/>
+                            <AmeCheckbox value="aimatrix" label="AI Matrix"/>
+                            <AmeCheckbox value="autogen" label="Microsoft Autogen"/>
+                            <AmeCheckbox value="langchain" label="Langchain"/>
+                            <AmeCheckbox value="crewai" label="Crew AI"/>
+                            <AmeCheckbox value="ollama" label="Ollama"/>
+                            <AmeCheckbox value="unsloth" label="Unsloth"/>
                         </Group>
                     </Checkbox.Group>
                 </div>

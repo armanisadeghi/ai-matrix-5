@@ -7,11 +7,15 @@ import { io, Socket } from 'socket.io-client';
 const URL = 'https://aimatrix.ngrok.app/';
 
 export const useSocketManager = (onNewResponse: (response: string) => void) => {
+
     const [socket, setSocket] = useState<Socket | null>(null);
 
     const connectSocket = useCallback(
         (message: string) => {
+
             let newSocket = socket;
+
+
             if (!newSocket) {
                 newSocket = io(URL, { autoConnect: false });
                 setSocket(newSocket);

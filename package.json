@@ -39,7 +39,8 @@
     "react-dom": "latest",
     "react-icons": "^5.2.1",
     "react-split": "^2.0.14",
-    "recharts": "latest"
+    "recharts": "latest",
+    "socket.io-client": "^4.7.5"
   },
   "devDependencies": {
     "@babel/core": "latest",
