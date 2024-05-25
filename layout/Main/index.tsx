@@ -49,7 +49,12 @@ export function MainLayout(props: Props) {
             padding="sm"
         >
             <AppShell.Header>
-                <Header opened={opened} toggle={toggle} />
+                <Header
+                    opened={opened}
+                    toggle={toggle}
+                    desktopOpened={isCollapsed}
+                    toggleDesktop={() => setIsCollapsed(!isCollapsed)}
+                />
             </AppShell.Header>
             <AppShell.Navbar
                 pt="md"

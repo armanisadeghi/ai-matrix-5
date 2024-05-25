@@ -6,15 +6,18 @@ import { ColorSchemeToggle, Logo } from "@/components";
 type Props = {
     opened: BurgerProps["opened"];
     toggle: () => void;
+    desktopOpened: boolean; // toggle control on large screens
+    toggleDesktop: () => void;
 };
 
 export function Header(props: Props) {
-    const { toggle, opened } = props;
+    const { toggle, opened, toggleDesktop, desktopOpened } = props;
 
     return (
         <Group h="100%" px="md" align="center" justify="space-between" style={{ flexWrap: "nowrap" }}>
             <Group>
                 <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+                <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="lg" size="sm" />
                 <Logo />
             </Group>
             <Group style={{ flexGrow: 1, justifyContent: "center" }}>
