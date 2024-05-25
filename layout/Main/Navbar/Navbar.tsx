@@ -194,10 +194,6 @@ export function Navbar({ desktopOpened, tabletOpened, mobileOpened, isCollapsed 
             <ScrollArea className={classes.links}>
                 {isCollapsed ? <Stack align="center">{links}</Stack> : <div>{links}</div>}
             </ScrollArea>
-
-            <div className={classes.footer}>
-                <UserButton collapsed={isCollapsed} />
-            </div>
         </>
     );
 }
