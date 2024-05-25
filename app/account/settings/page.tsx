@@ -6,6 +6,7 @@ import PersonalInformation from "@/app/account/settings/tabs/PersonalInformation
 import Preferences from "@/app/account/settings/tabs/Preferences";
 import Integrations from "@/app/account/settings/tabs/Integrations";
 import Billing from "@/app/account/settings/tabs/Billing";
+import Security from "@/app/account/settings/tabs/Security";
 
 const iconStyle = { width: rem(14), height: rem(14) };
 
@@ -52,6 +53,10 @@ const SettingsPage = () => {
 
                     <Tabs.Panel value="billing">
                         <Billing />
+                    </Tabs.Panel>
+
+                    <Tabs.Panel value="security">
+                        <Security />
                     </Tabs.Panel>
                 </Tabs>
             </Box>
