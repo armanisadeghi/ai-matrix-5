@@ -1,12 +1,13 @@
 "use client";
 
 import { Box, rem, Tabs, Title } from "@mantine/core";
-import { IconAffiliate, IconMoodCog, IconSettings, IconUserCircle } from "@tabler/icons-react";
+import { IconAffiliate, IconBellCog, IconMoodCog, IconSettings, IconUserCircle } from "@tabler/icons-react";
 import PersonalInformation from "@/app/account/settings/tabs/PersonalInformation";
 import Preferences from "@/app/account/settings/tabs/Preferences";
 import Integrations from "@/app/account/settings/tabs/Integrations";
 import Billing from "@/app/account/settings/tabs/Billing";
 import Security from "@/app/account/settings/tabs/Security";
+import Notifications from "@/app/account/settings/tabs/Notifications";
 
 const iconStyle = { width: rem(14), height: rem(14) };
 
@@ -34,7 +35,7 @@ const SettingsPage = () => {
                         <Tabs.Tab value="security" leftSection={<IconSettings style={iconStyle} />}>
                             Security
                         </Tabs.Tab>
-                        <Tabs.Tab value="notifications" leftSection={<IconSettings style={iconStyle} />}>
+                        <Tabs.Tab value="notifications" leftSection={<IconBellCog style={iconStyle} />}>
                             Notifications
                         </Tabs.Tab>
                     </Tabs.List>
@@ -57,6 +58,10 @@ const SettingsPage = () => {
 
                     <Tabs.Panel value="security">
                         <Security />
+                    </Tabs.Panel>
+
+                    <Tabs.Panel value="notifications">
+                        <Notifications />
                     </Tabs.Panel>
                 </Tabs>
             </Box>

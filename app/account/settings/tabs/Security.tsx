@@ -89,7 +89,7 @@ function Security() {
                         Preferred 2FA method
                     </Text>
                     <Flex align="center" gap="md">
-                        <Text>
+                        <Text size="sm">
                             Set your preferred method to use for two-factor authentication when signing into GitHub.
                         </Text>
                         <Select
@@ -106,11 +106,11 @@ function Security() {
                 </Text>
                 {twoFactorAuths.map((item) => (
                     <>
-                        <Flex key={item.title} gap="md" p="sm">
+                        <Flex key={item.title} gap="md" p="sm" align="flex-start">
                             <item.icon />
-                            <Stack gap={2}>
+                            <Stack gap={4}>
                                 <Text>{item.title}</Text>
-                                <Text size="xs">{item.description}</Text>
+                                <Text size="sm">{item.description}</Text>
                             </Stack>
                             <Button size="xs" variant="default" ml="auto">
                                 Add
