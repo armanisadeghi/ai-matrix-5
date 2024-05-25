@@ -10,6 +10,7 @@ import {
   Stack,
   Text,
   TextInput,
+  Title,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconDeviceFloppy } from "@tabler/icons-react";
@@ -69,6 +70,9 @@ function PersonalInformation() {
         withBorder
         mb="md"
       >
+        <Title order={5} mb="md">
+          User details
+        </Title>
         <Grid>
           <Grid.Col span={{ base: 12, md: 6 }}>
             <TextInput

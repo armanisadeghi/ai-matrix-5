@@ -1,14 +1,11 @@
 "use client";
 
 import { Box, rem, Tabs, Title } from "@mantine/core";
-import {
-  IconMessageCircle,
-  IconSettings,
-  IconUserCircle,
-} from "@tabler/icons-react";
+import { IconMoodCog, IconSettings, IconUserCircle } from "@tabler/icons-react";
 import PersonalInformation from "@/app/account/settings/tabs/PersonalInformation";
+import Preferences from "@/app/account/settings/tabs/Preferences";
 
-const iconStyle = { width: rem(12), height: rem(12) };
+const iconStyle = { width: rem(14), height: rem(14) };
 
 const SettingsPage = () => {
   return (
@@ -27,7 +24,7 @@ const SettingsPage = () => {
             </Tabs.Tab>
             <Tabs.Tab
               value="preferences"
-              leftSection={<IconMessageCircle style={iconStyle} />}
+              leftSection={<IconMoodCog style={iconStyle} />}
             >
               Preferences
             </Tabs.Tab>
@@ -61,7 +58,9 @@ const SettingsPage = () => {
             <PersonalInformation />
           </Tabs.Panel>
 
-          <Tabs.Panel value="messages">Messages tab content</Tabs.Panel>
+          <Tabs.Panel value="preferences">
+            <Preferences />
+          </Tabs.Panel>
 
           <Tabs.Panel value="settings">Settings tab content</Tabs.Panel>
         </Tabs>
