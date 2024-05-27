@@ -96,7 +96,7 @@ const navItems = [
       { label: "Recipes", link: "/" },
       { label: "Tools", link: "/" },
       { label: "Knowledge", link: "/" },
-      { label: "System Brokers", link: "/" },
+      { label: "System Brokers", link: "/matrix-engine/system-brokers" },
       { label: "Custom Brokers", link: "/" },
     ],
   },
@@ -171,37 +171,37 @@ interface NavbarProps {
 export function Navbar({ desktopOpened, tabletOpened, mobileOpened, isCollapsed }: NavbarProps) {
   const links = navItems.map((item) => {
     return isCollapsed ? (
-        <CollapseNavLinks {...item} key={item.label} />
+      <CollapseNavLinks {...item} key={item.label} />
     ) : (
-        <LinksGroup {...item} key={item.label} />
+      <LinksGroup {...item} key={item.label} />
     );
   });
 
   return (
-      <>
-        <Box hiddenFrom="xs" className={classes.header}>
-          <Group justify="space-between">
-            <Logo />
-          </Group>
-        </Box>
+    <>
+      <Box hiddenFrom="xs" className={classes.header}>
+        <Group justify="space-between">
+          <Logo />
+        </Group>
+      </Box>
 
-        {!isCollapsed && (
-            <div style={{ width: "100%" }}>
-              <AmeSearchInput mb="sm" />
-            </div>
-        )}
-
-        <ScrollArea className={classes.links}>
-          {isCollapsed ? (
-              <Stack align="center">{links}</Stack>
-          ) : (
-              <div>{links}</div>
-          )}
-        </ScrollArea>
-
-        <div className={classes.footer}>
-          <UserButton collapsed={isCollapsed} />
+      {!isCollapsed && (
+        <div style={{ width: "100%" }}>
+          <AmeSearchInput mb="sm" />
         </div>
-      </>
+      )}
+
+      <ScrollArea className={classes.links}>
+        {isCollapsed ? (
+          <Stack align="center">{links}</Stack>
+        ) : (
+          <div>{links}</div>
+        )}
+      </ScrollArea>
+
+      <div className={classes.footer}>
+        <UserButton collapsed={isCollapsed} />
+      </div>
+    </>
   );
 }
