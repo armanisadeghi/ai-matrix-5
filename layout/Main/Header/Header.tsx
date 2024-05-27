@@ -1,4 +1,4 @@
-import { ActionIcon, Avatar, Burger, BurgerProps, Group, Menu, rem, TextInput } from "@mantine/core";
+import { ActionIcon, Avatar, Burger, BurgerProps, Group, Menu, rem, TextInput, Tooltip } from "@mantine/core";
 import { IconBell, IconSearch, IconSettings2 } from "@tabler/icons-react";
 import { ColorSchemeToggle, Logo } from "@/components";
 import Link from "next/link";
@@ -31,13 +31,17 @@ export function Header(props: Props) {
                 />
             </Group>
             <Group>
-                <ActionIcon hiddenFrom="md" title="search">
-                    <IconSearch size={18} />
-                </ActionIcon>
+                <Tooltip label="Search">
+                    <ActionIcon hiddenFrom="md" title="search">
+                        <IconSearch size={18} />
+                    </ActionIcon>
+                </Tooltip>
                 <ColorSchemeToggle />
-                <ActionIcon title="notifications">
-                    <IconBell size={18} />
-                </ActionIcon>
+                <Tooltip label="Notifications">
+                    <ActionIcon title="notifications">
+                        <IconBell size={18} />
+                    </ActionIcon>
+                </Tooltip>
                 <Menu width={200} shadow="md">
                     <Menu.Target>
                         <ActionIcon title="user menu">

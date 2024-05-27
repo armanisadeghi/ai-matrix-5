@@ -34,10 +34,11 @@ interface Props {
     children: ReactNode;
     forceBaseNavbar?: boolean;
     defaultNavCollapse?: boolean;
+    showBreadcrumbs?: boolean;
 }
 
 export function MainLayout(props: Props) {
-    const { children, forceBaseNavbar, defaultNavCollapse } = props;
+    const { children, forceBaseNavbar, defaultNavCollapse, showBreadcrumbs } = props;
     const [opened, { toggle }] = useDisclosure();
     const desktop_match = useMediaQuery("(min-width: 992px)");
     const tablet_match = useMediaQuery("(max-width: 992px)");
@@ -95,14 +96,14 @@ export function MainLayout(props: Props) {
                     />
                 </AppShell.Navbar>
                 <AppShell.Main
-                    // quick hack
                     style={{
+                        // quick hack: todo find a better solution
                         paddingInlineStart: isCollapsed
                             ? rem(80)
                             : `calc(var(--app-shell-navbar-offset, 0rem) + var(--app-shell-padding)`,
                     }}
                 >
-                    <Breadcrumbs mb="sm">{items}</Breadcrumbs>
+                    {showBreadcrumbs && <Breadcrumbs mb="sm">{items}</Breadcrumbs>}
                     {children}
                 </AppShell.Main>
                 {isChatOpen && (

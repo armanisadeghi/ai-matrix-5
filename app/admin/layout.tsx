@@ -2,9 +2,9 @@ import { ReactNode } from "react";
 import { MainLayout } from "@/layout";
 
 type Props = {
-  children: ReactNode;
+    children: ReactNode;
 };
 
 export default function AdminLayout({ children }: Props) {
-  return <MainLayout>{children}</MainLayout>;
+    return <MainLayout defaultNavCollapse>{children}</MainLayout>;
 }
