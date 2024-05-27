@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Container, Grid, Burger, Space, Textarea } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import Sidebar from './sidebar/Sidebar';
-import ResponseArea from './response-display/ResponseArea';
+import ResponseArea from '@/app/chat/response/ResponseArea';
 
 function ChatPage() {
     const [bottomPadding, setBottomPadding] = useState(0);

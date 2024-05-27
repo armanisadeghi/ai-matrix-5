@@ -1,0 +1,149 @@
+Certainly! Below is a sample code to get chat history for a user from MongoDB in a Next.js app using the App Router. This example includes a MongoDB connection setup, an API route to fetch chat history, and a client-side component to display the chat history.
+
+### 1. MongoDB Connection Setup
+
+Create a file `lib/mongodb.ts` to set up the MongoDB connection using the MongoDB driver.
+
+```typescript
+// lib/mongodb.ts
+import { MongoClient, Db } from 'mongodb';
+
+let client: MongoClient;
+let db: Db;
+
+const uri = process.env.MONGODB_URI || '';
+const dbName = process.env.MONGODB_DB || '';
+
+if (!uri) {
+  throw new Error('Please add your Mongo URI to .env.local');
+}
+
+if (!dbName) {
+  throw new Error('Please add your Mongo DB Name to .env.local');
+}
+
+export const connectToDatabase = async () => {
+  if (client && db) {
+    return { client, db };
+  }
+
+  client = new MongoClient(uri);
+  await client.connect();
+  db = client.db(dbName);
+
+  return { client, db };
+};
+```
+
+### 2. API Route
+
+Create a new file `app/api/chat/[userId]/route.ts` for the API route to fetch the chat history for a user.
+
+```typescript
+// app/api/chat/[userId]/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+import { connectToDatabase } from '@/lib/mongodb';
+
+export async function GET(request: NextRequest, { params }: { params: { userId: string } }) {
+  const { userId } = params;
+  const { db } = await connectToDatabase();
+
+  try {
+    const chatHistory = await db.collection('chats').find({ userId }).toArray();
+    return NextResponse.json(chatHistory);
+  } catch (error) {
+    return NextResponse.json({ error: 'Failed to fetch chat history' }, { status: 500 });
+  }
+}
+```
+
+### 3. Client-Side Component
+
+Create a component to fetch and display the chat history for a user.
+
+```typescript
+// components/ChatHistory.tsx
+import { useEffect, useState } from 'react';
+
+type ChatMessage = {
+  _id: string;
+  userId: string;
+  message: string;
+  timestamp: string;
+};
+
+type ChatHistoryProps = {
+  userId: string;
+};
+
+const ChatHistory: React.FC<ChatHistoryProps> = ({ userId }) => {
+  const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchChatHistory = async () => {
+      try {
+        const response = await fetch(`/api/chat/${userId}`);
+        const data = await response.json();
+        setChatHistory(data);
+      } catch (error) {
+        console.error('Failed to fetch chat history:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchChatHistory();
+  }, [userId]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div>
+      {chatHistory.map((chat) => (
+        <div key={chat._id}>
+          <p>{chat.message}</p>
+          <small>{new Date(chat.timestamp).toLocaleString()}</small>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default ChatHistory;
+```
+
+### 4. Using the Component
+
+You can now use the `ChatHistory` component in any page or another component by passing the `userId` prop.
+
+```typescript
+// app/dashboard/page.tsx
+import ChatHistory from '@/components/ChatHistory';
+
+const DashboardPage = () => {
+  const userId = 'user123'; // Replace with dynamic user ID
+
+  return (
+    <div>
+      <h1>User Chat History</h1>
+      <ChatHistory userId={userId} />
+    </div>
+  );
+};
+
+export default DashboardPage;
+```
+
+### 5. Environment Variables
+
+Ensure you have the required environment variables in your `.env.local` file:
+
+```
+MONGODB_URI=your-mongodb-uri
+MONGODB_DB=your-database-name
+```
+
+This setup should provide a complete example of fetching and displaying chat history for a user in a Next.js app using the App Router, TypeScript, and MongoDB.

@@ -1,0 +1,96 @@
+/* ui/highlight/AmeCodeHighlight.module.css */
+
+/* Global styles for dark mode */
+:global([data-mantine-color-scheme='dark']) {
+    .codeSection :global(.m_1f5e827e) {
+        --code-text-color: #ffffff; /* Bright white for general text */
+        --code-background: #000000; /* Jet black for background */
+        --code-comment-color: #6272a4; /* Dim gray for comments */
+        --code-keyword-color: #188cff; /* Bright blue for keywords eg. 'def' */
+        --code-tag-color: #da10b2; /* Bright pink for tags */
+        --code-literal-color: #ab54f3; /* Bright purple for literals */
+        --code-string-color: #0fe12b; /* Bright green for strings eg. 'imports and dict keys' */
+        --code-variable-color: #2accef; /* Bright cyan for variables */
+        --code-class-color: #fa1414; /* Bright red for classes ex. 'function name' */
+    }
+}
+
+:global([data-mantine-color-scheme='light']) {
+    .codeSection :global(.m_1f5e827e) {
+        --code-background: #e1e1e1; /* Slightly darker gray */
+        --code-text-color: #000000; /* Black for general text */
+    }
+}
+
+.codeSection :global(.mantine-CodeHighlight-pre),
+.codeSection :global(.mantine-CodeHighlightTabs-pre) {
+    background-color: var(--code-background);
+    color: var(--code-text-color);
+    border-radius: 4px;
+    padding: 20px;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    max-width: 800px; /* Set maximum width */
+}
+
+.codeSection :global(.mantine-CodeHighlight-code),
+.codeSection :global(.mantine-CodeHighlightTabs-code) {
+    font-family: 'Fira Code', monospace;
+    font-size: 16px;
+}
+
+/* Custom scrollbar styles */
+.codeSection :global(.mantine-CodeHighlight-pre::-webkit-scrollbar),
+.codeSection :global(.mantine-CodeHighlightTabs-pre::-webkit-scrollbar) {
+    height: 6px; /* Height of the scrollbar */
+}
+
+.codeSection :global(.mantine-CodeHighlight-pre::-webkit-scrollbar-track),
+.codeSection :global(.mantine-CodeHighlightTabs-pre::-webkit-scrollbar-track) {
+    background: #f1f1f1; /* Track color */
+}
+
+.codeSection :global(.mantine-CodeHighlight-pre::-webkit-scrollbar-thumb),
+.codeSection :global(.mantine-CodeHighlightTabs-pre::-webkit-scrollbar-thumb) {
+    background: #888; /* Scrollbar thumb color */
+    border-radius: 4px; /* Rounded corners */
+}
+
+.codeSection :global(.mantine-CodeHighlight-pre::-webkit-scrollbar-thumb:hover),
+.codeSection :global(.mantine-CodeHighlightTabs-pre::-webkit-scrollbar-thumb:hover) {
+    background: #555; /* Thumb color on hover */
+}
+
+/* Local styles for the header */
+.header {
+    background-color: #555555; /* Dark gray for background */
+    color: #f0f0f0; /* Light color for text */
+    padding: 4px 10px;
+    font-size: 14px;
+    border-top-left-radius: 8px; /* More rounded corners */
+    border-top-right-radius: 8px; /* More rounded corners */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+/* Local styles for the expand button */
+.expandButton {
+    background: none;
+    border: none;
+    color: #f0f0f0;
+    cursor: pointer;
+    font-size: 12px;
+    margin-left: 10px;
+}
+
+.expandButton:hover {
+    color: #ffffff; /* Brighter color on hover */
+}
+
+/* Local styles for the code section */
+.codeSection {
+    position: relative;
+    max-width: 800px;
+    margin: auto; /* Center the code section */
+}

@@ -1,0 +1,58 @@
+{
+  "event_name": "socket_event",
+  "user_token": "auth0_token_example",
+  "task": "streaming_chat",
+  "requestMetadata": {
+    "requestId": "request123",
+    "requestIndex": 1,
+    "uid": "user123",
+    "requestTimestamp": "2024-05-25T12:00:00Z",
+    "requestType": "chat",
+    "requestSource": "chat_app_main",
+    "requestChannel": "chat"
+  },
+  "recipeId": "6615f9a50134cf41e405087b",
+  "promptData": [
+    {
+      "role": "user",
+      "message": "Can you help me with travel tips?"
+    },
+    {
+      "role": "assistant",
+      "message": "Sure, I can help you with that. What do you need help with?"
+    },
+    {
+      "role": "user",
+      "message": "I'm taking my kids to New York. What are some fun things to do there?"
+    }
+  ],
+  "formResponses": [
+    {
+      "question": "What type of travel plans are you looking for?",
+      "response": "Information on things to do"
+    },
+    {
+      "question": "How soon are you traveling?",
+      "response": "Within 30 days"
+    }
+  ],
+  "customInputs": [
+    {
+      "inputType": "text",
+      "inputValue": "Sample input"
+    }
+  ],
+  "settings": {
+    "aiPreferencesMain": "default",
+    "aiPreferencesSecond": "assistant",
+    "makeSmallTalk": true,
+    "quickAnswer": false,
+    "improveQuestions": true,
+    "submitOnEnter": true
+  },
+  "variablesData": {},
+  "responseData": {},
+  "brokerData": {},
+  "modelData": {},
+  "controls": {}
+}

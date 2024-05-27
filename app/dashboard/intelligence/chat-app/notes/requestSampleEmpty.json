@@ -1,0 +1,67 @@
+{
+  "event_name": "unique_socket_event_for_each_chat_page",
+  "user_token": "auth0_token_example",
+  "task": "specific_task_that_determines_what_backend_should_do",
+  "requestMetadata": {
+    "requestId": "request123",
+    "requestIndex": 1,
+    "uid": "user123",
+    "requestTimestamp": "2024-05-25T12:00:00Z",
+    "requestType": "AiChat | ProcessWorkflow | DataProcessing",
+    "requestSource": "self_identification_free_demo_chat",
+    "requestChannel": "chat | voice | video | images"
+  },
+  "recipeId": "6615f9a50134cf41e405087b",
+  "promptData": {
+    "promptMessage": {
+      "role": "user",
+      "message": "Can you help me with travel tips?",
+      "formResponses": [
+        {
+          "question": "What type of travel plans are you looking for?",
+          "response": "Information on things to do"
+        },
+        {
+          "question": "How soon are you traveling?",
+          "response": "Within 30 days"
+        }
+      ],
+      "customInputs": [
+        {
+          "inputId": "7215h9a5094ef41e405069e",
+          "inputValue": "New York"
+        }
+      ]
+    },
+    "chatHistory": [
+      {
+        "role": "assistant",
+        "message": "Sure, I can help you with that. What do you need help with?"
+      },
+      {
+        "role": "user",
+        "message": "I'm taking my kids to New York. What are some fun things to do there?"
+      }
+    ]
+  },
+  "requestSettings": {
+    "chatSettings": {
+      "aiPreferencesMain": "default",
+      "aiPreferencesSecond": "assistant",
+      "makeSmallTalk": true,
+      "quickAnswer": false,
+      "improveQuestions": true,
+      "submitOnEnter": true
+    },
+    "variablesData": {},
+    "responseData": {},
+    "brokerData": {},
+    "aiModelSettings": {},
+    "controlSettings": {},
+    "pageSettings": {},
+    "userSettings": {},
+    "matrixSettings": {},
+    "clientSettings": {},
+    "agencySettings": {}
+  }
+}
