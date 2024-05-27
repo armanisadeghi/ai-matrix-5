@@ -7,7 +7,7 @@ import { PATH_ACCOUNT } from "@/routes";
 type Props = {
     opened: BurgerProps["opened"];
     toggle: () => void;
-    desktopOpened: boolean; // toggle control on large screens
+    desktopOpened?: boolean; // toggle control on large screens
     toggleDesktop: () => void;
     tabletMatch?: boolean;
 };
