@@ -15,7 +15,7 @@ export function CollapseNavLinks(props: CollapseNavLinksProps) {
     return hasLinks && links?.length > 0 ? (
         <Menu shadow="md" position="right-start" trigger="hover">
             <Menu.Target>
-                <ActionIcon size="md">
+                <ActionIcon size="md" variant="subtle">
                     <Icon style={{ width: rem(18), height: rem(18) }} />
                 </ActionIcon>
             </Menu.Target>
@@ -29,7 +29,7 @@ export function CollapseNavLinks(props: CollapseNavLinksProps) {
             </Menu.Dropdown>
         </Menu>
     ) : (
-        <ActionIcon size="md">
+        <ActionIcon size="md" variant="subtle">
             <Icon style={{ width: rem(18), height: rem(18) }} />
         </ActionIcon>
     );
