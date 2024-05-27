@@ -54,6 +54,7 @@ export function MainLayout(props: Props) {
                     toggle={toggle}
                     desktopOpened={isCollapsed}
                     toggleDesktop={() => setIsCollapsed(!isCollapsed)}
+                    tabletMatch={mobile_match}
                 />
             </AppShell.Header>
             <AppShell.Navbar

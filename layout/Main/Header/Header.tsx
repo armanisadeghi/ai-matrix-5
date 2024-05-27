@@ -9,10 +9,11 @@ type Props = {
     toggle: () => void;
     desktopOpened: boolean; // toggle control on large screens
     toggleDesktop: () => void;
+    tabletMatch?: boolean;
 };
 
 export function Header(props: Props) {
-    const { toggle, opened, toggleDesktop, desktopOpened } = props;
+    const { toggle, opened, toggleDesktop, desktopOpened, tabletMatch } = props;
 
     return (
         <Group h="100%" px="md" align="center" justify="space-between" style={{ flexWrap: "nowrap" }}>
@@ -25,7 +26,7 @@ export function Header(props: Props) {
                 <TextInput
                     leftSection={<IconSearch size={14} />}
                     placeholder="Search information, messages and resources"
-                    style={{ flex: "1 1 auto", minWidth: "60px", maxWidth: "400px" }}
+                    style={{ flex: "1 1 auto", minWidth: "60px", maxWidth: tabletMatch ? "350px" : "500px" }}
                     visibleFrom="md"
                 />
             </Group>
