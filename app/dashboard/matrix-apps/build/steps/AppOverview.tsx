@@ -2,7 +2,7 @@ import React from 'react';
 import AmeFieldset from '@/ui/fieldset/AmeFieldset';
 import TagsInput from '@/ui/pills/TagsInput';
 import AmeSearchablePill from "@/ui/pills/AmeSearchablePill";
-import CustomCheckboxGroup from '@/ui/checkbox/CustomCheckboxGroup';
+import AmeCheckboxGroup from '@/ui/checkbox/AmeCheckboxGroup';
 import { TextInput, Space, Textarea, Checkbox, Group } from '@mantine/core';
 
 
@@ -34,7 +34,7 @@ const AppOverview = () => {
                     <TagsInput initialTags={[]} onTagsChange={(tags) => console.log(tags)}/>
                 </AmeFieldset>
 
-                <CustomCheckboxGroup
+                <AmeCheckboxGroup
                     legend="Access & Permissions"
                     layout="quad"
                     showButton={false}

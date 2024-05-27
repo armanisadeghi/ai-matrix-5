@@ -1,0 +1,13 @@
+.thinScrollbar {
+    scrollbar-width: thin; /* For Firefox */
+    -ms-overflow-style: auto; /* Standard scrollbar for IE and Edge */
+}
+
+.thinScrollbar::-webkit-scrollbar {
+    width: 6px; /* Width of the scrollbar for Chrome, Safari, and Opera */
+}
+
+.thinScrollbar::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    border-radius: 10px;
+}

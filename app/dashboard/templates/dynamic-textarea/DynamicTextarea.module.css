@@ -1,0 +1,22 @@
+.dynamicTextareaContainer {
+    border: 1px solid rgba(128, 128, 128, 0.62);
+    border-radius: 12px;
+    padding: 8px;
+    cursor: text;
+    overflow: hidden;
+}
+
+.dynamicTextareaContainer:hover {
+    box-shadow: 0 0 12px rgba(205, 202, 202, 0.2);
+}
+
+.dynamicTextareaContainer:focus {
+    border: 2px solid rgba(128, 128, 128, 0.62);
+    box-shadow: 0 0 12px rgba(205, 202, 202, 0.2);
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.dynamicTextareaContainer.focused {
+    border: 2px solid rgba(128, 128, 128, 0.62);
+    box-shadow: 0 0 12px rgba(232, 229, 229, 0.2);
+}

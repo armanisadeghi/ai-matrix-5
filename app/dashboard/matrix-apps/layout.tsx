@@ -1,4 +1,6 @@
+// app/dashboard/matrix-apps/layout.tsx
 import React, { ReactNode } from 'react';
+import DashboardPageLayout from '../layout-large-nav';
 
 interface LayoutProps {
     children: ReactNode;
@@ -6,7 +8,7 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => (
     <div>
-        <main>{children}</main>
+        <DashboardPageLayout>{children}</DashboardPageLayout>
     </div>
 );
 

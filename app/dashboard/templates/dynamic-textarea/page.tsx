@@ -1,87 +1,102 @@
 // Path: app/dashboard/templates/dynamic-textarea/page.tsx
-'use client'; // This ensures the component is treated as a client component
-import React, { useState } from 'react';
-import { Textarea, ActionIcon, Group, Box } from '@mantine/core';
+'use client'; // Ensure this is a client component in Next.js
+import React, { useState, useRef, useEffect } from 'react';
+import { Textarea, ActionIcon, Group, Box, Space } from '@mantine/core';
 import { MdPermMedia } from "react-icons/md";
 import { RiDeleteBin3Line } from "react-icons/ri";
 import { FaExpandArrowsAlt } from "react-icons/fa";
+import styles from './DynamicTextarea.module.css';  // Ensure the path is correct
 
 const DynamicTextarea = () => {
     const [value, setValue] = useState('');
-    const [collapsed, setCollapsed] = useState(false);  // State to track collapse
+    const [collapsed, setCollapsed] = useState(false);
+    const [isFocused, setIsFocused] = useState(false);
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setValue(event.currentTarget.value);
+        setValue(event.target.value);
     };
 
-    const toggleExpand = () => {
-        setCollapsed(!collapsed);  // Toggle the collapse state
+    const handleToggle = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.stopPropagation();
+        setCollapsed(!collapsed);
+    };
+
+    const handleBoxClick = () => {
+        if (collapsed) {
+            setCollapsed(false);
+        }
+        textareaRef.current?.focus();
     };
 
     const handleUpload = () => {
-        // Trigger file upload logic here
+        // Placeholder for upload logic
     };
 
     const handleDelete = () => {
-        setValue('');  // Clear the textarea
+        setValue('');
     };
 
+    useEffect(() => {
+        const handleFocus = () => setIsFocused(true);
+        const handleBlur = () => setIsFocused(false);
+
+        const textArea = textareaRef.current;
+        textArea?.addEventListener('focus', handleFocus);
+        textArea?.addEventListener('blur', handleBlur);
+
+        return () => {
+            textArea?.removeEventListener('focus', handleFocus);
+            textArea?.removeEventListener('blur', handleBlur);
+        };
+    }, []);
+
     return (
+        <div>
         <Box
-            style={{
-                border: '0.5px solid #E0E0E0',
-                borderRadius: 12,
-                padding: 8,
-                cursor: 'pointer',
-                boxShadow: collapsed ? 'none' : '0px 0px 8px rgba(0, 0, 0, 0.1)',
-                transition: 'box-shadow 0.3s ease, border-color 0.3s ease'
-            }}
-            onMouseEnter={() => {
-                if (!collapsed) {
-                    // Only apply glow effect if not collapsed
-                    document.getElementById('dynamic-textarea-container').style.boxShadow = '0px 0px 12px rgba(0, 0, 0, 0.2)';
-                }
-            }}
-            onMouseLeave={() => {
-                if (!collapsed) {
-                    document.getElementById('dynamic-textarea-container').style.boxShadow = '0px 0px 8px rgba(0, 0, 0, 0.1)';
-                }
-            }}
-            onClick={toggleExpand}
-            id="dynamic-textarea-container"
+            className={`${styles.dynamicTextareaContainer} ${isFocused ? styles.focused : ''}`}
+            onClick={handleBoxClick}
+            tabIndex={-1}
+
         >
-            <Group justify="space-between" style={{ width: '100%', alignItems: 'center' }}>
-                <div style={{ fontSize: '0.75rem', fontWeight: 'normal', color: '#909090' }}>SYSTEM</div>
+            <Group justify='space-between' style={{
+                width: '100%',
+                alignItems: 'center'
+            }}>
+                <div style={{
+                    fontSize: '0.75rem',
+                    fontWeight: 'normal',
+                    color: '#909090',
+                    userSelect: 'none'
+                }}>SYSTEM
+                </div>
                 <div>
-                    <ActionIcon size="sm" onClick={handleUpload} style={{ color: '#909090' }}>
-                        <MdPermMedia />
+                    <ActionIcon size="sm" onClick={handleUpload} style={{color: '#909090'}}>
+                        <MdPermMedia/>
                     </ActionIcon>
-                    <ActionIcon size="sm" onClick={handleDelete} style={{ color: '#909090' }}>
-                        <RiDeleteBin3Line />
+                    <ActionIcon size="sm" onClick={handleDelete} style={{color: '#909090'}}>
+                        <RiDeleteBin3Line/>
                     </ActionIcon>
-                    <ActionIcon size="sm" onClick={toggleExpand} style={{ color: '#909090' }}>
-                        <FaExpandArrowsAlt />
+                    <ActionIcon size="sm" onClick={handleToggle} style={{color: '#909090'}}>
+                        <FaExpandArrowsAlt/>
                     </ActionIcon>
                 </div>
             </Group>
             <Textarea
+                ref={textareaRef}
                 value={value}
                 onChange={handleChange}
                 autosize
-                size="xs"
-                variant="unstyled"
                 minRows={2}
                 maxRows={collapsed ? 2 : undefined}
                 placeholder="Enter system message..."
-                style={{
-                    marginTop: 4,
-                    borderTopLeftRadius: 0,
-                    borderTopRightRadius: 0,
-                    borderColor: '#E0E0E0',
-                    overflow: 'hidden'
-                }}
+                size="xs"
+                variant="unstyled"
+                className={styles.textareaStyle}
             />
         </Box>
+
+        </div>
     );
 };
 

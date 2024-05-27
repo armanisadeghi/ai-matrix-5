@@ -2,7 +2,7 @@
 import React, { useRef } from 'react';
 import HorizontalSplitter, { HorizontalSplitterRef } from '@/ui/split/HorizontalSplitter';
 import { Checkbox, Group } from '@mantine/core';
-import CustomCheckbox from '@/ui/checkbox/CustomCheckbox';
+import AmeCheckbox from '@/ui/checkbox/AmeCheckbox';
 
 const RunPage = () => {
     const splitterRef = useRef<HorizontalSplitterRef>(null);
@@ -25,8 +25,8 @@ const RunPage = () => {
                         withAsterisk
                     >
                         <Group mt="xs">
-                            <CustomCheckbox value="aimatrix" label="AI Matrix"/>
-                            <CustomCheckbox value="autogen" label="Microsoft Autogen"/>
+                            <AmeCheckbox value="aimatrix" label="AI Matrix"/>
+                            <AmeCheckbox value="autogen" label="Microsoft Autogen"/>
                         </Group>
                     </Checkbox.Group>
                 </div>
@@ -38,8 +38,8 @@ const RunPage = () => {
                         description="Choose one or more of the following options:"
                     >
                         <Group mt="xs">
-                            <CustomCheckbox value="aimatrix" label="AI Matrix"/>
-                            <CustomCheckbox value="autogen" label="Microsoft Autogen"/>
+                            <AmeCheckbox value="aimatrix" label="AI Matrix"/>
+                            <AmeCheckbox value="autogen" label="Microsoft Autogen"/>
                         </Group>
                     </Checkbox.Group>
                 </div>
@@ -51,8 +51,8 @@ const RunPage = () => {
                         description="Choose one or more of the following options:"
                     >
                         <Group mt="xs">
-                            <CustomCheckbox value="aimatrix" label="AI Matrix"/>
-                            <CustomCheckbox value="autogen" label="Microsoft Autogen"/>
+                            <AmeCheckbox value="aimatrix" label="AI Matrix"/>
+                            <AmeCheckbox value="autogen" label="Microsoft Autogen"/>
                         </Group>
                     </Checkbox.Group>
                 </div>
