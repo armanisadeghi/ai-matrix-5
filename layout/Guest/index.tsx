@@ -3,7 +3,9 @@
 import { AppShell, Burger, Button, Group, Skeleton } from '@mantine/core';
 import { useDisclosure, useHeadroom } from '@mantine/hooks';
 import { ReactNode } from 'react';
+import Link from 'next/link';
 import { Logo } from '@/components';
+
 
 type Props = { children: ReactNode };
 
@@ -27,7 +29,7 @@ export function GuestLayout(props: Props) {
             <Button variant="subtle">Features</Button>
             <Button variant="subtle">Testimonials</Button>
             <Button variant="subtle">Pricing</Button>
-            <Button variant="subtle">Sign In</Button>
+            <Button variant="subtle" component={Link} href="/login">Sign In</Button>
           </Group>
         </Group>
       </AppShell.Header>

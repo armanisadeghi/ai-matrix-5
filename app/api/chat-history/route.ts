@@ -1,62 +1,105 @@
-// app/api/chat-history/route.ts
+import type { NextApiRequest, NextApiResponse } from "next";
+import { corsMiddleware } from "@/middleware/corsMiddleware";
+import clientPromise from "@/lib/connectMongo";
 
-import { NextRequest, NextResponse } from 'next/server';
-import loadChatHistory from '@/app/data/fake-data/fake-chat-history/fake-chat-history';
-import { MongoClient } from 'mongodb';
-import handleCorsMiddleware from '@/middleware/corsMiddleware';
-
-export async function GET(req: NextRequest) {
-    const { searchParams } = new URL(req.url);
-    const userId = searchParams.get('userId');
-    const authToken = req.headers.get('authorization'); // Placeholder for token extraction
-
-    // Run the CORS middleware
-    try {
-        await handleCorsMiddleware(req);
-    } catch (error) {
-        console.error('CORS error:', error);
-        return NextResponse.json({ error: 'CORS error' }, { status: 500 });
-    }
-
-    if (!userId) {
-        console.error('User ID is required');
-        return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
-    }
-
-    // Authentication and authorization logic can be added here
-    // For example, validate authToken...
-
-    const knownUserIds = ['armaniuid', 'natalieuid'];
-    let client: MongoClient | null = null;
+async function insertChatData(collection: any, req: NextApiRequest, res: NextApiResponse): Promise<void> {
+    const { userId } = req.query;
+    const { historyData } = req.body;
 
     try {
-        if (knownUserIds.includes(userId)) {
-            const chatHistories = await loadChatHistory();
-            const userHistory = chatHistories.find(history => history.userId === userId);
-            if (userHistory) {
-                return NextResponse.json(userHistory);
-            } else {
-                return NextResponse.json({ error: 'User not found' }, { status: 404 });
-            }
-        } else {
-            client = new MongoClient("your-mongodb-connection-string-here");
-            await client.connect();
-            const db = client.db("your-db-name");
-            const collection = db.collection("chatHistories");
-            const userHistory = await collection.findOne({ userId: userId });
-
-            if (userHistory) {
-                return NextResponse.json(userHistory);
-            } else {
-                return NextResponse.json({ error: 'User not found in database' }, { status: 404 });
-            }
+        const newData = {
+            user_id: userId,
+            history: historyData
+        };
+        const insertResult = await collection.insertOne(newData);
+        if (insertResult.insertedId) {
+            res.status(200).json({
+                ...newData,
+                _id: insertResult.insertedId
+            });
         }
     } catch (error) {
-        console.error('Error loading chat history:', error);
-        return NextResponse.json({ error: 'Failed to load chat history' }, { status: 500 });
-    } finally {
-        if (client) {
-            await client.close();
-        }
+        res.status(500).json({ error });
     }
 }
+
+async function getChatData(collection: any, req: NextApiRequest, res: NextApiResponse): Promise<void> {
+    const { userId } = req.query;
+
+    try {
+        const result = await collection.findOne({ user_id: userId });
+        if (result) {
+            res.status(200).json(result);
+        } else {
+            res.status(404).json({ error: 'Chat data not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+}
+async function updateChatData(collection: any, req: NextApiRequest, res: NextApiResponse): Promise<void> {
+    const { userId } = req.query;
+    const { historyData } = req.body;
+
+    if (!historyData) {
+        res.status(400).json({ error: 'Missing history data' });
+        return;
+    }
+
+    try {
+        const filter = { user_id: userId };
+        const updateDocument = { $set: { history: historyData } };
+
+        const result = await collection.updateOne(filter, updateDocument);
+
+        if (result.matchedCount > 0) {
+            res.status(200).json({ result: 'Chat data updated successfully' });
+        } else {
+            res.status(404).json({ error: 'Chat data not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+}
+
+async function removeChatData(collection: any, req: NextApiRequest, res: NextApiResponse): Promise<void> {
+    const { userId } = req.query;
+
+    try {
+        const result = await collection.deleteOne({ user_id: userId });
+
+        if (result.deletedCount > 0) {
+            res.status(200).json({ result: 'Chat data removed successfully' });
+        } else {
+            res.status(404).json({ error: 'Chat data not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+}
+
+async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
+    const client = await clientPromise;
+    const collection = client.db('chat_ai').collection('chat');
+
+    switch (req.method) {
+        case 'GET':
+            await getChatData(collection, req, res);
+            break;
+        case 'POST':
+            await insertChatData(collection, req, res);
+            break;
+        case 'PUT':
+            await updateChatData(collection, req, res);
+            break;
+        case 'DELETE':
+            await removeChatData(collection, req, res);
+            break;
+        default:
+            res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE']);
+            res.status(405).end(`Method ${req.method} Not Allowed`);
+            break;
+    }
+}
+
+export default corsMiddleware(handler);

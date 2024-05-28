@@ -1,27 +1,20 @@
-// middleware/corsMiddleware.ts
+import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { NextRequest, NextResponse } from 'next/server';
+export const corsMiddleware = (handler: (req: NextApiRequest, res: NextApiResponse) => void) => {
+    return async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+        // Set CORS headers
+        res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
+        res.setHeader('Access-Control-Allow-Credentials', 'true');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Date, X-Api-Version');
 
-function setCorsHeaders(res: NextResponse, origin: string | null) {
-    res.headers.set('Access-Control-Allow-Credentials', 'true');
-    res.headers.set('Access-Control-Allow-Origin', origin ?? '*');
-    res.headers.set('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-    res.headers.set('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
-}
+        // Handle OPTIONS requests for preflight
+        if (req.method === 'OPTIONS') {
+            res.status(204).end();
+            return;
+        }
 
-export default async function handleCorsMiddleware(req: NextRequest) {
-    const origin = req.headers.get('origin') || req.headers.get('x-custom-origin') || '';
-
-    if (!origin) {
-        return new NextResponse('Origin header is missing', {status: 400});
-    }
-
-    const res = NextResponse.next();
-    setCorsHeaders(res, origin);
-
-    if (req.method === 'OPTIONS') {
-        return new NextResponse(null, {status: 200});
-    }
-
-    return res;
-}
+        // Call the actual handler function
+        await handler(req, res);
+    };
+};
