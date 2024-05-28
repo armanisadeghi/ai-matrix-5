@@ -96,8 +96,8 @@ const navItems = [
       { label: "Recipes", link: "/" },
       { label: "Tools", link: "/" },
       { label: "Knowledge", link: "/" },
-      { label: "System Brokers", link: "/" },
-      { label: "Custom Brokers", link: "/" },
+      { label: "System Brokers", link: "/matrix-engine/system-brokers" },
+      { label: "Custom Brokers", link: "/matrix-engine/custom-brokers" },
     ],
   },
   {
