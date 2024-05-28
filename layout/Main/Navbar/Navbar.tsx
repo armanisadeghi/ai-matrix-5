@@ -168,7 +168,9 @@ interface NavbarProps {
     isCollapsed?: boolean;
 }
 
-export function Navbar({ desktopOpened, tabletOpened, mobileOpened, isCollapsed }: NavbarProps) {
+export function Navbar({ isCollapsed }: NavbarProps) {
+    console.log(isCollapsed);
+
     const links = navItems.map((item) => {
         return isCollapsed ? (
             <CollapseNavLinks {...item} key={item.label} />

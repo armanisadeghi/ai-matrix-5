@@ -60,8 +60,8 @@ export function MainLayout(props: Props) {
             <AppShell
                 header={{ height: { base: 60, md: 60, lg: 70 } }}
                 navbar={{
-                    width: { base: 60, md: 200, lg: 250 },
-                    breakpoint: "sm",
+                    width: { base: 150, md: 200, lg: 250 },
+                    breakpoint: "md",
                     collapsed: { mobile: !opened },
                 }}
                 aside={{
