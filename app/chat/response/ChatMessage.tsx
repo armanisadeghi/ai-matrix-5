@@ -1,7 +1,7 @@
 import { Group, Space } from '@mantine/core';
 import UserMessage from '@/app/chat/input/UserMessage';
 import AssistantMessage from '@/app/chat/response/AssistantMessage';
-import { eRoleType, iMessage } from "@/utils/types";
+import { eRoleType, iMessage } from "../types/types";
 
 interface ChatMessageProps {
     chatMsg: iMessage;

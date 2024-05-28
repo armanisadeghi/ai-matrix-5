@@ -96,7 +96,7 @@ const navItems = [
       { label: "Recipes", link: "/" },
       { label: "Tools", link: "/" },
       { label: "Knowledge", link: "/" },
-      { label: "System Brokers", link: "/matrix-engine/system-brokers" },
+      { label: "System Brokers", link: "/" },
       { label: "Custom Brokers", link: "/" },
     ],
   },
@@ -181,27 +181,19 @@ export function Navbar({ desktopOpened, tabletOpened, mobileOpened, isCollapsed 
     <>
       <Box hiddenFrom="xs" className={classes.header}>
         <Group justify="space-between">
-          <Logo />
+          <Logo visibleFrom="md" />
         </Group>
       </Box>
 
       {!isCollapsed && (
         <div style={{ width: "100%" }}>
-          <AmeSearchInput mb="sm" />
+          <AmeSearchInput mb="sm" visibleFrom="md" />
         </div>
       )}
 
       <ScrollArea className={classes.links}>
-        {isCollapsed ? (
-          <Stack align="center">{links}</Stack>
-        ) : (
-          <div>{links}</div>
-        )}
+        {isCollapsed ? <Stack align="center">{links}</Stack> : <div>{links}</div>}
       </ScrollArea>
-
-      <div className={classes.footer}>
-        <UserButton collapsed={isCollapsed} />
-      </div>
     </>
   );
 }

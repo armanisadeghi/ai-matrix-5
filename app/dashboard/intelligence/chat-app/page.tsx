@@ -1,13 +1,15 @@
+// chat-app/page.tsx
+
 'use client';
 
 import React from 'react';
 import ChatInput from './components/ChatInput';
 import ChatSettings from './components/settings/ChatSettings';
 import ChatResponse from './components/ChatResponse';
-import ChatHistory from './components/ChatHistory';
+import ChatHistory from './components/sidebar/ChatHistory';
 import AiResponseForm from './components/dynamic-inputs/ChatForm';
 import { useAiResponse } from './context/AiResponseContext';
-import Layout from './layout';
+import { ChatLayout } from './chat-layout';
 
 const PageContent: React.FC = () => {
     const { respondData, setRespondData } = useAiResponse();
@@ -37,7 +39,9 @@ const PageContent: React.FC = () => {
 
 const Page: React.FC = () => {
     return (
+        <ChatLayout>
             <PageContent />
+        </ChatLayout>
     );
 };
 

@@ -1,4 +1,5 @@
 // app/chat/ChatPage.tsx
+
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 import { Container, Grid, Burger, Space, Textarea } from '@mantine/core';

@@ -71,13 +71,13 @@ const DynamicTextarea = () => {
                 }}>SYSTEM
                 </div>
                 <div>
-                    <ActionIcon size="sm" onClick={handleUpload} style={{color: '#909090'}}>
+                    <ActionIcon size="sm" variant="transparent"onClick={handleUpload} style={{color: '#909090'}}>
                         <MdPermMedia/>
                     </ActionIcon>
-                    <ActionIcon size="sm" onClick={handleDelete} style={{color: '#909090'}}>
+                    <ActionIcon size="sm" variant="transparent"onClick={handleDelete} style={{color: '#909090'}}>
                         <RiDeleteBin3Line/>
                     </ActionIcon>
-                    <ActionIcon size="sm" onClick={handleToggle} style={{color: '#909090'}}>
+                    <ActionIcon size="sm" variant="transparent"onClick={handleToggle} style={{color: '#909090'}}>
                         <FaExpandArrowsAlt/>
                     </ActionIcon>
                 </div>

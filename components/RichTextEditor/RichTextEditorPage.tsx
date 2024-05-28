@@ -1,3 +1,5 @@
+// components/RichTextEditor/RichTextEditorPage.tsx
+
 'use client';
 
 import { RichTextEditorContextProvider } from './RichTextEditorContextProvider';

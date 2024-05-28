@@ -1,20 +1,27 @@
-'use client';
+"use client";
 
-import { ActionIcon, createTheme } from '@mantine/core';
+import { ActionIcon, Button, createTheme } from "@mantine/core";
 
 export const theme = createTheme({
-    primaryColor: 'blue',
+    primaryColor: "blue",
     primaryShade: 8,
-    defaultRadius: 'md',
-    fontFamily: 'Inter, sans-serif',
+    defaultRadius: "md",
+    fontFamily: "Inter, sans-serif",
     headings: {
-        fontFamily: 'Inter, sans-serif',
+        fontFamily: "Inter, sans-serif",
     },
-    focusRing: 'auto',
+    focusRing: "auto",
     components: {
         ActionIcon: ActionIcon.extend({
             defaultProps: {
-                variant: 'subtle',
+                variant: "light",
+                color: "gray",
+            },
+        }),
+        Button: Button.extend({
+            defaultProps: {
+                variant: "light",
+                color: "gray",
             },
         }),
     },

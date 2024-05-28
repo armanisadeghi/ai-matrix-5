@@ -26,7 +26,7 @@ export function Header(props: Props) {
             </Group>
             <Group>
                 <ColorSchemeToggle />
-                <ActionIcon>
+                <ActionIcon variant="transparent">
                     <IconBell size={18} />
                 </ActionIcon>
             </Group>
