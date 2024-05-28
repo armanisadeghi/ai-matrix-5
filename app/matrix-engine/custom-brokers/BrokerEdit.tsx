@@ -4,12 +4,10 @@ type BrokerFormProps = {
 };
 
 import { useState } from 'react';
-import { Button, Container, Fieldset, Group, Paper, Space, Switch, TextInput } from '@mantine/core';
-import { BrokerForm } from './BrokerForm';
+import { Button, Fieldset, Paper, Space, Switch, TextInput } from '@mantine/core';
 import { Component, ComponentType } from '@/types/broker';
 import BrokerComponent from './BrokerComponent';
 import { IconPlus } from '@tabler/icons-react';
-import AmeFieldset from '@/ui/fieldset/AmeFieldset';
 
 export const BrokerEdit = ({ type }: BrokerFormProps) => {
     const [currentBroker, setCurrentBroker] = useState<Component>({
@@ -33,23 +31,24 @@ export const BrokerEdit = ({ type }: BrokerFormProps) => {
         step: 1,
     } as Component);
     return (
-        <Paper style={{ width: '100%', display: 'flex', wrap: 'wrap', justifyContent: 'space-between' }}>
-            <div style={{ width: '50%', justifyContent: 'flex-end', display: 'flex', flexDirection: 'column' }}>
-                <AmeFieldset legend="Add properties" >
+        <Paper style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+            <div style={{ width: '100%', justifyContent: 'flex-end', display: 'flex', flexDirection: 'column' }}>
+                <Fieldset legend="Add properties" >
                     <TextInput label="Name" onChange={(e) => setCurrentBroker({ ...currentBroker, label: e.target.value })} />
+                    <Space h="sm" />
                     <TextInput label="Placeholder" onChange={(e) => setCurrentBroker({ ...currentBroker, placeholderText: e.target.value })} />
+                    <Space h="sm" />
                     <TextInput label="Default Value" onChange={(e) => setCurrentBroker({ ...currentBroker, defaultValue: e.target.value })} />
+                    <Space h="sm" />
                     <Switch label="Required" onChange={(e) => setCurrentBroker({ ...currentBroker, required: e.target.checked })} />
-                </AmeFieldset>
+                </Fieldset>
                 <Space h="sm" />
                 <Button variant="primary" leftSection={<IconPlus />}>
                     Add Component
                 </Button>
-
             </div>
-
-            <Space w="xl" />
-            <Fieldset legend="Your component" radius="md" style={{ width: '50%' }}>
+            <Space w="md" />
+            <Fieldset legend="Your component" radius="md" style={{ width: '100%' }}>
                 <BrokerComponent component={currentBroker} />
             </Fieldset>
         </Paper>

@@ -32,9 +32,9 @@ const Brokers: React.FC = () => {
                 </Button>
             </div>
             <Space h="md" />
-            {showSelect && <Select data={componentOptions} value={selectedOption} onChange={(option) => setSelectedOption(option as ComponentType)} />}
-            <Space h="md" />
-            {selectedOption && <><BrokerEdit type={selectedOption || ''} />
+            {showSelect && <><Select data={componentOptions} value={selectedOption} onChange={(option) => setSelectedOption(option as ComponentType)} />
+                <Space h="md" />
+                <BrokerEdit type={selectedOption} />
                 <Space h="md" />
                 <Center>
                     <Title order={3}>My Broker</Title>
