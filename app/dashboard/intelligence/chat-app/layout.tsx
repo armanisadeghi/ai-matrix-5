@@ -1,48 +1,34 @@
-// chat-app/layout.tsx
-
-import React, { ReactNode } from 'react';
-import { ChatProvider } from './context/ChatContext';
-import { UserProvider } from './context/UserContext';
-import { FormProvider } from './context/FormContext';
-import { GlobalChatProvider } from './context/GlobalChatContext';
-import { RequestMetadataProvider } from './context/RequestMetadataContext';
-import { SettingsProvider } from './context/SettingsContext';
-import { HistoryProvider } from './context/HistoryContext';
-import { AiResponseProvider } from './context/AiResponseContext';
-import { ResponseProvider } from './components/response/ResponseContext'; // Duplicate to address later
-import ChatLayout from './layout';
-
-import ChatPage from './chatpage';
+'use client'
+import React, { useState, ReactNode } from 'react';
+import { AppShell, ActionIcon } from '@mantine/core';
+import { GoSidebarCollapse } from 'react-icons/go';
 
 interface LayoutProps {
     children: ReactNode;
 }
 
 const Layout: React.FC<LayoutProps> = ({children}) => {
+    const [asideOpen, setAsideOpen] = useState(true);
+
+    const toggleAside = () => {
+        setAsideOpen(!asideOpen);
+    };
+
     return (
-        <UserProvider>
-            <ChatProvider>
-                <HistoryProvider>
-                    <FormProvider>
-                        <GlobalChatProvider>
-                            <RequestMetadataProvider>
-                                <SettingsProvider>
-                                    <AiResponseProvider>
-                                        <ResponseProvider>
-                                            <div>
-                                                <header>Chat App Layout (Layout)</header>
-                                                <ChatPage/>
-                                                <main>{children}</main>
-                                            </div>
-                                        </ResponseProvider>
-                                    </AiResponseProvider>
-                                </SettingsProvider>
-                            </RequestMetadataProvider>
-                        </GlobalChatProvider>
-                    </FormProvider>
-                </HistoryProvider>
-            </ChatProvider>
-        </UserProvider>
+        <AppShell>
+            <AppShell.Aside p="md" hidden={!asideOpen}>
+                <ActionIcon
+                    onClick={toggleAside}
+                    size="xs"
+                    variant="outline"
+                    style={{marginBottom: '1rem'}}
+                >
+                    <GoSidebarCollapse/>
+                </ActionIcon>
+            </AppShell.Aside>
+            <header>Chat App Layout (Layout) Testing test test test Chat App Layout (Layout) Testing test test test Chat App Layout (Layout) Testing test test test Chat App Layout (Layout) Testing test test test </header>
+            <main></main>
+        </AppShell>
     );
 };
 

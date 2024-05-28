@@ -1,4 +1,4 @@
-// ai-chat/components/response/ResponseArea.tsx
+// chatbot/components/response/ResponseArea.tsx
 import React from 'react';
 
 const ResponseArea = ({ bottomPadding }: { bottomPadding: number }) => {

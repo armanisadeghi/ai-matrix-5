@@ -1,14 +1,15 @@
-import { AppShell, Burger, Group, Skeleton, Text } from '@mantine/core';
+import { ActionIcon, AppShell, Burger, Group, Skeleton, Text } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { Navbar } from "@/layout/Main/Navbar";
 import { Header } from "@/layout/Apps/Header";
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
+import { GoSidebarCollapse } from "react-icons/go";
 
 type Props = { children: ReactNode };
 
 export function ChatLayout({ children }: Props) {
     const [opened, { toggle }] = useDisclosure();
-    const mobile_match = useMediaQuery("(min-width: 768px)");
+    const mobileMatch = useMediaQuery("(min-width: 768px)");
 
     return (
         <AppShell
@@ -20,9 +21,8 @@ export function ChatLayout({ children }: Props) {
                 collapsed: { mobile: !opened },
             }}
             padding="sm"
-
             footer={{ height: 60 }}
-            aside={{ width: 200, breakpoint: 'sm', collapsed: { desktop: false, mobile: true } }}
+            aside={{ width: 200, breakpoint: 'sm', collapsed: { desktop: false, mobile: !opened } }}
         >
             <AppShell.Header>
                 <Header opened={opened} toggle={toggle} />
@@ -31,18 +31,25 @@ export function ChatLayout({ children }: Props) {
                 px="xs"
                 pt="md"
                 style={{
-                    width: '60px',
+                    width: mobileMatch ? (opened ? '200px' : '60px') : '60px',
                     transition: 'width 0.3s',
                 }}
             >
-                <Navbar mobileOpened={mobile_match} isCollapsed={true} />
+                <Navbar mobileOpened={mobileMatch} isCollapsed={!opened} />
             </AppShell.Navbar>
-
             <AppShell.Main>
                 {children}
             </AppShell.Main>
-            <AppShell.Aside p="md">Aside</AppShell.Aside>
-            <AppShell.Footer p="md">Footer</AppShell.Footer>
+            <AppShell.Aside p="md">
+                <ActionIcon
+                    onClick={toggle}
+                    size="xs"
+                    variant="outline"
+                    style={{ marginBottom: '1rem' }}
+                >
+                    <GoSidebarCollapse />
+                </ActionIcon>
+            </AppShell.Aside>
         </AppShell>
     );
 }

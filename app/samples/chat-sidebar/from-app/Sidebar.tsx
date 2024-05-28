@@ -18,7 +18,7 @@ const Sidebar: React.FC = () => {
                     <ChatHistoryMenu placeholder="Input 2" />
                     <ChatHistoryMenu placeholder="Input 3" />
                     <ChatHistoryMenu placeholder="Input 4" />
-                    <ChatHistoryMenu placeholder="Input 5" />
+                    <ChatHistoryMenu placeholder="Input 5 from-app\Sidebar.tsx" />
                     <ChatHistoryMenu placeholder="Input 6" />
                     <ChatHistoryMenu placeholder="Input 7" />
                     <ChatHistoryMenu placeholder="Input 8" />

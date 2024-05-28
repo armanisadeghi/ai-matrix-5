@@ -1,4 +1,4 @@
-// ai-chat/layout.tsx
+// ai-chatbot/layout.tsx
 'use client'
 import React from 'react';
 import { Container, Grid, Burger } from '@mantine/core';

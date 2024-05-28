@@ -2,7 +2,7 @@
 'use client';
 
 import React from 'react';
-import AmeChatHistoryEntry from '@/app/dashboard/intelligence/ai-chat/components/sidebar/AmeChatHistoryEntry';
+import AmeChatHistoryEntry from '@/app/dashboard/intelligence/ai-chatbot/components/sidebar/AmeChatHistoryEntry';
 import { AppShell, CloseButton, Space, Stack, Text } from '@mantine/core';
 
 const ChatSidebarSample = () => {

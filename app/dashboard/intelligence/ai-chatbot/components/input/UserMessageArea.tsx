@@ -1,4 +1,4 @@
-// ai-chat/components/input/UserMessageArea.tsx
+// chatbot/components/input/UserMessageArea.tsx
 'use client'
 
 import React from 'react';

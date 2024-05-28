@@ -1,4 +1,4 @@
-// ai-chat/components/ErrorBoundary.tsx
+// chatbot/components/ErrorBoundary.tsx
 import React, { Component, ReactNode, ErrorInfo } from 'react';
 
 interface Props {

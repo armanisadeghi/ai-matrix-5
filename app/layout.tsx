@@ -24,7 +24,7 @@ const inter = Inter({
     display: "swap",
 });
 
-// Armani changed this default color to dark.
+
 export default function RootLayout({
                                        children,
                                    }: {

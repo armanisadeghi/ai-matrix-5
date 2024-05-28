@@ -18,6 +18,7 @@ import { Navbar } from "@/layout/Main/Navbar";
 import { Header } from "@/layout/Main/Header";
 import Link from "next/link";
 import { IconBubbleText } from "@tabler/icons-react";
+import { GoSidebarCollapse } from "react-icons/go";
 
 // sample breadcrumbs to help with navigation
 const items = [
@@ -46,6 +47,11 @@ export function MainLayout(props: Props) {
     const theme = useMantineTheme();
     const [isCollapsed, setIsCollapsed] = useState(defaultNavCollapse);
     const [isChatOpen, setIsChatOpen] = useState(false);
+    const [asideOpen, setAsideOpen] = useState(false);
+
+    const toggleAside = () => {
+        setAsideOpen(!asideOpen);
+    };
 
     useEffect(() => {
         if (forceBaseNavbar) {
@@ -80,13 +86,7 @@ export function MainLayout(props: Props) {
                     />
                 </AppShell.Header>
                 <AppShell.Navbar
-                    pt="md"
-                    style={{
-                        width: isCollapsed ? "60px" : undefined,
-                        transition: "width 0.3s",
-                        paddingLeft: isCollapsed ? 0 : theme.spacing.xs,
-                        paddingRight: isCollapsed ? 0 : theme.spacing.xs,
-                    }}
+                    pt="xs"
                 >
                     <Navbar
                         desktopOpened={desktop_match && !forceBaseNavbar}
@@ -106,29 +106,29 @@ export function MainLayout(props: Props) {
                     {showBreadcrumbs && <Breadcrumbs mb="sm">{items}</Breadcrumbs>}
                     {children}
                 </AppShell.Main>
-                {isChatOpen && (
-                    <AppShell.Aside p="md">
-                        <CloseButton onClick={() => setIsChatOpen(false)} />
-                        <Title order={5}>You can use this to show chats</Title>
-                    </AppShell.Aside>
-                )}
+                <AppShell.Aside
+                    p="md"
+                    style={{
+                        width: asideOpen ? '200px' : '60px',
+                        transition: 'width 0.3s',
+                        overflow: 'hidden',
+                    }}
+                >
+                    <ActionIcon
+                        onClick={toggleAside}
+                        size="xs"
+                        variant="outline"
+                        style={{ marginBottom: '1rem' }}
+                    >
+                        <GoSidebarCollapse />
+                    </ActionIcon>
+                    {asideOpen && (
+                        <div>
+                            <Text>Layout version: Main</Text>
+                        </div>
+                    )}
+                </AppShell.Aside>
             </AppShell>
-            {!isChatOpen && (
-                <Affix position={{ bottom: 20, right: 20 }}>
-                    <Tooltip label="Open chat">
-                        <ActionIcon
-                            size={tablet_match ? "lg" : 48}
-                            color="blue"
-                            variant="transparent"
-                            radius="50%"
-                            onClick={() => setIsChatOpen(!isChatOpen)}
-                            style={{ boxShadow: theme.shadows.xl }}
-                        >
-                            <IconBubbleText />
-                        </ActionIcon>
-                    </Tooltip>
-                </Affix>
-            )}
         </>
     );
 }

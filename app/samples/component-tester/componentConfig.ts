@@ -5,7 +5,7 @@ import { exampleCode, cssCode, pythonCode } from '@/app/samples/code-highlight/d
 export const componentMap: { [key: string]: React.ComponentType<any> } = {
     AIResponse: dynamic(() => import('@/app/chat/response/AIResponse')),
     AmeMultiCodeHighlight: dynamic(() => import('@/ui/highlight/AmeMultiCodeHighlight')),
-    ChatSidebar: dynamic(() => import('@/app/dashboard/intelligence/ai-chat/components/sidebar/ChatSidebar')),
+    ChatSidebar: dynamic(() => import('@/app/dashboard/intelligence/ai-chatbot/components/sidebar/ChatSidebar')),
     DynamicSplitter: dynamic(() => import('@/ui/split/DynamicSplitter')),
     AmeCheckbox: dynamic(() => import('@/ui/checkbox/AmeCheckbox')),
     AmeCheckboxGroup: dynamic(() => import('@/ui/checkbox/AmeCheckboxGroup')),
@@ -19,7 +19,7 @@ export const componentMap: { [key: string]: React.ComponentType<any> } = {
     AmeSearchInput: dynamic(() => import('@/ui/input/AmeSearchInput')),
     AmePillsInput: dynamic(() => import('@/ui/pills/AmePillsInput')),
     SelectableList: dynamic(() => import('@/ui/pills/AmeSearchablePill')),
-    AmeHoverMenuChat: dynamic(() => import('@/app/dashboard/intelligence/ai-chat/components/sidebar/AmeChatHistoryEntry')),
+    AmeHoverMenuChat: dynamic(() => import('@/app/dashboard/intelligence/ai-chatbot/components/sidebar/AmeChatHistoryEntry')),
     AmeRadioCard: dynamic(() => import('@/ui/radio/AmeRadioCard')),
     AmeSelect: dynamic(() => import('@/ui/select/AmeSelect')),
     AmeSlider: dynamic(() => import('@/ui/slider/AmeSlider')),

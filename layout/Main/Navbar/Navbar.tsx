@@ -179,20 +179,16 @@ export function Navbar({ desktopOpened, tabletOpened, mobileOpened, isCollapsed 
 
     return (
         <>
-            <Box hiddenFrom="xs" className={classes.header}>
-                <Group justify="space-between">
-                    <Logo visibleFrom="md" />
-                </Group>
-            </Box>
 
             {!isCollapsed && (
-                <div style={{ width: "100%" }}>
-                    <AmeSearchInput mb="sm" visibleFrom="md" />
-                </div>
+                <Box  px='md' pt={'sm'}>
+                    <AmeSearchInput mb="xs" visibleFrom="xs" />
+                </Box>
+
             )}
 
             <ScrollArea className={classes.links}>
-                {isCollapsed ? <Stack align="center">{links}</Stack> : <div>{links}</div>}
+                {isCollapsed ? <Stack align="left">{links}</Stack> : <div>{links}</div>}
             </ScrollArea>
         </>
     );

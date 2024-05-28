@@ -9,7 +9,7 @@ import ChatResponse from './components/ChatResponse';
 import ChatHistory from './components/sidebar/ChatHistory';
 import AiResponseForm from './components/dynamic-inputs/ChatForm';
 import { useAiResponse } from './context/AiResponseContext';
-import { ChatLayout } from './chat-layout';
+import { DualLayout } from '@/layout';
 
 const PageContent: React.FC = () => {
     const { respondData, setRespondData } = useAiResponse();
@@ -33,15 +33,17 @@ const PageContent: React.FC = () => {
                     setFormAnswers={handleFormAnswers}
                 />
             )}
+            <DualLayout>
+                <div>Your content here</div>
+            </DualLayout>
+
         </div>
     );
 };
 
 const Page: React.FC = () => {
     return (
-        <ChatLayout>
-            <PageContent />
-        </ChatLayout>
+        <PageContent />
     );
 };
 

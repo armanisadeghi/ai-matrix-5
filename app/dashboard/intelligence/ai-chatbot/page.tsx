@@ -1,4 +1,4 @@
-// ai-chat/page.tsx
+// chatbot/page.tsx
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 import { Textarea, Burger } from '@mantine/core';

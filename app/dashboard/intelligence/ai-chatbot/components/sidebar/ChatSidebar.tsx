@@ -41,7 +41,7 @@ const ChatSidebar = () => {
                     justify="flex-start"
                     gap="xs"
                 >
-                    <AmeChatHistoryEntry initialValue="sample item 1" />
+                    <AmeChatHistoryEntry initialValue="sample item 1 - eliminate this" />
                     <AmeChatHistoryEntry initialValue="sample item 2" />
                     <AmeChatHistoryEntry initialValue="sample item 3" />
                     <AmeChatHistoryEntry initialValue="What is the capital of the United States?" />

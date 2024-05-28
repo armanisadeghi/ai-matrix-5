@@ -1,15 +1,21 @@
 "use client";
-import { AppShell, Breadcrumbs, Text } from "@mantine/core";
+import { ActionIcon, AppShell, Breadcrumbs, Text } from "@mantine/core";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { Navbar } from "@/layout/Apps/Navbar";
 import { Header } from "@/layout/Apps/Header";
+import { GoSidebarCollapse } from "react-icons/go";
 
 type Props = { children: ReactNode };
 
-export function AppsLayout({ children }: Props) {
+export function DualLayout({ children }: Props) {
     const [opened, { toggle }] = useDisclosure();
     const mobile_match = useMediaQuery("(min-width: 768px)");
+    const [asideOpen, setAsideOpen] = useState(false);
+
+    const toggleAside = () => {
+        setAsideOpen(!asideOpen);
+    };
 
     return (
         <AppShell
@@ -37,6 +43,29 @@ export function AppsLayout({ children }: Props) {
             <AppShell.Main>
                 {children}
             </AppShell.Main>
+            <AppShell.Aside
+                p="md"
+                style={{
+                    width: asideOpen ? '200px' : '60px',
+                    transition: 'width 0.3s',
+                    overflow: 'hidden',
+                }}
+            >
+                <ActionIcon
+                    onClick={toggleAside}
+                    size="xs"
+                    variant="outline"
+                    style={{ marginBottom: '1rem' }}
+                >
+                    <GoSidebarCollapse />
+                </ActionIcon>
+                {asideOpen && (
+                    <div>
+                        {/* Your aside content here */}
+                        <Text>Aside Content</Text>
+                    </div>
+                )}
+            </AppShell.Aside>
         </AppShell>
     );
 }
