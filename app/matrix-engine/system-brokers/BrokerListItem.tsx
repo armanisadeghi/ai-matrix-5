@@ -1,13 +1,8 @@
 "use client";
 import React from 'react';
-import { Pill, ActionIcon, Group, Paper } from '@mantine/core';
+import { Pill, ActionIcon, Group, Paper, Title } from '@mantine/core';
 import { IconTrash, IconEdit } from '@tabler/icons-react';
-
-interface Broker {
-    id: string;
-    name?: string;
-    tags: string[];
-}
+import { Broker } from '@/types/broker';
 
 interface BrokerListItemProps {
     broker: Broker;
@@ -16,19 +11,12 @@ interface BrokerListItemProps {
 }
 
 const BrokerListItem = ({ broker, onDelete, onEdit }: BrokerListItemProps) => {
-    const { name = '', tags } = broker;
+    const { name = '' } = broker;
 
     return (
         <Paper withBorder radius="md" p="md" shadow="sm" style={{ width: '100%' }}>
             <Group p="apart">
-                <div>{name}</div>
-                <Group m="xs" p="apart">
-                    {tags.map((tag) => (
-                        <Pill key={tag} variant="contrast">
-                            {tag}
-                        </Pill>
-                    ))}
-                </Group>
+                <Title order={5}>{name}</Title>
             </Group>
             <Group p="apart" m="xs" style={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <ActionIcon onClick={() => onEdit(broker.id)}>

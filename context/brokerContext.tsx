@@ -1,5 +1,5 @@
 "use client";
-import { BrokerContextValue } from '@/types/broker';
+import { BrokerContextValue, ComponentType } from '@/types/broker';
 import React, { ReactNode, useContext } from "react";
 
 export const BrokerContext = React.createContext<BrokerContextValue>({
@@ -8,7 +8,31 @@ export const BrokerContext = React.createContext<BrokerContextValue>({
 
 export const BrokerProvider = ({ children }: { children: ReactNode }) => {
     const brokerContextValue: BrokerContextValue = {
-        brokers: [],
+        brokers: [
+            {
+                id: "broker1",
+                name: "John Doe",
+                dataType: ["string", "string"],
+                components: [
+                    {
+                        type: ComponentType.Input,
+                    },
+                    {
+                        type: ComponentType.Textarea,
+                    },
+                ],
+            },
+            {
+                id: "broker2",
+                name: "Jane Smith",
+                dataType: ["number", "number"],
+                components: [
+                    {
+                        type: ComponentType.Slider,
+                    },
+                ],
+            },
+        ],
     };
     return (
         <BrokerContext.Provider value={brokerContextValue}>

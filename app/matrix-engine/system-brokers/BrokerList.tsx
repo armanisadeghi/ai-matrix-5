@@ -1,12 +1,7 @@
 import React from 'react';
 import BrokerListItem from './BrokerListItem';
 import { Group } from '@mantine/core';
-
-interface Broker {
-    id: string;
-    name?: string;
-    tags: string[];
-}
+import { Broker } from '@/types/broker';
 
 interface BrokerListProps {
     brokers: Broker[];

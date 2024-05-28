@@ -1,43 +1,52 @@
 export interface Broker {
     id: string;
     name?: string;
-    components: BrokerComponent[];
+    dataType: string[];
+    components: Component[];
 }
 
-export interface BrokerComponent {
-    id: string;
-    name: string;
+export interface Component {
+    type: ComponentType;
     label?: string;
     tooltip?: string;
-    placeholder?: string;
+    maxLength?: number;
+    placeholderText?: string;
     defaultValue?: string;
     displayOrder?: number;
     validation?: string;
     dependencies?: string[];
     required?: boolean;
+    options?: string[];
+    size?: string;
+    color?: string;
+    exampleInputs?: string[];
+    group?: string;
+    min?: number;
+    max?: number;
+    step?: number;
+    value?: number;
+    onChange?: ((value: string | number | boolean) => void) | ((value: string[] | number[]) => void);
 }
 
 export enum ComponentType {
     Input = 'input',
     Textarea = 'textarea',
+    Slider = 'slider',
+    YesNo = 'yes-no',
+    Checkbox = 'checkbox',
+    CheckboxGroup = 'checkbox-group',
+    Switch = 'switch',
+    SwitchGroup = 'switch-group',
     Select = 'select',
+    SelectWithOther = 'select-with-other',
+    AttachmentsImage = 'attachments-image',
+    AttachmentsVideo = 'attachments-video',
+    AttachmentsAudio = 'attachments-audio',
+    AttachmentsFile = 'attachments-file',
+    AttachmentsURL = 'attachments-url',
+    AttachmentsMore = 'attachments-more',
+    ImagePaste = 'image-paste',
 }
-
-export interface ComponentAttributes {
-    name?: string;
-    placeholderText?: string;
-    required?: boolean;
-    options?: string[];
-    defaultValue?: string;
-    validation?: string;
-    dependencies?: string[];
-    displayOrder?: number;
-    step?: number;
-    min?: number;
-    max?: number;
-    value?: number;
-}
-
 export interface BrokerContextValue {
     brokers: Broker[];
 }
