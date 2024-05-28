@@ -4,12 +4,13 @@ import Split from 'react-split';
 
 interface VerticalSplitterProps {
     children: ReactNode[];
+    initialSizes?: number[];
 }
 
-const VerticalSplitter: React.FC<VerticalSplitterProps> = ({ children }) => {
+const VerticalSplitter: React.FC<VerticalSplitterProps> = ({ children, initialSizes }) => {
     const sections = children.length;
-    const initialSizes = Array(sections).fill(100 / sections);
-    const [sizes, setSizes] = useState<number[]>(initialSizes);
+    const defaultSizes = Array(sections).fill(100 / sections);
+    const [sizes, setSizes] = useState<number[]>(initialSizes || defaultSizes);
     const gutters = useRef<HTMLDivElement[]>([]);
 
     const panelStyle: CSSProperties = {
@@ -39,7 +40,7 @@ const VerticalSplitter: React.FC<VerticalSplitterProps> = ({ children }) => {
                 gutter.style.cssText = `height: 100%; background-color: transparent; width: 30px; cursor: col-resize; position: relative;`;
 
                 const innerGutter = document.createElement('div');
-                innerGutter.style.cssText = `height: 100%; background-color: ${gutterStyle.backgroundColor}; width: 1px; position: absolute; left: 1px;`;
+                innerGutter.style.cssText = `height: 100%; background-color: ${gutterStyle.backgroundColor}; width: 1px; position: absolute; left: 2.5px;`;
                 gutter.appendChild(innerGutter);
                 gutters.current[index] = gutter;
 

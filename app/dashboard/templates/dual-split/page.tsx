@@ -1,6 +1,6 @@
 'use client'
 import React from 'react';
-import DualSplitter from '@/ui/split/DualSplitter';
+import DualSplitter from '@/ui/split/DynamicSplitter';
 
 const ComplexLayout = () => {
     return (

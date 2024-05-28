@@ -3,16 +3,17 @@ import Split from 'react-split';
 
 interface HorizontalSplitterProps {
     children: ReactNode[];
+    initialSizes?: number[];
 }
 
 export interface HorizontalSplitterRef {
     updateSizes: (sizes: number[]) => void;
 }
 
-const HorizontalSplitter = forwardRef<HorizontalSplitterRef, HorizontalSplitterProps>(({ children }, ref) => {
+const HorizontalSplitter = forwardRef<HorizontalSplitterRef, HorizontalSplitterProps>(({ children, initialSizes }, ref) => {
     const sections = children.length;
-    const initialSizes = Array(sections).fill(100 / sections);
-    const [sizes, setSizes] = useState<number[]>(initialSizes);
+    const defaultSizes = Array(sections).fill(100 / sections);
+    const [sizes, setSizes] = useState<number[]>(initialSizes || defaultSizes);
     const gutters = useRef<HTMLDivElement[]>([]);
 
     useImperativeHandle(ref, () => ({

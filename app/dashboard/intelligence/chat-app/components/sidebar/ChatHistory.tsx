@@ -3,7 +3,7 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { useHistory } from '../context/HistoryContext';
+import { useHistory } from '../../context/HistoryContext';
 
 const ChatHistory = () => {
     const { chatHistory } = useHistory();

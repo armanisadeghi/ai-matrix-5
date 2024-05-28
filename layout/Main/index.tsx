@@ -119,7 +119,7 @@ export function MainLayout(props: Props) {
                         <ActionIcon
                             size={tablet_match ? "lg" : 48}
                             color="blue"
-                            variant="filled"
+                            variant="transparent"
                             radius="50%"
                             onClick={() => setIsChatOpen(!isChatOpen)}
                             style={{ boxShadow: theme.shadows.xl }}

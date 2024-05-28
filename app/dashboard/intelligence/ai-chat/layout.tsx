@@ -1,11 +1,12 @@
 // ai-chat/layout.tsx
-import React, { useState } from 'react';
+'use client'
+import React from 'react';
 import { Container, Grid, Burger } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import Sidebar from './components/sidebar/Sidebar';
+import ChatSidebar from './components/sidebar/ChatSidebar';
 
 const ChatLayout = ({ children }: { children: React.ReactNode }) => {
-    const [opened, setOpened] = useState(false);
+    const [opened, setOpened] = React.useState(false);
     const isSmallScreen = useMediaQuery('(max-width: 600px)');
 
     return (
@@ -14,7 +15,7 @@ const ChatLayout = ({ children }: { children: React.ReactNode }) => {
                 {!isSmallScreen && (
                     <>
                         <Grid.Col span={2} style={{ flexGrow: 0, flexShrink: 0, maxWidth: '200px', padding: '0' }}>
-                            <Sidebar />
+                            <ChatSidebar />
                         </Grid.Col>
                         <Grid.Col span={1} style={{ flexGrow: 1, flexShrink: 1, flexBasis: '0%', padding: '0' }}></Grid.Col>
                     </>

@@ -1,7 +1,7 @@
-// app/chat/sidebar/Sidebar.tsx
+// chat-app/components/sidebar/Sidebar.tsx
 import React from 'react';
 import { Stack, ScrollArea, Divider, Container } from '@mantine/core';
-import ChatHistoryMenu from '@/app/chat/sidebar/ChatHistoryMenu';
+import ChatHistoryMenu from './ChatHistoryMenu';
 
 const Sidebar: React.FC = () => {
     return (

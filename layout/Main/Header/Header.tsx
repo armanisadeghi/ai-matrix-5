@@ -32,19 +32,19 @@ export function Header(props: Props) {
             </Group>
             <Group>
                 <Tooltip label="Search">
-                    <ActionIcon hiddenFrom="md" title="search">
+                    <ActionIcon hiddenFrom="md" title="search" variant="transparent">
                         <IconSearch size={18} />
                     </ActionIcon>
                 </Tooltip>
                 <ColorSchemeToggle />
                 <Tooltip label="Notifications">
-                    <ActionIcon title="notifications">
+                    <ActionIcon title="notifications" variant="transparent">
                         <IconBell size={18} />
                     </ActionIcon>
                 </Tooltip>
                 <Menu width={200} shadow="md">
                     <Menu.Target>
-                        <ActionIcon title="user menu">
+                        <ActionIcon title="user menu" variant="transparent">
                             <Avatar
                                 src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-5.png"
                                 radius="50%"

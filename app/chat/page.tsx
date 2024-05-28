@@ -1,8 +1,9 @@
+// app/chat/page.tsx
+
 "use client"
 
 import React from 'react'
-import Chat from '@/components/AiChat/Chat'
-import { ChatProvider } from '@/context/chatContext'
+import { ChatProvider } from './context/ChatContext';
 import ChatPage from "@/app/chat/chatpage";
 
 const page = () => {
