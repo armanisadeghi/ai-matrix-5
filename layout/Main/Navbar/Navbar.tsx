@@ -13,13 +13,9 @@ import {
   IconSettingsCog,
   IconTools,
 } from "@tabler/icons-react";
-import { LinksGroup, Logo } from "@/components";
-import { UserButton } from "@/components/UserButton";
-import { CollapseNavLinks } from "@/components";
+import { CollapseNavLinks, LinksGroup, Logo } from "@/components";
 import AmeSearchInput from "@/ui/input/AmeSearchInput";
 import { PATH_ADMIN, PATH_AGENCY } from "@/routes";
-
-import classes from "./Navbar.module.css";
 
 const navItems = [
   {
@@ -168,7 +164,7 @@ interface NavbarProps {
   isCollapsed?: boolean;
 }
 
-export function Navbar({ desktopOpened, tabletOpened, mobileOpened, isCollapsed }: NavbarProps) {
+export function Navbar({ isCollapsed }: NavbarProps) {
   const links = navItems.map((item) => {
     return isCollapsed ? (
       <CollapseNavLinks {...item} key={item.label} />
@@ -179,7 +175,7 @@ export function Navbar({ desktopOpened, tabletOpened, mobileOpened, isCollapsed 
 
   return (
     <>
-      <Box hiddenFrom="xs" className={classes.header}>
+      <Box hiddenFrom="xs">
         <Group justify="space-between">
           <Logo visibleFrom="md" />
         </Group>
@@ -191,7 +187,7 @@ export function Navbar({ desktopOpened, tabletOpened, mobileOpened, isCollapsed 
         </div>
       )}
 
-      <ScrollArea className={classes.links}>
+      <ScrollArea style={{ flex: 1 }}>
         {isCollapsed ? <Stack align="center">{links}</Stack> : <div>{links}</div>}
       </ScrollArea>
     </>

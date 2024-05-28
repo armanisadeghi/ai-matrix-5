@@ -18,8 +18,8 @@ export function Header(props: Props) {
     return (
         <Group h="100%" px="md" align="center" justify="space-between" style={{ flexWrap: "nowrap" }}>
             <Group>
-                <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-                <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="lg" size="sm" />
+                <Burger opened={opened} onClick={toggle} hiddenFrom="md" size="sm" />
+                <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="md" size="sm" />
                 <Logo />
             </Group>
             <Group style={{ flexGrow: 1, justifyContent: "center" }}>
