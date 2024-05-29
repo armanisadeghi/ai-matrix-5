@@ -1,5 +1,6 @@
-'use client';
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+"use client";
+import React, { createContext, useContext, useState, ReactNode } from "react";
+import { useMediaQuery } from "@mantine/hooks";
 
 interface LayoutContextType {
     opened: boolean;
@@ -19,11 +20,14 @@ const LayoutContext = createContext<LayoutContextType | undefined>(undefined);
 
 export const useLayout = () => {
     const context = useContext(LayoutContext);
-    if (!context) throw new Error('useLayout must be used within a LayoutProvider');
+    if (!context) throw new Error("useLayout must be used within a LayoutProvider");
     return context;
 };
 
-export const LayoutProvider: React.FC<{ children: ReactNode, initialNavbarState: "full" | "compact" | "icons" | "hidden" }> = ({ children, initialNavbarState }) => {
+export const LayoutProvider: React.FC<{
+    children: ReactNode;
+    initialNavbarState: "full" | "compact" | "icons" | "hidden";
+}> = ({ children, initialNavbarState }) => {
     const [opened, setOpened] = useState(false);
     const [asideOpen, setAsideOpen] = useState(false);
     const [navbarState, setNavbarState] = useState(initialNavbarState);
@@ -67,11 +71,21 @@ export const LayoutProvider: React.FC<{ children: ReactNode, initialNavbarState:
     };
 
     return (
-        <LayoutContext.Provider value={{
-            opened, toggleOpened, asideOpen, toggleAside, navbarState,
-            handleNavbarToggle, handleNavbarExpand, handleNavbarCollapse,
-            handleIconMouseover, handleEndIconMouseover, iconMouseOver
-        }}>
+        <LayoutContext.Provider
+            value={{
+                opened,
+                toggleOpened,
+                asideOpen,
+                toggleAside,
+                navbarState,
+                handleNavbarToggle,
+                handleNavbarExpand,
+                handleNavbarCollapse,
+                handleIconMouseover,
+                handleEndIconMouseover,
+                iconMouseOver,
+            }}
+        >
             {children}
         </LayoutContext.Provider>
     );

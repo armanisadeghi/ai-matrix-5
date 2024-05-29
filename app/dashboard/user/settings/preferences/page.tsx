@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, Flex, Grid, Paper, Radio, rem, TextInput, Title } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconDeviceDesktop, IconDeviceFloppy, IconMoon, IconSun } from "@tabler/icons-react";

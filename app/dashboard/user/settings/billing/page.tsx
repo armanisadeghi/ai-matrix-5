@@ -1,5 +1,7 @@
+"use client";
+
 import { useForm } from "@mantine/form";
-import { Button, Grid, NumberInput, Paper, rem, Textarea, TextInput, Title } from "@mantine/core";
+import { Button, Grid, NumberInput, Paper, rem, Tabs, Textarea, TextInput, Title } from "@mantine/core";
 import { IconDeviceFloppy } from "@tabler/icons-react";
 import AmeSelect from "@/ui/select/AmeSelect";
 

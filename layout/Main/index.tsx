@@ -1,8 +1,8 @@
-'use client';
+"use client";
 import { AppShell } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import { ReactNode } from 'react';
-import { useLayout } from '@/context/LayoutContext';
+import { ReactNode } from "react";
+import { useLayout } from "@/context/LayoutContext";
 import { Navbar } from "./Navbar";
 import { Header } from "./Header";
 import Sidebar from "./Sidebar/Sidebar";
@@ -13,19 +13,14 @@ type Props = {
     initialNavbarState?: "full" | "compact" | "icons" | "hidden";
 };
 
-export function MainLayout({
-    children,
-    initialNavbarState = "full"
-}: Props) {
-    const {
-        opened,
-        navbarState
-    } = useLayout();
+export function MainLayout({ children, initialNavbarState = "full" }: Props) {
+    const { opened, navbarState } = useLayout();
     const { asideOpen } = useSidebar();
-    const mobileMatch = useMediaQuery("(min-width: 768px)");
+    const tabletMatch = useMediaQuery("(min-width: 768px)");
+    const mobileMatch = useMediaQuery("(max-width: 768px)");
 
     const getNavbarWidth = () => {
-        if (!mobileMatch) return "100%";
+        if (!tabletMatch) return "100%";
         switch (navbarState) {
             case "full":
                 return 250;
@@ -51,41 +46,40 @@ export function MainLayout({
             header={{
                 height: {
                     base: 50,
-                }
+                },
             }}
             navbar={{
                 width: navbarWidth,
-                breakpoint: 'sm',
-                collapsed: { mobile: !opened }
+                breakpoint: "sm",
+                collapsed: { mobile: !opened },
             }}
             aside={{
                 width: {
                     base: 0,
-                    md: asideWidth
+                    md: asideWidth,
                 },
-                breakpoint: 'md',
+                breakpoint: "md",
                 collapsed: {
                     desktop: !asideOpen,
-                    mobile: true
-                }
+                    mobile: true,
+                },
             }}
             padding={{
-                base: 'xs',
-                sm: 'sm',
-                lg: 'md'
+                base: "xs",
+                sm: "sm",
+                lg: "md",
+                xl: "lg",
             }}
         >
             <AppShell.Header withBorder={true}>
-                <Header tabletMatch={mobileMatch} />
+                <Header tabletMatch={tabletMatch} />
             </AppShell.Header>
             {navbarState !== "hidden" && (
                 <AppShell.Navbar p="xs">
-                    <Navbar state={navbarState} />
+                    <Navbar state={mobileMatch ? "hidden" : navbarState} />
                 </AppShell.Navbar>
             )}
-            <AppShell.Main>
-                {children}
-            </AppShell.Main>
+            <AppShell.Main>{children}</AppShell.Main>
             <AppShell.Aside p="md">
                 <Sidebar asideWidth={asideWidth} />
             </AppShell.Aside>
