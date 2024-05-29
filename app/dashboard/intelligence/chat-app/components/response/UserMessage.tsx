@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Paper, Textarea, Button, ActionIcon } from '@mantine/core';
 import { IconEdit } from '@tabler/icons-react';
-import { useResponses } from './ResponseContext';
+import { useResponses } from '../../../../../../context/AiContext/ResponseContext';
 
 interface UserMessageProps {
     message: { id: string; content: string };
@@ -51,6 +51,7 @@ const UserMessage: React.FC<UserMessageProps> = ({ message }) => {
                 <>
                     <Textarea minRows={4} readOnly value={message.content} />
                     <ActionIcon
+                        variant="transparent"
                         style={{ position: 'absolute', top: 10, right: 10 }}
                         onClick={handleEdit}
                     >

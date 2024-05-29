@@ -1,8 +1,8 @@
 // chat-app/components/ChatInput.tsx
 'use client';
 import React, { useState, useContext } from 'react';
-import { ChatContext } from '../context/ChatContext';
-import { UserContext } from '../context/UserContext';
+import { ChatContext } from '@/context/AiContext/ChatContext';
+import { UserContext } from '@/context/AiContext/UserContext';
 import { emitEvent } from '../utils/socket';
 
 const ChatInput = () => {
@@ -43,7 +43,7 @@ const ChatInput = () => {
         // Send the message through the WebSocket
         emitEvent('socket_event', chatRequest, (response) => {
             console.log('Received response:', response);
-            // Handle response, update context or state as necessary
+            // Handle response, update AiContext or state as necessary
         });
 
         setInput('');

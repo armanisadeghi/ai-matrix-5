@@ -1,74 +1,94 @@
-"use client";
+'use client';
+import { AppShell } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
+import { ReactNode } from 'react';
+import { useLayout } from '@/context/LayoutContext';
+import { Navbar } from "./Navbar";
+import { Header } from "./Header";
+import Sidebar from "./Sidebar/Sidebar";
+import { useSidebar } from "@/context/SidebarContext";
 
-import { AppShell, Breadcrumbs, Text } from "@mantine/core";
-import { useDisclosure, useMediaQuery } from "@mantine/hooks";
-import { useState, useEffect, ReactNode } from "react";
-import { Navbar } from "@/layout/Main/Navbar";
-import { Header } from "@/layout/Main/Header";
-import Link from "next/link";
+type Props = {
+    children: ReactNode;
+    initialNavbarState?: "full" | "compact" | "icons" | "hidden";
+};
 
-// sample breadcrumbs to help with navigation
-const items = [
-    { title: "Home", href: "#" },
-    { title: "Nav #1", href: "#" },
-    { title: "Nav #2", href: "#" },
-].map((item, index) => (
-    <Text component={Link} href={item.href} size="xs" key={index}>
-        {item.title}
-    </Text>
-));
+export function MainLayout({
+                               children,
+                               initialNavbarState = "full"
+                           }: Props) {
+    const {
+        opened,
+        navbarState
+    } = useLayout();
+    const { asideOpen } = useSidebar();
+    const mobileMatch = useMediaQuery("(min-width: 768px)");
 
-type Props = { children: ReactNode; forceBaseNavbar?: boolean };
-
-export function MainLayout(props: Props) {
-    const { children, forceBaseNavbar } = props;
-    const [opened, { toggle }] = useDisclosure();
-    const desktop_match = useMediaQuery("(min-width: 992px)");
-    const tablet_match = useMediaQuery("(max-width: 992px)");
-    const mobile_match = useMediaQuery("(min-width: 768px)");
-
-    const [isCollapsed, setIsCollapsed] = useState(false);
-
-    useEffect(() => {
-        if (forceBaseNavbar) {
-            setIsCollapsed(true);
-        } else {
-            setIsCollapsed(!desktop_match && !tablet_match);
+    const getNavbarWidth = () => {
+        if (!mobileMatch) return "100%";
+        switch (navbarState) {
+            case "full":
+                return 250;
+            case "compact":
+                return 200;
+            case "icons":
+                return 70;
+            default:
+                return 0;
         }
-    }, [forceBaseNavbar, desktop_match, tablet_match]);
+    };
+
+    const getAsideWidth = () => {
+        return asideOpen ? 250 : 25;
+    };
+
+    const navbarWidth = getNavbarWidth();
+    const asideWidth = getAsideWidth();
 
     return (
         <AppShell
-            header={{ height: { base: 50, md: 60, lg: 70 } }}
-            navbar={{
-                width: { base: 60, md: 200, lg: 250 },
-                breakpoint: "sm",
-                collapsed: { mobile: !opened },
+            layout="default"
+            header={{
+                height: {
+                    base: 50,
+                }
             }}
-            padding="sm"
+            navbar={{
+                width: navbarWidth,
+                breakpoint: 'sm',
+                collapsed: {mobile: !opened}
+            }}
+            aside={{
+                width: {
+                    base: 0,
+                    md: asideWidth
+                },
+                breakpoint: 'md',
+                collapsed: {
+                    desktop: !asideOpen,
+                    mobile: true
+                }
+            }}
+            padding={{
+                base: 'xs',
+                sm: 'sm',
+                lg: 'md'
+            }}
         >
-            <AppShell.Header>
-                <Header opened={opened} toggle={toggle} />
+            <AppShell.Header withBorder={true}>
+                <Header tabletMatch={mobileMatch}/>
             </AppShell.Header>
-            <AppShell.Navbar
-                px="xs"
-                pt="md"
-                style={{
-                    width: isCollapsed ? '60px' : undefined,
-                    transition: 'width 0.3s',
-                }}
-            >
-                <Navbar
-                    desktopOpened={desktop_match && !forceBaseNavbar}
-                    tabletOpened={tablet_match && !forceBaseNavbar}
-                    mobileOpened={mobile_match && !forceBaseNavbar}
-                    isCollapsed={isCollapsed}
-                />
-            </AppShell.Navbar>
+            {navbarState !== "hidden" && (
+                <AppShell.Navbar p="xs">
+                    <Navbar state={navbarState}/>
+                </AppShell.Navbar>
+            )}
             <AppShell.Main>
-                <Breadcrumbs mb="sm">{items}</Breadcrumbs>
                 {children}
             </AppShell.Main>
+            <AppShell.Aside p="md">
+                <Sidebar asideWidth={asideWidth} />
+            </AppShell.Aside>
         </AppShell>
     );
 }

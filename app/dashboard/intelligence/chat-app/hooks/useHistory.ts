@@ -1,7 +1,7 @@
 // chat-app/hooks/useHistory.ts
 
 import { useContext } from 'react';
-import { HistoryContext } from '../context/HistoryContext';
+import { HistoryContext } from '@/context/AiContext/HistoryContext';
 
 export const useHistory = () => {
     const context = useContext(HistoryContext);

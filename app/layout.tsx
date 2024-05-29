@@ -1,5 +1,3 @@
-// app/layout.tsx
-
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from "@mantine/notifications";
@@ -21,11 +19,11 @@ export const metadata = {
         "Bridging the gap between AI capabilities and real-world business.",
 };
 
-// If loading.tsx a variable font, you don't need to specify the font weight
 const inter = Inter({
     subsets: ["latin"],
     display: "swap",
 });
+
 
 export default function RootLayout({
                                        children,
@@ -37,7 +35,7 @@ export default function RootLayout({
         <head>
             <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
             <title>AI Matrix</title>
-            <ColorSchemeScript defaultColorScheme="auto" />
+            <ColorSchemeScript defaultColorScheme="dark" />
         </head>
         <body>
         <Auth0ProviderWithRouter>

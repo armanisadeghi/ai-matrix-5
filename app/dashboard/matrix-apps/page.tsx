@@ -1,12 +1,12 @@
 // matrix-apps/page.tsx
 
-'use client';
+"use client";
 
-import React from 'react';
+import React from "react";
 
 const MatrixAppsPage = () => {
-    console.log('MatrixAppsPage is rendering');
-    return <div>Matrix Apps Home Page</div>;
+  console.log("MatrixAppsPage is rendering");
+  return <div>Matrix Apps Home Page</div>;
 };
 
 export default MatrixAppsPage;

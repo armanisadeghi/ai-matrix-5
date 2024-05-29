@@ -51,6 +51,7 @@ const UserMessage: React.FC<UserMessageProps> = ({ message }) => {
                 <>
                     <Textarea minRows={4} readOnly value={message.content} />
                     <ActionIcon
+                        variant="transparent"
                         style={{ position: 'absolute', top: 10, right: 10 }}
                         onClick={handleEdit}
                     >

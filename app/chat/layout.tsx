@@ -2,7 +2,7 @@
 
 "use client";
 import React, { ReactNode } from 'react';
-import { AppsLayout } from '@/layout';
+import { MainLayout } from '@/layout';
 import { ChatProvider } from '@/context/chatContext';
 import { ResponseProvider } from './response/ResponseContext';
 
@@ -12,12 +12,12 @@ type Props = {
 
 export default function ChatLayout({ children }: Props) {
     return (
-        <AppsLayout>
+        <MainLayout>
             <ChatProvider>
                 <ResponseProvider>
                     {children}
                 </ResponseProvider>
             </ChatProvider>
-        </AppsLayout>
+        </MainLayout>
     );
 }

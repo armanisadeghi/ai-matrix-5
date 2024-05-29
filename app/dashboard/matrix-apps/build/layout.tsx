@@ -1,5 +1,6 @@
+'use client'
 import React, { ReactNode } from 'react';
-import { Text, Space } from '@mantine/core';
+import { Space } from '@mantine/core';
 
 interface LayoutProps {
     children: ReactNode;
