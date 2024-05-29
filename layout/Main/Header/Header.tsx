@@ -2,17 +2,15 @@ import { ActionIcon, Avatar, Burger, Group, Menu, TextInput, Tooltip } from "@ma
 import { IconBell, IconSearch, IconSettings2 } from "@tabler/icons-react";
 import { ColorSchemeToggle, Logo } from "@/components";
 import Link from "next/link";
-import { PATH_ACCOUNT } from "@/routes";
-import { useLayout } from "../../../context/LayoutContext";
+import { PATH_USER } from "@/routes";
+import { useLayout } from "@/context/LayoutContext";
 
 type Props = {
     tabletMatch?: boolean;
 };
 
 export function Header({ tabletMatch }: Props) {
-    const {
-        toggleOpened, opened, toggleAside, asideOpen,
-    } = useLayout();
+    const { toggleOpened, opened, toggleAside, asideOpen } = useLayout();
 
     return (
         <Group h="100%" px="md" align="center" justify="space-between" style={{ flexWrap: "nowrap" }}>
@@ -54,11 +52,7 @@ export function Header({ tabletMatch }: Props) {
                     </Menu.Target>
 
                     <Menu.Dropdown>
-                        <Menu.Item
-                            component={Link}
-                            href={PATH_ACCOUNT.settings}
-                            leftSection={<IconSettings2 size={16} />}
-                        >
+                        <Menu.Item component={Link} href={PATH_USER.settings} leftSection={<IconSettings2 size={16} />}>
                             Settings
                         </Menu.Item>
                     </Menu.Dropdown>

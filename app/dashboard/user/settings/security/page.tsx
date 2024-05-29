@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, Divider, Flex, Grid, Paper, Select, Stack, Text, TextInput, Title } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useState } from "react";
