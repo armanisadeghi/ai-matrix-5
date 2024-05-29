@@ -1,6 +1,6 @@
 import React from 'react';
 import BrokerListItem from './BrokerListItem';
-import { Group } from '@mantine/core';
+import { Group, Stack } from '@mantine/core';
 import { Broker } from '@/types/broker';
 
 interface BrokerListProps {
@@ -10,12 +10,13 @@ interface BrokerListProps {
 }
 
 const BrokerList = ({ brokers, onDelete, onEdit }: BrokerListProps) => {
+
     return (
-        <Group style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+        <Stack>
             {brokers.map((broker) => (
                 <BrokerListItem key={broker.id} broker={broker} onDelete={onDelete} onEdit={onEdit} />
             ))}
-        </Group>
+        </Stack>
     );
 };
 

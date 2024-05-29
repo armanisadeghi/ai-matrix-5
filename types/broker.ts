@@ -6,9 +6,10 @@ export interface Broker {
 }
 
 export interface Component {
-    type: ComponentType;
+    type: string;
     label?: string;
     tooltip?: string;
+    description?: string;
     maxLength?: number;
     placeholderText?: string;
     defaultValue?: string;
@@ -38,6 +39,7 @@ export enum ComponentType {
     Switch = 'switch',
     SwitchGroup = 'switch-group',
     Select = 'select',
+    Json = 'json',
     SelectWithOther = 'select-with-other',
     AttachmentsImage = 'attachments-image',
     AttachmentsVideo = 'attachments-video',
@@ -49,6 +51,7 @@ export enum ComponentType {
 }
 export interface BrokerContextValue {
     brokers: Broker[];
+    setBrokers: React.Dispatch<React.SetStateAction<Broker[]>>;
 }
 
 export type BrokerData = Record<string, string | number | string[] | undefined>;
