@@ -59,6 +59,7 @@
     "embla-carousel-react": "latest",
     "highlight.js": "^11.9.0",
     "install": "^0.13.0",
+    "jotai": "^2.8.2",
     "lowlight": "^3.1.0",
     "mantine-datatable": "^7.9.1",
     "mongodb": "^6.6.2",

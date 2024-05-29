@@ -1,6 +1,4 @@
-// app/chat/sidebar/AmeChatHistoryEntry.tsx
-
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { ActionIcon, Paper } from '@mantine/core';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import AmeMenu from './AmeMenu';
@@ -10,12 +8,31 @@ import AmeActionTextInput from '../../ui/input/AmeActionTextInput';
 interface AmeHoverMenuChatProps {
     initialValue: string;
     editable?: boolean;
+    keyProp: string;
+    context?: React.Context<any>;
+    onPeak?: () => void;
+    onShare?: () => void;
+    onRename?: () => void;
+    onDownload?: () => void;
+    onUseInPlayground?: () => void;
+    onUseForApps?: () => void;
+    onDelete?: () => void;
 }
 
-const AmeHoverMenuChat: React.FC<AmeHoverMenuChatProps> = ({
-                                                               initialValue,
-                                                               editable = true,
-                                                           }) => {
+const AmeHoverMenuChat: React.FC<AmeHoverMenuChatProps> = (
+    {
+        initialValue,
+        editable = true,
+        keyProp,
+        context,
+        onPeak,
+        onShare,
+        onRename,
+        onDownload,
+        onUseInPlayground,
+        onUseForApps,
+        onDelete
+    }) => {
     const {
         getDefaultBackgroundColor,
         getHoverBackgroundColor,
@@ -26,8 +43,25 @@ const AmeHoverMenuChat: React.FC<AmeHoverMenuChatProps> = ({
     const hoverBackgroundColor = getHoverBackgroundColor();
     const textColor = getModerateTextColor();
 
+    const showConversationDetails = (chatId: string) => {
+        console.log(`${chatId} - Conversation details`);
+        if (onPeak) {
+            onPeak();
+        }
+    };
+
     return (
-        <AmeMenu>
+        <AmeMenu
+            key={keyProp}
+            onPeak={() => showConversationDetails(keyProp)}
+            context={context}
+            onShare={onShare}
+            onRename={onRename}
+            onDownload={onDownload}
+            onUseInPlayground={onUseInPlayground}
+            onUseForApps={onUseForApps}
+            onDelete={onDelete}
+        >
             <AmeMenu.Target>
                 <Paper
                     style={{
@@ -44,9 +78,9 @@ const AmeHoverMenuChat: React.FC<AmeHoverMenuChatProps> = ({
                     onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = hoverBackgroundColor)}
                     onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = backgroundColor)}
                 >
-                    <AmeActionTextInput initialValue={initialValue} editable={editable} />
-                    <ActionIcon variant="transparent" size="sm" style={{ cursor: 'pointer' }}>
-                        <BsThreeDotsVertical />
+                    <AmeActionTextInput initialValue={initialValue} editable={editable}/>
+                    <ActionIcon variant="transparent" size="sm" style={{cursor: 'pointer'}}>
+                        <BsThreeDotsVertical/>
                     </ActionIcon>
                 </Paper>
             </AmeMenu.Target>
