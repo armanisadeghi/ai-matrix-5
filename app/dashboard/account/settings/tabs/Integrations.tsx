@@ -1,6 +1,6 @@
 import { Button, Divider, Flex, Image, Paper, PaperProps, SimpleGrid, Stack, Switch, Text, Title } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
-import products from "../../../data/product_connections.json";
+import products from "../../../../data/product_connections.json";
 
 interface ProductCardProps extends PaperProps {
     id: string;

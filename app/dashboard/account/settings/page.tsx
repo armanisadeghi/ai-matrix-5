@@ -2,12 +2,12 @@
 
 import { Box, rem, Tabs, Title } from "@mantine/core";
 import { IconAffiliate, IconBellCog, IconMoodCog, IconSettings, IconUserCircle } from "@tabler/icons-react";
-import PersonalInformation from "@/app/account/settings/tabs/PersonalInformation";
-import Preferences from "@/app/account/settings/tabs/Preferences";
-import Integrations from "@/app/account/settings/tabs/Integrations";
-import Billing from "@/app/account/settings/tabs/Billing";
-import Security from "@/app/account/settings/tabs/Security";
-import Notifications from "@/app/account/settings/tabs/Notifications";
+import PersonalInformation from "@/app/dashboard/account/settings/tabs/PersonalInformation";
+import Preferences from "@/app/dashboard/account/settings/tabs/Preferences";
+import Integrations from "@/app/dashboard/account/settings/tabs/Integrations";
+import Billing from "@/app/dashboard/account/settings/tabs/Billing";
+import Notifications from "@/app/dashboard/account/settings/tabs/Notifications";
+import Security from "@/app/dashboard/account/settings/tabs/Security";
 
 const iconStyle = { width: rem(14), height: rem(14) };
 
