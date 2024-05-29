@@ -1,105 +1,149 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import { corsMiddleware } from "@/middleware/corsMiddleware";
-import clientPromise from "@/lib/connectMongo";
+// app/api/chat-history/route.ts
 
-async function insertChatData(collection: any, req: NextApiRequest, res: NextApiResponse): Promise<void> {
-    const { userId } = req.query;
-    const { historyData } = req.body;
+import { NextRequest, NextResponse } from 'next/server';
+import loadChatHistory from '@/app/data/fake-data/fake-chat-history/fake-chat-history';
+import { MongoClient } from 'mongodb';
+import handleCorsMiddleware from '@/middleware/corsMiddleware';
+import clientPromise from '@/lib/connectMongo';
+import { getChatData, insertChatData, updateChatData, removeChatData } from './operations';
 
+
+export async function GET(req: NextRequest) {
+    const { searchParams } = new URL(req.url);
+    const userId = searchParams.get('userId');
+
+    const authToken = req.headers.get('authorization'); // Placeholder for token extraction
+
+    // Run the CORS middleware
     try {
-        const newData = {
-            user_id: userId,
-            history: historyData
-        };
-        const insertResult = await collection.insertOne(newData);
-        if (insertResult.insertedId) {
-            res.status(200).json({
-                ...newData,
-                _id: insertResult.insertedId
-            });
-        }
+        await handleCorsMiddleware(req);
     } catch (error) {
-        res.status(500).json({ error });
+        console.error('CORS error:', error);
+        return NextResponse.json({ error: 'CORS error' }, { status: 500 });
     }
-}
 
-async function getChatData(collection: any, req: NextApiRequest, res: NextApiResponse): Promise<void> {
-    const { userId } = req.query;
+    if (!userId) {
+        console.error('User ID is required');
+        return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
+    }
+
+    // Authentication and authorization logic can be added here
+    // For example, validate authToken...
+
+    const knownUserIds = ['armaniuid', 'natalieuid'];
+    let client: MongoClient | null = null;
 
     try {
-        const result = await collection.findOne({ user_id: userId });
-        if (result) {
-            res.status(200).json(result);
+        if (knownUserIds.includes(userId)) {
+            const chatHistories = await loadChatHistory();
+            const userHistory = chatHistories.find(history => history.userId === userId);
+            if (userHistory) {
+                return NextResponse.json(userHistory);
+            } else {
+                return NextResponse.json({ error: 'User not found' }, { status: 404 });
+            }
         } else {
-            res.status(404).json({ error: 'Chat data not found' });
+            client = await clientPromise;
+            const db = client.db("chat_ai");
+            const collection = db.collection("chat");
+
+            return getChatData(collection, req);
         }
     } catch (error) {
-        res.status(500).json({ error });
+        console.error('Error loading chat history:', error);
+        return NextResponse.json({ error: 'Failed to load chat history' }, { status: 500 });
     }
 }
-async function updateChatData(collection: any, req: NextApiRequest, res: NextApiResponse): Promise<void> {
-    const { userId } = req.query;
-    const { historyData } = req.body;
 
-    if (!historyData) {
-        res.status(400).json({ error: 'Missing history data' });
-        return;
+export async function PUT(req: NextRequest) {
+    const { searchParams } = new URL(req.url);
+    const userId = searchParams.get('userId');
+
+    // Run the CORS middleware
+    try {
+        await handleCorsMiddleware(req);
+    } catch (error) {
+        console.error('CORS error:', error);
+        return NextResponse.json({ error: 'CORS error' }, { status: 500 });
     }
+
+    if (!userId) {
+        console.error('User ID is required');
+        return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
+    }
+
+    let client: MongoClient | null = null;
 
     try {
-        const filter = { user_id: userId };
-        const updateDocument = { $set: { history: historyData } };
+        client = await clientPromise;
+        const db = client.db("chat_ai");
+        const collection = db.collection("chat");
 
-        const result = await collection.updateOne(filter, updateDocument);
-
-        if (result.matchedCount > 0) {
-            res.status(200).json({ result: 'Chat data updated successfully' });
-        } else {
-            res.status(404).json({ error: 'Chat data not found' });
-        }
+        return updateChatData(collection, req);
     } catch (error) {
-        res.status(500).json({ error });
+        console.error('Error update chat history:', error);
+        return NextResponse.json({ error: 'Failed to update chat history' }, { status: 500 });
     }
 }
 
-async function removeChatData(collection: any, req: NextApiRequest, res: NextApiResponse): Promise<void> {
-    const { userId } = req.query;
+export async function POST(req: NextRequest) {
+    const { searchParams } = new URL(req.url);
+    const userId = searchParams.get('userId');
+
+    // Run the CORS middleware
+    try {
+        await handleCorsMiddleware(req);
+    } catch (error) {
+        console.error('CORS error:', error);
+        return NextResponse.json({ error: 'CORS error' }, { status: 500 });
+    }
+
+    if (!userId) {
+        console.error('User ID is required');
+        return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
+    }
+
+    let client: MongoClient | null = null;
 
     try {
-        const result = await collection.deleteOne({ user_id: userId });
+        client = await clientPromise;
+        const db = client.db("chat_ai");
+        const collection = db.collection("chat");
 
-        if (result.deletedCount > 0) {
-            res.status(200).json({ result: 'Chat data removed successfully' });
-        } else {
-            res.status(404).json({ error: 'Chat data not found' });
-        }
+        return insertChatData(collection, req);
     } catch (error) {
-        res.status(500).json({ error });
+        console.error('Error insert chat history:', error);
+        return NextResponse.json({ error: 'Failed to insert chat history' }, { status: 500 });
     }
 }
 
-async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
-    const client = await clientPromise;
-    const collection = client.db('chat_ai').collection('chat');
+export async function DELETE(req: NextRequest) {
+    const { searchParams } = new URL(req.url);
+    const userId = searchParams.get('userId');
 
-    switch (req.method) {
-        case 'GET':
-            await getChatData(collection, req, res);
-            break;
-        case 'POST':
-            await insertChatData(collection, req, res);
-            break;
-        case 'PUT':
-            await updateChatData(collection, req, res);
-            break;
-        case 'DELETE':
-            await removeChatData(collection, req, res);
-            break;
-        default:
-            res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE']);
-            res.status(405).end(`Method ${req.method} Not Allowed`);
-            break;
+    // Run the CORS middleware
+    try {
+        await handleCorsMiddleware(req);
+    } catch (error) {
+        console.error('CORS error:', error);
+        return NextResponse.json({ error: 'CORS error' }, { status: 500 });
+    }
+
+    if (!userId) {
+        console.error('User ID is required');
+        return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
+    }
+
+    let client: MongoClient | null = null;
+
+    try {
+        client = await clientPromise;
+        const db = client.db("chat_ai");
+        const collection = db.collection("chat");
+
+        return removeChatData(collection, req);
+    } catch (error) {
+        console.error('Error remove chat history:', error);
+        return NextResponse.json({ error: 'Failed to remove chat history' }, { status: 500 });
     }
 }
-
-export default corsMiddleware(handler);
