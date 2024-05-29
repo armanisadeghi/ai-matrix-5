@@ -6,12 +6,11 @@ import React from 'react';
 import ChatInput from './components/ChatInput';
 import ChatSettings from './components/settings/ChatSettings';
 import ChatResponse from './components/ChatResponse';
-import ChatHistory from './components/sidebar/ChatHistory';
+import ChatHistory from '../ai-chatbot/components/sidebar/ChatHistory';
 import AiResponseForm from './components/dynamic-inputs/ChatForm';
-import { useAiResponse } from './context/AiResponseContext';
-import { ChatLayout } from './chat-layout';
+import { useAiResponse, AiResponseProvider } from '@/context/AiContext/AiResponseContext';
 
-const PageContent: React.FC = () => {
+const Page: React.FC = () => {
     const { respondData, setRespondData } = useAiResponse();
 
     const handleFormAnswers = (answers: any) => {
@@ -33,16 +32,11 @@ const PageContent: React.FC = () => {
                     setFormAnswers={handleFormAnswers}
                 />
             )}
+            <div>Your content here</div>
         </div>
     );
 };
 
-const Page: React.FC = () => {
-    return (
-        <ChatLayout>
-            <PageContent />
-        </ChatLayout>
-    );
-};
-
 export default Page;
+
+

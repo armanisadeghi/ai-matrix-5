@@ -3,8 +3,8 @@
 
 import React from 'react';
 
-const IntelligenceAppPage = () => {
+const Page = () => {
     return <div>Intelligence App Home Page</div>;
 };
 
-export default IntelligenceAppPage;
+export default Page;

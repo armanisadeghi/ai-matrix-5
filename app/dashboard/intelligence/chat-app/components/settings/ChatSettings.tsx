@@ -3,7 +3,7 @@
 
 import React, { useContext } from 'react';
 import settingsComponents from './SettingsRegistry';
-import { SettingsContext } from '../../context/SettingsContext';
+import { SettingsContext } from '@/context/AiContext/SettingsContext';
 import type { ChatSettings } from '@/types/settings';
 
 const ChatSettings = () => {

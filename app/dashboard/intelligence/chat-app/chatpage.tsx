@@ -2,9 +2,9 @@
 
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
-import { Container, Grid, Burger, Space, Textarea } from '@mantine/core';
+import { Container, Grid, Burger, Textarea, TextInput } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import Sidebar from './components/sidebar/Sidebar';
+// import Sidebar from './components/sidebar/Sidebar';
 import ResponseArea from './components/response/ResponseArea';
 
 function ChatPage() {
@@ -46,7 +46,7 @@ function ChatPage() {
                 {!isSmallScreen && (
                     <>
                         <Grid.Col span={2} style={{ flexGrow: 0, flexShrink: 0, maxWidth: '200px', padding: '0' }}>
-                            <Sidebar />
+                            <TextInput placeholder={' Used to say: <Sidebar />'}/>
                         </Grid.Col>
 
                         <Grid.Col span={1} style={{ flexGrow: 1, flexShrink: 1, flexBasis: '0%', padding: '0' }}></Grid.Col>

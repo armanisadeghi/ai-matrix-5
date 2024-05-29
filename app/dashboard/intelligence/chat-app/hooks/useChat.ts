@@ -1,7 +1,7 @@
 // chat-app/hooks/useChat.ts
 
 import { useContext } from 'react';
-import { ChatContext } from '../context/ChatContext';
+import { ChatContext } from '@/context/AiContext/ChatContext';
 
 export const useChat = () => {
     const context = useContext(ChatContext);

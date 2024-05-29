@@ -2,7 +2,7 @@
 
 import React from 'react';
 import ResponseArea from './ResponseArea';
-import { ResponseProvider } from './ResponseContext';
+import { ResponseProvider } from '../../../../../../context/AiContext/ResponseContext';
 
 const ParentComponent: React.FC = () => {
     return (
