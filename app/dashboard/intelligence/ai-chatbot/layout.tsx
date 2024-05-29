@@ -1,6 +1,5 @@
-// ai-chatbot/layout.tsx
 'use client'
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { Container, Grid, Burger } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { GlobalChatProvider } from '@/context/AiContext/GlobalChatContext';
@@ -9,31 +8,20 @@ import { UserProvider } from '@/context/AiContext/UserContext';
 import { FormProvider } from '@/context/AiContext/FormContext';
 import { RequestMetadataProvider } from '@/context/AiContext/RequestMetadataContext';
 import { SettingsProvider } from '@/context/AiContext/SettingsContext';
-import { HistoryProvider } from '@/context/AiContext/HistoryContext';
-import { AiResponseProvider } from '@/context/AiContext/AiResponseContext';  // Need to eliminate one
-import { ResponseProvider } from '@/context/AiContext/ResponseContext';  // Need to eliminate one
+import { HistoryProvider, HistoryContext } from '@/context/AiContext/HistoryContext';
+import { AiResponseProvider } from '@/context/AiContext/AiResponseContext';
+import { ResponseProvider } from '@/context/AiContext/ResponseContext';
 import ChatSidebar from './components/sidebar/ChatSidebar';
 import { useSidebar } from '@/context/SidebarContext';
 import { LayoutProvider } from '@/context/LayoutContext';
 import { SidebarProvider } from '@/context/SidebarContext';
 
-
-
-const ChatLayout = ({children}: { children: React.ReactNode }) => {
-    const {setSidebarContent} = useSidebar();
+const ChatLayout = ({ children }: { children: React.ReactNode }) => {
     const [opened, setOpened] = React.useState(false);
     const isSmallScreen = useMediaQuery('(max-width: 600px)');
 
-    useEffect(() => {
-        setSidebarContent(<ChatSidebar/>);
-        return () => {
-            setSidebarContent(null);
-        };
-    }, [setSidebarContent]);
-
     return (
         <UserProvider>
-            <SidebarProvider>
                 <LayoutProvider initialNavbarState="icons">
                     <ChatProvider>
                         <HistoryProvider>
@@ -51,9 +39,7 @@ const ChatLayout = ({children}: { children: React.ReactNode }) => {
                                                                 </>
                                                             )}
                                                             <Grid.Col span={8} style={{ display: 'flex', flexDirection: 'column', height: '100vh', maxWidth: '800px', padding: '0', margin: '0 auto' }}>
-
                                                                 {children}
-
                                                             </Grid.Col>
                                                             {!isSmallScreen && (
                                                                 <Grid.Col span={1} style={{ flexGrow: 1, flexShrink: 1, flexBasis: '0%', padding: '0' }}></Grid.Col>
@@ -74,7 +60,6 @@ const ChatLayout = ({children}: { children: React.ReactNode }) => {
                         </HistoryProvider>
                     </ChatProvider>
                 </LayoutProvider>
-            </SidebarProvider>
         </UserProvider>
     );
 };

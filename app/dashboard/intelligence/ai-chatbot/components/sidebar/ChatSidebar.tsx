@@ -1,37 +1,17 @@
-import React, { useEffect } from 'react';
-import { Space, Stack, Text, Loader } from '@mantine/core';
-import { useHistory } from '@/context/AiContext/HistoryContext';
+import React from 'react';
+import { ChatHistoryChat } from '@/types/chat';
+import AmeChatHistoryEntry from '@/components/AiChat/AmeChatHistoryEntry';
+import { Space, Stack, Text, Container, LoadingOverlay } from '@mantine/core';
 
-const ChatSidebar: React.FC = () => {
-    console.log('DEBUG: components/sidebar/ChatSidebar.tsx');
-    const { chatHistory, setActiveChat, isLoading } = useHistory();
+interface ChatSidebarProps {
+    chatHistory: Record<string, ChatHistoryChat[]>;
+    isLoading: boolean;
+}
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            console.log('Checking for updates...');
-            console.log('Current chatHistory:', chatHistory);
-            console.log('Current isLoading:', isLoading);
-        }, 1000);
-
-        return () => clearInterval(interval); // Cleanup on unmount
-    }, [chatHistory, isLoading]);
-
-    useEffect(() => {
-        console.log('ChatSidebar re-rendered with chatHistory:', chatHistory);
-        console.log('Is loading:', isLoading);
-    }, [chatHistory, isLoading]);
-
-    const handleChatClick = (chatId: string) => {
-        console.log(`Chat ${chatId} clicked`);
-        setActiveChat(chatId);
-    };
-
+const ChatSidebar: React.FC<ChatSidebarProps> = ({ chatHistory, isLoading }) => {
     if (isLoading) {
-        return <div><Loader /> Checking for updates...</div>;
-    }
-
-    if (Object.keys(chatHistory).length === 0 && !isLoading) {
-        return <div>No chat history available. Waiting for updates...</div>;
+        console.log('Loading overlay is visible');
+        return <LoadingOverlay visible />;
     }
 
     return (
@@ -45,19 +25,27 @@ const ChatSidebar: React.FC = () => {
                 justify="flex-start"
                 gap="xs"
             >
-                {Object.keys(chatHistory).map(chatId => (
-                    <div key={chatId} onClick={() => handleChatClick(chatId)}>
-                        <div className="chat-history">
-                            <h3>Chat History for {chatId}</h3>
-                            {chatHistory[chatId].map((entry, index) => (
-                                <div key={index} className="chat-message">
-                                    <p><strong>Role:</strong> {entry.role}</p>
-                                    <p><strong>Message:</strong> {entry.content}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                ))}
+                {Object.keys(chatHistory).map((chatId) => {
+                    const chatEntries = chatHistory[chatId];
+
+                    if (chatEntries && chatEntries.length > 0) {
+                        const firstEntry = chatEntries[0];
+                        const truncatedContent = firstEntry.content.length > 100
+                            ? firstEntry.content.substring(0, 100) + '...'
+                            : firstEntry.content;
+
+                        return (
+                            <AmeChatHistoryEntry
+                                key={chatId}
+                                keyProp={chatId}
+                                initialValue={truncatedContent}
+                            />
+                        );
+                    } else {
+                        console.log('No chat history found for chat ID:', chatId);
+                        return null;
+                    }
+                })}
             </Stack>
         </>
     );
