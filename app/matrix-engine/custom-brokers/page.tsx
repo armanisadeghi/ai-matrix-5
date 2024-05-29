@@ -28,6 +28,13 @@ const Brokers: React.FC = () => {
         setTypeSelected(true);
     };
 
+    const handleNewBroker = () => {
+        setShowSelect(true);
+        setTypeSelected(false);
+        setSelectedOption('');
+        setBrokerComponents([]);
+    };
+
     const componentOptions = Object.keys(ComponentType).map((key) => ({
         value: key,
         label: key,
@@ -36,7 +43,7 @@ const Brokers: React.FC = () => {
     return (
         <Container>
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <Button onClick={() => setShowSelect(!showSelect)} variant="outline" leftSection={<IconPlus />}>
+                <Button onClick={() => handleNewBroker()} variant="outline" leftSection={<IconPlus />}>
                     Add New Broker
                 </Button>
             </div>

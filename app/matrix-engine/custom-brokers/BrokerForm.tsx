@@ -1,7 +1,7 @@
 "use client";
 
 import { Broker, Component } from '@/types/broker';
-import { Button, Center, Container, Group, Paper, SimpleGrid, Space, Title } from '@mantine/core';
+import { Button, Container, SimpleGrid, Space } from '@mantine/core';
 import BrokerComponent from './BrokerComponent';
 import { useBroker } from '@/context/brokerContext';
 
@@ -11,7 +11,7 @@ export const BrokerForm = ({ components }: { components: Component[] }) => {
 
     const handleSave = () => {
         const newBroker: Broker = {
-            id: '1',
+            id: Date.now().toString(),
             name: 'New Broker',
             dataType: ['string'],
             components: components
