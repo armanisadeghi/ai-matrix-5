@@ -1,19 +1,28 @@
 'use client';
-import { AppShell, Group } from "@mantine/core";
-import { ReactNode } from "react";
+import { ActionIcon, AppShell, Button } from "@mantine/core";
+import { useState, ReactNode } from "react";
 import { useMediaQuery } from "@mantine/hooks";
-import { useLayout } from './LayoutContext';
+import { useLayout } from '../../context/LayoutContext';
 import { Navbar } from "./Navbar";
 import { Header } from "./Header";
+import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 
 type Props = {
     children: ReactNode;
     initialNavbarState?: "full" | "compact" | "icons" | "hidden";
 };
 
-export function DualLayout({ children, initialNavbarState = "full" }: Props) {
-    const { opened, toggleOpened, navbarState } = useLayout();
+export function DualLayout({
+                               children,
+                               initialNavbarState = "full"
+                           }: Props) {
+    const {
+        opened,
+        toggleOpened,
+        navbarState
+    } = useLayout();
     const mobileMatch = useMediaQuery("(min-width: 768px)");
+    const [asideOpen, setAsideOpen] = useState(true);
 
     const getNavbarWidth = () => {
         if (!mobileMatch) return "100%";
@@ -30,31 +39,72 @@ export function DualLayout({ children, initialNavbarState = "full" }: Props) {
     };
 
     const navbarWidth = getNavbarWidth();
+    const asideWidth = asideOpen ? 250 : 25;
+
+    const toggleAside = () => {
+        setAsideOpen(prev => !prev);
+    };
 
     return (
-        <AppShell
-            layout="default"
-            header={{ height: { base: 36, sm: 40, lg: 44 } }}
-            navbar={{
-                width: navbarWidth,
-                breakpoint: 'sm',
-                collapsed: { mobile: !opened }
-            }}
-            aside={{ width: { base: 0, md: 200 }, breakpoint: 'md', collapsed: { desktop: false, mobile: true } }}
-            padding={{ base: 'xs', sm: 'sm', lg: 'md' }}
-        >
-            <AppShell.Header withBorder={true}>
-                <Header tabletMatch={mobileMatch} />
-            </AppShell.Header>
-            {navbarState !== "hidden" && (
-                <AppShell.Navbar p="xs">
-                    <Navbar state={navbarState} />
-                </AppShell.Navbar>
-            )}
-            <AppShell.Main>
-                {children}
-            </AppShell.Main>
-            <AppShell.Aside p="md">Right Sidebar</AppShell.Aside>
-        </AppShell>
+        <>
+            <AppShell
+                layout="default"
+                header={{
+                    height: {
+                        base: 50,
+                    }
+                }}
+                navbar={{
+                    width: navbarWidth,
+                    breakpoint: 'sm',
+                    collapsed: { mobile: !opened }
+                }}
+                aside={{
+                    width: {
+                        base: 0,
+                        md: asideWidth
+                    },
+                    breakpoint: 'md',
+                    collapsed: {
+                        desktop: !asideOpen,
+                        mobile: true
+                    }
+                }}
+                padding={{
+                    base: 'xs',
+                    sm: 'sm',
+                    lg: 'md'
+                }}
+            >
+                <AppShell.Header withBorder={true}>
+                    <Header tabletMatch={mobileMatch} />
+                </AppShell.Header>
+                {navbarState !== "hidden" && (
+                    <AppShell.Navbar p="xs">
+                        <Navbar state={navbarState} />
+                    </AppShell.Navbar>
+                )}
+                <AppShell.Main>
+                    {children}
+                </AppShell.Main>
+                <AppShell.Aside p="md">
+                    {asideOpen && (
+                        <>
+                            <div>Right Sidebar Content</div>
+                            <ActionIcon onClick={toggleAside} style={{ position: 'absolute', top: '50%', right: asideWidth - 27 }}>
+                                <IconChevronRight size={12} />
+                            </ActionIcon>
+                        </>
+                    )}
+                    {!asideOpen && (
+                        <ActionIcon
+                            onClick={toggleAside}
+                            style={{ position: 'absolute', top: '50%', right: asideWidth }}>
+                            <IconChevronLeft size={12} />
+                        </ActionIcon>
+                    )}
+                </AppShell.Aside>
+            </AppShell>
+        </>
     );
 }

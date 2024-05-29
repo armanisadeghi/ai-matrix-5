@@ -3,7 +3,7 @@ import { IconBell, IconSearch, IconSettings2 } from "@tabler/icons-react";
 import { ColorSchemeToggle, Logo } from "@/components";
 import Link from "next/link";
 import { PATH_ACCOUNT } from "@/routes";
-import { useLayout } from "../LayoutContext";
+import { useLayout } from "../../../context/LayoutContext";
 
 type Props = {
     tabletMatch?: boolean;

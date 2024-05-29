@@ -1,10 +1,10 @@
 // chatbot/page.tsx
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
-import { Textarea, Burger } from '@mantine/core';
+import { Burger } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import ResponseArea from './components/response/ResponseArea';
-import { ChatLayout } from './chat-layout';
+import UserMessageArea from './components/input/UserMessageArea';
 
 const ChatPage = () => {
     const [bottomPadding, setBottomPadding] = useState(0);
@@ -37,24 +37,23 @@ const ChatPage = () => {
     }, [textareaContainerRef.current]);
 
     return (
-        <ChatLayout>
+
+
+        <>
             <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
                 <div style={{ flexGrow: 1, overflow: 'auto' }}>
                     <ResponseArea bottomPadding={bottomPadding} />
                 </div>
-                <div ref={textareaContainerRef} style={{ position: 'sticky', bottom: 0, width: '100%', backgroundColor: 'var(--mantine-color-body)' }}>
-                    <div style={{ height: '2px' }}></div>
-                    <Textarea placeholder="Type your message..." style={{ width: '100%' }} />
-                    <div style={{ height: '10px' }}></div>
-                </div>
+                <UserMessageArea ref={textareaContainerRef} />
             </div>
-
             {isSmallScreen && (
                 <div style={{ position: 'fixed', top: '10px', left: '10px', zIndex: 1000 }}>
                     <Burger opened={opened} onClick={() => setOpened((o) => !o)} />
                 </div>
             )}
-        </ChatLayout>
+        </>
+
+
     );
 };
 

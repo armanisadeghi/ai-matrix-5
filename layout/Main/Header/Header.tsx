@@ -1,33 +1,34 @@
-import { ActionIcon, Avatar, Burger, BurgerProps, Group, Menu, rem, TextInput, Tooltip } from "@mantine/core";
+import { ActionIcon, Avatar, Burger, Group, Menu, TextInput, Tooltip } from "@mantine/core";
 import { IconBell, IconSearch, IconSettings2 } from "@tabler/icons-react";
 import { ColorSchemeToggle, Logo } from "@/components";
 import Link from "next/link";
 import { PATH_ACCOUNT } from "@/routes";
+import { useLayout } from "../../../context/LayoutContext";
 
 type Props = {
-    opened: BurgerProps["opened"];
-    toggle: () => void;
-    desktopOpened?: boolean; // toggle control on large screens
-    toggleDesktop: () => void;
     tabletMatch?: boolean;
 };
 
-export function Header(props: Props) {
-    const { toggle, opened, toggleDesktop, desktopOpened, tabletMatch } = props;
+export function Header({ tabletMatch }: Props) {
+    const {
+        toggleOpened, opened, toggleAside, asideOpen,
+    } = useLayout();
 
     return (
         <Group h="100%" px="md" align="center" justify="space-between" style={{ flexWrap: "nowrap" }}>
             <Group>
-                <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-                <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="lg" size="sm" />
+                <Burger opened={opened} onClick={toggleOpened} hiddenFrom="sm" size="sm" />
+                <Burger opened={asideOpen} onClick={toggleAside} visibleFrom="lg" size="sm" />
                 <Logo />
             </Group>
             <Group style={{ flexGrow: 1, justifyContent: "center" }}>
                 <TextInput
+                    size="xs"
+                    radius="md"
+                    placeholder="Search anything..."
                     leftSection={<IconSearch size={14} />}
-                    placeholder="Search information, messages and resources"
                     style={{ flex: "1 1 auto", minWidth: "60px", maxWidth: tabletMatch ? "350px" : "500px" }}
-                    visibleFrom="md"
+                    visibleFrom="sm"
                 />
             </Group>
             <Group>
@@ -56,7 +57,7 @@ export function Header(props: Props) {
                         <Menu.Item
                             component={Link}
                             href={PATH_ACCOUNT.settings}
-                            leftSection={<IconSettings2 style={{ width: rem(16), height: rem(16) }} />}
+                            leftSection={<IconSettings2 size={16} />}
                         >
                             Settings
                         </Menu.Item>

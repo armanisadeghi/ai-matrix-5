@@ -1,8 +1,7 @@
 // app/dashboard/layout-small-nav.tsx
-import { LayoutProvider } from '@/layout/Dual/LayoutContext';
-
+import { LayoutProvider } from '@/context/LayoutContext';
+import { MainLayout } from '@/layout';
 import { ReactNode } from 'react';
-import { DualLayout } from '@/layout';
 
 type Props = {
     children: ReactNode;
@@ -11,9 +10,9 @@ type Props = {
 function DualSideLayout({children}: Props) {
     return (
         <LayoutProvider initialNavbarState="compact">
-            <DualLayout>
+            <MainLayout>
                 {children}
-            </DualLayout>
+            </MainLayout>
         </LayoutProvider>
 
     );

@@ -15,9 +15,9 @@ function Layout({children}: Props) {
     return (
         <LayoutProvider initialNavbarState="icons">
             <SidebarProvider>
-                <MainLayout>
-                    {children}
-                </MainLayout>
+            <MainLayout>
+                {children}
+            </MainLayout>
             </SidebarProvider>
         </LayoutProvider>
 

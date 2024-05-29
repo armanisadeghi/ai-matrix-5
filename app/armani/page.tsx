@@ -1,11 +1,7 @@
-'use client';
-import ArmaniLayout from "./layout";
 
 const Page = () => {
     return (
-        <ArmaniLayout>
-            <div>Your content here</div>
-        </ArmaniLayout>
+            <div>Your content here Content here here here here Your content here Content here here here here Your content here Content here here here here Your content here Content here here here here</div>
     );
 };
 

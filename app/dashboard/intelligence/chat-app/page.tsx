@@ -8,10 +8,9 @@ import ChatSettings from './components/settings/ChatSettings';
 import ChatResponse from './components/ChatResponse';
 import ChatHistory from './components/sidebar/ChatHistory';
 import AiResponseForm from './components/dynamic-inputs/ChatForm';
-import { useAiResponse } from './context/AiResponseContext';
-import { DualLayout } from '@/layout';
+import { useAiResponse, AiResponseProvider } from './context/AiResponseContext';
 
-const PageContent: React.FC = () => {
+const Page: React.FC = () => {
     const { respondData, setRespondData } = useAiResponse();
 
     const handleFormAnswers = (answers: any) => {
@@ -33,18 +32,11 @@ const PageContent: React.FC = () => {
                     setFormAnswers={handleFormAnswers}
                 />
             )}
-            <DualLayout>
-                <div>Your content here</div>
-            </DualLayout>
-
+            <div>Your content here</div>
         </div>
     );
 };
 
-const Page: React.FC = () => {
-    return (
-        <PageContent />
-    );
-};
-
 export default Page;
+
+

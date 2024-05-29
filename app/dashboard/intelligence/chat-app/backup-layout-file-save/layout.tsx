@@ -1,3 +1,4 @@
+/*
 'use client'
 import React, { useState, ReactNode } from 'react';
 import { AppShell, ActionIcon } from '@mantine/core';
@@ -62,3 +63,4 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 };
 
 export default Layout;
+*/
