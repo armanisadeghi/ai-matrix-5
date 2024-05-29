@@ -92,9 +92,15 @@ export interface ChatProviderProps {
     children: ReactNode;
 }
 
+
+
+// Chat History --------------------------------------------------------------
 export interface HistoryContextProps {
-    chatHistory: ChatHistoryChat[];
-    updateChatHistory: (newHistory: ChatHistoryChat[]) => void;
+    chatHistory: { [index: string]: ChatHistoryChat[] };
+    updateChatHistory: (newHistory: ChatHistoryChat[], chatId: string) => void;
+    activeChat: string | null;
+    setActiveChat: (chatId: string | null) => void;
+    isLoading: boolean;
 }
 
 export interface HistoryProviderProps {
@@ -103,8 +109,13 @@ export interface HistoryProviderProps {
 
 export interface ChatHistoryChat {
     role: string;
-    message: string;
+    content: string; // Ensure this matches the actual data structure
 }
+
+// End Chat History --------------------------------------------------------------
+
+
+
 
 export interface ChatMessage {
     chatId: string | null;

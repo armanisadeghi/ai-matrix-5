@@ -2,15 +2,15 @@
 import React, { useState, ReactNode } from 'react';
 import { AppShell, ActionIcon } from '@mantine/core';
 import { GoSidebarCollapse } from 'react-icons/go';
-import { ChatProvider } from './context/ChatContext';
-import { UserProvider } from './context/UserContext';
-import { FormProvider } from './context/FormContext';
-import { GlobalChatProvider } from './context/GlobalChatContext';
-import { RequestMetadataProvider } from './context/RequestMetadataContext';
-import { SettingsProvider } from './context/SettingsContext';
-import { HistoryProvider } from './context/HistoryContext';
-import { AiResponseProvider } from './context/AiResponseContext';
-import { ResponseProvider } from './components/response/ResponseContext'; // Duplicate to address later
+import { ChatProvider } from '@/context/AiContext/ChatContext';
+import { UserProvider } from '@/context/AiContext/UserContext';
+import { FormProvider } from '@/context/AiContext/FormContext';
+import { GlobalChatProvider } from '@/context/AiContext/GlobalChatContext';
+import { RequestMetadataProvider } from '@/context/AiContext/RequestMetadataContext';
+import { SettingsProvider } from '@/context/AiContext/SettingsContext';
+import { HistoryProvider } from '@/context/AiContext/HistoryContext';
+import { AiResponseProvider } from '@/context/AiContext/AiResponseContext';
+import { ResponseProvider } from '../../../../context/AiContext/ResponseContext'; // Duplicate to address later
 import ChatPage from './chatpage';
 
 interface LayoutProps {

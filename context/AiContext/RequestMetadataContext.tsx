@@ -1,4 +1,4 @@
-// chat-app/context/RequestMetadataContext.tsx
+// chat-app/AiContext/RequestMetadataContext.tsx
 'use client';
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { RequestMetadata, RequestMetadataContextProps, RequestMetadataProviderProps } from '@/types/chat';

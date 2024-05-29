@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { ScrollArea } from '@mantine/core';
-import { useResponses } from './ResponseContext';
+import { useResponses } from '../../../../../../context/AiContext/ResponseContext';
 import UserMessage from './UserMessage';
 import AIResponse from './AIResponse';
 

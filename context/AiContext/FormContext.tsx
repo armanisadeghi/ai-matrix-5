@@ -30,5 +30,5 @@ export const FormProvider: React.FC<FormProviderProps> = ({ children }) => {
     );
 };
 
-// Hook to use form data context in components
+// Hook to use form data AiContext in components
 export const useForm = () => useContext(FormContext);

@@ -5,7 +5,7 @@ import { ActionIcon, Paper } from '@mantine/core';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import AmeMenu from './AmeMenu';
 import useColorUtils from '@/utils/colorUtils';
-import AmeActionTextInput from '../../../../../../ui/input/AmeActionTextInput';
+import AmeActionTextInput from '../../ui/input/AmeActionTextInput';
 
 interface AmeHoverMenuChatProps {
     initialValue: string;

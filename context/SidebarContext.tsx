@@ -1,4 +1,4 @@
-// context/SidebarContext.tsx
+// AiContext/SidebarContext.tsx
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface SidebarContextProps {

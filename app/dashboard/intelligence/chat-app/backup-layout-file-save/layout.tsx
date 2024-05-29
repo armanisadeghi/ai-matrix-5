@@ -3,14 +3,14 @@
 import React, { useState, ReactNode } from 'react';
 import { AppShell, ActionIcon } from '@mantine/core';
 import { GoSidebarCollapse } from 'react-icons/go';
-import { ChatProvider } from './context/ChatContext';
-import { UserProvider } from './context/UserContext';
-import { FormProvider } from './context/FormContext';
-import { GlobalChatProvider } from './context/GlobalChatContext';
-import { RequestMetadataProvider } from './context/RequestMetadataContext';
-import { SettingsProvider } from './context/SettingsContext';
-import { HistoryProvider } from './context/HistoryContext';
-import { AiResponseProvider } from './context/AiResponseContext';
+import { ChatProvider } from './AiContext/ChatContext';
+import { UserProvider } from './AiContext/UserContext';
+import { FormProvider } from './AiContext/FormContext';
+import { GlobalChatProvider } from './AiContext/GlobalChatContext';
+import { RequestMetadataProvider } from './AiContext/RequestMetadataContext';
+import { SettingsProvider } from './AiContext/SettingsContext';
+import { HistoryProvider } from './AiContext/HistoryContext';
+import { AiResponseProvider } from './AiContext/AiResponseContext';
 import { ResponseProvider } from './components/response/ResponseContext'; // Duplicate to address later
 import ChatPage from './chatpage';
 

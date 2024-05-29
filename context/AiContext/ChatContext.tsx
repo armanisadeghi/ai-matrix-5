@@ -1,9 +1,9 @@
-// chat-app/context/ChatContext.tsx
+// chat-app/AiContext/ChatContext.tsx
 'use client';
 
 import React, { createContext, useContext, useState } from 'react';
 import { ChatRequest, ChatContextProps, ChatProviderProps } from '@/types/chat';
-import { defaultChatRequest } from '../utils/defaults';
+import { defaultChatRequest } from '../../app/dashboard/intelligence/chat-app/utils/defaults';
 
 export const ChatContext = createContext<ChatContextProps>({
     chatData: defaultChatRequest,

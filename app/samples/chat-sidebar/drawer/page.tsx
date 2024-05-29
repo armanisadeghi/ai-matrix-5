@@ -3,8 +3,8 @@ import React from 'react';
 import { useState } from 'react';
 import { Button, Stack } from '@mantine/core';
 import AmeDrawer from './AmeDrawer';
-import AmeChatHistoryEntry from "@/app/dashboard/intelligence/ai-chatbot/components/sidebar/AmeChatHistoryEntry";
-import AmeMenu from "@/app/dashboard/intelligence/ai-chatbot/components/sidebar/AmeMenu";
+import AmeChatHistoryEntry from "@/components/AiChat/AmeChatHistoryEntry";
+import AmeMenu from "@/components/AiChat/AmeMenu";
 import { BsThreeDotsVertical } from "react-icons/bs";
 
 const Page: React.FC = () => {

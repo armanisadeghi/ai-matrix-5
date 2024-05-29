@@ -1,4 +1,4 @@
-// chat-app/context/GlobalChatContext.tsx
+// chat-app/AiContext/GlobalChatContext.tsx
 'use client';
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { GlobalChatData, GlobalChatContextProps, GlobalChatProviderProps } from '@/types/chat';

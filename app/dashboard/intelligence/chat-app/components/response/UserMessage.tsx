@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Paper, Textarea, Button, ActionIcon } from '@mantine/core';
 import { IconEdit } from '@tabler/icons-react';
-import { useResponses } from './ResponseContext';
+import { useResponses } from '../../../../../../context/AiContext/ResponseContext';
 
 interface UserMessageProps {
     message: { id: string; content: string };

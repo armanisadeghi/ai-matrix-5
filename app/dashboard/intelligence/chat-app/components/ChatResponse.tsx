@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { useAiResponse } from '../context/AiResponseContext';
+import { useAiResponse } from '@/context/AiContext/AiResponseContext';
 import { handleDynamicElements } from '../utils/dynamicSocketHandler';
 
 const ChatResponse: React.FC = () => {

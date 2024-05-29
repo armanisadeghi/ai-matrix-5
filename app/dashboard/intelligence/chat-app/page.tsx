@@ -6,9 +6,9 @@ import React from 'react';
 import ChatInput from './components/ChatInput';
 import ChatSettings from './components/settings/ChatSettings';
 import ChatResponse from './components/ChatResponse';
-import ChatHistory from './components/sidebar/ChatHistory';
+import ChatHistory from '../ai-chatbot/components/sidebar/ChatHistory';
 import AiResponseForm from './components/dynamic-inputs/ChatForm';
-import { useAiResponse, AiResponseProvider } from './context/AiResponseContext';
+import { useAiResponse, AiResponseProvider } from '@/context/AiContext/AiResponseContext';
 
 const Page: React.FC = () => {
     const { respondData, setRespondData } = useAiResponse();
