@@ -12,7 +12,7 @@ export const BrokerForm = ({ components }: { components: Component[] }) => {
     const handleSave = () => {
         const newBroker: Broker = {
             id: Date.now().toString(),
-            name: 'New Broker',
+            name: `${components.map(c => c.type).join('-')}-${Date.now()}`,
             dataType: ['string'],
             components: components
         }
@@ -25,9 +25,9 @@ export const BrokerForm = ({ components }: { components: Component[] }) => {
                 }
                 return broker;
             });
-            setBrokers(updatedBrokers);
+            setBrokers([newBroker, ...updatedBrokers.filter(b => b.id !== newBroker.id)]);
         } else {
-            const updatedBrokers = [...brokers, newBroker];
+            const updatedBrokers = [newBroker, ...brokers];
             setBrokers(updatedBrokers);
         }
     };

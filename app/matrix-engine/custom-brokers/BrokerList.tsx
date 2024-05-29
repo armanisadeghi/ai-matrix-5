@@ -1,6 +1,6 @@
 import React from 'react';
 import BrokerListItem from './BrokerListItem';
-import { Group, Stack } from '@mantine/core';
+import { Stack } from '@mantine/core';
 import { Broker } from '@/types/broker';
 
 interface BrokerListProps {

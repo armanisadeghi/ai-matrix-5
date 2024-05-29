@@ -10,14 +10,14 @@ import { BrokerEdit } from "./BrokerEdit";
 import { BrokerForm } from "./BrokerForm";
 
 const Brokers: React.FC = () => {
-    const { brokers } = useContext(BrokerContext);
+    const { brokers, setBrokers } = useContext(BrokerContext);
     const [showSelect, setShowSelect] = useState(false);
     const [selectedOption, setSelectedOption] = useState<string>('');
     const [isTypeSelected, setTypeSelected] = useState<boolean>(false);
     const [brokerComponents, setBrokerComponents] = useState<Component[]>([]);
 
     const handleDelete = (id: string) => {
-        brokers.filter((broker) => broker.id !== id)
+        setBrokers(prevBrokers => prevBrokers.filter((broker) => broker.id !== id));
     };
 
     const handleEdit = (id: string) => {
