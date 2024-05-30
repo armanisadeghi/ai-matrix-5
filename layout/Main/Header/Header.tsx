@@ -4,7 +4,6 @@ import { ColorSchemeToggle, Logo } from "@/components";
 import Link from "next/link";
 import { PATH_USER } from "@/routes";
 import { useLayout } from "@/context/LayoutContext";
-import { useSidebar } from "@/context/SidebarContext";
 
 type Props = {
     tabletMatch?: boolean;
@@ -12,13 +11,11 @@ type Props = {
 
 export function Header({ tabletMatch }: Props) {
     const { toggleOpened, opened } = useLayout();
-    const { asideOpen, toggleAside, sidebarContent } = useSidebar();
 
     return (
         <Group h="100%" px="md" align="center" justify="space-between" style={{ flexWrap: "nowrap" }}>
             <Group>
                 <Burger opened={opened} onClick={toggleOpened} hiddenFrom="sm" size="sm" />
-                <Burger opened={asideOpen} onClick={toggleAside} visibleFrom="lg" size="sm" />
                 <Logo />
             </Group>
             <Group style={{ flexGrow: 1, justifyContent: "center" }}>

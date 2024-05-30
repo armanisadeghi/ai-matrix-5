@@ -1,47 +1,52 @@
-// layout/Main/Sidebar/Sidebar.tsx
-'use client';
+"use client";
+import { ActionIcon, ActionIconProps, AppShell, Box, Group, Stack, Title } from "@mantine/core";
+import { IconArrowBarRight, IconArrowBarToLeft, IconArrowBarToRight } from "@tabler/icons-react";
+import { useSidebar } from "@/context/SidebarContext";
 
-import { ActionIcon } from "@mantine/core";
-import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
-import { useSidebar } from '@/context/SidebarContext';
-
-type SidebarProps = {
-    asideWidth: number;
+const actionProps: ActionIconProps = {
+    variant: "light",
 };
 
-const Sidebar = ({ asideWidth }: SidebarProps) => {
-    const { asideOpen, toggleAside, sidebarContent } = useSidebar();
-    const adjustedWidth = asideOpen ? asideWidth : 25;
+interface SidebarProps {
+    state: "full" | "compact" | "icons" | "hidden";
+}
+
+export const Sidebar = ({ state }: SidebarProps) => {
+    const { handleExpand, handleCollapse } = useSidebar();
 
     return (
-        <aside>
-            {asideOpen && (
-                <>
-                    {sidebarContent}
-                    <ActionIcon onClick={toggleAside} style={{
-                        position: 'absolute',
-                        top: '50%',
-                        right: adjustedWidth - 27,
-                        transform: 'translateY(-50%)'
-                    }}>
-                        <IconChevronRight size={12}/>
-                    </ActionIcon>
-                </>
-            )}
-            {!asideOpen && (
-                <ActionIcon
-                    onClick={toggleAside}
-                    style={{
-                        position: 'absolute',
-                        top: '50%',
-                        right: adjustedWidth,
-                        transform: 'translateY(-50%)'
-                    }}>
-                    <IconChevronLeft size={12}/>
-                </ActionIcon>
-            )}
-        </aside>
+        <Box p="xs">
+            <AppShell.Section>
+                {state === "compact" && (
+                    <Group justify="flex-end" gap="xs">
+                        <ActionIcon onClick={handleExpand} {...actionProps}>
+                            <IconArrowBarToLeft size={18} />
+                        </ActionIcon>
+                        <ActionIcon onClick={handleCollapse} {...actionProps}>
+                            <IconArrowBarToRight size={18} />
+                        </ActionIcon>
+                    </Group>
+                )}
+
+                {state === "full" && (
+                    <Group justify="flex-end" gap="xs">
+                        <ActionIcon onClick={handleCollapse} {...actionProps}>
+                            <IconArrowBarRight size={18} />
+                        </ActionIcon>
+                    </Group>
+                )}
+                {state === "icons" && (
+                    <Group justify="center" gap="xs">
+                        <ActionIcon onClick={handleCollapse} {...actionProps}>
+                            <IconArrowBarRight size={18} />
+                        </ActionIcon>
+                    </Group>
+                )}
+
+                <Stack mt="md" gap="xs" align="stretch">
+                    <Title>Aside</Title>
+                </Stack>
+            </AppShell.Section>
+        </Box>
     );
 };
-
-export default Sidebar;
