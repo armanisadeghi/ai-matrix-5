@@ -6,17 +6,18 @@ import BrokerComponent from './BrokerComponent';
 import { useBroker } from '@/context/brokerContext';
 
 
-export const BrokerForm = ({ components }: { components: Component[] }) => {
+export const BrokerForm = ({ components, id }: { components: Component[], id: string }) => {
     const { setBrokers, brokers } = useBroker()
 
     const handleSave = () => {
+        const brokerExists = brokers.some((broker: Broker) => broker.id === id);
+
         const newBroker: Broker = {
             id: Date.now().toString(),
             name: `${components.map(c => c.type).join('-')}-${Date.now()}`,
             dataType: ['string'],
             components: components
         }
-        const brokerExists = brokers.some((broker: Broker) => broker.id === newBroker.id);
 
         if (brokerExists) {
             const updatedBrokers = brokers.map((broker: Broker) => {

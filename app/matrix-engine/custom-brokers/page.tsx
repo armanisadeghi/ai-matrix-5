@@ -61,7 +61,7 @@ const Brokers: React.FC = () => {
                         <Title order={3}>Broker</Title>
                     </Center>
                     <Paper withBorder radius="xs" p="xl">
-                        <BrokerForm components={brokerComponents} />
+                        <BrokerForm components={brokerComponents} id="" />
                     </Paper>
                     <Space h="md" />
                 </>}

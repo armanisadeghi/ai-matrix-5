@@ -21,27 +21,29 @@ export interface Component {
     description?: string;
     maxLength?: number;
     placeholderText?: string;
-    defaultValue?: string;
+    defaultValue?: string | number | boolean | string[] | number[];
     displayOrder?: number;
     validation?: string;
     dependencies?: string[];
     required?: boolean;
-    options?: string[];
-    size?: string;
+    options?: string[]
+    groupOptions: { value: string; label: string }[];
+    size?: "xs" | "sm" | "md" | "lg" | "xl";
     color?: string;
     exampleInputs?: string[];
     group?: string;
     min?: number;
     max?: number;
     step?: number;
-    value?: number;
+    value?: number | string | boolean | string[] | number[];
     onChange?: ((value: string | number | boolean) => void) | ((value: string[] | number[]) => void);
     tableData?: TableData;
     src?: any;
     alt?: string;
     radius?: "xs" | "sm" | "md" | "lg" | "xl" | "full";
-    h?: number;
-    w?: number;
+    h?: number | "auto";
+    w?: number | "auto";
+    fit?: "fill" | "contain" | "cover" | "none" | "scale-down";
 }
 
 export enum ComponentType {

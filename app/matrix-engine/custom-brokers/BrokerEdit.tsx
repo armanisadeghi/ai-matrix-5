@@ -28,7 +28,8 @@ export const BrokerEdit = ({ type, setBrokerComponents }: BrokerFormProps) => {
         validation: "",
         dependencies: [],
         required: false,
-        options: [],
+        options: ["Option 1", "Option 2", "Option 3"],
+        groupOptions: [{ value: "Group 1", label: "Group 1" }, { value: "Group 2", label: "Group 2" }],
         size: "md",
         color: "default",
         exampleInputs: [],
@@ -86,10 +87,9 @@ export const BrokerEdit = ({ type, setBrokerComponents }: BrokerFormProps) => {
                     <Space h="sm" />
                     <TextInput label="Options" placeholder="Option 1, Option 2, Option 3" description="Separate options with commas" onChange={(e) => setCurrentBroker({ ...currentBroker, options: (e.target.value).split(",") })} />
                     <Space h="sm" />
-
                     <Switch label="Required" onChange={(e) => setCurrentBroker({ ...currentBroker, required: e.target.checked })} />
                     <Space h="sm" />
-                    <BrokerSizeSlider label={"Size"} onChange={(e) => setCurrentBroker({ ...currentBroker, size: e.toString() })} />
+                    <BrokerSizeSlider label={"Size"} onChange={(e) => setCurrentBroker({ ...currentBroker, size: e as any })} />
                     <FileInput
                         label="Upload an image"
                         description="Upload an image"

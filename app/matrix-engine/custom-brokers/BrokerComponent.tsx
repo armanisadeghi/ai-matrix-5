@@ -9,21 +9,8 @@ interface BrokerComponentProps {
     type?: string;
 }
 
-interface ColorOption {
-    value: string;
-    label: string;
-    color: string;
-}
-
 const BrokerComponent: React.FC<BrokerComponentProps> = ({ component }) => {
     const { type, label, tooltip, maxLength, placeholderText, defaultValue, displayOrder, validation, dependencies, required, options, size, color, exampleInputs, group, min, max, step, value, onChange, description, src, alt, radius, h, w } = component;
-
-    const customColorOptions: ColorOption[] = [
-        { value: 'yellow', label: 'Yellow', color: '#FFFF00' },
-        { value: 'purple', label: 'Purple', color: '#800080' },
-    ];
-
-    console.log(src)
 
     if (type) {
         switch (type) {
@@ -38,7 +25,7 @@ const BrokerComponent: React.FC<BrokerComponentProps> = ({ component }) => {
             case "Textarea":
                 return <Textarea label={label} placeholder={placeholderText} required={required} size={size} color={color} />;
             case "Slider":
-                return <Slider label={label} min={min} max={max} step={step} value={value} size={size} color={color} />;
+                return <Slider label={label} min={min} max={max} step={step} value={value as number} size={size} color={color} />;
             case "YesNo":
                 return <Radio.Group
                     name={label}
@@ -52,17 +39,22 @@ const BrokerComponent: React.FC<BrokerComponentProps> = ({ component }) => {
                     </Group>
                 </Radio.Group>
             case "Checkbox":
-                return <Checkbox label={label} value={value} required={required} size={size} color={color} />;
+                return <Checkbox label={label} value={value as string} required={required} size={size} color={color} />;
             case "CheckboxGroup":
-                return <BrokerCheckBoxGroup
+                return <>{options && <BrokerCheckBoxGroup
                     defaultValue={['red', 'blue']}
-                    label="Select your favorite colors"
-                    options={customColorOptions}
-                />
+                    label={label}
+                    options={options.map(option => ({ value: option, label: option }))}
+                    required={required}
+                />}</>
             case "Switch":
-                return <Switch label={label} value={value} required={required} size={size} color={color} />;
-            case "Switchgroup":
-                return <SwitchGroup label={label} required={required} size={size} color={color} children={undefined} />;
+                return <Switch label={label} value={value as string} required={required} size={size} color={color} />;
+            case "SwitchGroup":
+                return <SwitchGroup label={label} required={required} size={size} color={color} >
+                    <Switch value="red" label="Red" mt={"md"} />
+                    <Switch value="blue" label="Blue" mt={"md"} />
+                    <Switch value="yellow" label="Yellow" mt={"md"} />
+                </SwitchGroup>;
             case "Select":
                 return <Select label={label} data={options} required={required} size={size} color={color} />;
             case "Json":
