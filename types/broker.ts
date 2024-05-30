@@ -37,7 +37,7 @@ export interface Component {
     value?: number;
     onChange?: ((value: string | number | boolean) => void) | ((value: string[] | number[]) => void);
     tableData?: TableData;
-    src?: string;
+    src?: any;
     alt?: string;
     radius?: "xs" | "sm" | "md" | "lg" | "xl" | "full";
     h?: number;

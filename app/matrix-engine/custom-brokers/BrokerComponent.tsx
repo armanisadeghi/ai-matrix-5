@@ -23,6 +23,8 @@ const BrokerComponent: React.FC<BrokerComponentProps> = ({ component }) => {
         { value: 'purple', label: 'Purple', color: '#800080' },
     ];
 
+    console.log(src)
+
     if (type) {
         switch (type) {
             case "Input":
@@ -97,8 +99,8 @@ const BrokerComponent: React.FC<BrokerComponentProps> = ({ component }) => {
                 return <div>URL</div>
             case "AttachmentsMore":
                 return <div>More</div>
-            case "ImagePaste":
-                return <BrokerImage src={src ?? ""} alt={alt} w={0} h={0} radius={radius} />
+            case "Image":
+                return <BrokerImage src={src} alt={alt} h={200} w="auto" fit="contain" radius={radius} />
             default:
                 return null;
         }

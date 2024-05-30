@@ -58,19 +58,20 @@ export const BrokerEdit = ({ type, setBrokerComponents }: BrokerFormProps) => {
         if (uploadedImage) {
             const url = URL.createObjectURL(uploadedImage);
             setImageSrc(url);
-            setCurrentBroker({ ...currentBroker, src: url });
             return () => URL.revokeObjectURL(url);
         }
     }, [uploadedImage]);
 
+
     const handleImageUpload = (file: File | null) => {
         setImageUploaded(true);
         setUploadedImage(file);
+
     };
 
     useEffect(() => {
-        setCurrentBroker({ ...currentBroker, type: type });
-    }, [type]);
+        setCurrentBroker({ ...currentBroker, type: type, src: imageSrc });
+    }, [type, imageSrc]);
 
     return (
         <Paper style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
@@ -107,15 +108,6 @@ export const BrokerEdit = ({ type, setBrokerComponents }: BrokerFormProps) => {
             <Fieldset legend="Component" radius="md" style={{ width: '100%' }}>
                 <BrokerComponent component={currentBroker} type={type} />
             </Fieldset>
-            {imageUploaded &&
-                <Image
-                    radius="md"
-                    h={200}
-                    w="auto"
-                    fit="contain"
-                    src={imageSrc}
-                />
-            }
         </Paper>
     );
 };
