@@ -1,23 +1,26 @@
 "use client";
 
-import { BrokerContext } from "@/context/brokerContext";
 import { Component, ComponentType } from "@/types/broker";
 import { Container, Button, Space, Select, Center, Title, Paper } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import BrokerList from "./BrokerList";
 import { BrokerEdit } from "./BrokerEdit";
 import { BrokerForm } from "./BrokerForm";
+import { useAtom } from "jotai";
+import { useBroker } from "@/context/brokerContext";
+import { Broker } from '../../../types/broker';
 
 const Brokers: React.FC = () => {
-    const { brokers, setBrokers } = useContext(BrokerContext);
     const [showSelect, setShowSelect] = useState(false);
     const [selectedOption, setSelectedOption] = useState<string>('');
     const [isTypeSelected, setTypeSelected] = useState<boolean>(false);
     const [brokerComponents, setBrokerComponents] = useState<Component[]>([]);
 
+    const { brokers, setBrokers } = useBroker();
+
     const handleDelete = (id: string) => {
-        setBrokers(prevBrokers => prevBrokers.filter((broker) => broker.id !== id));
+        setBrokers((prevBrokers: Broker[]) => prevBrokers.filter((broker) => broker.id !== id));
     };
 
     const handleEdit = (id: string) => {
@@ -50,7 +53,7 @@ const Brokers: React.FC = () => {
             <Space h="md" />
             {showSelect &&
                 <>
-                    <Select data={componentOptions} value={selectedOption} onChange={(option) => handleTypeSelection(option as ComponentType)} />
+                    <Select label="Type" description="Choose the type of component" placeholder="Choose the type of component" data={componentOptions} value={selectedOption} onChange={(option) => handleTypeSelection(option as ComponentType)} />
                     <Space h="md" />
                     {isTypeSelected && <BrokerEdit type={selectedOption} setBrokerComponents={setBrokerComponents} />}
                     <Space h="md" />
@@ -61,9 +64,6 @@ const Brokers: React.FC = () => {
                         <BrokerForm components={brokerComponents} />
                     </Paper>
                     <Space h="md" />
-                    <Center>
-                        <Title order={3}>Brokers</Title>
-                    </Center>
                 </>}
             <BrokerList brokers={brokers} onDelete={handleDelete} onEdit={handleEdit} />
         </Container>

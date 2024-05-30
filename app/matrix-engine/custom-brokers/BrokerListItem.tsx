@@ -3,7 +3,6 @@ import React from 'react';
 import { Pill, ActionIcon, Group, Paper, Title, Button, Card } from '@mantine/core';
 import { IconTrash, IconEdit } from '@tabler/icons-react';
 import { Broker } from '@/types/broker';
-import { useBroker } from '@/context/brokerContext';
 
 interface BrokerListItemProps {
     broker: Broker;

@@ -1,10 +1,23 @@
-import { Slider } from '@mantine/core';
+import { Slider, Stack, Text } from '@mantine/core';
 
 type BrokerSizeSliderProps = {
-    onChange: (value: any) => void;
+    onChange: (size: string) => void,
+    label: string,
 };
 
-export const SizeSlider = ({ onChange }: BrokerSizeSliderProps) => {
+export const BrokerSizeSlider = ({ onChange, label, ...props }: BrokerSizeSliderProps) => {
+    const handleChange = (value: number) => {
+        const sizeMap: Record<number, string> = {
+            0: 'xs',
+            25: 'sm',
+            50: 'md',
+            75: 'lg',
+            100: 'xl',
+        };
+        const size = sizeMap[value];
+        onChange(size);
+    };
+
     return (
         <Slider
             mt="xl"
@@ -12,7 +25,9 @@ export const SizeSlider = ({ onChange }: BrokerSizeSliderProps) => {
             size="md"
             step={25}
             showLabelOnHover
-            onChange={onChange}
+            onChange={handleChange}
+            label={label}
+            {...props}
             marks={[
                 { value: 0, label: 'xs' },
                 { value: 25, label: 'sm' },

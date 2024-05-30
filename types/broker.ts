@@ -5,6 +5,15 @@ export interface Broker {
     components: Component[];
 }
 
+interface TableDataRow {
+    [key: string]: any;
+}
+
+export type TableData = {
+    data: TableDataRow[];
+    columns: { accessor: keyof TableDataRow; header: string }[];
+};
+
 export interface Component {
     type: string;
     label?: string;
@@ -27,6 +36,12 @@ export interface Component {
     step?: number;
     value?: number;
     onChange?: ((value: string | number | boolean) => void) | ((value: string[] | number[]) => void);
+    tableData?: TableData;
+    src?: string;
+    alt?: string;
+    radius?: "xs" | "sm" | "md" | "lg" | "xl" | "full";
+    h?: number;
+    w?: number;
 }
 
 export enum ComponentType {
@@ -47,9 +62,9 @@ export enum ComponentType {
     AttachmentsFile = 'attachments-file',
     AttachmentsURL = 'attachments-url',
     AttachmentsMore = 'attachments-more',
-    ImagePaste = 'image-paste',
+    Image = 'image-paste',
 }
-export interface BrokerContextValue {
+export interface BrokerContextValue<T> {
     brokers: Broker[];
     setBrokers: React.Dispatch<React.SetStateAction<Broker[]>>;
 }

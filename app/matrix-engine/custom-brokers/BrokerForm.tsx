@@ -16,16 +16,16 @@ export const BrokerForm = ({ components }: { components: Component[] }) => {
             dataType: ['string'],
             components: components
         }
-        const brokerExists = brokers.some((broker) => broker.id === newBroker.id);
+        const brokerExists = brokers.some((broker: Broker) => broker.id === newBroker.id);
 
         if (brokerExists) {
-            const updatedBrokers = brokers.map((broker) => {
+            const updatedBrokers = brokers.map((broker: Broker) => {
                 if (broker.id === newBroker.id) {
                     return newBroker;
                 }
                 return broker;
             });
-            setBrokers([newBroker, ...updatedBrokers.filter(b => b.id !== newBroker.id)]);
+            setBrokers([newBroker, ...updatedBrokers.filter((b: Broker) => b.id !== newBroker.id)]);
         } else {
             const updatedBrokers = [newBroker, ...brokers];
             setBrokers(updatedBrokers);
