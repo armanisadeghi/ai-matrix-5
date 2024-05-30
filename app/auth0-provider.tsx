@@ -14,8 +14,8 @@ const Auth0ProviderWithRouter = ({ children }: { children: ReactNode }) => {
 
     return (
         <Auth0Provider
-            domain='https://dev-o2yp8ppjqv8zsol1.us.auth0.com'
-            clientId='axa0VzFd03KMz1zO2UjD622rkHL2gAYt'
+            domain={process.env.NEXT_PUBLIC_AUTH0_DOMAIN!}
+            clientId={process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID!}
             authorizationParams={{
                 redirect_uri: typeof window !== 'undefined' ? window.location.origin : '',
                 scope: "openid profile email",
