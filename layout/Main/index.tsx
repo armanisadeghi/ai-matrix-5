@@ -140,7 +140,7 @@ export function MainLayout({ children }: Props) {
                 )}
                 <AppShell.Main>
                     <Box>{children}</Box>
-                    <Affix position={{ bottom: 0, right: 0 }}>
+                    <Affix position={{ bottom: 0, left: navbarWidth }}>
                         <Transition transition="slide-up" mounted={footerState === "hidden"}>
                             {(transitionStyles) => (
                                 <ActionIcon onClick={() => toggleFooter("full")} style={transitionStyles}>
@@ -167,7 +167,7 @@ export function MainLayout({ children }: Props) {
                 </AppShell.Footer>
             </AppShell>
             {/*aside section button*/}
-            <Affix position={{ top: 0, right: 0 }}>
+            <Affix position={{ top: headerHeight, right: 0 }}>
                 <Transition transition="slide-left" mounted={asideState === "hidden"}>
                     {(transitionStyles) => (
                         <ActionIcon onClick={() => toggleAside("full")} visibleFrom="md" style={transitionStyles}>
