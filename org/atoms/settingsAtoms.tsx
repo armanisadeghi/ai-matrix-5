@@ -1,5 +1,3 @@
-// /atoms/settingsAtoms.tsx
-
 import { atom } from 'jotai';
 import { atomFamily } from 'jotai/utils';
 import { Settings, QuickChatSettings, AIModelSettings, API, Limitations, ControlSettings, Choice } from '../types/settings';
@@ -90,4 +88,19 @@ export const derivedControlSettingsAtom = atom<ControlSettings>((get) => ({
     max: get(controlMaxAtom),
     step: get(controlStepAtom),
     choices: get(controlChoicesAtom),
+}));
+
+// Derived atom for all settings
+export const derivedSettingsAtom = atom<Settings>((get) => ({
+    quickChatSettings: get(derivedQuickChatSettingsAtom),
+    aiModelSettings: get(derivedAIModelSettingsAtom),
+    controlSettings: get(derivedControlSettingsAtom),
+    pageSettings: get(pageSettingsAtom),
+    userSettings: get(userSettingsAtom),
+    matrixSettings: get(matrixSettingsAtom),
+    clientSettings: get(clientSettingsAtom),
+    agencySettings: get(agencySettingsAtom),
+    variablesSettings: get(variablesSettingsAtom),
+    responseSettings: get(responseSettingsAtom),
+    brokerSettings: get(brokerSettingsAtom),
 }));
