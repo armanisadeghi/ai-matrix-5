@@ -1,6 +1,6 @@
-'use client'
-import React, { useEffect, useContext } from 'react';
-import { Container, Grid, Burger } from '@mantine/core';
+'use client';
+import React from 'react';
+import { Container, Grid, Burger, Textarea } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { GlobalChatProvider } from '@/context/AiContext/GlobalChatContext';
 import { ChatProvider } from '@/context/AiContext/ChatContext';
@@ -11,10 +11,7 @@ import { SettingsProvider } from '@/context/AiContext/SettingsContext';
 import { HistoryProvider, HistoryContext } from '@/context/AiContext/HistoryContext';
 import { AiResponseProvider } from '@/context/AiContext/AiResponseContext';
 import { ResponseProvider } from '@/context/AiContext/ResponseContext';
-import ChatSidebar from './components/sidebar/ChatSidebar';
-import { useSidebar } from '@/context/SidebarContext';
 import { LayoutProvider } from '@/context/LayoutContext';
-import { SidebarProvider } from '@/context/SidebarContext';
 
 const ChatLayout = ({ children }: { children: React.ReactNode }) => {
     const [opened, setOpened] = React.useState(false);
@@ -32,6 +29,7 @@ const ChatLayout = ({ children }: { children: React.ReactNode }) => {
                                             <AiResponseProvider>
                                                 <ResponseProvider>
                                                     <Container fluid style={{ height: '100vh', display: 'flex', padding: '0' }}>
+
                                                         <Grid grow style={{ flex: 1 }} columns={12} gutter={0}>
                                                             {!isSmallScreen && (
                                                                 <>
@@ -44,12 +42,8 @@ const ChatLayout = ({ children }: { children: React.ReactNode }) => {
                                                             {!isSmallScreen && (
                                                                 <Grid.Col span={1} style={{ flexGrow: 1, flexShrink: 1, flexBasis: '0%', padding: '0' }}></Grid.Col>
                                                             )}
-                                                            {isSmallScreen && (
-                                                                <div style={{ position: 'fixed', top: '10px', left: '10px', zIndex: 1000 }}>
-                                                                    <Burger opened={opened} onClick={() => setOpened((o) => !o)} />
-                                                                </div>
-                                                            )}
                                                         </Grid>
+
                                                     </Container>
                                                 </ResponseProvider>
                                             </AiResponseProvider>

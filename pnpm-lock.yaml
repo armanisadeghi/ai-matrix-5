@@ -151,7 +151,7 @@ importers:
         version: 0.13.0
       jotai:
         specifier: ^2.8.2
-        version: 2.8.2(@types/react@18.3.3)(react@18.3.1)
+        version: 2.8.2(@types/react@18.3.2)(react@18.3.1)
       lowlight:
         specifier: ^3.1.0
         version: 3.1.0
@@ -182,6 +182,9 @@ importers:
       socket.io-client:
         specifier: ^4.7.5
         version: 4.7.5
+      uuid:
+        specifier: ^9.0.1
+        version: 9.0.1
       webpack:
         specifier: ^5.91.0
         version: 5.91.0(esbuild@0.20.2)
@@ -10655,9 +10658,9 @@ snapshots:
 
   jose@4.15.5: {}
 
-  jotai@2.8.2(@types/react@18.3.3)(react@18.3.1):
+  jotai@2.8.2(@types/react@18.3.2)(react@18.3.1):
     optionalDependencies:
-      '@types/react': 18.3.3
+      '@types/react': 18.3.2
       react: 18.3.1
 
   js-tokens@4.0.0: {}

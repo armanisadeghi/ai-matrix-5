@@ -1,5 +1,4 @@
 // app/dashboard/intelligence/chat-app/utils/socket.ts
-
 import { io, Socket } from 'socket.io-client';
 
 const URL = 'https://aimatrix.ngrok.app/';

@@ -1,4 +1,4 @@
-// chat-app/components/response/AssistantMessage.tsx
+// /AssistantMessage.tsx
 
 import { Grid, Text } from '@mantine/core';
 import { GiArtificialHive } from "react-icons/gi";

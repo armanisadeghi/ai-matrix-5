@@ -1,30 +1,32 @@
-import React, { useContext } from 'react';
-import { HistoryContext } from '@/context/AiContext/HistoryContext';
-import { ChatHistoryChat } from '@/types/chat';
-import { Text, Container, LoadingOverlay, Space, Paper } from '@mantine/core';
+// HistoryEntries.tsx
+import React from 'react';
+import { useAtom } from 'jotai';
+import { Container, LoadingOverlay, Space } from '@mantine/core';
+import { promptDataAtom } from "@/app/dashboard/intelligence/ai-chatbot/store/promptDataAtom";
+import AssistantMessage from "./assistantMessage";
+import UserMessage from "./userMessage";
 
 interface HistoryEntriesProps {
     chatId: string;
 }
 
-const HistoryEntries: React.FC<HistoryEntriesProps> = ({chatId}) => {
-    const {
-        chatHistory,
-        isLoading
-    } = useContext(HistoryContext);
+const HistoryEntries: React.FC<HistoryEntriesProps> = ({ chatId }) => {
+    const [promptData] = useAtom(promptDataAtom);
 
-    if (isLoading) {
-        return <LoadingOverlay visible/>;
+    if (!promptData || promptData.chatId !== chatId) {
+        return <LoadingOverlay visible />;
     }
 
     return (
         <div>
-            {chatHistory[chatId]?.map((entry: ChatHistoryChat, entryIndex: number) => (
+            {promptData.chatHistory.map((entry, entryIndex) => (
                 <div key={entryIndex}>
-                    <Paper radius="lg" >
-                        <Text>{entry.role}: {entry.content}</Text>
-                    </Paper>
-                    <Space h={10}/>
+                    {entry.role === 'assistant' ? (
+                        <AssistantMessage messageId={entry.id} />
+                    ) : (
+                        <UserMessage messageId={entry.id} />
+                    )}
+                    <Space h={10} />
                 </div>
             ))}
         </div>
