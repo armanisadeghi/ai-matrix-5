@@ -66,7 +66,7 @@ export enum ComponentType {
     AttachmentsMore = 'attachments-more',
     Image = 'image-paste',
 }
-export interface BrokerContextValue<T> {
+export interface BrokerContextValue {
     brokers: Broker[];
     setBrokers: React.Dispatch<React.SetStateAction<Broker[]>>;
 }

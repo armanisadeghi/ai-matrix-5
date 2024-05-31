@@ -23,9 +23,9 @@ const BrokerComponent: React.FC<BrokerComponentProps> = ({ component }) => {
                     size={size}
                 />;
             case "Textarea":
-                return <Textarea label={label} placeholder={placeholderText} required={required} size={size} color={color} />;
+                return <Textarea label={label} placeholder={placeholderText} required={required} size={size} color={color} defaultValue={defaultValue as string} />;
             case "Slider":
-                return <Slider label={label} min={min} max={max} step={step} value={value as number} size={size} color={color} />;
+                return <Slider label={label} min={min} max={max} step={step} value={value as number} size={size} color={color} defaultValue={defaultValue as number} />;
             case "YesNo":
                 return <Radio.Group
                     name={label}
@@ -42,7 +42,7 @@ const BrokerComponent: React.FC<BrokerComponentProps> = ({ component }) => {
                 return <Checkbox label={label} value={value as string} required={required} size={size} color={color} />;
             case "CheckboxGroup":
                 return <>{options && <BrokerCheckBoxGroup
-                    defaultValue={['red', 'blue']}
+                    defaultValue={defaultValue as string[]}
                     label={label}
                     options={options.map(option => ({ value: option, label: option }))}
                     required={required}
@@ -56,11 +56,11 @@ const BrokerComponent: React.FC<BrokerComponentProps> = ({ component }) => {
                     <Switch value="yellow" label="Yellow" mt={"md"} />
                 </SwitchGroup>;
             case "Select":
-                return <Select label={label} data={options} required={required} size={size} color={color} />;
+                return <Select label={label} data={options} required={required} size={size} color={color} placeholder={placeholderText} />;
             case "Json":
                 return <JsonInput
                     label={label || "Json"}
-                    placeholder="Textarea will autosize to fit the content"
+                    placeholder={placeholderText}
                     validationError="Invalid JSON"
                     formatOnBlur
                     autosize
