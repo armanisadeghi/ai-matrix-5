@@ -80,9 +80,13 @@ const Brokers: React.FC = () => {
                                 <Center>
                                     <Title order={3}>Broker</Title>
                                 </Center>
-                                <Paper withBorder radius="xs" p="xl">
-                                    <BrokerForm components={brokerComponents} setBrokerComponents={setBrokerComponents} id={brokerId} setEditingId={setEditingId} />
-                                </Paper>
+
+                                <Transition transition="slide-down" duration={200} mounted={showSelect}>
+                                    {(styles) => (
+                                        <Paper withBorder radius="xs" p="xl" style={styles}>
+                                            <BrokerForm components={brokerComponents} setBrokerComponents={setBrokerComponents} id={brokerId} setEditingId={setEditingId} /> </Paper>
+                                    )}
+                                </Transition>
                                 <Space h="md" />
                             </Stack>}
                     </Stack>

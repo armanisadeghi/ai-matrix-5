@@ -85,6 +85,7 @@ export const BrokerEdit = ({ type, setBrokerComponents }: BrokerFormProps) => {
                     <TextInput label="Placeholder" onChange={(e) => setCurrentBroker({ ...currentBroker, placeholderText: e.target.value })} />
                     <Space h="sm" />
                     <TextInput label="Default Value" onChange={(e) => setCurrentBroker({ ...currentBroker, defaultValue: e.target.value })} />
+                    <Space h="sm" />
                     <TextInput label="Description" onChange={(e) => setCurrentBroker({ ...currentBroker, description: e.target.value })} />
                     <Space h="sm" />
                     <TextInput label="Options" placeholder="Option 1, Option 2, Option 3" description="Separate options with commas" onChange={(e) => setCurrentBroker({ ...currentBroker, options: (e.target.value).split(",") })} />
