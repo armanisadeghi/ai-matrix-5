@@ -15,6 +15,7 @@ export type TableData = {
 };
 
 export interface Component {
+    componentId: string;
     type: string;
     label?: string;
     tooltip?: string;

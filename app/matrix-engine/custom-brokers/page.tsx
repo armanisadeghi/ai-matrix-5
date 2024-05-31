@@ -46,6 +46,7 @@ const Brokers: React.FC = () => {
         setTypeSelected(false);
         setSelectedOption('');
         setBrokerComponents([]);
+        setEditingId('');
     };
 
     const componentOptions = Object.keys(ComponentType).map((key) => ({
@@ -55,8 +56,6 @@ const Brokers: React.FC = () => {
 
     return (
         <Container>
-
-
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <Button onClick={() => handleNewBroker()} variant="outline" leftSection={<IconPlus />}>
                     Add New Broker
@@ -82,7 +81,7 @@ const Brokers: React.FC = () => {
                                     <Title order={3}>Broker</Title>
                                 </Center>
                                 <Paper withBorder radius="xs" p="xl">
-                                    <BrokerForm components={brokerComponents} id={brokerId} setEditingId={setEditingId} />
+                                    <BrokerForm components={brokerComponents} setBrokerComponents={setBrokerComponents} id={brokerId} setEditingId={setEditingId} />
                                 </Paper>
                                 <Space h="md" />
                             </Stack>}

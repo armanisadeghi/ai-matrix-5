@@ -11,12 +11,14 @@ import BrokerComponent from './BrokerComponent';
 import { IconPlus } from '@tabler/icons-react';
 import { BrokerSizeSlider } from '@/components/Brokers/BrokerSizeSlider';
 import { BrokerCheckBoxGroup } from '@/components/Brokers/BrokerCheckBoxGroup';
+import { v4 as uuidv4 } from 'uuid';
 
 export const BrokerEdit = ({ type, setBrokerComponents }: BrokerFormProps) => {
     const [imageUploaded, setImageUploaded] = useState(false);
     const [imageSrc, setImageSrc] = useState('');
     const [uploadedImage, setUploadedImage] = useState<File | null>(null);
     const [currentBroker, setCurrentBroker] = useState<Component>({
+        componentId: '',
         type: type,
         label: "new Label",
         description: "new Description",
@@ -89,7 +91,7 @@ export const BrokerEdit = ({ type, setBrokerComponents }: BrokerFormProps) => {
                     <Space h="sm" />
                     <Switch label="Required" onChange={(e) => setCurrentBroker({ ...currentBroker, required: e.target.checked })} />
                     <Space h="sm" />
-                    <BrokerSizeSlider label={"Size"} onChange={(e) => setCurrentBroker({ ...currentBroker, size: e as any })} />
+                    <BrokerSizeSlider label="Size" onChange={(e) => setCurrentBroker({ ...currentBroker, size: e as any })} />
                     <FileInput
                         label="Upload an image"
                         description="Upload an image"
