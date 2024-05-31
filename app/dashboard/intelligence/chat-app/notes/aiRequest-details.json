@@ -1,0 +1,134 @@
+{
+    "aiRequest": {
+        "metadata": {
+            "requestId": "(TYPE: string), (DEFAULT: ''), (CHOICES: 'uuid'), (examples: '0b9728d7-a0eb-407c-9519-b657240f0ec3')",
+            "socketEvent": "(TYPE: string), (DEFAULT: ''), (CHOICES: 'many options'), (examples: 'matrix_chat')",
+            "eventTask": "(TYPE: string), (DEFAULT: ''), (CHOICES: 'many options'), (examples: 'simple_chat', 'playground_stream', 'run_recipe', 'validation', 'workflow')",
+            "index": "(TYPE: number), (DEFAULT: '0'), (CHOICES: 'n/a'), (examples: 0, 1, 2)",
+            "timestamp": "(TYPE: string), (DEFAULT: ''), (CHOICES: 'n/a'), (examples: '2024-05-25T12:00:00Z')",
+            "source": "(TYPE: string), (DEFAULT: 'null'), (CHOICES: 'n/a'), (examples: 'simpleChat', 'matrixChat', 'quickChat', 'sidebarChat', 'playground', 'wordpress', 'shopify', 'thirdParty)",
+            "channel": "(TYPE: string), (DEFAULT: 'text'), (CHOICES: 'text, voice, video, image'), (examples: 'image')"
+        },
+        "user": {
+            "id": "(TYPE: string), (DEFAULT: 'null'), (CHOICES: 'uuid'), (examples: 'ab19aaff-e0cc-49a7-9570-d296f9d6a9fb')",
+            "token": "(TYPE: string), (DEFAULT: ''), (CHOICES: 'uuid'), (examples: '96822df4-a3de-45f4-befa-512226614005')"
+        },
+        "recipe": {
+            "id": "(TYPE: string), (DEFAULT: 'null'), (CHOICES: 'uuid'), (examples: '48ccae16-1864-4735-84ba-414e4e30b201')",
+            "name": "(TYPE: string), (DEFAULT: ''), (CHOICES: 'n/a'), (examples: 'Blog writer extraordinaire')",
+            "tags": "(TYPE: []), (DEFAULT: []), (CHOICES: 'n/a'), (examples: '')",
+            "description": "(TYPE: string), (DEFAULT: ''), (CHOICES: 'n/a'), (examples: 'Writes amazing blog articles and so much more')",
+            "permissions": "(TYPE: {}), (DEFAULT: 'NESTED: public:'false' | groups: [] | orgs: [] | users: []'), (CHOICES: 'n/a'), (examples: '')",
+            "messages": "(TYPE: []), (DEFAULT: []), (CHOICES: 'n/a'), (examples: '')",
+            "callParams": "(TYPE: {}), (DEFAULT: 'NESTED: models: {} | brokers: [{}] | overrides: {}'), (CHOICES: 'n/a'), (examples: '')",
+            "postParams": "(TYPE: {}), (DEFAULT: 'NESTED: returnBroker: {} | processors: {} | defaultDisplay: {} | nextStepOptions: {}'), (CHOICES: 'n/a'), (examples: '')",
+            "sampleOutput": "(TYPE: string), (DEFAULT: ''), (CHOICES: 'n/a'), (examples: '')"
+        },
+        "chatData": {
+            "id": "(TYPE: string), (DEFAULT: 'null'), (CHOICES: 'uuid'), (examples: '5d046884-3cf5-4d18-a9b9-468ff2b86118')",
+            "name": "(TYPE: string), (DEFAULT: ''), (CHOICES: 'n/a'), (examples: 'Travel advice')",
+            "currentMessage": {
+                "promptMessage": {
+                    "index": "SPECIAL NOTE: Always highest chatHistory index + 1",
+                    "roleType": "(TYPE: string), (DEFAULT: 'user'), (CHOICES: 'user'), (examples: 'user')",
+                    "message": "(TYPE: string), (DEFAULT: ''), (CHOICES: 'n/a'), (examples: 'Can you help me with travel tips?')"
+                },
+                "formResponses": [
+                    {
+                        "index": 0,
+                        "question": "(TYPE: string), (DEFAULT: ''), (CHOICES: 'n/a'), (examples: 'What type of travel plans are you looking for?')",
+                        "response": "(TYPE: string), (DEFAULT: ''), (CHOICES: 'n/a'), (examples: 'Information on things to do')"
+                    }
+                ],
+                "customInputs": [
+                    {
+                        "index": 0,
+                        "inputBroker": "(TYPE: string), (DEFAULT: ''), (CHOICES: 'n/a'), (examples: 'Any brokerId')",
+                        "inputValue": "(TYPE: string), (DEFAULT: ''), (CHOICES: 'n/a'), (examples: 'Some user input for this question')"
+                    }
+                ]
+            },
+            "chatHistory": [
+                {
+                    "index": 0,
+                    "roleType": "(TYPE: string), (DEFAULT: ''), (CHOICES: 'n/a'), (examples: 'user')",
+                    "message": "(TYPE: string), (DEFAULT: ''), (CHOICES: 'n/a'), (examples: 'I'm taking my kids to New York. What are some fun things to do there?')"
+                },
+                {
+                    "index": 1,
+                    "roleType": "(TYPE: string), (DEFAULT: ''), (CHOICES: 'n/a'), (examples: 'assistant')",
+                    "message": "(TYPE: string), (DEFAULT: ''), (CHOICES: 'n/a'), (examples: 'Sure, I can help you with that. What do you need help with?')"
+                }
+            ]
+        },
+        "settings": {
+            "quickChatSettings": {
+                "aiPreferencesMain": "(TYPE: string), (DEFAULT: ''), (CHOICES: 'n/a'), (examples: '')default",
+                "aiPreferencesSecond": "(TYPE: string), (DEFAULT: ''), (CHOICES: 'n/a'), (examples: '')assistant",
+                "makeSmallTalk": "(TYPE: string), (DEFAULT: ''), (CHOICES: 'n/a'), (examples: true)",
+                "quickAnswer": "(TYPE: string), (DEFAULT: ''), (CHOICES: 'n/a'), (examples: false)",
+                "improveQuestions": "(TYPE: string), (DEFAULT: ''), (CHOICES: 'n/a'), (examples: true)",
+                "submitOnEnter": "(TYPE: string), (DEFAULT: ''), (CHOICES: 'n/a'), (examples: true)"
+            },
+            "aiModelSettings": {
+                "id": "",
+                "model": "",
+                "commonName": "",
+                "class": "",
+                "type": "",
+                "api": {
+                    "provider": "",
+                    "endpoint": ""
+                },
+                "limitations": {
+                    "contextWindow": 0,
+                    "maxTokens": 0,
+                    "capabilities": []
+                },
+                "controls": {}
+            },
+            "controlSettings": {
+                "id": "",
+                "componentType": "slider",
+                "label": "Temperature",
+                "helpText": "",
+                "type": "float",
+                "value": 0.0,
+                "min": 0.0,
+                "max": 0.0,
+                "step": 0.01,
+                "choices": [
+                    {
+                        "id": "",
+                        "label": "",
+                        "value": false
+                    }
+                ]
+            },
+            "pageSettings": {
+                "fields": "MANY FIELDS so removed for brevity"
+            },
+            "userSettings": {
+                "fields": "MANY FIELDS so removed for brevity"
+            },
+            "matrixSettings": {
+                "fields": "MANY FIELDS so removed for brevity"
+            },
+            "clientSettings": {
+                "fields": "MANY FIELDS so removed for brevity"
+            },
+            "agencySettings": {
+                "fields": "MANY FIELDS so removed for brevity"
+            },
+            "variablesSettings": {
+                "fields": "MANY FIELDS so removed for brevity"
+            },
+            "responseSettings": {
+                "fields": "MANY FIELDS so removed for brevity"
+            },
+            "brokerSettings": {
+                "fields": "MANY FIELDS so removed for brevity"
+            }
+        }
+    }
+}

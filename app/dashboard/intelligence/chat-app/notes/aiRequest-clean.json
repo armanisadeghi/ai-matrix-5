@@ -1,0 +1,77 @@
+{
+    "aiRequest": {
+        "metadata": {
+            "requestId": "",
+            "socketEvent": "",
+            "eventTask": "",
+            "index": "",
+            "timestamp": "",
+            "source": "",
+            "channel": ""
+        },
+        "user": {
+            "id": "",
+            "token": ""
+        },
+        "recipe": {
+            "id": "",
+            "name": "",
+            "tags": [],
+            "description": "",
+            "permissions": {},
+            "messages": [],
+            "callParams": {},
+            "postParams": {},
+            "sampleOutput": ""
+        },
+        "chatData": {
+            "id": "",
+            "currentMessage": {
+                "promptMessage": {
+                    "index": "",
+                    "roleType": "",
+                    "message": ""
+                },
+                "formResponses": [
+                    {
+                        "index": "",
+                        "question": "",
+                        "response": ""
+                    }
+                ],
+                "customInputs": [
+                    {
+                        "index": "",
+                        "inputBroker": "",
+                        "inputValue": ""
+                    }
+                ]
+            },
+            "chatHistory": [
+                {
+                    "index": "",
+                    "roleType": "",
+                    "message": ""
+                },
+                {
+                    "index": "",
+                    "roleType": "",
+                    "message": ""
+                }
+            ]
+        },
+        "settings": {
+            "quickChatSettings": {},
+            "aiModelSettings": {},
+            "controlSettings": {},
+            "pageSettings": {},
+            "userSettings": {},
+            "matrixSettings": {},
+            "clientSettings": {},
+            "agencySettings": {},
+            "variablesSettings": {},
+            "responseSettings": {},
+            "brokerSettings": {}
+        }
+    }
+}

@@ -63,8 +63,8 @@ export const HistoryProvider: React.FC<HistoryProviderProps> = ({ children }) =>
         <HistoryContext.Provider value={{
             chatHistory,
             updateChatHistory,
-            setActiveChat: () => {}, // No-op for now
-            activeChat: null, // Ignored for now
+            setActiveChat: () => {}, // Need to set this properly
+            activeChat: null, // Should not be null
             isLoading,
         }}>
             {children}

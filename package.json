@@ -70,6 +70,7 @@
     "react-split": "^2.0.14",
     "recharts": "latest",
     "socket.io-client": "^4.7.5",
+    "uuid": "^9.0.1",
     "webpack": "^5.91.0"
   },
   "devDependencies": {
