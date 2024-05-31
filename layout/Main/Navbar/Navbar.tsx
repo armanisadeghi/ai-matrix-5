@@ -7,6 +7,7 @@ import {
     Menu,
     NavLink,
     ScrollArea,
+    Stack,
     useMantineTheme,
 } from "@mantine/core";
 import {
@@ -70,8 +71,9 @@ export const Navbar = ({ state }: NavbarProps) => {
 
             <AppShell.Section grow component={ScrollArea} my="md">
                 {navItems.map((item, index) => (
-                    <div key={index}>
+                    <>
                         <NavLink
+                            key={index}
                             label={
                                 <Group
                                     style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
@@ -114,7 +116,7 @@ export const Navbar = ({ state }: NavbarProps) => {
                                     />
                                 ))}
                         </NavLink>
-                    </div>
+                    </>
                 ))}
             </AppShell.Section>
 
