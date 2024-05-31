@@ -14,6 +14,7 @@ import {
 import { IconMoon, IconSun } from "@tabler/icons-react";
 import cx from "clsx";
 import classes from "./ColorSchemeToggle.module.css";
+import AmeActionIcon from "@/ui/buttons/AmeActionIcon";
 
 interface ColorSchemeToggleProps {
     size?: MantineSize;
@@ -24,18 +25,14 @@ export function ColorSchemeToggle({ size = "md" }: ColorSchemeToggleProps) {
     const computedColorScheme = useComputedColorScheme("dark", { getInitialValueInEffect: true });
 
     return (
-        <Group justify="center">
-            <Tooltip label={`Switch to ${computedColorScheme === "light" ? "dark" : "light"} mode`}>
-                <ActionIcon
-                    variant="transparent"
-                    onClick={() => setColorScheme(computedColorScheme === "light" ? "dark" : "light")}
-                    aria-label="Toggle color scheme"
-                    size={size}
-                >
-                    <IconSun className={cx(classes.icon, classes.light)} stroke={1.5} />
-                    <IconMoon className={cx(classes.icon, classes.dark)} stroke={1.5} />
-                </ActionIcon>
-            </Tooltip>
-        </Group>
+        <AmeActionIcon
+            onClick={() => setColorScheme(computedColorScheme === "light" ? "dark" : "light")}
+            aria-label="Toggle color scheme"
+            size={size}
+            title={`Switch to ${computedColorScheme === "light" ? "dark" : "light"} mode`}
+        >
+            <IconSun className={cx(classes.icon, classes.light)} />
+            <IconMoon className={cx(classes.icon, classes.dark)} />
+        </AmeActionIcon>
     );
 }

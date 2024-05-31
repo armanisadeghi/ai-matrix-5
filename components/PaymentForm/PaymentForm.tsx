@@ -1,7 +1,9 @@
 import { useForm } from "@mantine/form";
-import { Button, Grid, NumberInput, Paper, rem, Textarea, TextInput, Title } from "@mantine/core";
-import AmeSelect from "@/ui/select/AmeSelect";
+import { Button, Grid, Paper, rem, TextInput } from "@mantine/core";
 import { IconDeviceFloppy } from "@tabler/icons-react";
+import AmeTitle from "@/ui/typography/AmeTitle";
+import AmeActionTextInput from "@/ui/input/AmeActionTextInput";
+import AmeButton from "@/ui/buttons/AmeButton";
 
 export function PaymentForm() {
     const paymentForm = useForm({
@@ -22,12 +24,12 @@ export function PaymentForm() {
 
     return (
         <Paper component="form" onSubmit={paymentForm.onSubmit(console.log)} p="md" withBorder>
-            <Title order={5} mb="md">
+            <AmeTitle as="card-header" mb="md">
                 Payment method
-            </Title>
+            </AmeTitle>
             <Grid>
                 <Grid.Col span={{ base: 12, md: 6 }}>
-                    <TextInput
+                    <AmeActionTextInput
                         type="number"
                         label="Card Number"
                         placeholder="card number"
@@ -36,7 +38,7 @@ export function PaymentForm() {
                     />
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, md: 6 }}>
-                    <TextInput
+                    <AmeActionTextInput
                         type="number"
                         label="Expiration date"
                         placeholder="MM/YY"
@@ -45,7 +47,7 @@ export function PaymentForm() {
                     />
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, md: 6 }}>
-                    <TextInput
+                    <AmeActionTextInput
                         type="number"
                         label="CVV"
                         placeholder="cvv"
@@ -54,13 +56,14 @@ export function PaymentForm() {
                     />
                 </Grid.Col>
             </Grid>
-            <Button
+            <AmeButton
                 type="submit"
                 mt="md"
-                leftSection={<IconDeviceFloppy style={{ height: rem(18), width: rem(18) }} />}
+                leftSection={<IconDeviceFloppy size={18} />}
+                title="Save your payment information"
             >
                 Save payment information
-            </Button>
+            </AmeButton>
         </Paper>
     );
 }

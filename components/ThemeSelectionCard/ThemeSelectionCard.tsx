@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { Button, Flex, Paper, PaperProps, Radio, rem, Title } from "@mantine/core";
+import { Flex, Paper, PaperProps, Radio, rem } from "@mantine/core";
 import { IconDeviceDesktop, IconDeviceFloppy, IconMoon, IconSun } from "@tabler/icons-react";
 import AmeRadioCard from "@/ui/radio/AmeRadioCard";
+import AmeTitle from "@/ui/typography/AmeTitle";
+import AmeButton from "@/ui/buttons/AmeButton";
 
 const data = [
     {
@@ -27,9 +29,9 @@ export function ThemeSelectionCard({ ...others }: ThemeSelectionCardProps) {
 
     return (
         <Paper component="form" p="md" withBorder mb="md" {...others}>
-            <Title order={5} mb="md">
+            <AmeTitle as="card-header" mb="md">
                 Color Mode
-            </Title>
+            </AmeTitle>
             <Radio.Group
                 value={colorMode}
                 onChange={setColorMode}
@@ -39,13 +41,14 @@ export function ThemeSelectionCard({ ...others }: ThemeSelectionCardProps) {
                     {cards}
                 </Flex>
             </Radio.Group>
-            <Button
+            <AmeButton
                 type="submit"
                 mt="md"
                 leftSection={<IconDeviceFloppy style={{ height: rem(18), width: rem(18) }} />}
+                title="Save changes"
             >
                 Save changes
-            </Button>
+            </AmeButton>
         </Paper>
     );
 }

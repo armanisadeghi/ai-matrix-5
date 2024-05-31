@@ -1,8 +1,10 @@
 import React from "react";
-import { Button, Grid, Paper, PaperProps, rem, TextInput, Title } from "@mantine/core";
+import { Button, Grid, Paper, PaperProps, rem } from "@mantine/core";
 import AmeActionTextInput from "@/ui/input/AmeActionTextInput";
 import { IconDeviceFloppy } from "@tabler/icons-react";
 import { useForm } from "@mantine/form";
+import AmeTitle from "@/ui/typography/AmeTitle";
+import AmeButton from "@/ui/buttons/AmeButton";
 
 interface UserDetailsFormProps extends PaperProps {}
 
@@ -22,9 +24,9 @@ export function UserDetailsForm({ ...others }: UserDetailsFormProps) {
 
     return (
         <Paper component="form" onSubmit={form.onSubmit(console.log)} p="md" withBorder {...others}>
-            <Title order={5} mb="md">
+            <AmeTitle as="card-header" mb="md">
                 User details
-            </Title>
+            </AmeTitle>
             <Grid>
                 <Grid.Col span={{ base: 12, md: 6 }}>
                     <AmeActionTextInput
@@ -36,7 +38,7 @@ export function UserDetailsForm({ ...others }: UserDetailsFormProps) {
                     />
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, md: 6 }}>
-                    <TextInput
+                    <AmeActionTextInput
                         label="Last name"
                         placeholder="last name"
                         key={form.key("lastName")}
@@ -44,7 +46,7 @@ export function UserDetailsForm({ ...others }: UserDetailsFormProps) {
                     />
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, md: 6 }}>
-                    <TextInput
+                    <AmeActionTextInput
                         label="Email"
                         placeholder="email"
                         key={form.key("email")}
@@ -52,7 +54,7 @@ export function UserDetailsForm({ ...others }: UserDetailsFormProps) {
                     />
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, md: 6 }}>
-                    <TextInput
+                    <AmeActionTextInput
                         label="Phone"
                         placeholder="phone"
                         key={form.key("phone")}
@@ -60,13 +62,9 @@ export function UserDetailsForm({ ...others }: UserDetailsFormProps) {
                     />
                 </Grid.Col>
             </Grid>
-            <Button
-                type="submit"
-                mt="md"
-                leftSection={<IconDeviceFloppy style={{ height: rem(18), width: rem(18) }} />}
-            >
+            <AmeButton type="submit" mt="md" leftSection={<IconDeviceFloppy size={18} />} title="Save user information">
                 Save changes
-            </Button>
+            </AmeButton>
         </Paper>
     );
 }

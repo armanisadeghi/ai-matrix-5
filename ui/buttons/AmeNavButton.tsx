@@ -23,20 +23,22 @@ function AmeNavButton({ navigateTo, asIcon }: AmeNavButtonProps) {
     };
 
     const canNavigate = () => {
-        // todo: will look for alternatives instead of using experimental navigation api supported in chrome and edge
-        // @ts-ignore
-        let isChromium = window.chrome;
         let canNav = true;
-
-        if (isChromium) {
+        if (typeof window !== "undefined") {
+            // todo: will look for alternatives instead of using experimental navigation api supported in chrome and edge
             // @ts-ignore
-            if (typeof navigation !== undefined) {
-                if (navigateTo == "back") {
-                    // @ts-ignore
-                    canNav = navigation.canGoBack;
-                } else {
-                    // @ts-ignore
-                    canNav = navigation.canGoForward;
+            let isChromium = window.chrome;
+
+            if (isChromium) {
+                // @ts-ignore
+                if (typeof navigation !== undefined) {
+                    if (navigateTo == "back") {
+                        // @ts-ignore
+                        canNav = navigation.canGoBack;
+                    } else {
+                        // @ts-ignore
+                        canNav = navigation.canGoForward;
+                    }
                 }
             }
         }
@@ -45,7 +47,7 @@ function AmeNavButton({ navigateTo, asIcon }: AmeNavButtonProps) {
     };
 
     const text = navigateTo === "back" ? "Go back" : "Go forward";
-    const icon = navigateTo === "back" ? <IconChevronLeft /> : <IconChevronRight />;
+    const icon = navigateTo === "back" ? <IconChevronLeft size={18} /> : <IconChevronRight size={18} />;
 
     let buttonProps: ButtonProps = {
         disabled: !canNavigate(),

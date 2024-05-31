@@ -1,6 +1,9 @@
 import React from "react";
 import { useForm } from "@mantine/form";
 import { Button, Flex, Grid, Paper, PaperProps, TextInput, Title } from "@mantine/core";
+import AmeTitle from "@/ui/typography/AmeTitle";
+import AmeActionTextInput from "@/ui/input/AmeActionTextInput";
+import AmeButton from "@/ui/buttons/AmeButton";
 
 interface PasswordResetFormProps extends PaperProps {}
 
@@ -19,9 +22,9 @@ export function PasswordResetForm({ ...others }: PasswordResetFormProps) {
 
     return (
         <Paper component="form" onSubmit={form.onSubmit(console.log)} p="md" withBorder {...others}>
-            <Title order={5} mb="md">
+            <AmeTitle as="card-header" mb="md">
                 Change password
-            </Title>
+            </AmeTitle>
             <Grid>
                 <Grid.Col span={{ base: 12, md: 6 }}>
                     <TextInput
@@ -32,7 +35,7 @@ export function PasswordResetForm({ ...others }: PasswordResetFormProps) {
                     />
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, md: 6 }}>
-                    <TextInput
+                    <AmeActionTextInput
                         label="New password"
                         placeholder="e"
                         key={form.key("newPassword")}
@@ -40,7 +43,7 @@ export function PasswordResetForm({ ...others }: PasswordResetFormProps) {
                     />
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, md: 6 }}>
-                    <TextInput
+                    <AmeActionTextInput
                         label="Confirm new password"
                         placeholder=""
                         key={form.key("confirmPassword")}
@@ -49,8 +52,10 @@ export function PasswordResetForm({ ...others }: PasswordResetFormProps) {
                 </Grid.Col>
             </Grid>
             <Flex gap="md" mt="md">
-                <Button type="submit">Update password</Button>
-                <Button variant="subtle">I forgot my password</Button>
+                <AmeButton type="submit" primary title="Save your password">
+                    Update password
+                </AmeButton>
+                <AmeButton title="Forgot your password">I forgot my password</AmeButton>
             </Flex>
         </Paper>
     );

@@ -3,6 +3,9 @@ import { useForm } from "@mantine/form";
 import { Button, Grid, Paper, PaperProps, rem, TextInput, Title } from "@mantine/core";
 import AmeSelect from "@/ui/select/AmeSelect";
 import { IconDeviceFloppy } from "@tabler/icons-react";
+import AmeTitle from "@/ui/typography/AmeTitle";
+import AmeActionTextInput from "@/ui/input/AmeActionTextInput";
+import AmeButton from "@/ui/buttons/AmeButton";
 
 interface UserLocationFormProps extends PaperProps {}
 
@@ -20,12 +23,12 @@ export function UserLocationForm({ ...others }: UserLocationFormProps) {
 
     return (
         <Paper component="form" onSubmit={locationForm.onSubmit(console.log)} p="md" withBorder {...others}>
-            <Title order={5} mb="md">
+            <AmeTitle as="card-header" order={5} mb="md">
                 Location info
-            </Title>
+            </AmeTitle>
             <Grid>
                 <Grid.Col span={{ base: 12, md: 6 }}>
-                    <TextInput
+                    <AmeActionTextInput
                         label="Location"
                         placeholder="location"
                         key={locationForm.key("location")}
@@ -42,13 +45,9 @@ export function UserLocationForm({ ...others }: UserLocationFormProps) {
                     />
                 </Grid.Col>
             </Grid>
-            <Button
-                type="submit"
-                mt="md"
-                leftSection={<IconDeviceFloppy style={{ height: rem(18), width: rem(18) }} />}
-            >
+            <AmeButton type="submit" mt="md" leftSection={<IconDeviceFloppy size={18} />} title="Save your information">
                 Save changes
-            </Button>
+            </AmeButton>
         </Paper>
     );
 }

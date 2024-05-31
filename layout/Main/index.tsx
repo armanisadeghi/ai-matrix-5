@@ -1,5 +1,6 @@
 "use client";
-import { ActionIcon, Affix, AppShell, Box, Transition, useMantineTheme } from "@mantine/core";
+
+import { AppShell, Box, useMantineTheme } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { ReactNode, useState } from "react";
 import { useLayout } from "@/context/LayoutContext";
@@ -11,6 +12,8 @@ import { IconArrowBarLeft, IconArrowBarToDown, IconArrowBarToRight, IconArrowBar
 import { useFooter } from "@/context/FooterContext";
 import { Footer } from "@/layout/Main/Footer";
 import { useHeader } from "@/context/HeaderContext";
+import AmeActionIcon from "@/ui/buttons/AmeActionIcon";
+import AmeAffix from "@/ui/affix/AmeAffix";
 
 type Props = {
     children: ReactNode;
@@ -140,33 +143,46 @@ export function MainLayout({ children }: Props) {
                 )}
                 <AppShell.Main>
                     <Box>{children}</Box>
-                    <Affix position={{ top: headerHeight, left: 0 }}>
-                        <Transition transition="slide-up" mounted={navbarState === "hidden"}>
-                            {(transitionStyles) => (
-                                <ActionIcon onClick={() => toggleNavbar("full")} style={transitionStyles}>
-                                    <IconArrowBarToRight />
-                                </ActionIcon>
-                            )}
-                        </Transition>
-                    </Affix>
-                    <Affix position={{ bottom: 0, left: navbarWidth }}>
-                        <Transition transition="slide-up" mounted={footerState === "hidden"}>
-                            {(transitionStyles) => (
-                                <ActionIcon onClick={() => toggleFooter("full")} style={transitionStyles}>
-                                    <IconArrowBarToUp />
-                                </ActionIcon>
-                            )}
-                        </Transition>
-                    </Affix>
-                    <Affix position={{ top: 0, left: navbarWidth }}>
-                        <Transition transition="slide-down" mounted={headerState === "hidden"}>
-                            {(transitionStyles) => (
-                                <ActionIcon onClick={() => toggleHeader("large")} style={transitionStyles}>
-                                    <IconArrowBarToDown />
-                                </ActionIcon>
-                            )}
-                        </Transition>
-                    </Affix>
+                    {/*toggle nav*/}
+                    <AmeAffix
+                        transition="slide-up"
+                        position={{ top: headerHeight, left: 0 }}
+                        mounted={navbarState === "hidden"}
+                    >
+                        <AmeActionIcon title="open nav" onClick={() => toggleNavbar("full")}>
+                            <IconArrowBarToRight />
+                        </AmeActionIcon>
+                    </AmeAffix>
+                    {/*toggle footer*/}
+                    <AmeAffix
+                        transition="slide-up"
+                        position={{ bottom: 0, left: navbarWidth }}
+                        mounted={footerState === "hidden"}
+                    >
+                        <AmeActionIcon title="open footer" onClick={() => toggleFooter("full")}>
+                            <IconArrowBarToUp />
+                        </AmeActionIcon>
+                    </AmeAffix>
+                    {/*toggle header*/}
+                    <AmeAffix
+                        transition="slide-down"
+                        position={{ top: headerHeight, left: navbarWidth }}
+                        mounted={headerState === "hidden"}
+                    >
+                        <AmeActionIcon title="open header" onClick={() => toggleHeader("medium")}>
+                            <IconArrowBarToDown />
+                        </AmeActionIcon>
+                    </AmeAffix>
+                    {/*toggle aside*/}
+                    <AmeAffix
+                        transition="slide-left"
+                        position={{ top: headerHeight, right: 0 }}
+                        mounted={asideState === "hidden"}
+                    >
+                        <AmeActionIcon title="open sidebar" onClick={() => toggleAside("full")} visibleFrom="md">
+                            <IconArrowBarLeft />
+                        </AmeActionIcon>
+                    </AmeAffix>
                 </AppShell.Main>
                 <AppShell.Aside>
                     <Sidebar state={mobileMatch ? "hidden" : asideState} />
@@ -175,16 +191,6 @@ export function MainLayout({ children }: Props) {
                     <Footer state={footerState} />
                 </AppShell.Footer>
             </AppShell>
-            {/*aside section buttons*/}
-            <Affix position={{ top: headerHeight, right: 0 }}>
-                <Transition transition="slide-left" mounted={asideState === "hidden"}>
-                    {(transitionStyles) => (
-                        <ActionIcon onClick={() => toggleAside("full")} visibleFrom="md" style={transitionStyles}>
-                            <IconArrowBarLeft />
-                        </ActionIcon>
-                    )}
-                </Transition>
-            </Affix>
         </>
     );
 }

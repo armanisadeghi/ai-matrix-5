@@ -16,6 +16,8 @@ import { PATH_USER } from "@/routes";
 import { useLayout } from "@/context/LayoutContext";
 import { useHeader } from "@/context/HeaderContext";
 import AmeNavButton from "@/ui/buttons/AmeNavButton";
+import AmeSearchInput from "@/ui/input/AmeSearchInput";
+import AmeActionIcon from "@/ui/buttons/AmeActionIcon";
 
 const actionProps: ActionIconProps = {
     variant: "light",
@@ -59,7 +61,7 @@ export function Header({ state, tabletMatch }: Props) {
             <Group style={{ flexGrow: 1, justifyContent: "center" }}>
                 <AmeNavButton asIcon navigateTo="back" />
                 <AmeNavButton asIcon navigateTo="next" />
-                <TextInput
+                <AmeSearchInput
                     size={componentSize}
                     radius="md"
                     placeholder="Search anything..."
@@ -69,17 +71,13 @@ export function Header({ state, tabletMatch }: Props) {
                 />
             </Group>
             <Group>
-                <Tooltip label="Search">
-                    <ActionIcon hiddenFrom="md" size={componentSize} title="search" variant="transparent">
-                        <IconSearch />
-                    </ActionIcon>
-                </Tooltip>
+                <AmeActionIcon hiddenFrom="md" size={componentSize} title="Search">
+                    <IconSearch size={18} />
+                </AmeActionIcon>
                 <ColorSchemeToggle />
-                <Tooltip label="Notifications">
-                    <ActionIcon title="notifications" size={componentSize} variant="transparent">
-                        <IconBell />
-                    </ActionIcon>
-                </Tooltip>
+                <AmeActionIcon title="Notifications" size={componentSize}>
+                    <IconBell size={18} />
+                </AmeActionIcon>
                 <Menu width={200} shadow="md">
                     <Menu.Target>
                         <ActionIcon title="user menu" size={componentSize} variant="transparent">

@@ -4,6 +4,8 @@ import { Button, Divider, Flex, Paper, Select, Stack, Text, Title } from "@manti
 import { useState } from "react";
 import { IconCircleKey, IconDeviceMobile, IconMessage } from "@tabler/icons-react";
 import { PasswordResetForm } from "@/components";
+import AmeTitle from "@/ui/typography/AmeTitle";
+import AmeSelect from "@/ui/select/AmeSelect";
 
 const twoFactorAuths = [
     {
@@ -32,9 +34,9 @@ function Security() {
         <>
             <PasswordResetForm mb="md" />
             <Paper withBorder p="md">
-                <Title order={5} mb="sm">
+                <AmeTitle as="card-header" mb="sm">
                     Two-factor authentication
-                </Title>
+                </AmeTitle>
                 <Text size="sm">
                     Two-factor authentication adds an additional layer of security to your account by requiring more
                     than just a password to sign in. <a href="#">Learn more about two-factor authentication.</a>
@@ -48,7 +50,7 @@ function Security() {
                         <Text size="sm">
                             Set your preferred method to use for two-factor authentication when signing into GitHub.
                         </Text>
-                        <Select
+                        <AmeSelect
                             label=""
                             data={["Authenticator App", "Passkeys", "SMS", "Security keys"]}
                             value={preferredAuth}

@@ -3,6 +3,8 @@ import { Button, Grid, NumberInput, Paper, PaperProps, rem, Textarea, TextInput,
 import AmeSelect from "@/ui/select/AmeSelect";
 import { IconDeviceFloppy } from "@tabler/icons-react";
 import { useForm } from "@mantine/form";
+import AmeTitle from "@/ui/typography/AmeTitle";
+import AmeActionTextInput from "@/ui/input/AmeActionTextInput";
 
 interface UserBillingFormProps extends PaperProps {}
 
@@ -33,12 +35,12 @@ export function UserBillingForm({ ...others }: UserBillingFormProps) {
 
     return (
         <Paper component="form" onSubmit={billingForm.onSubmit(console.log)} p="md" withBorder {...others}>
-            <Title order={5} mb="md">
+            <AmeTitle as="card-header" mb="md">
                 Billing information
-            </Title>
+            </AmeTitle>
             <Grid>
                 <Grid.Col span={{ base: 12, md: 6 }}>
-                    <TextInput
+                    <AmeActionTextInput
                         label="First name"
                         placeholder="first name"
                         key={billingForm.key("firstName")}
