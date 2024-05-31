@@ -1,18 +1,18 @@
 "use client";
 import { ActionIcon, ActionIconProps, AppShell, Box, Group, Stack, Title } from "@mantine/core";
-import { IconArrowBarRight, IconArrowBarToLeft, IconArrowBarToRight } from "@tabler/icons-react";
-import { useSidebar } from "@/context/SidebarContext";
+import { IconArrowBarToDown, IconArrowBarToUp } from "@tabler/icons-react";
+import { useFooter } from "@/context/FooterContext";
 
 const actionProps: ActionIconProps = {
     variant: "light",
 };
 
-interface SidebarProps {
+interface FooterProps {
     state: "full" | "compact" | "icons" | "hidden";
 }
 
-export const Sidebar = ({ state }: SidebarProps) => {
-    const { handleExpand, handleCollapse } = useSidebar();
+export const Footer = ({ state }: FooterProps) => {
+    const { handleExpand, handleCollapse } = useFooter();
 
     return (
         <Box p="xs">
@@ -20,10 +20,10 @@ export const Sidebar = ({ state }: SidebarProps) => {
                 {state === "compact" && (
                     <Group justify="flex-end" gap="xs">
                         <ActionIcon onClick={handleExpand} {...actionProps}>
-                            <IconArrowBarToLeft size={18} />
+                            <IconArrowBarToUp size={18} />
                         </ActionIcon>
                         <ActionIcon onClick={handleCollapse} {...actionProps}>
-                            <IconArrowBarToRight size={18} />
+                            <IconArrowBarToDown size={18} />
                         </ActionIcon>
                     </Group>
                 )}
@@ -31,20 +31,22 @@ export const Sidebar = ({ state }: SidebarProps) => {
                 {state === "full" && (
                     <Group justify="flex-end" gap="xs">
                         <ActionIcon onClick={handleCollapse} {...actionProps}>
-                            <IconArrowBarRight size={18} />
+                            <IconArrowBarToDown size={18} />
                         </ActionIcon>
                     </Group>
                 )}
                 {state === "icons" && (
                     <Group justify="center" gap="xs">
                         <ActionIcon onClick={handleCollapse} {...actionProps}>
-                            <IconArrowBarRight size={18} />
+                            <IconArrowBarToDown size={18} />
                         </ActionIcon>
                     </Group>
                 )}
+            </AppShell.Section>
 
+            <AppShell.Section>
                 <Stack mt="md" gap="xs" align="stretch">
-                    <Title>Aside</Title>
+                    <Title>Footer</Title>
                 </Stack>
             </AppShell.Section>
         </Box>
