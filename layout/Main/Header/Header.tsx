@@ -91,7 +91,11 @@ export function Header({ state, tabletMatch }: Props) {
                     </Menu.Target>
 
                     <Menu.Dropdown>
-                        <Menu.Item component={Link} href={PATH_USER.settings} leftSection={<IconSettings2 size={16} />}>
+                        <Menu.Item
+                            component={Link}
+                            href={PATH_USER.tabs("personal")}
+                            leftSection={<IconSettings2 size={16} />}
+                        >
                             Settings
                         </Menu.Item>
                     </Menu.Dropdown>
