@@ -15,6 +15,7 @@ import Link from "next/link";
 import { PATH_USER } from "@/routes";
 import { useLayout } from "@/context/LayoutContext";
 import { useHeader } from "@/context/HeaderContext";
+import AmeNavButton from "@/ui/button/AmeNavButton";
 
 const actionProps: ActionIconProps = {
     variant: "light",
@@ -56,6 +57,8 @@ export function Header({ state, tabletMatch }: Props) {
                 )}
             </Group>
             <Group style={{ flexGrow: 1, justifyContent: "center" }}>
+                <AmeNavButton asIcon navigateTo="back" />
+                <AmeNavButton asIcon navigateTo="next" />
                 <TextInput
                     size={componentSize}
                     radius="md"

@@ -7,7 +7,7 @@ import { Navbar } from "./Navbar";
 import { Header } from "./Header";
 import { Sidebar } from "./Sidebar";
 import { useSidebar } from "@/context/SidebarContext";
-import { IconArrowBarLeft, IconArrowBarToDown, IconArrowBarToUp } from "@tabler/icons-react";
+import { IconArrowBarLeft, IconArrowBarToDown, IconArrowBarToRight, IconArrowBarToUp } from "@tabler/icons-react";
 import { useFooter } from "@/context/FooterContext";
 import { Footer } from "@/layout/Main/Footer";
 import { useHeader } from "@/context/HeaderContext";
@@ -18,7 +18,7 @@ type Props = {
 };
 
 export function MainLayout({ children }: Props) {
-    const { opened, navbarState, handleIconMouseover, handleEndIconMouseover } = useLayout();
+    const { opened, navbarState, handleIconMouseover, handleEndIconMouseover, toggleNavbar } = useLayout();
     const { asideState, toggleAside } = useSidebar();
     const { footerState, toggleFooter } = useFooter();
     const { headerState, toggleHeader } = useHeader();
@@ -140,6 +140,15 @@ export function MainLayout({ children }: Props) {
                 )}
                 <AppShell.Main>
                     <Box>{children}</Box>
+                    <Affix position={{ top: headerHeight, left: 0 }}>
+                        <Transition transition="slide-up" mounted={navbarState === "hidden"}>
+                            {(transitionStyles) => (
+                                <ActionIcon onClick={() => toggleNavbar("full")} style={transitionStyles}>
+                                    <IconArrowBarToRight />
+                                </ActionIcon>
+                            )}
+                        </Transition>
+                    </Affix>
                     <Affix position={{ bottom: 0, left: navbarWidth }}>
                         <Transition transition="slide-up" mounted={footerState === "hidden"}>
                             {(transitionStyles) => (

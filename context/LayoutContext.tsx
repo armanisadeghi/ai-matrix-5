@@ -28,11 +28,10 @@ export const useLayout = () => {
 
 interface LayoutProviderProps {
     children: ReactNode;
-    initialNavbarState: NavState;
-    initialAsideState?: NavState;
+    initialNavbarState?: NavState;
 }
 
-export const LayoutProvider: React.FC<LayoutProviderProps> = ({ children, initialNavbarState, initialAsideState }) => {
+export const LayoutProvider: React.FC<LayoutProviderProps> = ({ children, initialNavbarState }) => {
     const [opened, setOpened] = useState(false);
     const [asideOpen, setAsideOpen] = useState(false);
     const [iconMouseOver, setIconMouseOver] = useState(false);
