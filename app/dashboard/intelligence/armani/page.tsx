@@ -1,30 +1,27 @@
-'use client';
-import React, { useContext } from 'react';
-import { HistoryContext } from '@/context/AiContext/HistoryContext';
-import ChatSidebar from "@/app/dashboard/intelligence/ai-chatbot/components/sidebar/ChatSidebar";
-import { useSidebar } from "@/context/SidebarContext";
+// matrix-apps/page.tsx
+"use client";
 
-const ParentComponent: React.FC = () => {
-    const { chatHistory, isLoading } = useContext(HistoryContext);
-    const { setSidebarContent } = useSidebar();
+import React from "react";
 
-    React.useEffect(() => {
-        if (isLoading) {
-            setSidebarContent(<div>Loading...</div>);
-        } else {
-            setSidebarContent(
-                <ChatSidebar chatHistory={chatHistory} isLoading={isLoading} />
-            );
-        }
-
-        return () => {
-            setSidebarContent(null);
-        };
-    }, [isLoading, setSidebarContent]);
-
+const SampleParentPage = () => {
     return (
-        <ChatSidebar chatHistory={chatHistory} isLoading={isLoading} />
+        <div>
+            <div>Test Structure Page</div>
+
+
+
+
+
+            <p className="text-center">
+                In this section, we will need to create an app dashboard for each app
+            </p>
+
+
+
+
+
+        </div>
     );
 };
 
-export default ParentComponent;
+export default SampleParentPage;

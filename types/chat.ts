@@ -28,7 +28,7 @@ export interface ChatRequest {
     activeChatId: string | null;
 }
 
-// Request Metadata Context
+// Metadata Metadata Context
 export interface RequestMetadata {
     requestId: string;
     requestIndex: number;

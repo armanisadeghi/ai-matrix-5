@@ -5,7 +5,6 @@ import { Burger } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import ResponseArea from './components/response/ResponseArea';
 import UserMessageArea from './components/input/UserMessageArea';
-import HistoryEntries from './components/response/HistoryEntries';
 import { HistoryContext } from "@/context/AiContext/HistoryContext";
 import { useSidebar } from "@/context/SidebarContext";
 import ChatSidebar from "@/app/dashboard/intelligence/ai-chatbot/components/sidebar/ChatSidebar";

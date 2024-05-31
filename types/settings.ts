@@ -35,7 +35,7 @@ export interface ControlSettings {
     [key: string]: any;
 }
 
-// Request Settings
+// Metadata Settings
 export interface RequestSettings {
     chatSettings: ChatSettings;
     variablesData: VariablesData;

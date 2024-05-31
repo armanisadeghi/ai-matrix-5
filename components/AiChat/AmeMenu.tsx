@@ -9,7 +9,7 @@ import { IconTrash } from '@tabler/icons-react';
 interface AmeMenuProps {
     children: ReactNode;
     onPeak?: () => void;
-    context?: React.Context<any>;  // Optional prop for context
+    context?: React.Context<any>;  // Optional prop for store
     onShare?: () => void;
     onRename?: () => void;
     onDownload?: () => void;
