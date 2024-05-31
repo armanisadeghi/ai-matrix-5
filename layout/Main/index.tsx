@@ -175,7 +175,7 @@ export function MainLayout({ children }: Props) {
                     <Footer state={footerState} />
                 </AppShell.Footer>
             </AppShell>
-            {/*aside section button*/}
+            {/*aside section buttons*/}
             <Affix position={{ top: headerHeight, right: 0 }}>
                 <Transition transition="slide-left" mounted={asideState === "hidden"}>
                     {(transitionStyles) => (

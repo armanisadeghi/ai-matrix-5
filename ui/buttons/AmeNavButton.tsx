@@ -1,14 +1,14 @@
 // use this for back and forward navigation
 
 import { useRouter } from "next/navigation";
-import AmeActionIcon from "@/ui/button/AmeActionIcon";
-import AmeButton from "@/ui/button/AmeButton";
+import AmeActionIcon from "@/ui/buttons/AmeActionIcon";
+import AmeButton from "@/ui/buttons/AmeButton";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import { ActionIconProps, ButtonProps } from "@mantine/core";
 
 interface AmeNavButtonProps {
     navigateTo: "back" | "next";
-    asIcon?: boolean; // prefer icon button or full button
+    asIcon?: boolean; // prefer icon buttons or full buttons
 }
 
 function AmeNavButton({ navigateTo, asIcon }: AmeNavButtonProps) {
@@ -23,14 +23,22 @@ function AmeNavButton({ navigateTo, asIcon }: AmeNavButtonProps) {
     };
 
     const canNavigate = () => {
-        // todo: will look for alternatives instead of using experimental navigation api
+        // todo: will look for alternatives instead of using experimental navigation api supported in chrome and edge
+        // @ts-ignore
+        let isChromium = window.chrome;
         let canNav = true;
-        if (navigateTo == "back") {
+
+        if (isChromium) {
             // @ts-ignore
-            canNav = navigation.canGoBack;
-        } else {
-            // @ts-ignore
-            canNav = navigation.canGoForward;
+            if (typeof navigation !== undefined) {
+                if (navigateTo == "back") {
+                    // @ts-ignore
+                    canNav = navigation.canGoBack;
+                } else {
+                    // @ts-ignore
+                    canNav = navigation.canGoForward;
+                }
+            }
         }
 
         return canNav;

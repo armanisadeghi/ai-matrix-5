@@ -15,7 +15,7 @@ import Link from "next/link";
 import { PATH_USER } from "@/routes";
 import { useLayout } from "@/context/LayoutContext";
 import { useHeader } from "@/context/HeaderContext";
-import AmeNavButton from "@/ui/button/AmeNavButton";
+import AmeNavButton from "@/ui/buttons/AmeNavButton";
 
 const actionProps: ActionIconProps = {
     variant: "light",

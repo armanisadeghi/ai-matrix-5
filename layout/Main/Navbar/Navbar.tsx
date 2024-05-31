@@ -73,7 +73,7 @@ export const Navbar = ({ state }: NavbarProps) => {
                 {navItems.map((item, index) => (
                     <>
                         <NavLink
-                            key={index}
+                            key={item.label}
                             label={
                                 <Group
                                     style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
