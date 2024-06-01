@@ -2,89 +2,132 @@
 
 import { atom } from 'jotai';
 import { atomFamily } from 'jotai/utils';
-import { Recipe, Permissions, CallParams, PostParams } from '../types/recipe';
+import {
+    IdType,
+    NameType,
+    TagsType,
+    DescriptionType,
+    SampleOutputType,
+    PublicType,
+    GroupsType,
+    OrgsType,
+    UsersType,
+    Permissions,
+    ModelsType,
+    BrokersType,
+    OverridesType,
+    CallParams,
+    ReturnBrokerType,
+    ProcessorsType,
+    DefaultDisplayType,
+    NextStepOptionsType,
+    PostParams,
+    Recipe
+} from '../types/recipe';
+import { brokersAtom } from "@/org/atoms/brokerAtoms";
 
-// Atom for the entire recipe data
-export const recipeAtom = atom<Recipe | null>(null);
+// Primitive atom for AI Models -- This will probably come from somewhere else.
+export const aiModelsAtom = atom<string[]>([]);
 
-// Individual atoms for each property in Recipe
-export const recipeIdAtom = atom((get) => get(recipeAtom)?.id || '');
-export const recipeNameAtom = atom((get) => get(recipeAtom)?.name || '');
-export const recipeTagsAtom = atom((get) => get(recipeAtom)?.tags || []);
-export const recipeDescriptionAtom = atom((get) => get(recipeAtom)?.description || '');
-export const recipePermissionsAtom = atom((get) => get(recipeAtom)?.permissions || {} as Permissions);
-export const recipeMessagesAtom = atom((get) => get(recipeAtom)?.messages || []);
-export const recipeCallParamsAtom = atom((get) => get(recipeAtom)?.callParams || {} as CallParams);
-export const recipePostParamsAtom = atom((get) => get(recipeAtom)?.postParams || {} as PostParams);
-export const recipeSampleOutputAtom = atom((get) => get(recipeAtom)?.sampleOutput || '');
+// Primitive atoms for the properties of `post_params`
+export const postParamsOutputVariableAtom = atom<ReturnBrokerType>({});
+export const postParamsProcessorsPermanentAtom = atom<ProcessorsType>({});
+export const postParamsProcessorsOptionalAtom = atom<ProcessorsType>({});
+export const postParamsDefaultDisplayAtom = atom<DefaultDisplayType>({ text_area: true });
+export const postParamsNextStepOptionsAtom = atom<NextStepOptionsType>({});
 
-// Individual atoms for each property in Permissions
-export const permissionsPublicAtom = atom((get) => get(recipePermissionsAtom)?.public || false);
-export const permissionsGroupsAtom = atom((get) => get(recipePermissionsAtom)?.groups || []);
-export const permissionsOrgsAtom = atom((get) => get(recipePermissionsAtom)?.orgs || []);
-export const permissionsUsersAtom = atom((get) => get(recipePermissionsAtom)?.users || []);
-
-// Individual atoms for each property in CallParams
-export const callParamsModelsAtom = atom((get) => get(recipeCallParamsAtom)?.models || {});
-export const callParamsBrokersAtom = atom((get) => get(recipeCallParamsAtom)?.brokers || []);
-export const callParamsOverridesAtom = atom((get) => get(recipeCallParamsAtom)?.overrides || {});
-
-// Individual atoms for each property in PostParams
-export const postParamsReturnBrokerAtom = atom((get) => get(recipePostParamsAtom)?.returnBroker || {});
-export const postParamsProcessorsAtom = atom((get) => get(recipePostParamsAtom)?.processors || {});
-export const postParamsDefaultDisplayAtom = atom((get) => get(recipePostParamsAtom)?.defaultDisplay || {});
-export const postParamsNextStepOptionsAtom = atom((get) => get(recipePostParamsAtom)?.nextStepOptions || {});
-
-// Atom families for dynamic elements in Permissions
-export const permissionsGroupAtomFamily = atomFamily((index: number) =>
-    atom((get) => get(permissionsGroupsAtom)?.[index] || '')
+// Derived atom for the `processors` object within `post_params`
+export const postParamsProcessorsAtom = atom(
+    (get) => ({
+        permanent: get(postParamsProcessorsPermanentAtom),
+        optional: get(postParamsProcessorsOptionalAtom),
+    })
 );
 
-export const permissionsOrgAtomFamily = atomFamily((index: number) =>
-    atom((get) => get(permissionsOrgsAtom)?.[index] || '')
+// Derived atom for the entire `post_params` data
+export const postParamsAtom = atom<PostParams>(
+    (get) => ({
+        returnBroker: get(postParamsOutputVariableAtom),
+        processors: get(postParamsProcessorsAtom),
+        defaultDisplay: get(postParamsDefaultDisplayAtom),
+        nextStepOptions: get(postParamsNextStepOptionsAtom),
+    })
 );
 
-export const permissionsUserAtomFamily = atomFamily((index: number) =>
-    atom((get) => get(permissionsUsersAtom)?.[index] || '')
+// Primitive atoms for the properties of `models`
+export const verifiedModelsAtom = atom<ModelsType>({});
+export const eliteModelAtom = atom<string>('');
+export const trialModelsAtom = atom<ModelsType>({});
+
+// Derived atom for the `models` object within `call_params`
+export const modelsAtom = atom(
+    (get) => ({
+        verified_models: get(aiModelsAtom),
+        elite_model: get(eliteModelAtom),
+        trial_models: get(aiModelsAtom),
+    })
 );
 
-// Atom families for dynamic elements in CallParams
-export const callParamsBrokerAtomFamily = atomFamily((index: number) =>
-    atom((get) => get(callParamsBrokersAtom)?.[index] || {})
+// Primitive atom for `overrides` object
+export const overridesAtom = atom<OverridesType>({});
+
+// Derived atom for the entire `call_params` data
+export const callParamsAtom = atom<CallParams>(
+    (get) => ({
+        models: get(modelsAtom),
+        brokers: get(brokersAtom),
+        overrides: get(overridesAtom),
+    })
 );
 
-// Derived atom for full Recipe
-export const derivedRecipeAtom = atom<Recipe>((get) => ({
-    id: get(recipeIdAtom),
-    name: get(recipeNameAtom),
-    tags: get(recipeTagsAtom),
-    description: get(recipeDescriptionAtom),
-    permissions: get(recipePermissionsAtom),
-    messages: get(recipeMessagesAtom),
-    callParams: get(recipeCallParamsAtom),
-    postParams: get(recipePostParamsAtom),
-    sampleOutput: get(recipeSampleOutputAtom),
+// Primitive atoms for the properties of `recipes`
+export const recipeNameAtom = atom<NameType>('');
+export const recipeTagsAtom = atom<TagsType>([]);
+export const recipeDescriptionAtom = atom<DescriptionType>('');
+export const recipeSampleOutputAtom = atom<SampleOutputType>('');
+
+// Primitive atoms for the properties of `permissions`
+export const permissionsPublicAtom = atom<PublicType>(false);
+export const permissionsGroupsAtom = atom<GroupsType>([]);
+export const permissionsOrgsAtom = atom<OrgsType>([]);
+export const permissionsUsersAtom = atom<UsersType>([]);
+
+// Derived atom for the `permissions` object within `recipes`
+export const permissionsAtom = atom<Permissions>(
+    (get) => ({
+        public: get(permissionsPublicAtom),
+        groups: get(permissionsGroupsAtom),
+        orgs: get(permissionsOrgsAtom),
+        users: get(permissionsUsersAtom),
+    })
+);
+
+// Primitive atoms for the properties of `messages`
+export const messageIndexAtom = atom<number>(0);
+export const messageRoleTypeAtom = atom<string>(''); // 'system', 'user', or 'assistant'
+export const messageTextAtom = atom<string>('');
+
+// Atom family for `recipeMessages`
+export const recipeMessagesFamily = atomFamily((index: number) => atom({
+    index: index,
+    roleType: '', // 'system', 'user', or 'assistant'
+    text: '',
 }));
 
-// Derived atom for Permissions
-export const derivedPermissionsAtom = atom<Permissions>((get) => ({
-    public: get(permissionsPublicAtom),
-    groups: get(permissionsGroupsAtom),
-    orgs: get(permissionsOrgsAtom),
-    users: get(permissionsUsersAtom),
-}));
-
-// Derived atom for CallParams
-export const derivedCallParamsAtom = atom<CallParams>((get) => ({
-    models: get(callParamsModelsAtom),
-    brokers: get(callParamsBrokersAtom),
-    overrides: get(callParamsOverridesAtom),
-}));
-
-// Derived atom for PostParams
-export const derivedPostParamsAtom = atom<PostParams>((get) => ({
-    returnBroker: get(postParamsReturnBrokerAtom),
-    processors: get(postParamsProcessorsAtom),
-    defaultDisplay: get(postParamsDefaultDisplayAtom),
-    nextStepOptions: get(postParamsNextStepOptionsAtom),
-}));
+// Derived atom for the entire recipe data
+export const recipeAtom = atom(
+    (get) => ({
+        id: '', // Assuming IdType is set elsewhere or use a default value
+        name: get(recipeNameAtom),
+        tags: get(recipeTagsAtom),
+        description: get(recipeDescriptionAtom),
+        permissions: get(permissionsAtom),
+        messages: [ // Need a way to get the number of messages to be able to use this method.
+            get(recipeMessagesFamily(0)),
+            get(recipeMessagesFamily(1))
+        ],
+        callParams: get(callParamsAtom),
+        postParams: get(postParamsAtom),
+        sampleOutput: get(recipeSampleOutputAtom),
+    })
+);

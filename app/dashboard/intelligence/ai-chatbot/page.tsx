@@ -12,15 +12,13 @@ import ChatSidebar from "@/app/dashboard/intelligence/ai-chatbot/components/side
 const ChatPage = () => {
     const [bottomPadding, setBottomPadding] = useState(0);
     const [opened, setOpened] = useState(false);
+    const [userInput, setUserInput] = useState('');
     const textareaContainerRef = useRef<HTMLDivElement>(null);
     const isSmallScreen = useMediaQuery('(max-width: 600px)');
-    const {
-        chatHistory,
-        isLoading
-    } = useContext(HistoryContext);
-    const {setSidebarContent} = useSidebar();
+    const { chatHistory, isLoading } = useContext(HistoryContext);
+    const { setSidebarContent } = useSidebar();
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (isLoading) {
             setSidebarContent(<div>Loading...</div>);
         } else {
@@ -32,7 +30,7 @@ const ChatPage = () => {
         return () => {
             setSidebarContent(null);
         };
-    }, [isLoading, setSidebarContent]);
+    }, [isLoading, setSidebarContent, chatHistory]);
 
     useEffect(() => {
         document.body.style.overflow = 'hidden';
@@ -58,6 +56,17 @@ const ChatPage = () => {
         console.log('UserMessageArea container ref:', textareaContainerRef.current);
     }, [textareaContainerRef.current]);
 
+    const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setUserInput(event.target.value);
+    };
+
+    const handleSendMessage = () => {
+        if (userInput.trim()) {
+            console.log("Message sent:", userInput);
+            setUserInput('');
+        }
+    };
+
     return (
         <>
             <div style={{
@@ -66,7 +75,12 @@ const ChatPage = () => {
                 height: '100%'
             }}>
                 <ResponseArea bottomPadding={bottomPadding}/>
-                <UserMessageArea ref={textareaContainerRef}/>
+                <UserMessageArea
+                    ref={textareaContainerRef}
+                    userInput={userInput}
+                    handleInputChange={handleInputChange}
+                    handleSendMessage={handleSendMessage}
+                />
             </div>
             {isSmallScreen && (
                 <div style={{

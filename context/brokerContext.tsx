@@ -1,17 +1,16 @@
 "use client";
-import { BrokerContextValue } from '@/types/broker';
-import React, { ReactNode, useContext } from "react";
+import { Broker, BrokerContextValue } from '@/types/broker';
+import React, { ReactNode, useContext, useState } from "react";
 
 export const BrokerContext = React.createContext<BrokerContextValue>({
     brokers: [],
+    setBrokers: () => { },
 });
 
 export const BrokerProvider = ({ children }: { children: ReactNode }) => {
-    const brokerContextValue: BrokerContextValue = {
-        brokers: [],
-    };
+    const [brokers, setBrokers] = useState<Broker[]>([]);
     return (
-        <BrokerContext.Provider value={brokerContextValue}>
+        <BrokerContext.Provider value={{ brokers, setBrokers }}>
             {children}
         </BrokerContext.Provider>
     );

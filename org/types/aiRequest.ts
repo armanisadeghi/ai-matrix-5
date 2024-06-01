@@ -7,7 +7,7 @@ import { ChatData, preparedMessages } from '@/org/types/chatData';
 
 import { Settings } from '@/org/types/settings';
 
-export interface AIRequest {
+export interface aiRequest {
     metadata: Metadata;  // Provides the core basics for the request to the backend.
     user: User;  // Provides the user's ID and token. (used for authentication and for proper storage and retrieval of chat history, user preferences, and other user or company-specific data)
     chatData: ChatData;  // The core request to the AI Model. This includes the user's message and the history of the conversation.

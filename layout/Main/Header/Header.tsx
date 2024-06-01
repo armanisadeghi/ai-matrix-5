@@ -1,63 +1,29 @@
-import {
-    ActionIcon,
-    ActionIconProps,
-    Avatar,
-    Burger,
-    Group,
-    MantineSize,
-    Menu,
-    TextInput,
-    Tooltip,
-} from "@mantine/core";
-import { IconArrowBarToDown, IconArrowBarToUp, IconBell, IconSearch, IconSettings2 } from "@tabler/icons-react";
+import { ActionIcon, Avatar, Burger, Group, Menu, TextInput, Tooltip } from "@mantine/core";
+import { IconBell, IconSearch, IconSettings2 } from "@tabler/icons-react";
 import { ColorSchemeToggle, Logo } from "@/components";
 import Link from "next/link";
 import { PATH_USER } from "@/routes";
 import { useLayout } from "@/context/LayoutContext";
-import { useHeader } from "@/context/HeaderContext";
-
-const actionProps: ActionIconProps = {
-    variant: "light",
-};
+import { useSidebar } from "@/context/SidebarContext";
 
 type Props = {
-    state: "large" | "medium" | "hidden";
     tabletMatch?: boolean;
 };
 
-export function Header({ state, tabletMatch }: Props) {
+export function Header({ tabletMatch }: Props) {
     const { toggleOpened, opened } = useLayout();
-    const { headerState, handleCollapse, handleExpand } = useHeader();
-
-    const componentSize: MantineSize = headerState === "large" ? "md" : "sm";
+    const { asideOpen, toggleAside, sidebarContent } = useSidebar();
 
     return (
         <Group h="100%" px="md" align="center" justify="space-between" style={{ flexWrap: "nowrap" }}>
             <Group>
                 <Burger opened={opened} onClick={toggleOpened} hiddenFrom="sm" size="sm" />
+                <Burger opened={asideOpen} onClick={toggleAside} visibleFrom="lg" size="sm" />
                 <Logo />
-                {state === "medium" && (
-                    <Group justify="flex-end" gap="xs">
-                        <ActionIcon onClick={handleCollapse} {...actionProps}>
-                            <IconArrowBarToUp size={18} />
-                        </ActionIcon>
-                        <ActionIcon onClick={handleExpand} {...actionProps}>
-                            <IconArrowBarToDown size={18} />
-                        </ActionIcon>
-                    </Group>
-                )}
-
-                {state === "large" && (
-                    <Group justify="flex-end" gap="xs">
-                        <ActionIcon onClick={handleCollapse} {...actionProps}>
-                            <IconArrowBarToUp size={18} />
-                        </ActionIcon>
-                    </Group>
-                )}
             </Group>
             <Group style={{ flexGrow: 1, justifyContent: "center" }}>
                 <TextInput
-                    size={componentSize}
+                    size="xs"
                     radius="md"
                     placeholder="Search anything..."
                     leftSection={<IconSearch size={14} />}
@@ -67,19 +33,19 @@ export function Header({ state, tabletMatch }: Props) {
             </Group>
             <Group>
                 <Tooltip label="Search">
-                    <ActionIcon hiddenFrom="md" size={componentSize} title="search" variant="transparent">
-                        <IconSearch />
+                    <ActionIcon hiddenFrom="md" title="search" variant="transparent">
+                        <IconSearch size={18} />
                     </ActionIcon>
                 </Tooltip>
                 <ColorSchemeToggle />
                 <Tooltip label="Notifications">
-                    <ActionIcon title="notifications" size={componentSize} variant="transparent">
-                        <IconBell />
+                    <ActionIcon title="notifications" variant="transparent">
+                        <IconBell size={18} />
                     </ActionIcon>
                 </Tooltip>
                 <Menu width={200} shadow="md">
                     <Menu.Target>
-                        <ActionIcon title="user menu" size={componentSize} variant="transparent">
+                        <ActionIcon title="user menu" variant="transparent">
                             <Avatar
                                 src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-5.png"
                                 radius="50%"

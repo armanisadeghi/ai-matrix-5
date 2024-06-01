@@ -1,85 +1,63 @@
 // /atoms/chatDataAtoms.tsx
 
 import { atom } from 'jotai';
-import { atomFamily, atomWithStorage } from 'jotai/utils'
 
-import { ChatData, CurrentMessage, PromptMessage, FormResponse, CustomInput, ChatHistory, preparedMessages } from '../types/chatData';
+// Primitive atoms for chat properties
+export const chatIdAtom = atom<string>('');
+export const chatTitleAtom = atom<string>('');
 
-// Atom for the entire chat data
-export const chatDataAtom = atom<ChatData | null>(null);
+// Primitive atoms for message properties
+export const messageIdAtom = atom<string>('');
+export const messageTextAtom = atom<string>('');
+export const timestampAtom = atom<string>('');
 
-// Individual atoms for each property in ChatData
-export const chatDataIdAtom = atom((get) => get(chatDataAtom)?.id || '');
-export const chatDataNameAtom = atom((get) => get(chatDataAtom)?.name || '');
-export const chatDataCurrentMessageAtom = atom((get) => get(chatDataAtom)?.currentMessage || {} as CurrentMessage);
-export const chatDataChatHistoryAtom = atom((get) => get(chatDataAtom)?.chatHistory || [] as ChatHistory[]);
-
-// Individual atoms for each property in CurrentMessage
-export const currentMessagePromptMessageAtom = atom((get) => get(chatDataCurrentMessageAtom)?.promptMessage || {} as PromptMessage);
-export const currentMessageFormResponsesAtom = atom((get) => get(chatDataCurrentMessageAtom)?.formResponses || [] as FormResponse[]);
-export const currentMessageCustomInputsAtom = atom((get) => get(chatDataCurrentMessageAtom)?.customInputs || [] as CustomInput[]);
-
-// Derived atom for the prompt message details
-export const promptMessageIndexAtom = atom((get) => get(currentMessagePromptMessageAtom)?.index || 0);
-export const promptMessageRoleTypeAtom = atom((get) => get(currentMessagePromptMessageAtom)?.roleType || 'user');
-export const promptMessageMessageAtom = atom((get) => get(currentMessagePromptMessageAtom)?.message || '');
-
-// Atom families for dynamic elements
-export const formResponseAtomFamily = atomFamily((index: number) =>
-    atom((get) => get(currentMessageFormResponsesAtom)?.find(fr => fr.index === index) || {} as FormResponse)
+// Derived atom for system messages
+export const systemMessageAtom = atom(
+    (get) => ({
+        messageId: get(messageIdAtom),
+        messageText: get(messageTextAtom),
+        timestamp: get(timestampAtom),
+        role: 'system',
+    })
 );
 
-export const customInputAtomFamily = atomFamily((index: number) =>
-    atom((get) => get(currentMessageCustomInputsAtom)?.find(ci => ci.index === index) || {} as CustomInput)
+// Derived atom for user messages
+export const userMessageAtom = atom(
+    (get) => ({
+        messageId: get(messageIdAtom),
+        messageText: get(messageTextAtom),
+        timestamp: get(timestampAtom),
+        role: 'user',
+    })
 );
 
-export const chatHistoryAtomFamily = atomFamily((index: number) =>
-    atom((get) => get(chatDataChatHistoryAtom)?.find(ch => ch.index === index) || {} as ChatHistory)
+// Derived atom for assistant messages
+export const assistantMessageAtom = atom(
+    (get) => ({
+        messageId: get(messageIdAtom),
+        messageText: get(messageTextAtom),
+        timestamp: get(timestampAtom),
+        role: 'assistant',
+    })
 );
 
-// Derived atom for current form responses
-export const currentFormResponseQuestionsAtom = atom((get) =>
-    get(currentMessageFormResponsesAtom).map(fr => fr.question)
+// Derived atom for chat messages
+export const chatMessagesAtom = atom((get) => [
+    get(systemMessageAtom),
+    get(userMessageAtom),
+    get(assistantMessageAtom)
+]);
+
+// Derived atom for the entire chat data
+export const chatDataAtom = atom(
+    (get) => ({
+        chatId: get(chatIdAtom),
+        chatTitle: get(chatTitleAtom),
+        chatMessages: get(chatMessagesAtom),
+    })
 );
 
-export const currentFormResponseAnswersAtom = atom((get) =>
-    get(currentMessageFormResponsesAtom).map(fr => fr.response)
-);
-
-// Derived atom for custom inputs
-export const customInputBrokersAtom = atom((get) =>
-    get(currentMessageCustomInputsAtom).map(ci => ci.inputBroker)
-);
-
-export const customInputValuesAtom = atom((get) =>
-    get(currentMessageCustomInputsAtom).map(ci => ci.inputValue)
-);
-
-// Derived atom for chat history messages
-export const chatHistoryMessagesAtom = atom((get) =>
-    get(chatDataChatHistoryAtom).map(ch => ({ type: ch.roleType, text: ch.message }))
-);
-
-// Atom for combined messages ensuring full structure
-export const preparedMessagesAtom = atom((get) => {
-    const chatHistoryMessages = get(chatHistoryMessagesAtom);
-    const promptMessage = get(currentMessagePromptMessageAtom);
-
-    if (!promptMessage.message) {
-        return [];
-    }
-
-    return [...chatHistoryMessages, { type: promptMessage.roleType, text: promptMessage.message }];
-});
-
-// Derived atom for full ChatData
-export const derivedChatDataAtom = atom<ChatData>((get) => ({
-    id: get(chatDataIdAtom),
-    name: get(chatDataNameAtom),
-    currentMessage: {
-        promptMessage: get(currentMessagePromptMessageAtom),
-        formResponses: get(currentMessageFormResponsesAtom),
-        customInputs: get(currentMessageCustomInputsAtom),
-    },
-    chatHistory: get(chatDataChatHistoryAtom),
-}));
+// Primitive atoms for additional chat properties
+export const currentChatAtom = atom<string>('');
+export const isStreamingAtom = atom<boolean>(false);
+export const submitOnEnterAtom = atom<boolean>(true);

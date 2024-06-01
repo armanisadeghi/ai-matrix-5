@@ -1,69 +1,24 @@
 // AiContext/SidebarContext.tsx
-import React, { createContext, useContext, useState, ReactNode } from "react";
-import { useLocalStorage } from "@mantine/hooks";
-
-type NavState = "full" | "compact" | "icons" | "hidden";
+"use client";
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface SidebarContextProps {
     asideOpen: boolean;
-    asideState: NavState;
-    toggleAside: (value: NavState) => void;
+    toggleAside: () => void;
     setSidebarContent: (content: ReactNode) => void;
     sidebarContent: ReactNode;
-    handleToggle: () => void;
-    handleExpand: () => void;
-    handleCollapse: () => void;
 }
 
 const SidebarContext = createContext<SidebarContextProps | undefined>(undefined);
 
-export const SidebarProvider = ({
-    children,
-    initialAsideState,
-}: {
-    children: ReactNode;
-    initialAsideState?: NavState;
-}) => {
+export const SidebarProvider = ({ children }: { children: ReactNode }) => {
     const [asideOpen, setAsideOpen] = useState(true);
     const [sidebarContent, setSidebarContent] = useState<ReactNode>(null);
-    const [asideConfig, setAsideConfig] = useLocalStorage<NavState>({
-        key: "ai-matrix-aside",
-        defaultValue: initialAsideState,
-    });
 
-    const toggleAside = (state: NavState) => setAsideConfig(state);
-
-    const handleToggle = () => {
-        if (asideConfig === "full") toggleAside("compact");
-        else if (asideConfig === "compact") toggleAside("icons");
-        else if (asideConfig === "icons") toggleAside("hidden");
-        else toggleAside("full");
-    };
-
-    const handleExpand = () => {
-        if (asideConfig === "icons") toggleAside("compact");
-        else if (asideConfig === "compact") toggleAside("full");
-    };
-
-    const handleCollapse = () => {
-        if (asideConfig === "full") toggleAside("compact");
-        else if (asideConfig === "compact") toggleAside("icons");
-        else toggleAside("hidden");
-    };
+    const toggleAside = () => setAsideOpen(prev => !prev);
 
     return (
-        <SidebarContext.Provider
-            value={{
-                asideOpen,
-                asideState: asideConfig,
-                toggleAside,
-                setSidebarContent,
-                sidebarContent,
-                handleToggle,
-                handleExpand,
-                handleCollapse,
-            }}
-        >
+        <SidebarContext.Provider value={{ asideOpen, toggleAside, setSidebarContent, sidebarContent }}>
             {children}
         </SidebarContext.Provider>
     );
@@ -72,7 +27,7 @@ export const SidebarProvider = ({
 export const useSidebar = () => {
     const context = useContext(SidebarContext);
     if (!context) {
-        throw new Error("useSidebar must be used within a SidebarProvider");
+        throw new Error('useSidebar must be used within a SidebarProvider');
     }
     return context;
 };
