@@ -42,7 +42,7 @@ const BrokerComponent: React.FC<BrokerComponentProps> = ({ component }) => {
                 return <Checkbox label={label} value={value as string} required={required} size={size} color={color} />;
             case "CheckboxGroup":
                 return <>{options && <BrokerCheckBoxGroup
-                    defaultValue={defaultValue as string[]}
+                    defaultValue={['red', 'blue']}
                     label={label}
                     options={options.map(option => ({ value: option, label: option }))}
                     required={required}
@@ -56,11 +56,11 @@ const BrokerComponent: React.FC<BrokerComponentProps> = ({ component }) => {
                     <Switch value="yellow" label="Yellow" mt={"md"} />
                 </SwitchGroup>;
             case "Select":
-                return <Select label={label} data={options} required={required} size={size} color={color} placeholder={placeholderText} />;
+                return <Select label={label} data={options} required={required} size={size} color={color} />;
             case "Json":
                 return <JsonInput
                     label={label || "Json"}
-                    placeholder={placeholderText}
+                    placeholder="Textarea will autosize to fit the content"
                     validationError="Invalid JSON"
                     formatOnBlur
                     autosize

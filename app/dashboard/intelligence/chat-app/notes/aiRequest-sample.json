@@ -60,6 +60,10 @@
                 ],
                 "messages": [
                     {
+                        "roleType": "system",
+                        "text": "You are a helpful assistant."
+                    },
+                    {
                         "roleType": "assistant",
                         "text": "Sure, I can help you with that. What do you need help with?"
                     },
@@ -68,8 +72,12 @@
                         "text": "I'm taking my kids to New York. What are some fun things to do there?"
                     },
                     {
+                        "roleType": "assistant",
+                        "text": "Tell me more about your travel preferences and I will create the perfect list of things to do."
+                    },
+                    {
                         "roleType": "user",
-                        "text": "Can you help me with travel tips?"
+                        "text": "We love going out, eating great food, and seeing the sights."
                     }
                 ],
                 "requestSettings": {

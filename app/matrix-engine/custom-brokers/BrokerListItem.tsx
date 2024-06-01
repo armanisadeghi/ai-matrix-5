@@ -8,22 +8,21 @@ interface BrokerListItemProps {
     broker: Broker;
     onDelete: (id: string) => void;
     onEdit: (id: string) => void;
-    isEditing: boolean;
 }
 
-const BrokerListItem = ({ broker, onDelete, onEdit, isEditing }: BrokerListItemProps) => {
-    const { name = '', id } = broker;
+const BrokerListItem = ({ broker, onDelete, onEdit }: BrokerListItemProps) => {
+    const { name = '' } = broker;
 
     return (
-        <Card radius="md" p="md" w="100%" onClick={() => onEdit(id)} shadow={isEditing ? 'md' : 'none'} style={{ outline: isEditing ? '1px solid lightgray' : 'none' }}>
+        <Card radius="md" p="md" w="100%" onClick={() => onEdit(broker.id)}>
             <Group p="apart">
                 <Title order={5}>{name}</Title>
             </Group>
             <Group p="apart" m="xs" style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <ActionIcon onClick={() => onEdit(id)}>
+                <ActionIcon onClick={() => onEdit(broker.id)}>
                     <IconEdit size={16} />
                 </ActionIcon>
-                <ActionIcon onClick={() => onDelete(id)}>
+                <ActionIcon onClick={() => onDelete(broker.id)}>
                     <IconTrash size={16} />
                 </ActionIcon>
             </Group>

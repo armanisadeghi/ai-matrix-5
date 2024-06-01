@@ -1,21 +1,19 @@
 "use client";
-import React, { createContext, ReactNode, useContext, useState } from "react";
-import { useLocalStorage } from "@mantine/hooks";
-
-type NavState = "full" | "compact" | "icons" | "hidden";
+import React, { createContext, useContext, useState, ReactNode } from "react";
+import { useMediaQuery } from "@mantine/hooks";
 
 interface LayoutContextType {
     opened: boolean;
-    asideOpen: boolean;
     toggleOpened: () => void;
-    navbarState: NavState;
+    asideOpen: boolean;
+    toggleAside: () => void;
+    navbarState: "full" | "compact" | "icons" | "hidden";
     handleNavbarToggle: () => void;
     handleNavbarExpand: () => void;
     handleNavbarCollapse: () => void;
     handleIconMouseover: () => void;
     handleEndIconMouseover: () => void;
     iconMouseOver: boolean;
-    toggleNavbar: (value: NavState) => void;
 }
 
 const LayoutContext = createContext<LayoutContextType | undefined>(undefined);
@@ -26,57 +24,50 @@ export const useLayout = () => {
     return context;
 };
 
-interface LayoutProviderProps {
+export const LayoutProvider: React.FC<{
     children: ReactNode;
-    initialNavbarState: NavState;
-    initialAsideState?: NavState;
-}
-
-export const LayoutProvider: React.FC<LayoutProviderProps> = ({ children, initialNavbarState, initialAsideState }) => {
+    initialNavbarState: "full" | "compact" | "icons" | "hidden";
+}> = ({ children, initialNavbarState }) => {
     const [opened, setOpened] = useState(false);
     const [asideOpen, setAsideOpen] = useState(false);
+    const [navbarState, setNavbarState] = useState(initialNavbarState);
     const [iconMouseOver, setIconMouseOver] = useState(false);
-    const [navbarConfig, setNavbarConfig] = useLocalStorage<NavState>({
-        key: "ai-matrix-navbar",
-        defaultValue: initialNavbarState,
-    });
 
     const toggleOpened = () => setOpened(!opened);
-    // const toggleAside = () => setAsideOpen(!asideOpen);
-    const toggleNavbar = (state: NavState) => setNavbarConfig(state);
+    const toggleAside = () => setAsideOpen(!asideOpen);
 
     const handleIconMouseover = () => {
         if (!iconMouseOver) {
             setIconMouseOver(true);
-            setNavbarConfig("compact");
+            setNavbarState("compact");
         }
     };
 
     const handleEndIconMouseover = () => {
         if (iconMouseOver) {
             setIconMouseOver(false);
-            setNavbarConfig("icons");
+            setNavbarState("icons");
         }
     };
 
     const handleNavbarToggle = () => {
         setIconMouseOver(false);
-        if (navbarConfig === "full") toggleNavbar("compact");
-        else if (navbarConfig === "compact") toggleNavbar("icons");
-        else if (navbarConfig === "icons") toggleNavbar("hidden");
-        else toggleNavbar("full");
+        if (navbarState === "full") setNavbarState("compact");
+        else if (navbarState === "compact") setNavbarState("icons");
+        else if (navbarState === "icons") setNavbarState("hidden");
+        else setNavbarState("full");
     };
 
     const handleNavbarExpand = () => {
         setIconMouseOver(false);
-        if (navbarConfig === "icons") toggleNavbar("compact");
-        else if (navbarConfig === "compact") toggleNavbar("full");
+        if (navbarState === "icons") setNavbarState("compact");
+        else if (navbarState === "compact") setNavbarState("full");
     };
 
     const handleNavbarCollapse = () => {
         setIconMouseOver(false);
-        if (navbarConfig === "full") toggleNavbar("compact");
-        else if (navbarConfig === "compact") toggleNavbar("icons");
+        if (navbarState === "full") setNavbarState("compact");
+        else if (navbarState === "compact") setNavbarState("icons");
     };
 
     return (
@@ -85,14 +76,14 @@ export const LayoutProvider: React.FC<LayoutProviderProps> = ({ children, initia
                 opened,
                 toggleOpened,
                 asideOpen,
-                navbarState: navbarConfig,
+                toggleAside,
+                navbarState,
                 handleNavbarToggle,
                 handleNavbarExpand,
                 handleNavbarCollapse,
                 handleIconMouseover,
                 handleEndIconMouseover,
                 iconMouseOver,
-                toggleNavbar,
             }}
         >
             {children}
