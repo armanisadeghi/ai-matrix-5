@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Box, Grid } from '@mantine/core';
 import HistoryEntries from "@/app/dashboard/intelligence/ai-chatbot/components/response/HistoryEntries";
 
+
 const ResponseArea = ({ bottomPadding }: { bottomPadding: number }) => {
     const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -33,7 +34,10 @@ const ResponseArea = ({ bottomPadding }: { bottomPadding: number }) => {
                     <Grid.Col span={.5}></Grid.Col>
                     <Grid.Col span={11}>
                         <div style={{ paddingBottom: bottomPadding }}>
-                            <HistoryEntries chatId="1002" />
+
+
+
+                            <HistoryEntries chatId="1001" />
                         </div>
                     </Grid.Col>
                     <Grid.Col span={.5}></Grid.Col>

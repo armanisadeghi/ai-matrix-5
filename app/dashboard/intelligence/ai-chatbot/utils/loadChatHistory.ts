@@ -1,4 +1,8 @@
-// chat-app/utils/loadChatHistory.ts
+// app/dashboard/intelligence/ai-chatbot/utils/loadChatHistory.ts
+
+import { useAtom } from 'jotai';
+import { promptDataAtom } from "@/app/dashboard/intelligence/ai-chatbot/store/promptDataAtom";
+import { PromptData } from "@/types";
 import axios from 'axios';
 import { ChatHistoryChat } from "@/types";
 
@@ -10,7 +14,8 @@ interface UserContext {
 
 export const loadChatHistory = async (
     userId: string,
-    userContext: UserContext
+    userContext: UserContext,
+    setPromptData: (update: PromptData | ((prev: PromptData) => PromptData)) => void // Correctly type the setter function
 ): Promise<any> => {
     try {
         const response = await axios.get(`/api/chat-history?userId=${userId}`, {
@@ -20,13 +25,19 @@ export const loadChatHistory = async (
             }
         });
 
-        // Transform the API response to the expected structure
         const data = response.data;
-        const chatHistory: { [key: string]: ChatHistoryChat[] } = {};
+        const chatHistory: ChatHistoryChat[] = data.chatHistory.map((chat: any) => ({
+            id: chat.messageId,
+            role: chat.role,
+            content: chat.content
+        }));
 
-        data.chatHistory.forEach((chat: { chatId: string, msgArr: any[] }) => {
-            chatHistory[chat.chatId] = chat.msgArr;
-        });
+        // Update the atom with the new chat history
+        setPromptData(prev => ({
+            ...prev,
+            chatId: data.chatId,
+            chatHistory: chatHistory
+        }));
 
         return {
             userId: data.userId,
@@ -37,5 +48,3 @@ export const loadChatHistory = async (
         return {};
     }
 };
-
-export default loadChatHistory;

@@ -29,10 +29,10 @@ const Page: React.FC = () => {
                         justify="flex-start"
                         gap="xs"
                     >
-                        <AmeChatHistoryEntry initialValue='sample item 1' />
-                        <AmeChatHistoryEntry initialValue='sample item 2' />
-                        <AmeChatHistoryEntry initialValue='sample item 3' />
-                        <AmeChatHistoryEntry initialValue='What is the capital of the United States?' />
+                        <AmeChatHistoryEntry keyProp={'test'} initialValue='sample item 1' />
+                        <AmeChatHistoryEntry keyProp={'test'} initialValue='sample item 2' />
+                        <AmeChatHistoryEntry keyProp={'test'} initialValue='sample item 3' />
+                        <AmeChatHistoryEntry keyProp={'test'} initialValue='What is the capital of the United States?' />
                         <AmeMenu>
                             <AmeMenu.Target>
                                 <BsThreeDotsVertical size={16} />

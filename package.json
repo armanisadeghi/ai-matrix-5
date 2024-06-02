@@ -12,9 +12,12 @@
     "storybook:build": "storybook build"
   },
   "dependencies": {
+    "@ai-sdk/openai": "^0.0.18",
     "@auth0/auth0-react": "^2.2.4",
     "@auth0/nextjs-auth0": "github:auth0/nextjs-auth0",
     "@awesome.me/kit-9f5c5035ef": "^1.0.10",
+    "@dnd-kit/core": "^6.1.0",
+    "@dnd-kit/sortable": "^8.0.0",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@hocuspocus/transformer": "^2.13.0",
@@ -51,6 +54,7 @@
     "@tiptap/pm": "^2.4.0",
     "@tiptap/react": "^2.4.0",
     "@tiptap/starter-kit": "^2.4.0",
+    "ai": "^3.1.22",
     "auth0": "^4.4.0",
     "axios": "^1.7.2",
     "clsx": "^2.1.1",
@@ -64,13 +68,17 @@
     "mantine-datatable": "^7.9.1",
     "mongodb": "^6.6.2",
     "next": "latest",
+    "openai": "^4.47.3",
     "react": "latest",
     "react-dom": "latest",
     "react-icons": "^5.2.1",
     "react-split": "^2.0.14",
     "recharts": "latest",
     "socket.io-client": "^4.7.5",
-    "webpack": "^5.91.0"
+    "uuid": "^9.0.1",
+    "uuidv4": "^6.2.13",
+    "webpack": "^5.91.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@babel/core": "latest",
