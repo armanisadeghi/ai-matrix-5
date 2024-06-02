@@ -31,7 +31,7 @@ function PersonalInformation() {
                         h={64}
                         w={64}
                         fallbackSrc="https://placehold.co/600x400?text=No+Image"
-                    />{" "}
+                    />
                     <Stack gap={2}>
                         <Text fw={600} size="lg">
                             Your avatar

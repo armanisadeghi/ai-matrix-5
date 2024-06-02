@@ -17,8 +17,6 @@ const Brokers: React.FC = () => {
     const [brokerComponents, setBrokerComponents] = useState<Component[]>([]);
     const [brokerId, setBrokerId] = useState<string>('');
     const [isEditingId, setEditingId] = useState('');
-
-
     const { brokers, setBrokers } = useBroker();
 
     const handleDelete = (id: string) => {
@@ -96,7 +94,7 @@ const Brokers: React.FC = () => {
             <Transition transition="slide-down" duration={200} mounted={brokers.length > 0}>
                 {(styles) => (
                     <div style={styles}>
-                        <BrokerList brokers={brokers} onDelete={handleDelete} onEdit={handleEdit} isEditingId={isEditingId} />
+                        <BrokerList onDelete={handleDelete} onEdit={handleEdit} />
                     </div>
                 )}
             </Transition>

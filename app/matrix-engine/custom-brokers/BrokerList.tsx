@@ -2,14 +2,15 @@ import React from 'react';
 import BrokerListItem from './BrokerListItem';
 import { Stack } from '@mantine/core';
 import { Broker } from '@/types/broker';
+import { useBroker } from '@/context/brokerContext';
 
 interface BrokerListProps {
-    brokers: Broker[];
     onDelete: (id: string) => void;
     onEdit: (id: string) => void;
 }
 
-const BrokerList = ({ brokers, onDelete, onEdit }: BrokerListProps) => {
+const BrokerList = ({ onDelete, onEdit }: BrokerListProps) => {
+    const { brokers } = useBroker();
 
     return (
         <Stack>

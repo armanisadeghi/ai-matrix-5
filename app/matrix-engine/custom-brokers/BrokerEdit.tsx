@@ -5,20 +5,20 @@ type BrokerFormProps = {
 };
 
 import { useEffect, useState } from 'react';
-import { Button, CheckboxGroup, Fieldset, Paper, Space, Stack, Switch, TextInput, Text, Checkbox, Group, FileInput, Image } from '@mantine/core';
+import { Button, CheckboxGroup, Fieldset, Paper, Space, Stack, Switch, TextInput, Text, Checkbox, Group, FileInput, Image, Grid } from '@mantine/core';
 import { Component } from '@/types/broker';
 import BrokerComponent from './BrokerComponent';
 import { IconPlus } from '@tabler/icons-react';
 import { BrokerSizeSlider } from '@/components/Brokers/BrokerSizeSlider';
 import { BrokerCheckBoxGroup } from '@/components/Brokers/BrokerCheckBoxGroup';
-import { v4 as uuidv4 } from 'uuid';
+import { uuid } from 'uuidv4';
 
 export const BrokerEdit = ({ type, setBrokerComponents }: BrokerFormProps) => {
     const [imageUploaded, setImageUploaded] = useState(false);
     const [imageSrc, setImageSrc] = useState('');
     const [uploadedImage, setUploadedImage] = useState<File | null>(null);
     const [currentBroker, setCurrentBroker] = useState<Component>({
-        componentId: '',
+        componentId: "",
         type: type,
         label: "new Label",
         description: "new Description",
@@ -77,8 +77,8 @@ export const BrokerEdit = ({ type, setBrokerComponents }: BrokerFormProps) => {
     }, [type, imageSrc]);
 
     return (
-        <Paper style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-            <Stack style={{ width: '100%', justifyContent: 'flex-end', display: 'flex', flexDirection: 'column' }}>
+        <Grid>
+            <Grid.Col span={{ base: 12, md: 6 }}>
                 <Fieldset legend="Add properties" >
                     <TextInput label="Name" onChange={(e) => setCurrentBroker({ ...currentBroker, label: e.target.value })} />
                     <Space h="sm" />
@@ -101,16 +101,17 @@ export const BrokerEdit = ({ type, setBrokerComponents }: BrokerFormProps) => {
                     />
                 </Fieldset>
                 <Space h="sm" />
-                <Button variant="primary" onClick={() => {
-                    setBrokerComponents((prevComponents: Component[]) => [...prevComponents, currentBroker]);
+                <Button variant="primary" w="100%" onClick={() => {
+                    setBrokerComponents((prevComponents: Component[]) => [...prevComponents, { ...currentBroker, componentId: uuid() }]);
                 }}>
                     Add Component To Broker
                 </Button>
-            </Stack>
-            <Space w="md" />
-            <Fieldset legend="Component" radius="md" style={{ width: '100%' }}>
-                <BrokerComponent component={currentBroker} type={type} />
-            </Fieldset>
-        </Paper>
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 6 }}>
+                <Fieldset legend="Component" radius="md">
+                    <BrokerComponent component={currentBroker} type={type} />
+                </Fieldset>
+            </Grid.Col>
+        </Grid>
     );
 };

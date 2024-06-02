@@ -4,7 +4,7 @@ import { Broker, Component } from '@/types/broker';
 import { Button, Container, Flex, SimpleGrid, Space } from '@mantine/core';
 import BrokerComponent from './BrokerComponent';
 import { useBroker } from '@/context/brokerContext';
-import { v4 as uuidv4 } from 'uuid';
+import { uuid } from 'uuidv4';
 import { useEffect, useState } from 'react';
 
 interface BrokerFormProps {
@@ -16,37 +16,25 @@ interface BrokerFormProps {
 
 export const BrokerForm = ({ components, setBrokerComponents, id, setEditingId }: BrokerFormProps) => {
     const { setBrokers, brokers } = useBroker()
+    console.log(brokers)
 
     useEffect(() => {
         setBrokerComponents(components);
-    }, [components]);
+    }, []);
     const handleSave = () => {
-        const brokerExists = brokers.some((broker: Broker) => broker.id === id);
-
-        const newComponents = components.map((component) => ({
-            ...component,
-            componentId: uuidv4(),
-        }));
-
         const newBroker: Broker = {
-            id: brokerExists ? id : uuidv4(),
+            id: id === '' ? uuid() : id,
             name: `${components.map(c => c.type).join('-')}-${Date.now()}`,
             dataType: ['string'],
-            components: newComponents,
+            components: components,
         };
 
-        if (brokerExists) {
-            const updatedBrokers = brokers.map((broker: Broker) => {
-                if (broker.id === id) {
-                    return newBroker;
-                }
-                return broker;
-            });
-            setBrokers([...updatedBrokers]);
-        } else {
-            const updatedBrokers = [...brokers, newBroker];
-            setBrokers(updatedBrokers);
+        if (id === '') {
+            setBrokers([...brokers, newBroker]);
             setEditingId(newBroker.id);
+        } else {
+            setBrokers([...brokers.filter((broker) => broker.id !== id), newBroker]);
+            setEditingId(id);
         }
     };
 
@@ -55,13 +43,12 @@ export const BrokerForm = ({ components, setBrokerComponents, id, setEditingId }
         setBrokerComponents(updatedComponents);
     }
 
-
     return (
         <Container>
             {components.length > 0 && <>
                 <SimpleGrid>
                     {components.map((component) => (
-                        <div key={component.componentId}>
+                        <div key={component.componentId} onClick={() => setEditingId(component.componentId)}>
                             <BrokerComponent component={component} type={component.type} />
                             <Space h="xs" />
                             <Flex justify="flex-end">

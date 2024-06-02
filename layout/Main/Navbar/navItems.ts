@@ -209,7 +209,7 @@ export const navItems = [
             },
             {
                 label: "Custom Brokers",
-                link: "/"
+                link: "/matrix-engine/custom-brokers"
             },
         ],
     },

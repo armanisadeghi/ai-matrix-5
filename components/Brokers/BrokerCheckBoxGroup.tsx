@@ -25,7 +25,7 @@ export const BrokerCheckBoxGroup = ({
 
     return (
         <Checkbox.Group value={value} onChange={handleChange} required={required} label={label} description={description}>
-            {options.map(option => <Checkbox mt="md" value={option.value} label={option.label} />)}
+            {options.map(option => <Checkbox mt="md" key={option.value} value={option.value} label={option.label} />)}
         </Checkbox.Group>
     );
 }
