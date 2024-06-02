@@ -16,7 +16,6 @@ interface BrokerFormProps {
 
 export const BrokerForm = ({ components, setBrokerComponents, id, setEditingId }: BrokerFormProps) => {
     const { setBrokers, brokers } = useBroker()
-    console.log(brokers)
 
     useEffect(() => {
         setBrokerComponents(components);
@@ -24,7 +23,7 @@ export const BrokerForm = ({ components, setBrokerComponents, id, setEditingId }
     const handleSave = () => {
         const newBroker: Broker = {
             id: id === '' ? uuid() : id,
-            name: `${components.map(c => c.type).join('-')}-${Date.now()}`,
+            name: `${components.map(c => c.type).join('-')}`,
             dataType: ['string'],
             components: components,
         };

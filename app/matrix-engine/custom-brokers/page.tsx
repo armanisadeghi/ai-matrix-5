@@ -21,6 +21,9 @@ const Brokers: React.FC = () => {
 
     const handleDelete = (id: string) => {
         setBrokers((prevBrokers: Broker[]) => prevBrokers.filter((broker) => broker.id !== id));
+        setEditingId('');
+        setBrokerComponents([]);
+        setShowSelect(false);
     };
 
     const handleEdit = (id: string) => {
@@ -94,7 +97,7 @@ const Brokers: React.FC = () => {
             <Transition transition="slide-down" duration={200} mounted={brokers.length > 0}>
                 {(styles) => (
                     <div style={styles}>
-                        <BrokerList onDelete={handleDelete} onEdit={handleEdit} />
+                        <BrokerList onDelete={handleDelete} onEdit={handleEdit} isEditingId={isEditingId} />
                     </div>
                 )}
             </Transition>

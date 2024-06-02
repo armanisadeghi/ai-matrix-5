@@ -8,13 +8,17 @@ interface BrokerListItemProps {
     broker: Broker;
     onDelete: (id: string) => void;
     onEdit: (id: string) => void;
+
+    isEditingId: string;
 }
 
-const BrokerListItem = ({ broker, onDelete, onEdit }: BrokerListItemProps) => {
+const BrokerListItem = ({ broker, onDelete, onEdit, isEditingId }: BrokerListItemProps) => {
     const { name = '' } = broker;
 
     return (
-        <Card radius="md" p="md" w="100%" onClick={() => onEdit(broker.id)}>
+        <Card radius="md" withBorder p="md" w="100%" onClick={() => onEdit(broker.id)} onMouseEnter={(e) => (e.currentTarget.style.border = '1px solid gray')}
+            onMouseLeave={(e) => (e.currentTarget.style.border = '')}
+            style={{ transition: 'border-color 0.3s ease' }}>
             <Group p="apart">
                 <Title order={5}>{name}</Title>
             </Group>
