@@ -233,7 +233,7 @@ const Page = () => {
                         <Title order={4} className={'mb-2 '}>Default list with editable node </Title>
 
                         <div dir="ltr">
-                            <Kbd>Shift</Kbd> + <Kbd>left click</Kbd> on text
+                            <Kbd>Double left click</Kbd> on text
                         </div>
                         {/*@ts-ignore*/}
                         <SmartList option={{type: 'default', select: 'default', editable: true}} data={data}
