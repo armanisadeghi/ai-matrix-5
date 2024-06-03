@@ -1,25 +1,24 @@
 import {useState} from "react";
 import {useListProvider} from "../../SmartList.tsx";
+import {Text as MantineText} from '@mantine/core'
 
-type Text = {
+type TextT = {
     item: object,
     isSelected: boolean,
     onClick: any
 }
 
-export default function Text<Text>({item, isSelected, onClick}) {
+export default function Text<TextT>({item, isSelected, onClick}) {
     const {options}: any = useListProvider()
     const [editable, setEditable] = useState(false)
     const [label, setLabel] = useState(item.value)
     const style = {
-        fontSize: '14px', // text-sm
-        padding: 6,
-        borderRadius: '0.375rem', // rounded
+        padding: 4,
         userSelect: 'none', // select-none
         border: 'none',
         margin: 0,
         outline: 'none',
-        ...(isSelected ? { backgroundColor: '#3b82f6', color: 'white' } : {}), // bg-blue-500 text-white
+        ...(isSelected ? { backgroundColor: '#3b82f6', color: 'white', borderRadius: 4 } : {}), // bg-blue-500 text-white
     };
 
 
@@ -46,6 +45,6 @@ export default function Text<Text>({item, isSelected, onClick}) {
     }
 
     return (
-        <p style={style} onClick={(event) => handleClick(event)} dangerouslySetInnerHTML={{__html: label}}/>
+        <MantineText size={'sm'} style={style} onClick={(event) => handleClick(event)} dangerouslySetInnerHTML={{__html: label}}/>
     )
 }

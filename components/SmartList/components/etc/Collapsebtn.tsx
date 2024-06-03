@@ -14,7 +14,7 @@ const CollapseBtn = ({onCollapse, onClick}) => {
                 margin: 'auto 0',
                 width: 'fit-content',
             }}>
-            {onCollapse ? <IconChevronRight/> : <IconChevronDown/>}
+            {!onCollapse ? <IconChevronRight/> : <IconChevronDown/>}
 
         </div>
     )

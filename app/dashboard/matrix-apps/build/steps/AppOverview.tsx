@@ -9,7 +9,6 @@ const AppOverview = () => {
     return (
         <div>
             <h3>Application Overview</h3>
-
             <div style={{
                 display: 'flex',
                 flexWrap: 'wrap',
