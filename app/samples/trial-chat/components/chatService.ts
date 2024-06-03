@@ -1,29 +1,32 @@
 // app/samples/trial-chat/components/chatService.ts
 
-import { MessageEntry, RoleType } from '@/org/types/chatData';
-import openAiStream from "@/app/api/chat/route";
+import { MessageEntry, RoleType } from '@/armaniLocal/org/types/chatData';
+import { OpenAiStream } from "@/app/api/openai/route";
 
 export const submitChatRequest = (
     updatedChat: MessageEntry[],
-    responseCount: number,
-    updateCallback: (message: MessageEntry) => void
+    updateCallback: (message: MessageEntry) => void,
+    finalizeCallback: (message: MessageEntry) => void
 ): Promise<void> => {
     return new Promise(async (resolve, reject) => {
         try {
-            // Transform the updatedChat into the format required by openAiStream
+            if (!Array.isArray(updatedChat)) {
+                throw new Error('updatedChat should be an array');
+            }
+
             const messages = updatedChat.map(chat => ({
                 role: chat.role as 'system' | 'user' | 'assistant',
                 content: chat.text
             }));
 
-            await openAiStream(messages, (chunk) => {
-                const assistantMessage: MessageEntry = {
-                    text: chunk,
-                    role: 'assistant' as RoleType,
-                };
-                updateCallback(assistantMessage);
+            let assistantMessage: MessageEntry = { text: '', role: 'assistant' as RoleType };
+
+            await OpenAiStream(messages, (chunk) => {
+                assistantMessage.text += chunk;
+                updateCallback({ ...assistantMessage });
             });
 
+            finalizeCallback(assistantMessage);
             resolve();
         } catch (error) {
             console.error('Error during OpenAI stream:', error);

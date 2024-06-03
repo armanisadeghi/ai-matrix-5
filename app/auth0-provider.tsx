@@ -8,6 +8,7 @@ const Auth0ProviderWithRouter = ({ children }: { children: ReactNode }) => {
     const router = useRouter();
 
     const onRedirectCallback = (appState?: any) => {
+        console.log('appState', appState)
         router.push(appState?.returnTo || '/');
     };
 
@@ -17,6 +18,7 @@ const Auth0ProviderWithRouter = ({ children }: { children: ReactNode }) => {
             clientId={process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID!}
             authorizationParams={{
                 redirect_uri: typeof window !== 'undefined' ? window.location.origin : '',
+                scope: "openid profile email",
             }}
             onRedirectCallback={onRedirectCallback}
         >

@@ -176,3 +176,23 @@ export type RespondData = {
 };
 
 
+export enum RoleType {
+    system = 'system',
+    user = 'user',
+    assistant = 'assistant',
+}
+
+export interface MessageEntry {
+    text: string;
+    role: RoleType;
+}
+
+export interface Chat {
+    chatId: string;
+    chatTitle: string;
+    userId: string;
+    createdTimestamp: Date;
+    lastEditedTimestamp: Date;
+    messageManager: any; // Replace with actual type if available
+    metadata: Record<string, any>;
+}

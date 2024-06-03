@@ -48,6 +48,9 @@
     ],
     "exclude": [
         "node_modules",
-        ".next"
+        ".next",
+        "**/*.md",
+        "**/*.mdx",
+        "org"
     ]
 }

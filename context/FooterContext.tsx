@@ -55,7 +55,6 @@ export const FooterProvider = ({ children, initialState }: { children: ReactNode
                 handleCollapse,
             }}
         >
-            {children}
         </FooterContext.Provider>
     );
 };
@@ -63,7 +62,7 @@ export const FooterProvider = ({ children, initialState }: { children: ReactNode
 export const useFooter = () => {
     const context = useContext(FooterContext);
     if (!context) {
-        throw new Error("useFooter must be used within a FooterProvider");
+        console.log("useFooter must be used within a FooterProvider");
     }
     return context;
 };

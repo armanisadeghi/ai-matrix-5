@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Select } from '@mantine/core';
+import React, { useState } from "react";
+import { Select, SelectProps } from "@mantine/core";
 
 interface SelectOption {
     value: string;
@@ -7,7 +7,7 @@ interface SelectOption {
     disabled?: boolean;
 }
 
-interface AmeSelectProps {
+interface AmeSelectProps extends SelectProps {
     label: string;
     data: SelectOption[] | string[];
     placeholder?: string;
@@ -17,19 +17,18 @@ interface AmeSelectProps {
 }
 
 const AmeSelect: React.FC<AmeSelectProps> = ({
-                                                 label,
-                                                 data,
-                                                 placeholder = '',
-                                                 withAsterisk = false,
-                                                 error = 'This field is required',
-                                                 nothingFoundMessage = 'No matches...'
-                                             }) => {
+    label,
+    data,
+    placeholder = "",
+    withAsterisk = false,
+    error = "This field is required",
+    nothingFoundMessage = "No matches...",
+    ...others
+}) => {
     const [touched, setTouched] = useState(false);
-    const [value, setValue] = useState('');
+    const [value, setValue] = useState("");
 
-    const formattedData = data.map(item =>
-        typeof item === 'string' ? { value: item, label: item } : item
-    );
+    const formattedData = data.map((item) => (typeof item === "string" ? { value: item, label: item } : item));
 
     const handleBlur = () => {
         setTouched(true);
@@ -53,7 +52,9 @@ const AmeSelect: React.FC<AmeSelectProps> = ({
             withAsterisk={withAsterisk}
             error={touched && !value ? error : undefined}
             radius="md"
-            comboboxProps={{ transitionProps: { transition: 'pop', duration: 400 } }}
+            comboboxProps={{ transitionProps: { transition: "pop", duration: 400 } }}
+            aria-label={placeholder}
+            {...others}
         />
     );
 };

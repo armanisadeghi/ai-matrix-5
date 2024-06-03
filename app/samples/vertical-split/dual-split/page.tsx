@@ -20,7 +20,7 @@ const App: React.FC = () => {
         <DynamicSplitter
             verticalSections={verticalSections}
             horizontalSectionIndex={1} // Second section (index 1) will be split horizontally
-            initialVerticalSizes={[25, 40, 15, 20]} // Custom sizes for vertical sections
+            initialVerticalSizes={[25, 25, 25, 25]} // Custom sizes for vertical sections
             initialHorizontalSizes={[40, 30, 30]} // Custom sizes for horizontal subsections
             horizontalSections={horizontalSections}
         />

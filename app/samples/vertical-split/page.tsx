@@ -5,7 +5,7 @@ import AmeCheckbox from '@/ui/checkbox/AmeCheckbox';
 import Split from 'react-split';
 
 const RunPage = () => {
-    const [sizes, setSizes] = useState<number[]>([33.33, 33.33, 33.33]);
+    const [sizes, setSizes] = useState<number[]>([30, 30, 30]);
     const gutters = useRef<HTMLDivElement[]>([]);
 
     const panelStyle: CSSProperties = {

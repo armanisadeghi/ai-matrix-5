@@ -16,19 +16,20 @@ type AmeDrawerProps = {
     transitionDuration?: number;
 };
 
-const AmeDrawer: React.FC<AmeDrawerProps> = ({
-                                                 opened,
-                                                 onClose,
-                                                 header,
-                                                 content,
-                                                 size = 'xs',
-                                                 position = 'right',
-                                                 padding = 'xs',
-                                                 allowScroll = true,
-                                                 withOverlay = true,
-                                                 overlayOpacity = 0.5,
-                                                 transitionDuration = 200,
-                                             }) => {
+const AmeDrawer: React.FC<AmeDrawerProps> = (
+    {
+        opened,
+        onClose,
+        header,
+        content,
+        size = 'xs',
+        position = 'right',
+        padding = 'xs',
+        allowScroll = true,
+        withOverlay = true,
+        overlayOpacity = 0.5,
+        transitionDuration = 200,
+    }) => {
     return (
         <Drawer
             opened={opened}
@@ -37,18 +38,18 @@ const AmeDrawer: React.FC<AmeDrawerProps> = ({
             position={position}
             padding={padding}
             withOverlay={withOverlay}
-            overlayProps={{ opacity: overlayOpacity }}
-            transitionProps={{ duration: transitionDuration }}
+            overlayProps={{opacity: overlayOpacity}}
+            transitionProps={{duration: transitionDuration}}
             closeButtonProps={{
-                icon: <TbLayoutSidebarLeftCollapseFilled size={20} />,
+                icon: <TbLayoutSidebarLeftCollapseFilled size={20}/>,
             }}
         >
             <Drawer.Header>
                 <Drawer.Title>{header}</Drawer.Title>
-                <Drawer.CloseButton />
+                <Drawer.CloseButton/>
             </Drawer.Header>
             {allowScroll ? (
-                <ScrollArea style={{ height: '100%' }}>
+                <ScrollArea style={{height: '100%'}}>
                     <Drawer.Body>{content}</Drawer.Body>
                 </ScrollArea>
             ) : (
