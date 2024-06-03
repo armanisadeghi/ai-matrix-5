@@ -1,41 +1,20 @@
 "use client";
 
-import { Component, ComponentType, Broker } from "@/types/broker";
-import { Container, Button, Space, Select, Center, Title, Paper, Transition, Stack } from "@mantine/core";
+import { ComponentType } from "@/types/broker";
+import { Container, Button, Space, Select, Paper, Transition, Stack } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
 import { useState } from "react";
 import BrokerList from "./BrokerList";
-import { BrokerEdit } from "./BrokerEdit";
 import { BrokerForm } from "./BrokerForm";
-import { useAtom } from "jotai";
 import { useBroker } from "@/context/brokerContext";
+import { BrokerEdit } from "./BrokerEdit";
 
 const Brokers: React.FC = () => {
     const [showSelect, setShowSelect] = useState(false);
     const [selectedOption, setSelectedOption] = useState<string>('');
     const [isTypeSelected, setTypeSelected] = useState<boolean>(false);
-    const [brokerComponents, setBrokerComponents] = useState<Component[]>([]);
-    const [brokerId, setBrokerId] = useState<string>('');
     const [isEditingId, setEditingId] = useState('');
-    const { brokers, setBrokers } = useBroker();
-
-    const handleDelete = (id: string) => {
-        setBrokers((prevBrokers: Broker[]) => prevBrokers.filter((broker) => broker.id !== id));
-        setEditingId('');
-        setBrokerComponents([]);
-        setShowSelect(false);
-    };
-
-    const handleEdit = (id: string) => {
-        const selectedBroker = brokers.find((broker) => broker.id === id);
-        if (selectedBroker) {
-            setBrokerComponents(selectedBroker.components);
-            setShowSelect(true);
-            setTypeSelected(false);
-            setBrokerId(id);
-            setEditingId(id);
-        }
-    };
+    const { brokers, currentBroker } = useBroker();
 
     const handleTypeSelection = (value: string) => {
         setSelectedOption(value);
@@ -46,7 +25,6 @@ const Brokers: React.FC = () => {
         setShowSelect(true);
         setTypeSelected(false);
         setSelectedOption('');
-        setBrokerComponents([]);
         setEditingId('');
     };
 
@@ -73,21 +51,18 @@ const Brokers: React.FC = () => {
                                 <Transition transition="slide-down" duration={200} mounted={isTypeSelected}>
                                     {(styles) => (
                                         <div style={styles}>
-                                            {isTypeSelected && <BrokerEdit type={selectedOption} setBrokerComponents={setBrokerComponents} />}
+                                            {isTypeSelected && <BrokerEdit type={selectedOption} />}
                                         </div>)}
                                 </Transition>
-
                                 <Space h="md" />
-                                <Center>
-                                    <Title order={3}>Broker</Title>
-                                </Center>
-
-                                <Transition transition="slide-down" duration={200} mounted={showSelect}>
-                                    {(styles) => (
-                                        <Paper withBorder radius="xs" p="xl" style={styles}>
-                                            <BrokerForm components={brokerComponents} setBrokerComponents={setBrokerComponents} id={brokerId} setEditingId={setEditingId} /> </Paper>
-                                    )}
-                                </Transition>
+                                {currentBroker &&
+                                    <Transition transition="slide-down" duration={200} mounted={showSelect}>
+                                        {(styles) => (
+                                            <Paper withBorder radius="xs" p="xl" style={styles}>
+                                                <BrokerForm setEditingId={setEditingId} />
+                                            </Paper>
+                                        )}
+                                    </Transition>}
                                 <Space h="md" />
                             </Stack>}
                     </Stack>
@@ -97,7 +72,7 @@ const Brokers: React.FC = () => {
             <Transition transition="slide-down" duration={200} mounted={brokers.length > 0}>
                 {(styles) => (
                     <div style={styles}>
-                        <BrokerList onDelete={handleDelete} onEdit={handleEdit} isEditingId={isEditingId} />
+                        <BrokerList isEditingId={isEditingId} />
                     </div>
                 )}
             </Transition>

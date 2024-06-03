@@ -36,7 +36,7 @@ export interface Component {
     min?: number;
     max?: number;
     step?: number;
-    value?: number | string | boolean | string[] | number[];
+    value?: number | string | boolean | string[] | number[] | File;
     onChange?: ((value: string | number | boolean) => void) | ((value: string[] | number[]) => void);
     tableData?: TableData;
     src?: any;
@@ -45,6 +45,8 @@ export interface Component {
     h?: number | "auto";
     w?: number | "auto";
     fit?: "fill" | "contain" | "cover" | "none" | "scale-down";
+    marks?: { value: number; label: string }[],
+    isMarks?: boolean
 }
 
 export enum ComponentType {
@@ -59,7 +61,6 @@ export enum ComponentType {
     Select = 'select',
     Json = 'json',
     SelectWithOther = 'select-with-other',
-    AttachmentsImage = 'attachments-image',
     AttachmentsVideo = 'attachments-video',
     AttachmentsAudio = 'attachments-audio',
     AttachmentsFile = 'attachments-file',
@@ -70,6 +71,10 @@ export enum ComponentType {
 export interface BrokerContextValue {
     brokers: Broker[];
     setBrokers: React.Dispatch<React.SetStateAction<Broker[]>>;
+    currentBroker: Broker;
+    setCurrentBroker: React.Dispatch<React.SetStateAction<Broker>>
+    editBroker: (broker: Broker) => void;
+    deleteBroker: (id: string) => void;
 }
 
 export type BrokerData = Record<string, string | number | string[] | undefined>;

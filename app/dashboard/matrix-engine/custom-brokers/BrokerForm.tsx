@@ -1,58 +1,45 @@
 "use client";
 
-import { Broker, Component } from '@/types/broker';
+import { Broker } from '@/types/broker';
 import { Button, Container, Flex, SimpleGrid, Space } from '@mantine/core';
 import BrokerComponent from './BrokerComponent';
 import { useBroker } from '@/context/brokerContext';
 import { uuid } from 'uuidv4';
-import { useEffect, useState } from 'react';
 
 interface BrokerFormProps {
-    components: Component[];
-    setBrokerComponents: Function;
-    id: string;
     setEditingId: Function;
 }
 
-export const BrokerForm = ({ components, setBrokerComponents, id, setEditingId }: BrokerFormProps) => {
-    const { setBrokers, brokers } = useBroker()
-
-    useEffect(() => {
-        setBrokerComponents(components);
-    }, []);
+export const BrokerForm = ({ setEditingId }: BrokerFormProps) => {
+    const { setBrokers, brokers, currentBroker, setCurrentBroker } = useBroker()
     const handleSave = () => {
         const newBroker: Broker = {
-            id: id === '' ? uuid() : id,
-            name: `${components.map(c => c.type).join('-')}`,
+            id: currentBroker.id === '' ? uuid() : currentBroker.id,
+            name: `${currentBroker.components.map(c => c.type).join('-')}`,
             dataType: ['string'],
-            components: components,
+            components: currentBroker.components,
         };
 
-        if (id === '') {
+        if (currentBroker.id === '') {
             setBrokers([...brokers, newBroker]);
             setEditingId(newBroker.id);
         } else {
-            setBrokers([...brokers.filter((broker) => broker.id !== id), newBroker]);
-            setEditingId(id);
+            setBrokers([...brokers.filter((broker) => broker.id !== currentBroker.id), newBroker]);
+            setEditingId(currentBroker.id);
         }
     };
 
-    const handleDeleteComponent = (componentId: string) => {
-        const updatedComponents = components.filter((component) => componentId !== component.componentId);
-        setBrokerComponents(updatedComponents);
-    }
-
     return (
         <Container>
-            {components.length > 0 && <>
+            {currentBroker.components.length > 0 && <>
                 <SimpleGrid>
-                    {components.map((component) => (
+                    {currentBroker.components.map((component) => (
                         <div key={component.componentId} onClick={() => setEditingId(component.componentId)}>
-                            <BrokerComponent component={component} type={component.type} />
+                            <BrokerComponent type={component.type} currentComponent={component} />
                             <Space h="xs" />
                             <Flex justify="flex-end">
                                 {component && (
-                                    <Button variant="light" onClick={() => handleDeleteComponent(component.componentId)}>
+                                    <Button variant="light" onClick={() => setCurrentBroker({ ...currentBroker, components: currentBroker.components.filter((c) => c.componentId !== component.componentId) })}>
                                         Delete
                                     </Button>
                                 )}
