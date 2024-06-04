@@ -1,5 +1,4 @@
 import { Checkbox, Group, Paper, rem } from '@mantine/core';
-import { useState } from 'react';
 
 interface BrokerCheckBoxGroupProps {
     defaultValue?: string[];

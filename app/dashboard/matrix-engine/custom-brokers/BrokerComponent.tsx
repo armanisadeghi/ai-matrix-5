@@ -131,8 +131,6 @@ const BrokerComponent: React.FC<BrokerComponentProps> = ({ type, currentComponen
                 />
             case "AttachmentsURL":
                 return <div>URL</div>
-            case "AttachmentsMore":
-                return <div>More</div>
             case "Image":
                 return <BrokerImage
                     src={src}

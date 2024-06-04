@@ -3,17 +3,14 @@ import BrokerListItem from './BrokerListItem';
 import { Stack } from '@mantine/core';
 import { useBroker } from '@/context/brokerContext';
 
-interface BrokerListProps {
-    isEditingId: string;
-}
 
-const BrokerList = ({ isEditingId }: BrokerListProps) => {
+const BrokerList = () => {
     const { brokers } = useBroker();
 
     return (
         <Stack>
             {brokers.map((broker) => (
-                <BrokerListItem key={broker.id} isEditingId={isEditingId} broker={broker} />
+                <BrokerListItem key={broker.id} broker={broker} />
             ))}
         </Stack>
     );

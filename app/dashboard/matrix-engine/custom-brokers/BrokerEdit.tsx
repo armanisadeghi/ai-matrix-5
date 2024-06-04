@@ -1,6 +1,8 @@
 "use client";
 type BrokerFormProps = {
     type: string;
+    setCurrentComponent: Function;
+    currentComponent: Component,
 };
 
 import { useEffect, useState } from 'react';
@@ -8,50 +10,16 @@ import { Button, CheckboxGroup, Fieldset, Paper, Space, Stack, Switch, TextInput
 import BrokerComponent from './BrokerComponent';
 import { IconPlus } from '@tabler/icons-react';
 import { BrokerSizeSlider } from '@/components/Brokers/BrokerSizeSlider';
-import { BrokerCheckBoxGroup } from '@/components/Brokers/BrokerCheckBoxGroup';
 import { useBroker } from '@/context/brokerContext';
 import { uuid } from 'uuidv4';
-import { currentChatAtom } from '@/org/atoms/ChatAtoms';
 import { Component } from '@/types/broker';
 
-export const BrokerEdit = ({ type }: BrokerFormProps) => {
+export const BrokerEdit = ({ type, setCurrentComponent, currentComponent }: BrokerFormProps) => {
     const [imageUploaded, setImageUploaded] = useState(false);
     const [imageSrc, setImageSrc] = useState('');
     const [uploadedImage, setUploadedImage] = useState<File | null>(null);
     const { setCurrentBroker } = useBroker();
-    const [currentComponent, setCurrentComponent] = useState<Component>({
-        componentId: '',
-        type: '',
-        label: 'new label',
-        tooltip: 'new tooltip',
-        description: 'description',
-        maxLength: 200,
-        placeholderText: 'placeholder',
-        defaultValue: undefined,
-        displayOrder: undefined,
-        validation: '',
-        dependencies: [],
-        required: false,
-        options: [],
-        groupOptions: [],
-        size: 'md',
-        color: '',
-        exampleInputs: [],
-        group: '',
-        min: 1,
-        max: 10,
-        step: 1,
-        value: '',
-        onChange: () => { },
-        tableData: undefined,
-        src: '',
-        alt: '',
-        radius: 'md',
-        h: 'auto',
-        w: 'auto',
-        fit: 'fill',
-        marks: [],
-    } as Component);
+
 
     useEffect(() => {
         if (uploadedImage) {
@@ -67,7 +35,7 @@ export const BrokerEdit = ({ type }: BrokerFormProps) => {
     };
 
     useEffect(() => {
-        setCurrentComponent((prev) => ({
+        setCurrentComponent((prev: Component) => ({
             ...prev,
             type,
             src: imageSrc,
@@ -79,10 +47,9 @@ export const BrokerEdit = ({ type }: BrokerFormProps) => {
             <Grid.Col span={{ base: 12, md: 6 }}>
                 <Fieldset legend="Add properties" >
                     {type === "Slider" && <>
-                        <Switch label="Marks" onChange={(e) => setCurrentComponent((prev) => ({ ...prev, isMarks: e.target.checked }))} />
+                        <Switch label="Marks" onChange={(e) => setCurrentComponent((prev: Component) => ({ ...prev, isMarks: e.target.checked }))} />
                         <Space h="sm" />
-                    </>
-                    }
+                    </>}
                     {type === "Image" && <>
                         <FileInput
                             label="Upload an image"
@@ -90,32 +57,25 @@ export const BrokerEdit = ({ type }: BrokerFormProps) => {
                             placeholder="Upload an image"
                             onChange={handleImageUpload}
                         /></>}
-                    <TextInput label="Name" onChange={(e) => setCurrentComponent((prev) => ({ ...prev, label: e.target.value }))} />
+                    <TextInput label="Name" onChange={(e) => setCurrentComponent((prev: Component) => ({ ...prev, label: e.target.value }))} />
                     <Space h="sm" />
-                    <TextInput label="Placeholder" onChange={(e) => setCurrentComponent((prev) => ({ ...prev, placeholderText: e.target.value }))} />
+                    <TextInput label="Placeholder" onChange={(e) => setCurrentComponent((prev: Component) => ({ ...prev, placeholderText: e.target.value }))} />
                     <Space h="sm" />
-                    <TextInput label="Default Value" onChange={(e) => setCurrentComponent((prev) => ({ ...prev, defaultValue: e.target.value }))} />
+                    <TextInput label="Default Value" onChange={(e) => setCurrentComponent((prev: Component) => ({ ...prev, defaultValue: e.target.value }))} />
                     <Space h="sm" />
-                    <TextInput label="Description" onChange={(e) => setCurrentComponent((prev) => ({ ...prev, description: e.target.value }))} />
+                    <TextInput label="Description" onChange={(e) => setCurrentComponent((prev: Component) => ({ ...prev, description: e.target.value }))} />
                     <Space h="sm" />
                     {type === "Select" && <>
-                        <TextInput label="Options" placeholder="Option 1, Option 2, Option 3" description="Separate options with commas" onChange={(e) => setCurrentComponent((prev) => ({ ...prev, options: (e.target.value).split(",") }))} />
+                        <TextInput label="Options" placeholder="Option 1, Option 2, Option 3" description="Separate options with commas" onChange={(e) => setCurrentComponent((prev: Component) => ({ ...prev, options: (e.target.value).split(",") }))} />
                     </>}
                     <Space h="sm" />
-                    <Switch label="Required" onChange={(e) => setCurrentComponent((prev) => ({ ...prev, required: e.target.checked }))} />
+                    <Switch label="Required" onChange={(e) => setCurrentComponent((prev: Component) => ({ ...prev, required: e.target.checked }))} />
                     <Space h="sm" />
-                    <BrokerSizeSlider label="Size" onChange={(e) => setCurrentComponent((prev) => ({ ...prev, size: e as any }))} />
+                    <BrokerSizeSlider label="Size" onChange={(e) => setCurrentComponent((prev: Component) => ({ ...prev, size: e as any }))} />
                 </Fieldset>
                 <Space h="sm" />
                 <Button variant="primary" w="100%" onClick={() => {
-                    const newComponent = {
-                        ...currentComponent,
-                        componentId: uuid(),
-                    };
-                    setCurrentBroker((prevBroker) => ({
-                        ...prevBroker,
-                        components: [...prevBroker.components, newComponent]
-                    }));
+                    setCurrentBroker((prev) => ({ ...prev, components: [...prev.components, { ...currentComponent, componentId: uuid() }] }));
                 }}>
                     Add Component To Broker
                 </Button>

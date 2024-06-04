@@ -73,7 +73,6 @@ export interface BrokerContextValue {
     setBrokers: React.Dispatch<React.SetStateAction<Broker[]>>;
     currentBroker: Broker;
     setCurrentBroker: React.Dispatch<React.SetStateAction<Broker>>
-    editBroker: (broker: Broker) => void;
     deleteBroker: (id: string) => void;
 }
 
