@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import BrokerListItem from './BrokerListItem';
 import { Stack } from '@mantine/core';

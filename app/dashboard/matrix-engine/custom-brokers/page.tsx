@@ -1,13 +1,14 @@
 "use client";
 
 import { Component, ComponentType } from "@/types/broker";
-import { Container, Button, Space, Select, Paper, Transition, Stack } from "@mantine/core";
+import { Container, Button, Space, Select, Paper, Transition, Stack, Flex } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
 import { useState } from "react";
 import BrokerList from "./BrokerList";
 import { BrokerForm } from "./BrokerForm";
 import { useBroker } from "@/context/brokerContext";
 import { BrokerEdit } from "./BrokerEdit";
+import Link from "next/link";
 
 const Brokers: React.FC = () => {
     const [showSelect, setShowSelect] = useState(false);
@@ -71,11 +72,13 @@ const Brokers: React.FC = () => {
 
     return (
         <Container>
-            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <Flex justify="space-between">
+                <Link href="/dashboard/matrix-engine/custom-brokers/example">Sample Brokers</Link>
+
                 <Button onClick={() => handleNewBroker()} variant="outline" leftSection={<IconPlus />}>
                     Add New Broker
                 </Button>
-            </div>
+            </Flex>
             <Space h="md" />
 
             <Stack>
@@ -107,7 +110,6 @@ const Brokers: React.FC = () => {
                 <Space h="md" />
             </Stack>
             <BrokerList />
-
         </Container>
     );
 };
