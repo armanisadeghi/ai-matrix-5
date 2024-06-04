@@ -2,7 +2,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { Button } from "@mantine/core";
-import { ChatManager } from '@/services/Chat';
 import { activeUserAtom } from "@/context/atoms/userAtoms";
 import {
     activeChatIdAtom,

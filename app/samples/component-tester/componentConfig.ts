@@ -5,7 +5,7 @@ import { exampleCode, cssCode, pythonCode } from '@/app/samples/code-highlight/d
 export const componentMap: { [key: string]: React.ComponentType<any> } = {
     AIResponse: dynamic(() => import('@/app/chat/response/AIResponse')),
     AmeMultiCodeHighlight: dynamic(() => import('@/ui/highlight/AmeMultiCodeHighlight')),
-    ChatSidebar: dynamic(() => import('@/app/samples/ai-tests/ai-chatbot/components/sidebar/ChatSidebar')),
+    ChatSidebar: dynamic(() => import('@/app/samples/ai-tests/shared/sidebar/ChatSidebar')),
     DynamicSplitter: dynamic(() => import('@/ui/split/DynamicSplitter')),
     AmeCheckbox: dynamic(() => import('@/ui/checkbox/AmeCheckbox')),
     AmeCheckboxGroup: dynamic(() => import('@/ui/checkbox/AmeCheckboxGroup')),

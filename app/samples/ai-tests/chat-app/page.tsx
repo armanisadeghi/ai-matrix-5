@@ -6,7 +6,7 @@ import React from 'react';
 import ChatInput from './components/ChatInput';
 import ChatSettings from '@/app/samples/ai-tests/chat-app/components/settings/ChatSettings';
 import ChatResponse from './components/ChatResponse';
-import ChatHistory from '@/app/samples/ai-tests/ai-chatbot/components/sidebar/ChatHistory';
+import ChatHistory from '@/app/samples/ai-tests/shared/sidebar/ChatHistory';
 import AiResponseForm from '@/app/samples/ai-tests/chat-app/components/dynamic-inputs/ChatForm';
 import { useAiResponse, AiResponseProvider } from '@/context/AiContext/AiResponseContext';
 

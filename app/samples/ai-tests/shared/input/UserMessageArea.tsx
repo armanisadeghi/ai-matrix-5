@@ -40,7 +40,7 @@ const UserMessageArea = forwardRef<HTMLDivElement, UserMessageAreaProps>(
         };
 
         return (
-            <div ref={ref} style={{ position: 'sticky', bottom: 0, width: '100%', backgroundColor: 'var(--mantine-color-body)' }}>
+            <div ref={ref} style={{ position: 'sticky', bottom: '15px', width: '100%', backgroundColor: 'var(--mantine-color-body)', paddingBottom: '10px' }}>
                 <div style={{ height: '2px' }}></div>
 
                 <div style={{ position: 'absolute', top: 15, right: 10, zIndex: 10 }}>
@@ -74,24 +74,7 @@ const UserMessageArea = forwardRef<HTMLDivElement, UserMessageAreaProps>(
                         <IoReturnDownBackOutline style={{ width: rem(24), height: rem(24), opacity: submitOnEnter ? 1 : 0.5 }} />
                     </ActionIcon>
                 </div>
-                {isStreaming && (
-                    <div style={{ position: 'absolute', top: 33, right: 10, zIndex: 10 }}>
-                        <ActionIcon
-                            size={40}
-                            variant="subtle"
-                            onClick={() => {
-                                console.log(isStreaming ? 'Pause' : 'Play');
-                                setIsStreaming(!isStreaming);
-                            }}
-                        >
-                            {isStreaming ? (
-                                <LuPauseOctagon style={{ width: rem(30), height: rem(30) }} />
-                            ) : (
-                                <IoPlayForwardCircleOutline style={{ width: rem(30), height: rem(30) }} />
-                            )}
-                        </ActionIcon>
-                    </div>
-                )}
+
                 <Textarea
                     placeholder="Type your message..."
                     style={{ width: '100%' }}
@@ -108,6 +91,7 @@ const UserMessageArea = forwardRef<HTMLDivElement, UserMessageAreaProps>(
                         }
                     }}
                 />
+
                 <div style={{ height: '10px', marginTop: '7px', alignItems: 'center' }}>
                     <Grid>
                         <Grid.Col span={1}></Grid.Col>
@@ -163,6 +147,26 @@ export default UserMessageArea;
                             height: rem(24)
                         }}/>
                     </ActionIcon>
+
+
+                {isStreaming && (
+                    <div style={{ position: 'absolute', top: 33, right: 10, zIndex: 10 }}>
+                        <ActionIcon
+                            size={40}
+                            variant="subtle"
+                            onClick={() => {
+                                console.log(isStreaming ? 'Pause' : 'Play');
+                                setIsStreaming(!isStreaming);
+                            }}
+                        >
+                            {isStreaming ? (
+                                <LuPauseOctagon style={{ width: rem(30), height: rem(30) }} />
+                            ) : (
+                                <IoPlayForwardCircleOutline style={{ width: rem(30), height: rem(30) }} />
+                            )}
+                        </ActionIcon>
+                    </div>
+                )}
 
 
  */

@@ -4,7 +4,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Container, Grid, Burger, Textarea, TextInput } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import Sidebar from '@/app/samples/ai-tests/ai-chatbot/components/sidebar/ChatSidebar';
+import Sidebar from '@/app/samples/ai-tests/shared/sidebar/ChatSidebar';
 import ResponseArea from '@/app/samples/ai-tests/chat-app/components/response/ResponseArea';
 
 function ChatPage() {

@@ -1,25 +1,79 @@
-// app/samples/chats/layout.tsx
-
 'use client';
 
-import React, { ReactNode } from 'react';
-import ChatList from '../ChatComponents/ChatList';
+import React, { useEffect } from 'react';
+import { Container, Grid } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
+import { GlobalChatProvider } from '@/context/AiContext/GlobalChatContext';
+import { ChatProvider } from '@/context/AiContext/ChatContext';
+import { UserProvider } from '@/context/AiContext/UserContext';
+import { FormProvider } from '@/context/AiContext/FormContext';
+import { RequestMetadataProvider } from '@/context/AiContext/RequestMetadataContext';
+import { SettingsProvider } from '@/context/AiContext/SettingsContext';
+import { HistoryProvider } from '@/context/AiContext/HistoryContext';
+import { AiResponseProvider } from '@/context/AiContext/AiResponseContext';
+import { ResponseProvider } from '@/context/AiContext/ResponseContext';
+import { LayoutProvider } from '@/context/LayoutContext';
 import { useRecoilValue } from 'recoil';
 import { activeUserAtom } from '@/context/atoms/userAtoms';
+import { useSidebar, SidebarProvider } from "@/context/SidebarContext";
+import ChatSidebar from '@/app/samples/ChatComponents/ChatList';
 
-interface LayoutProps {
-    children: ReactNode;
-}
-
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+const ChatLayout = ({ children }: { children: React.ReactNode }) => {
+    const isSmallScreen = useMediaQuery('(max-width: 600px)');
     const activeUser = useRecoilValue(activeUserAtom);
+    const { setSidebarContent } = useSidebar();
+
+    useEffect(() => {
+        if (activeUser) {
+            setSidebarContent(<ChatSidebar user_id={activeUser.id} />);
+        }
+
+        return () => {
+            setSidebarContent(null); // Clean up
+        };
+    }, [activeUser, setSidebarContent]);
 
     return (
-        <div>
-            {activeUser ? <ChatList user_id={activeUser.id} /> : <p>Loading...</p>}
-            <main>{children}</main>
-        </div>
+        <UserProvider>
+            <LayoutProvider initialNavbarState="icons">
+                <ChatProvider>
+                    <HistoryProvider>
+                        <FormProvider>
+                            <GlobalChatProvider>
+                                <RequestMetadataProvider>
+                                    <SettingsProvider>
+                                        <AiResponseProvider>
+                                            <ResponseProvider>
+                                                <SidebarProvider initialAsideState="icons">
+                                                    <Container fluid style={{ height: '100vh', display: 'flex', padding: '0' }}>
+
+                                                        <Grid grow style={{ flex: 1 }} columns={12} gutter={0}>
+                                                            {!isSmallScreen && (
+                                                                <>
+                                                                    <Grid.Col span={1} style={{ flexGrow: 1, flexShrink: 1, flexBasis: '0%', padding: '0' }}></Grid.Col>
+                                                                </>
+                                                            )}
+                                                            <Grid.Col span={8} style={{ display: 'flex', flexDirection: 'column', height: '100vh', maxWidth: '800px', padding: '0', margin: '0 auto' }}>
+                                                                {children}
+                                                            </Grid.Col>
+                                                            {!isSmallScreen && (
+                                                                <Grid.Col span={1} style={{ flexGrow: 1, flexShrink: 1, flexBasis: '0%', padding: '0' }}></Grid.Col>
+                                                            )}
+                                                        </Grid>
+
+                                                    </Container>
+                                                </SidebarProvider>
+                                            </ResponseProvider>
+                                        </AiResponseProvider>
+                                    </SettingsProvider>
+                                </RequestMetadataProvider>
+                            </GlobalChatProvider>
+                        </FormProvider>
+                    </HistoryProvider>
+                </ChatProvider>
+            </LayoutProvider>
+        </UserProvider>
     );
 };
 
-export default Layout;
+export default ChatLayout;

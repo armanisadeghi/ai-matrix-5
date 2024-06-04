@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { activeChatMessagesArrayAtom } from '@/context/atoms/chatAtoms';
+import { activeChatIdAtom, activeChatMessagesArrayAtom } from '@/context/atoms/chatAtoms';
 
 const ChatDetail = ({ user_id, chat_id }: { user_id: string; chat_id: string }) => {
     const [messages, setMessages] = useRecoilState(activeChatMessagesArrayAtom);
     const [messageText, setMessageText] = useState<string>('');
+    const [currentChatId, setCurrentChatId] = useRecoilState(activeChatIdAtom);
 
     useEffect(() => {
         fetch(`/api/chats?user_id=${user_id}&chat_id=${chat_id}`)

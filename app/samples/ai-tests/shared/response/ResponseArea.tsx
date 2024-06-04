@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import { Box, Grid } from '@mantine/core';
-import HistoryEntries from "@/app/samples/ai-tests/ai-chatbot/components/response/HistoryEntries";
+import HistoryEntries from "@/app/samples/ai-tests/shared/response/HistoryEntries";
 import AssistantMessage from "@/app/samples/ai-tests/chat-app/components/response/AssistantMessage";
 import { activeChatIdAtom, activeChatMessagesArrayAtom,} from "@/context/atoms/chatAtoms";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 interface ResponseAreaProps {
     bottomPadding: number;
@@ -12,14 +12,13 @@ interface ResponseAreaProps {
 const ResponseArea: React.FC<ResponseAreaProps> = ({ bottomPadding }) => {
     const scrollRef = useRef<HTMLDivElement>(null);
     const currentChatId = useRecoilValue(activeChatIdAtom);
+    const [messages, setMessages] = useRecoilState(activeChatMessagesArrayAtom);
 
     useEffect(() => {
         if (scrollRef.current) {
             scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
         }
     }, []);
-
-
 
     useEffect(() => {
         if (scrollRef.current) {
@@ -38,12 +37,12 @@ const ResponseArea: React.FC<ResponseAreaProps> = ({ bottomPadding }) => {
 
     return (
         <Box style={{ flexGrow: 1, overflow: 'hidden', position: 'relative' }}>
-            <Box ref={scrollRef} style={{ position: 'absolute', top: 0, left: 0, right: -25, bottom: -20, overflow: 'scroll' }}>
+            <Box ref={scrollRef} style={{ position: 'absolute', top: 0, left: -120, right: -25, bottom: -20, overflow: 'scroll' }}>
                 <Grid>
                     <Grid.Col span={0.5}></Grid.Col>
                     <Grid.Col span={11}>
                         <div style={{ paddingBottom: bottomPadding }}>
-                            <AssistantMessage content="Hello! How can I help you today?" />
+                            <AssistantMessage content="Ask me anything!" />
                             <HistoryEntries chatId={currentChatId} />
                         </div>
                     </Grid.Col>

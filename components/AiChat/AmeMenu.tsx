@@ -1,13 +1,17 @@
 import React, { useState, useContext, ReactNode } from 'react';
-import { Menu, rem, Modal, Text } from '@mantine/core';
+import { Menu, rem, Modal, Text, TextInput, Button, Box } from '@mantine/core';
 import { BsPencil, BsCloudDownload } from "react-icons/bs";
 import { FaShareFromSquare } from "react-icons/fa6";
 import { SiXdadevelopers, SiAppstore } from "react-icons/si";
 import { CiViewList } from "react-icons/ci";
 import { IconTrash } from '@tabler/icons-react';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { activeChatMessagesArrayAtom, activeChatIdAtom } from '@/context/atoms/chatAtoms';
+import { activeUserAtom } from '@/context/atoms/userAtoms';
 
 interface AmeMenuProps {
     children: ReactNode;
+    initialValue: string;  // New prop for the initial value
     onPeak?: () => void;
     context?: React.Context<any>;  // Optional prop for store
     onShare?: () => void;
@@ -16,11 +20,14 @@ interface AmeMenuProps {
     onUseInPlayground?: () => void;
     onUseForApps?: () => void;
     onDelete?: () => void;
+    open: boolean; // New prop to control menu open state
+    onClose: () => void; // New prop to control menu close action
 }
 
 const AmeMenu: React.FC<AmeMenuProps> & { Target: React.FC<{ children: ReactNode }> } = (
     {
         children,
+        initialValue,
         onPeak,
         context,
         onShare,
@@ -28,27 +35,66 @@ const AmeMenu: React.FC<AmeMenuProps> & { Target: React.FC<{ children: ReactNode
         onDownload,
         onUseInPlayground,
         onUseForApps,
-        onDelete
+        onDelete,
+        open,
+        onClose
     }) => {
     const [modalOpened, setModalOpened] = useState(false);
-    const [modalMessage, setModalMessage] = useState('');
+    const [renameModalOpened, setRenameModalOpened] = useState(false);
+    const [modalTitle, setModalTitle] = useState('');
+    const [newTitle, setNewTitle] = useState('');
 
     const contextValue = context ? useContext(context) : null;
+    const messages = useRecoilValue(activeChatMessagesArrayAtom);
+    const activeChatId = useRecoilValue(activeChatIdAtom);
+    const activeUser = useRecoilValue(activeUserAtom);
+    const setChatMessages = useSetRecoilState(activeChatMessagesArrayAtom);
 
     const handlePeak = () => {
-        const message = contextValue ? contextValue.message : 'Default message';
-        setModalMessage(message);
+        const message = contextValue ? contextValue.message : initialValue;
+        setModalTitle(message);
         setModalOpened(true);
         if (onPeak) {
             onPeak();
         }
     };
 
+    const handleShare = async () => {
+        const url = window.location.href;
+        try {
+            await navigator.clipboard.writeText(url);
+            alert('URL copied to clipboard');
+        } catch (err) {
+            console.error('Failed to copy URL', err);
+        }
+    };
+
+    const handleRename = () => {
+        setRenameModalOpened(true);
+    };
+
+    const handleDownload = () => {
+        const textContent = messages.map(msg => `${msg.role}: ${msg.text}`).join('\n\n');
+        const blob = new Blob([textContent], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${initialValue}.txt`;
+        a.click();
+        URL.revokeObjectURL(url);
+    };
+
+    const handleRenameSubmit = async () => {
+        // Implement renaming logic here, e.g., updating the database and recoil state
+        // After renaming:
+        setRenameModalOpened(false);
+    };
+
     return (
         <>
             <Menu
-                trigger="click"
-                loop={false}
+                opened={open}
+                onClose={onClose}
                 withinPortal={false}
                 trapFocus={false}
                 shadow="md"
@@ -66,19 +112,19 @@ const AmeMenu: React.FC<AmeMenuProps> & { Target: React.FC<{ children: ReactNode
                     <Menu.Item leftSection={<FaShareFromSquare style={{
                         width: rem(14),
                         height: rem(14)
-                    }}/>} onClick={onShare}>
+                    }}/>} onClick={handleShare}>
                         Share
                     </Menu.Item>
                     <Menu.Item leftSection={<BsPencil style={{
                         width: rem(14),
                         height: rem(14)
-                    }}/>} onClick={onRename}>
+                    }}/>} onClick={handleRename}>
                         Rename
                     </Menu.Item>
                     <Menu.Item leftSection={<BsCloudDownload style={{
                         width: rem(14),
                         height: rem(14)
-                    }}/>} onClick={onDownload}>
+                    }}/>} onClick={handleDownload}>
                         Download
                     </Menu.Item>
 
@@ -117,16 +163,34 @@ const AmeMenu: React.FC<AmeMenuProps> & { Target: React.FC<{ children: ReactNode
             <Modal
                 opened={modalOpened}
                 onClose={() => setModalOpened(false)}
-                title="Please consider this"
+                title={modalTitle}  // Display the initial value as the title
                 transitionProps={{
                     transition: 'fade',
                     duration: 600,
                     timingFunction: 'linear'
                 }}
             >
-                <Text size="md">
-                    {modalMessage}
-                </Text>
+                <Box>
+                    {messages.map((msg, index) => (
+                        <Text key={index} size="sm" style={{ whiteSpace: 'pre-wrap', marginBottom: '10px' }}>
+                            {msg.role}: {msg.text}
+                        </Text>
+                    ))}
+                </Box>
+            </Modal>
+
+            <Modal
+                opened={renameModalOpened}
+                onClose={() => setRenameModalOpened(false)}
+                title="Rename Chat"
+            >
+                <TextInput
+                    label="New Chat Title"
+                    placeholder="Enter new chat title"
+                    value={newTitle}
+                    onChange={(e) => setNewTitle(e.currentTarget.value)}
+                />
+                <Button onClick={handleRenameSubmit} style={{ marginTop: '10px' }}>Rename</Button>
             </Modal>
         </>
     );

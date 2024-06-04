@@ -1,9 +1,9 @@
 import OpenAI from "openai";
 
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-});
 
+const apiKey = 'sk-proj-cNw3haT3hLCiFEtZXlqDT3BlbkFJJ6i5BPniTGANXnu9Mkal'
+
+const openai = new OpenAI ({ apiKey , dangerouslyAllowBrowser: true });
 
 interface ChatMessage {
     role: 'system' | 'user' | 'assistant';

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { Paper, Textarea, Button, ActionIcon } from '@mantine/core';
-import { IconEdit } from '@tabler/icons-react';
+import { FiEdit2 } from "react-icons/fi";
 import { activeChatMessagesArrayAtom } from '@/context/atoms/chatAtoms';
 import { MessageEntry } from '@/types/chat';
 
@@ -36,7 +36,7 @@ const UserMessage: React.FC<UserMessageProps> = ({ messageId }) => {
     };
 
     return (
-        <Paper shadow="sm" radius="md" withBorder p="xl" style={{
+        <Paper shadow="sm" radius="md" withBorder p="xs" style={{
             width: '80%',
             marginLeft: '20%',
             position: 'relative',
@@ -57,14 +57,17 @@ const UserMessage: React.FC<UserMessageProps> = ({ messageId }) => {
                     <Textarea
                         minRows={4}
                         readOnly
+                        variant="unstyled"
+
                         value={content}
                     />
                     <ActionIcon
                         variant="transparent"
+                        size="xs"
                         style={{ position: 'absolute', top: 10, right: 10 }}
                         onClick={handleEdit}
                     >
-                        <IconEdit />
+                        <FiEdit2 />
                     </ActionIcon>
                 </>
             )}
