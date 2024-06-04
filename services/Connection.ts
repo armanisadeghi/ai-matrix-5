@@ -1,5 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
 
+// TODO Armani Set this up properly to get the data in the earliest layout and do some checks and create settings
+// In the early stages, let it just run in the background and collect data without doing anything with it yet.
+// Put things in there to address localhost so we don't get strange things happening.
+// Remember to log counts of everything so we know how many times they've logged in, etc.
+
 export class UserConnection {
     ipAddress: string;
     userAgent: string;

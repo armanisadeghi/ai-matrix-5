@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { Container, Grid } from '@mantine/core';
+import { Container, Grid, ScrollArea, Space } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { GlobalChatProvider } from '@/context/AiContext/GlobalChatContext';
 import { ChatProvider } from '@/context/AiContext/ChatContext';
@@ -45,7 +45,7 @@ const ChatLayout = ({ children }: { children: React.ReactNode }) => {
                                         <AiResponseProvider>
                                             <ResponseProvider>
                                                 <SidebarProvider initialAsideState="icons">
-                                                    <Container fluid style={{ height: '100vh', display: 'flex', padding: '0' }}>
+                                                    <Container fluid h={1200}  bg="var(--mantine-color-dark-7)">
 
                                                         <Grid grow style={{ flex: 1 }} columns={12} gutter={0}>
                                                             {!isSmallScreen && (
@@ -53,8 +53,9 @@ const ChatLayout = ({ children }: { children: React.ReactNode }) => {
                                                                     <Grid.Col span={1} style={{ flexGrow: 1, flexShrink: 1, flexBasis: '0%', padding: '0' }}></Grid.Col>
                                                                 </>
                                                             )}
-                                                            <Grid.Col span={8} style={{ display: 'flex', flexDirection: 'column', height: '100vh', maxWidth: '800px', padding: '0', margin: '0 auto' }}>
-                                                                {children}
+                                                            <Grid.Col span={12} style={{ display: 'flex', flexDirection: 'column', height: '106vh', maxWidth: '800px', padding: '0', margin: '0 auto' }}>
+                                                                    {children}
+
                                                             </Grid.Col>
                                                             {!isSmallScreen && (
                                                                 <Grid.Col span={1} style={{ flexGrow: 1, flexShrink: 1, flexBasis: '0%', padding: '0' }}></Grid.Col>

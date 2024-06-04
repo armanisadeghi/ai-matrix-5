@@ -1,9 +1,10 @@
+'use server';
+
 import OpenAI from "openai";
 
-
-const apiKey = 'sk-proj-cNw3haT3hLCiFEtZXlqDT3BlbkFJJ6i5BPniTGANXnu9Mkal'
-
-const openai = new OpenAI ({ apiKey , dangerouslyAllowBrowser: true });
+const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+});
 
 interface ChatMessage {
     role: 'system' | 'user' | 'assistant';
@@ -26,3 +27,17 @@ export async function OpenAiStream(
         console.log('Chunk received:', content);
     }
 }
+
+/*
+
+
+const envApiKey = process.env.OPENAI_API_KEY;
+
+// Fallback to the placeholder API key if the .env variable is undefined or empty
+const apiKey = envApiKey && envApiKey.trim() ? envApiKey : 'sk-proj-cNw3haT3hLCiFEtZXlqDT3BlbkFJJ6i5BPniTGANXnu9Mkal';
+
+const openai = new OpenAI({
+    apiKey: apiKey,
+    dangerouslyAllowBrowser: true,
+});
+ */

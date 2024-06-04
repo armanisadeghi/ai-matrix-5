@@ -10,7 +10,6 @@ import { GiArtificialHive } from "react-icons/gi";
 interface AssistantMessageProps {
     messageId: string;
 }
-
 const AssistantMessage: React.FC<AssistantMessageProps> = ({ messageId }) => {
     const activeChatMessages = useRecoilValue(activeChatMessagesArrayAtom);
     const message: MessageEntry | undefined = activeChatMessages[parseInt(messageId)];

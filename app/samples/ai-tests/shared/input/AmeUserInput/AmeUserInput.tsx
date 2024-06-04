@@ -5,6 +5,7 @@ import { MdPermMedia } from "react-icons/md";
 import { RiDeleteBin3Line } from "react-icons/ri";
 import { FaExpandArrowsAlt } from "react-icons/fa";
 import styles from './DynamicTextarea.module.css';
+import { IoSettingsOutline } from "react-icons/io5";
 
 interface DynamicTextareaProps {
     systemText: string;
@@ -14,13 +15,14 @@ interface DynamicTextareaProps {
     handleSendMessage: () => void;
 }
 
-const DynamicTextarea = forwardRef<HTMLDivElement, DynamicTextareaProps>(({
-                                                                              systemText,
-                                                                              placeholderText,
-                                                                              userInput,
-                                                                              handleInputChange,
-                                                                              handleSendMessage
-                                                                          }, ref) => {
+const DynamicTextarea = forwardRef<HTMLDivElement, DynamicTextareaProps>((
+    {
+        systemText,
+        placeholderText,
+        userInput,
+        handleInputChange,
+        handleSendMessage
+    }, ref) => {
     const [collapsed, setCollapsed] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -42,7 +44,7 @@ const DynamicTextarea = forwardRef<HTMLDivElement, DynamicTextareaProps>(({
     };
 
     const handleDelete = () => {
-        handleInputChange({ target: { value: '' } } as React.ChangeEvent<HTMLTextAreaElement>);
+        handleInputChange({target: {value: ''}} as React.ChangeEvent<HTMLTextAreaElement>);
     };
 
     useEffect(() => {
@@ -68,7 +70,8 @@ const DynamicTextarea = forwardRef<HTMLDivElement, DynamicTextareaProps>(({
             >
                 <Group justify='space-between' style={{
                     width: '100%',
-                    alignItems: 'center'
+                    alignItems: 'center',
+
                 }}>
                     <div style={{
                         fontSize: '0.75rem',
@@ -78,6 +81,9 @@ const DynamicTextarea = forwardRef<HTMLDivElement, DynamicTextareaProps>(({
                     }}>{systemText}
                     </div>
                     <div>
+                        <ActionIcon size="md" variant="transparent" style={{color: '#909090'}}>
+                            <IoSettingsOutline/>
+                        </ActionIcon>
                         <ActionIcon size="sm" variant="transparent" onClick={handleUpload} style={{color: '#909090'}}>
                             <MdPermMedia/>
                         </ActionIcon>
@@ -109,8 +115,8 @@ const DynamicTextarea = forwardRef<HTMLDivElement, DynamicTextareaProps>(({
                 />
             </Box>
             <div style={{
-                height: '100px',
-                marginTop: '7px',
+                height: '1px',
+                marginTop: '10px',
                 alignItems: 'center'
             }}>
                 <Grid>
@@ -152,7 +158,7 @@ const DynamicTextarea = forwardRef<HTMLDivElement, DynamicTextareaProps>(({
                     <Grid.Col span={1}></Grid.Col>
                 </Grid>
             </div>
-            <div style={{height: '10px'}}></div>
+            <div style={{height: '185px'}}></div>
         </div>
     );
 });

@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Burger } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import ResponseArea from '@/app/samples/ai-tests/shared/response/ResponseArea';
-import UserMessageArea from '@/app/samples/ai-tests/shared/input/UserMessageArea';
 import AmeUserMessageArea from '@/app/samples/ai-tests/shared/input/AmeUserInput/AmeUserInput';
 
 const ChatsPage = () => {
@@ -25,7 +24,7 @@ const ChatsPage = () => {
     useEffect(() => {
         if (textareaContainerRef.current) {
             const handleResize = () => {
-                setBottomPadding(textareaContainerRef.current!.offsetHeight + 30);
+                setBottomPadding(textareaContainerRef.current!.offsetHeight + 0);
             };
             window.addEventListener('resize', handleResize);
             handleResize();
@@ -57,7 +56,9 @@ const ChatsPage = () => {
                 flexDirection: 'column',
                 height: '100%'
             }}>
+
                 <ResponseArea bottomPadding={bottomPadding} />
+
                 <AmeUserMessageArea
                     systemText="Let's get started..."
                     placeholderText="Enter system message..."
@@ -70,7 +71,7 @@ const ChatsPage = () => {
             {isSmallScreen && (
                 <div style={{
                     position: 'fixed',
-                    top: '10px',
+                    top: '0px',
                     left: '10px',
                     zIndex: 1000
                 }}>
