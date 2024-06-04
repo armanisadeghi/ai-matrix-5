@@ -4,20 +4,28 @@ import AmeChatHistoryEntry from '@/components/AiChat/AmeChatHistoryEntry';
 import { Space, Stack, Text, Container, LoadingOverlay } from '@mantine/core';
 
 interface ChatSidebarProps {
-    chatHistory: Record<string, ChatHistoryChat[]>;
-    isLoading: boolean;
+    chatHistory?: Record<string, ChatHistoryChat[]>;
+    isLoading?: boolean;
 }
 
-const ChatSidebar: React.FC<ChatSidebarProps> = ({ chatHistory, isLoading }) => {
+const ChatSidebar: React.FC<ChatSidebarProps> = (
+    {
+        chatHistory = {},
+        isLoading = false
+    }) => {
     if (isLoading) {
         console.log('Loading overlay is visible');
-        return <LoadingOverlay visible />;
+        return (
+            <div>
+                Chat Sidebar is loading...
+            </div>
+        )
     }
 
     return (
         <>
             <Text size="xs">Recent Chats</Text>
-            <Space h={10} />
+            <Space h={10}/>
             <Stack
                 h={300}
                 bg="var(--mantine-color-body)"

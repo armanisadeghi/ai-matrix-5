@@ -7,7 +7,7 @@ import ResponseArea from '@/app/samples/ai-tests/ai-chatbot/components/response/
 import UserMessageArea from '@/app/samples/ai-tests/ai-chatbot/components/input/UserMessageArea';
 import { useSidebar } from "@/context/SidebarContext";
 import ChatSidebar from "@/app/samples/ai-tests/ai-chatbot/components/sidebar/ChatSidebar";
-import { detailsForAllChatsAtom } from "@/context/atoms/chatAtoms";
+import { chatTitlesAndIdsAtom, detailsForAllChatsAtom } from "@/context/atoms/chatAtoms";
 import { useRecoilValue } from "recoil";
 
 const ChatPage = () => {
@@ -17,21 +17,21 @@ const ChatPage = () => {
     const textareaContainerRef = useRef<HTMLDivElement>(null);
     const isSmallScreen = useMediaQuery('(max-width: 600px)');
     const { setSidebarContent } = useSidebar();
-    const detailsForAllChatsAtomValue = useRecoilValue(detailsForAllChatsAtom);
+    const chatTitlesAndIds = useRecoilValue(chatTitlesAndIdsAtom);
 
     useEffect(() => {
         let isLoading = false;
-        if (detailsForAllChatsAtomValue) {
+        if (chatTitlesAndIds) {
             isLoading = true;
         }
         setSidebarContent(
-            <ChatSidebar chatHistory={detailsForAllChatsAtomValue} isLoading={isLoading} />
+            <ChatSidebar chatHistory={chatTitlesAndIds} isLoading={isLoading} />
         );
 
         return () => {
             setSidebarContent(null); // Clean up
         };
-    }, [setSidebarContent, detailsForAllChatsAtomValue]);
+    }, [setSidebarContent, chatTitlesAndIds]);
 
     useEffect(() => {
         document.body.style.overflow = 'hidden';

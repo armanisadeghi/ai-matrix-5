@@ -1,5 +1,5 @@
 import supabase from "./client";
-import { MessageManager, Chat as ChatClass } from '@/services/Chats';
+import { MessageManager, Chat as ChatClass } from '@/services/Chat';
 
 // Define the Chat interface
 interface Chat {

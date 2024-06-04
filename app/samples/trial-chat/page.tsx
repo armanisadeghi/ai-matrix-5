@@ -2,8 +2,8 @@
 "use client";
 
 import React from "react";
-import AtomPage from "@/app/samples/trial-chat/components/atom-3";
-import ChatComponent from "@/app/samples/trial-chat/components/TrialChat";
+import AtomPage from "@/app/samples/ai-tests/shared/chatAtoms";
+import ChatComponent from "@/app/samples/trial-chat/SimpleChatPage";
 
 const SampleParentPage = () => {
     return (

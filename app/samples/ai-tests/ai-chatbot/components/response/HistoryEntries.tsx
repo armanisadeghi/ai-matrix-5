@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { useRecoilValue } from 'recoil';
-import { Container, LoadingOverlay, Space } from '@mantine/core';
-import { activeChatMessagesArraySelector } from '@/context/atoms/chatAtoms';
+import { Container, LoadingOverlay, Space, Textarea } from '@mantine/core';
+import { activeChatMessagesArrayAtom, chatTitlesAndIdsAtom } from '@/context/atoms/chatAtoms';
 import AssistantMessage from './AssistantMessage';
 import UserMessage from './UserMessage';
 import { RoleType, MessageEntry } from '@/types/chat';
@@ -13,7 +13,7 @@ interface HistoryEntriesProps {
 }
 
 const HistoryEntries: React.FC = ({chatId}: HistoryEntriesProps) => {
-    const activeChatMessages = useRecoilValue(activeChatMessagesArraySelector);
+    const activeChatMessages = useRecoilValue(activeChatMessagesArrayAtom);
 
     if (!activeChatMessages) {
         return <LoadingOverlay visible/>;

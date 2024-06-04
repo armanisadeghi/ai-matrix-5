@@ -3,7 +3,7 @@ import { useSetRecoilState, useRecoilValue } from 'recoil';
 import { allChatsAtom } from '@/context/atoms/chatAtoms';
 import { activeUserIdSelector, activeUserTokenSelector } from '@/context/atoms/userAtoms';
 import { ChatHistoryChat } from '@/types';
-import { Chat, ChatManager } from "@/services/Chats";
+import { Chat, ChatManager } from "@/services/Chat";
 
 export const loadChatHistory = async (): Promise<void> => {
     const userId = useRecoilValue(activeUserIdSelector);

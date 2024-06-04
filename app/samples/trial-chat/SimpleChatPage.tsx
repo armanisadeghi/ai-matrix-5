@@ -1,10 +1,10 @@
 import React, { useState, useRef } from 'react';
-import { RoleType, MessageEntry } from '@/armaniLocal/org/types/chatData';
+import { RoleType, MessageEntry } from '@/types/chat';
 import { Button, Space } from "@mantine/core";
 import UserMessageArea from "@/app/samples/ai-tests/ai-chatbot/components/input/UserMessageArea";
 import { useRecoilState } from 'recoil';
 import { allChatsAtom, activeChatIdAtom, activeChatMessagesArrayAtom} from '@/context/atoms/chatAtoms';
-import { submitChatRequest } from './chatService';
+import { submitChatRequest } from '@/app/samples/ai-tests/shared/SteamOpenAi';
 
 
 const ChatComponent: React.FC = () => {

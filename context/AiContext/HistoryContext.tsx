@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { HistoryContextProps, HistoryProviderProps, ChatHistoryChat } from '@/types/chat';
-import { loadChatHistory } from '@/app/dashboard/intelligence/ai-chatbot/utils/loadChatHistory';
+import { loadChatHistory } from '@/app/samples/ai-tests/ai-chatbot/utils/loadChatHistory';
 import { UserContext } from './UserContext';
 
 interface ChatHistory {

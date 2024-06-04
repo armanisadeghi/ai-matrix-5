@@ -10,7 +10,7 @@ type SidebarProps = {
 };
 
 const Sidebar = ({ asideWidth }: SidebarProps) => {
-    const { asideOpen, toggleAside, sidebarContent } = useSidebar();
+    const { asideOpen, handleToggle, sidebarContent } = useSidebar();
     const adjustedWidth = asideOpen ? asideWidth : 25;
 
     return (
@@ -18,7 +18,7 @@ const Sidebar = ({ asideWidth }: SidebarProps) => {
             {asideOpen && (
                 <>
                     {sidebarContent}
-                    <ActionIcon onClick={toggleAside} style={{
+                    <ActionIcon onClick={handleToggle} style={{
                         position: 'absolute',
                         top: '50%',
                         right: adjustedWidth - 27,
@@ -30,14 +30,14 @@ const Sidebar = ({ asideWidth }: SidebarProps) => {
             )}
             {!asideOpen && (
                 <ActionIcon
-                    onClick={toggleAside}
+                    onClick={handleToggle}
                     style={{
                         position: 'absolute',
                         top: '50%',
                         right: adjustedWidth,
                         transform: 'translateY(-50%)'
                     }}>
-                    <IconChevronLeft size={12}/>
+                    <IconChevronLeft size={18}/>
                 </ActionIcon>
             )}
         </aside>

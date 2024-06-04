@@ -1,7 +1,8 @@
 // recoil/atoms/chatAtoms.ts
 
 import { atom } from 'recoil';
-import { Chat, ChatManager, RoleType } from '@/services/Chats';
+import Chat, { Role } from '@/services/Chat';
+
 type ChatArray = Chat[];
 
 type systemEntry = {
@@ -14,16 +15,16 @@ type NewChatStart = {
     systemEntry: systemEntry;
 };
 
-export const messagesAtom = atom<{ text: string, role: RoleType }[]>({
+export const messagesAtom = atom<{ text: string, role: Role }[]>({
     key: 'messagesAtom',
     default: [],
 });
 
-export const systemMessagesAtom = atom<{ text: string, role: RoleType }[]>({
+export const systemMessagesAtom = atom<{ text: string, role: Role }[]>({
     key: 'systemMessagesAtom',
     default: [{
         text: 'You are a helpful assistant.',
-        role: RoleType.system
+        role: 'system'
     }],
 });
 
@@ -32,9 +33,9 @@ export const allChatsAtom = atom<Chat[]>({
     default: [],
 });
 
-export const activeChatIdAtom = atom<string | undefined>({
+export const activeChatIdAtom = atom<string>({
     key: 'activeChatIdAtom',
-    default: undefined,
+    default: 'new-chat',
 });
 
 export const activeChatMessagesArrayAtom = atom<any[]>({

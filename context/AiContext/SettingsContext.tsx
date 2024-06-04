@@ -2,7 +2,7 @@
 'use client';
 import React, { createContext, useContext, useState } from 'react';
 import { RequestSettings, SettingsContextProps, SettingsProviderProps } from '@/types/settings';
-import { defaultRequestSettings } from '../../app/dashboard/intelligence/chat-app/utils/defaults';
+import { defaultRequestSettings } from '@/app/samples/ai-tests/support/chatDefaults';
 
 export const SettingsContext = createContext<SettingsContextProps>({
     settings: defaultRequestSettings,  // Using the correct default settings

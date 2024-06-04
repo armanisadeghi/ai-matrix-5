@@ -36,9 +36,8 @@ const LayoutContent: React.FC = () => {
     }
 
     return (
-        <div>
-            <p>ID: {activeUser.id} Name: {activeUser.firstName}</p>
-        </div>
+        <>
+        </>
     );
 };
 
@@ -61,3 +60,7 @@ function Layout({children}: Props) {
 
 export default Layout;
 
+/*
+            <p>ID: {activeUser.id} Name: {activeUser.firstName}</p>
+
+ */
