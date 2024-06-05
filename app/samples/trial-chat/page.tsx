@@ -10,7 +10,6 @@ const SampleParentPage = () => {
         <div>
             <ChatComponent/>
 
-            <AtomPage/>
         </div>
     );
 };
@@ -18,6 +17,8 @@ const SampleParentPage = () => {
 export default SampleParentPage;
 
 /*
+            <AtomPage/>
+
 import ChatStateInitializer from "@/app/samples/trial-chat/components/ChatStateInitializer";
 <ChatStateInitializer />
 

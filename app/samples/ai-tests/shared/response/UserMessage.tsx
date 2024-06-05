@@ -7,7 +7,7 @@ import { MessageEntry } from '@/types/chat';
 import { LiaEditSolid } from "react-icons/lia";
 import { FiEdit2 } from "react-icons/fi";
 import { GiArtificialHive } from "react-icons/gi";
-import { activeChatMessagesArrayAtom } from "@/app/samples/ai-tests/shared/servicees/chatAtoms";
+import { activeChatMessagesArrayAtom } from "@/app/samples/ai-tests/shared/atoms/chatAtoms";
 
 
 interface UserMessageProps {

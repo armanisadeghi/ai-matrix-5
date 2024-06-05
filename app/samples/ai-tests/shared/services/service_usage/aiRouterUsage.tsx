@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRecoilState } from 'recoil';
-import { requestEventTaskAtom, requestSocketEventAtom, useRequestManager } from '@/app/samples/ai-tests/shared/servicees/aiCallRouter';
+import { requestEventTaskAtom, requestSocketEventAtom, useRequestManager } from '@/app/samples/ai-tests/shared/services/aiCallRouter';
 import { MessageEntry } from '@/types/chat';
 
 const YourComponent = () => {

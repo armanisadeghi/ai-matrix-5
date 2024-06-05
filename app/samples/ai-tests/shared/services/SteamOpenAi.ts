@@ -1,11 +1,11 @@
-// app/samples/trial-chat/components/SteamOpenAi.ts
+// app/samples/ai-tests/shared/services/SteamOpenAi.ts
 
 import { MessageEntry, Role } from '@/types/chat';
 import { OpenAiStream } from "@/app/api/openai/route";
 
 export const submitChatRequest = (
     updatedChat: MessageEntry[],
-    updateCallback: (message: MessageEntry) => void,
+    updateCallback: (message: string) => void,
     finalizeCallback: (message: MessageEntry) => void
 ): Promise<void> => {
     return new Promise(async (resolve, reject) => {
@@ -19,14 +19,15 @@ export const submitChatRequest = (
                 content: chat.text
             }));
 
-            let assistantMessage: MessageEntry = { text: '', role: 'assistant' as Role };
+            let assistantMessage: string = '';
 
             await OpenAiStream(messages, (chunk) => {
-                assistantMessage.text += chunk;
-                updateCallback({ ...assistantMessage });
+                assistantMessage += chunk;
+                updateCallback(chunk);
             });
 
-            finalizeCallback(assistantMessage);
+            const fullResponse: MessageEntry = { text: assistantMessage, role: 'assistant' as Role };
+            finalizeCallback(fullResponse);
             resolve();
         } catch (error) {
             console.error('Error during OpenAI stream:', error);
@@ -36,14 +37,13 @@ export const submitChatRequest = (
 };
 
 
-
 /*
 
 ------------------- Call Signature:
 
 submitChatRequest(
     updatedChat: MessageEntry[],
-    updateCallback: (message: MessageEntry) => void,
+    updateCallback: (message: string) => void,
     finalizeCallback: (message: MessageEntry) => void
 ): Promise<void>
 
@@ -54,7 +54,7 @@ const updatedChat: MessageEntry[] = [
     { text: 'How can I assist you today?', role: 'system' }
 ];
 
-const updateCallback = (message: MessageEntry) => {
+const updateCallback = (message: string) => {
     console.log('Updating message:', message);
     // Update the UI with the new message chunk
 };
@@ -71,20 +71,5 @@ submitChatRequest(updatedChat, updateCallback, finalizeCallback)
     .catch(error => {
         console.error('Chat request failed:', error);
     });
-
-
-------------------- Updating Recoil Atom After Streaming:
-
-import { useSetRecoilState } from 'recoil';
-import { activeChatArrayState } from '@/context/atoms/chatAtoms';
-
-const setActiveChatArray = useSetRecoilState(activeChatArrayState);
-
-const finalizeCallback = (message: MessageEntry) => {
-    console.log('Final message:', message);
-    // Update the Recoil state
-    setActiveChatArray(prev => [...prev, message]);
-};
-
 
  */

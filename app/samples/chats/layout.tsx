@@ -18,14 +18,14 @@ import { activeUserAtom } from '@/context/atoms/userAtoms';
 import { useSidebar, SidebarProvider } from "@/context/SidebarContext";
 import ChatSidebar from '@/app/samples/ChatComponents/ChatList';
 
-const ChatLayout = ({ children }: { children: React.ReactNode }) => {
+const ChatLayout = ({children}: { children: React.ReactNode }) => {
     const isSmallScreen = useMediaQuery('(max-width: 600px)');
     const activeUser = useRecoilValue(activeUserAtom);
-    const { setSidebarContent } = useSidebar();
+    const {setSidebarContent} = useSidebar();
 
     useEffect(() => {
         if (activeUser) {
-            setSidebarContent(<ChatSidebar user_id={activeUser.id} />);
+            setSidebarContent(<ChatSidebar user_id={activeUser.id}/>);
         }
 
         return () => {
@@ -37,40 +37,55 @@ const ChatLayout = ({ children }: { children: React.ReactNode }) => {
         <UserProvider>
             <LayoutProvider initialNavbarState="icons">
                 <ChatProvider>
-                    <HistoryProvider>
-                        <FormProvider>
-                            <GlobalChatProvider>
-                                <RequestMetadataProvider>
-                                    <SettingsProvider>
-                                        <AiResponseProvider>
-                                            <ResponseProvider>
-                                                <SidebarProvider initialAsideState="icons">
-                                                    <Container fluid h={1200}  bg="var(--mantine-color-dark-7)">
+                    <FormProvider>
+                        <GlobalChatProvider>
+                            <RequestMetadataProvider>
+                                <SettingsProvider>
+                                    <AiResponseProvider>
+                                        <ResponseProvider>
+                                            <SidebarProvider initialAsideState="icons">
+                                                <Container fluid h={1200} bg="var(--mantine-color-dark-7)">
 
-                                                        <Grid grow style={{ flex: 1 }} columns={12} gutter={0}>
-                                                            {!isSmallScreen && (
-                                                                <>
-                                                                    <Grid.Col span={1} style={{ flexGrow: 1, flexShrink: 1, flexBasis: '0%', padding: '0' }}></Grid.Col>
-                                                                </>
-                                                            )}
-                                                            <Grid.Col span={12} style={{ display: 'flex', flexDirection: 'column', height: '106vh', maxWidth: '800px', padding: '0', margin: '0 auto' }}>
-                                                                    {children}
+                                                    <Grid grow style={{flex: 1}} columns={12} gutter={0}>
+                                                        {!isSmallScreen && (
+                                                            <>
+                                                                <Grid.Col span={1} style={{
+                                                                    flexGrow: 1,
+                                                                    flexShrink: 1,
+                                                                    flexBasis: '0%',
+                                                                    padding: '0'
+                                                                }}></Grid.Col>
+                                                            </>
+                                                        )}
+                                                        <Grid.Col span={12} style={{
+                                                            display: 'flex',
+                                                            flexDirection: 'column',
+                                                            height: '106vh',
+                                                            maxWidth: '800px',
+                                                            padding: '0',
+                                                            margin: '0 auto'
+                                                        }}>
+                                                            {children}
 
-                                                            </Grid.Col>
-                                                            {!isSmallScreen && (
-                                                                <Grid.Col span={1} style={{ flexGrow: 1, flexShrink: 1, flexBasis: '0%', padding: '0' }}></Grid.Col>
-                                                            )}
-                                                        </Grid>
+                                                        </Grid.Col>
+                                                        {!isSmallScreen && (
+                                                            <Grid.Col span={1} style={{
+                                                                flexGrow: 1,
+                                                                flexShrink: 1,
+                                                                flexBasis: '0%',
+                                                                padding: '0'
+                                                            }}></Grid.Col>
+                                                        )}
+                                                    </Grid>
 
-                                                    </Container>
-                                                </SidebarProvider>
-                                            </ResponseProvider>
-                                        </AiResponseProvider>
-                                    </SettingsProvider>
-                                </RequestMetadataProvider>
-                            </GlobalChatProvider>
-                        </FormProvider>
-                    </HistoryProvider>
+                                                </Container>
+                                            </SidebarProvider>
+                                        </ResponseProvider>
+                                    </AiResponseProvider>
+                                </SettingsProvider>
+                            </RequestMetadataProvider>
+                        </GlobalChatProvider>
+                    </FormProvider>
                 </ChatProvider>
             </LayoutProvider>
         </UserProvider>

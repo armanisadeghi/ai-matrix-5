@@ -1,25 +1,18 @@
-// app/samples/ai-tests/shared/response/ResponseArea.tsx
-
 import React, { useEffect, useRef } from 'react';
-import { Box, Grid, Text } from '@mantine/core';
-import { useRecoilState, useRecoilValue } from "recoil";
-import { LoadingOverlay, Space } from '@mantine/core';
+import { Box, Grid, Space, LoadingOverlay } from '@mantine/core';
+import { useRecoilValue } from 'recoil';
 import AssistantMessage from './AssistantMessage';
-import { Role, MessageEntry } from '@/types/chat';
 import UserMessage from "@/app/samples/ai-tests/shared/response/UserMessage";
-import { GiArtificialHive } from "react-icons/gi";
-import { activeChatMessagesArrayAtom } from "@/app/samples/ai-tests/shared/servicees/chatAtoms";
-import { requestEventTaskAtom, requestSocketEventAtom, requestIndexAtom, requestSourceAtom } from "@/app/samples/ai-tests/shared/servicees/metadataAtoms";
+import { activeChatMessagesArrayAtom } from "@/app/samples/ai-tests/shared/atoms/chatAtoms";
+import { MessageEntry } from '@/types/chat';
 
 interface ResponseAreaProps {
     bottomPadding: number;
 }
 
-const ResponseArea: React.FC<ResponseAreaProps> = ({bottomPadding}) => {
+const ResponseArea: React.FC<ResponseAreaProps> = ({ bottomPadding }) => {
     const scrollRef = useRef<HTMLDivElement>(null);
     const activeChatMessages = useRecoilValue(activeChatMessagesArrayAtom);
-
-
 
     useEffect(() => {
         if (scrollRef.current) {
@@ -34,10 +27,7 @@ const ResponseArea: React.FC<ResponseAreaProps> = ({bottomPadding}) => {
                     scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
                 }
             });
-            observer.observe(scrollRef.current, {
-                childList: true,
-                subtree: true
-            });
+            observer.observe(scrollRef.current, { childList: true, subtree: true });
 
             return () => {
                 observer.disconnect();
@@ -46,45 +36,29 @@ const ResponseArea: React.FC<ResponseAreaProps> = ({bottomPadding}) => {
     }, []);
 
     if (!activeChatMessages) {
-        return <LoadingOverlay visible/>;
+        return <LoadingOverlay visible />;
     }
 
     return (
-
-        <Box style={{
-            flexGrow: 1,
-            overflow: 'hidden',
-            position: 'relative'
-        }}>
-            <Box ref={scrollRef} style={{
-                position: 'absolute',
-                top: 0,
-                left: -120,
-                right: -25,
-                bottom: -200,
-                overflow: 'scroll'
-            }}>
+        <Box style={{ flexGrow: 1, overflow: 'hidden', position: 'relative' }}>
+            <Box ref={scrollRef} style={{ position: 'absolute', top: 0, left: -120, right: -25, bottom: -200, overflow: 'scroll' }}>
                 <Grid>
                     <Grid.Col span={0.5}></Grid.Col>
                     <Grid.Col span={11}>
-                        <div style={{paddingBottom: bottomPadding}}>
-                            <Space h={10}/>
-
+                        <div style={{ paddingBottom: bottomPadding }}>
+                            <Space h={10} />
                             <div>
-                            {activeChatMessages.map((entry: MessageEntry, entryIndex: number) => {
-                                return (
+                                {activeChatMessages.map((entry: MessageEntry, entryIndex: number) => (
                                     <div key={entryIndex}>
                                         {entry.role === 'assistant' ? (
-                                            <AssistantMessage entryIndex={entryIndex.toString()}/>
+                                            <AssistantMessage entryIndex={entryIndex.toString()} />
                                         ) : (
-                                            <UserMessage entryIndex={entryIndex.toString()}/>
+                                            <UserMessage entryIndex={entryIndex.toString()} />
                                         )}
-                                        <Space h={10}/>
+                                        <Space h={10} />
                                     </div>
-                                );
-                            })}
+                                ))}
                             </div>
-
                         </div>
                     </Grid.Col>
                     <Grid.Col span={0.5}></Grid.Col>

@@ -1,6 +1,12 @@
 import { atom, useRecoilState, useSetRecoilState, selector, useRecoilValue } from 'recoil';
 import { Role, MessageEntry } from '@/types/chat';
+import Chat from "@/services/Chat";
 
+
+export const userMessageAtom = atom<string>({
+    key: 'userMessageAtom',
+    default: '',
+});
 
 export const activeChatIdAtom = atom<string>({
     key: 'activeChatIdAtom',
@@ -64,6 +70,61 @@ export const useChatMessages = () => {
 };
 
 
+const messageFilterState = atom({
+    key: 'messageFilterState',
+    default: 'all',
+});
+
+const filteredMessagesState = selector({
+    key: 'FilteredMessages',
+    get: ({get}) => {
+        const filter = get(messageFilterState);
+        const messages = get(activeChatMessagesArrayAtom);
+
+        switch (filter) {
+            case 'user':
+                messages.filter((message) => message.role === 'user');
+            case 'assistant':
+                messages.filter((message) => message.role === 'assistant');
+            case 'system':
+                messages.filter((message) => message.role === 'system');
+            default:
+                return messages;
+        }
+    },
+});
+
+
+export const assistantTextStreamAtom = atom<string>({
+    key: 'assistantTextStreamAtom',
+    default: '',
+});
+
+export const assistantMessageEntryAtom = atom<MessageEntry>({
+    key: 'assistantMessageEntryAtom',
+    default: {
+        text: '',
+        role: 'assistant'
+    },
+});
+
+export const userTextInputAtom = atom<string>({
+    key: 'userTextInputAtom',
+    default: '',
+});
+
+export const userMessageEntryAtom = atom<MessageEntry>({
+    key: 'userMessageEntryAtom',
+    default: {
+        text: '',
+        role: 'user'
+    },
+});
+
+
+
+
+
 // Selector to get the count of all messages
 export const messageCountSelector = selector<number>({
     key: 'messageCountSelector',
@@ -73,15 +134,10 @@ export const messageCountSelector = selector<number>({
     },
 });
 
-// Selector to filter messages by role
-export const filteredMessagesByRoleSelector = (role: Role) =>
-    selector<MessageEntry[]>({
-        key: `filteredMessagesByRoleSelector-${role}`,
-        get: ({ get }) => {
-            const messages = get(activeChatMessagesArrayAtom);
-            return messages.filter((message) => message.role === role);
-        },
-    });
+
+
+
+
 
 // Selector to get character count for all messages
 export const totalCharacterCountSelector = selector<number>({
@@ -115,3 +171,39 @@ export const customInputsAtom = atom<string[]>({
     key: 'customInputsAtom',
     default: [],
 });
+
+
+
+
+
+
+
+export const messagesAtom = atom<{ text: string, role: Role }[]>({
+    key: 'messagesAtom',
+    default: [],
+});
+
+
+export const allChatsAtom = atom<Chat[]>({
+    key: 'allChatsAtom',
+    default: [],
+});
+
+
+
+
+export const detailsForAllChatsAtom = atom<Chat[]>({
+    key: 'detailsForAllChatsAtom',
+    default: [],
+});
+
+export const activeChatDetailsAtom = atom<Chat | undefined>({
+    key: 'activeChatDetailsAtom',
+    default: undefined,
+});
+export const activeChatTitleAtom = atom<string | undefined>({
+    key: 'activeChatTitleAtom',
+    default: undefined,
+});
+
+

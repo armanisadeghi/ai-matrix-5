@@ -12,6 +12,7 @@ export const EVENT_TASKS = [
     'processWorkflow',
     'dataProcessing',
     'directStream',
+    'openai_stream_request',
 ] as const;
 
 

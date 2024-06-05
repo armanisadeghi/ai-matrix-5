@@ -5,12 +5,12 @@ import { SOCKET_EVENTS, EVENT_TASKS, SOURCES, CHANNELS } from '@/app/samples/ai-
 
 export const requestEventTaskAtom = atom<EventTaskType>({
     key: 'requestEventTaskAtom',
-    default: EVENT_TASKS[0]
+    default: 'openai_stream_request'
 });
 
 export const requestSocketEventAtom = atom<SocketEventType>({
     key: 'requestSocketEventAtom',
-    default: SOCKET_EVENTS[0]
+    default: null
 });
 export const requestIndexAtom = atom<IndexType>({
     key: 'requestIndexAtom',
@@ -21,7 +21,7 @@ export const requestIndexAtom = atom<IndexType>({
 
 export const requestSourceAtom = atom<SourceType>({
     key: 'requestSourceAtom',
-    default: SOURCES[0]
+    default: 'ai-tests'
 });
 
 export const requestRequestIdAtom = atom<RequestIdType>({

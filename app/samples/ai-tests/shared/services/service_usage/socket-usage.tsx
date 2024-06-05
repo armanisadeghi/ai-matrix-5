@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useDynamicSocketContext } from "@/context/AiContext/socketContext";
-import { useDynamicSocketHandler } from "@/app/samples/ai-tests/shared/servicees/dynamicSocketHandler";
+import { useDynamicSocketHandler } from "@/app/samples/ai-tests/shared/services/dynamicSocketHandler";
 
 
 const ChatComponent = () => {

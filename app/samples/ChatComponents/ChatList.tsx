@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import AmeChatHistoryEntry from '@/components/AiChat/AmeChatHistoryEntry';
 import { Space, Stack, Text } from '@mantine/core';
-import { ChatSidebarListAtom } from "@/app/samples/ai-tests/shared/servicees/chatAtoms";
+import { ChatSidebarListAtom } from "@/app/samples/ai-tests/shared/atoms/chatAtoms";
 
 interface ChatData {
     chatId: string;

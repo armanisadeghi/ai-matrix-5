@@ -3,8 +3,8 @@
 import { initializeSocket, emitEvent, waitForEvent, closeSocket } from '@/utils/socketio/socket';
 import { useRecoilValue } from 'recoil';
 import { quickChatSettingsAtom } from "@/context/atoms/settingsAtoms";
-import { requestEventTaskAtom, requestSocketEventAtom, requestIndexAtom } from '@/app/samples/ai-tests/shared/servicees/metadataAtoms';
-import { activeChatIdAtom, activeChatMessagesArrayAtom, customInputsAtom, formResponsesAtom } from "@/app/samples/ai-tests/shared/servicees/chatAtoms";
+import { requestEventTaskAtom, requestSocketEventAtom, requestIndexAtom } from '@/app/samples/ai-tests/shared/atoms/metadataAtoms';
+import { activeChatIdAtom, activeChatMessagesArrayAtom, customInputsAtom, formResponsesAtom } from "@/app/samples/ai-tests/shared/atoms/chatAtoms";
 import { activeUserIdAtom, activeUserTokenAtom } from "@/context/atoms/userAtoms";
 
 export const useDynamicSocketHandler = (callback?: (data: any) => void, onStreamEnd?: (streamBuffer: string) => void) => {

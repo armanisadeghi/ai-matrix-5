@@ -7,7 +7,7 @@ import { CiViewList } from "react-icons/ci";
 import { IconTrash } from '@tabler/icons-react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { activeUserAtom } from '@/context/atoms/userAtoms';
-import { activeChatMessagesArrayAtom, activeChatIdAtom } from "@/app/samples/ai-tests/shared/servicees/chatAtoms";
+import { activeChatMessagesArrayAtom, activeChatIdAtom } from "@/app/samples/ai-tests/shared/atoms/chatAtoms";
 
 interface AmeMenuProps {
     children: ReactNode;

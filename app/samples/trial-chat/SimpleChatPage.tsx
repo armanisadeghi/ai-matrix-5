@@ -1,10 +1,10 @@
 import React, { useState, useRef } from 'react';
-import { RoleType, MessageEntry } from '@/types/chat';
+import { Role, MessageEntry } from '@/types/chat';
 import { Button, Space } from "@mantine/core";
 import UserMessageArea from "@/app/samples/ai-tests/not-needed/UserMessageArea";
 import { useRecoilState } from 'recoil';
-import { allChatsAtom, activeChatIdAtom, activeChatMessagesArrayAtom} from '@/context/atoms/chatAtoms';
-import { submitChatRequest } from '@/app/samples/ai-tests/shared/servicees/SteamOpenAi';
+import { allChatsAtom, activeChatIdAtom, activeChatMessagesArrayAtom} from '@/app/samples/ai-tests/shared/atoms/chatAtoms';
+import { submitChatRequest } from '@/app/samples/ai-tests/shared/services/SteamOpenAi';
 
 
 const ChatComponent: React.FC = () => {
@@ -18,7 +18,7 @@ const ChatComponent: React.FC = () => {
 
     const handleSendMessage = async () => {
         if (userInput.trim()) {
-            const newMessage: MessageEntry = { text: userInput.trim(), role: 'user' as RoleType };
+            const newMessage: MessageEntry = { text: userInput.trim(), role: 'user' as Role };
             const updatedChat = [...currentChatMessages, newMessage];
             setCurrentChatMessages(updatedChat);
             setUserInput("");

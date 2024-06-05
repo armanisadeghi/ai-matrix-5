@@ -5,7 +5,7 @@ import { Burger } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import ResponseArea from '@/app/samples/ai-tests/shared/response/ResponseArea';
 import AmeUserMessageArea from '@/app/samples/ai-tests/shared/input/AmeUserInput';
-import saveMessageToDb from "@/app/samples/ai-tests/shared/servicees/saveMessageToDb";
+import saveMessageToDb from "@/app/samples/ai-tests/shared/services/saveMessageToDb";
 import MessageEntry from "@/services/Chat";
 
 

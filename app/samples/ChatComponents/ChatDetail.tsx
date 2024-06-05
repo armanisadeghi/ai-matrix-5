@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { activeChatMessagesArrayAtom } from "@/app/samples/ai-tests/shared/servicees/chatAtoms";
+import { activeChatMessagesArrayAtom } from "@/app/samples/ai-tests/shared/atoms/chatAtoms";
 
 const ChatDetail = ({ user_id, chat_id }: { user_id: string; chat_id: string }) => {
     const [messages, setMessages] = useRecoilState(activeChatMessagesArrayAtom);

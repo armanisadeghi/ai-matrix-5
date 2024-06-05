@@ -5,7 +5,7 @@ import { activeUserAtom } from "@/context/atoms/userAtoms";
 import saveMessageToDb from "./saveMessageToDb";
 import { submitChatRequest } from './SteamOpenAi';
 import { handleDynamicElements } from "./dynamicSocketHandler";
-import { activeChatIdAtom, activeChatMessagesArrayAtom } from "@/app/samples/ai-tests/shared/servicees/chatAtoms";
+import { activeChatIdAtom, activeChatMessagesArrayAtom } from "@/app/samples/ai-tests/shared/atoms/chatAtoms";
 import { MessageEntry } from "@/types/chat";
 
 
