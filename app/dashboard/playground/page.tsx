@@ -1,6 +1,6 @@
 'use client';
 
-import {Button, Collapse, Flex, Grid, Group, Paper, Select, Text, Textarea} from "@mantine/core";
+import {Box, Button, Collapse, Flex, Grid, Group, Paper, Select, Text, Textarea} from "@mantine/core";
 import {
     IconArrowsDiagonal,
     IconArrowsDiagonalMinimize2,
@@ -10,9 +10,107 @@ import {
     IconTrash, IconChevronRight, IconChevronDown
 } from '@tabler/icons-react'
 import {useDisclosure} from "@mantine/hooks";
+import {useState} from "react";
+
+
+const Response = () => {
+    const [minimize, setMinimize] = useState(true)
+    return (
+        <Paper withBorder p="md">
+            <Flex align={'center'} justify={'space-between'}>
+                <Text size={'xs'}>Response 1</Text>
+                <Group>
+                    <IconTrash width={16}/>
+                    {!minimize ? <IconArrowsDiagonalMinimize2 width={16} style={{cursor: 'pointer'}}
+                                                              onClick={() => setMinimize(!minimize)}/> :
+                        <IconArrowsDiagonal width={16} style={{cursor: 'pointer'}}
+                                            onClick={() => setMinimize(!minimize)}/>}
+                </Group>
+            </Flex>
+
+            {
+                minimize ?
+                    <div style={{maxHeight: 80, overflow: 'hidden'}}><Text size={'xs'}
+                                                                           onClick={() => setMinimize(false)}>Lorem
+                        ipsum dolor sit amet, consectetur adipisicing elit. Ad culpa dolorum eveniet illo in itaque
+                        molestiae nemo, quae reiciendis rem? Beatae dolorum expedita illum ipsa optio quidem reiciendis,
+                        temporibus tenetur?</Text>
+                    </div> :
+                    (
+                        <Textarea autosize={true} variant="unstyled" size={'xs'}
+                                  defaultValue={'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad culpa dolorum eveniet illo in itaque molestiae nemo, quae reiciendis rem? Beatae dolorum expedita illum ipsa optio quidem reiciendis, temporibus tenetur?'}/>
+                    )
+            }
+
+            <Flex justify={'space-between'} mt={24}>
+                <Select
+                    size={'xs'}
+                    placeholder="Pick a type"
+                    data={['Text', 'Markdown', 'Form', 'Table', 'JSON']}
+                    defaultValue='Text'
+                />
+
+
+                <Flex gap={8}>
+                    <Button color="gray" size="xs" leftSection={<IconSquareRoundedArrowLeft width={14}/>}>
+                        Move
+                    </Button>
+                    <Button color="gray" size="xs">
+                        Clean
+                    </Button>
+                    <Button color="gray" size="xs">
+                        Test
+                    </Button>
+                </Flex>
+            </Flex>
+
+        </Paper>
+    )
+}
+
+
+const Prompt = ({type, value, id, remove}) => {
+    const [minimize, setMinimize] = useState(true)
+    return (
+        <Paper withBorder p="md">
+            <Flex align={'center'} justify={'space-between'}>
+                <Text size={'xs'}>{type}</Text>
+                <Flex gap={8}>
+
+                    {type === 'User' && <IconUpload width={16}/>}
+                    {!minimize ? <IconArrowsDiagonalMinimize2 width={16} style={{cursor: 'pointer'}}
+                                                              onClick={() => setMinimize(!minimize)}/> :
+                        <IconArrowsDiagonal width={16} style={{cursor: 'pointer'}}
+                                            onClick={() => setMinimize(!minimize)}/>}
+                    {id > 1 && <IconTrash width={16} style={{cursor: 'pointer'}} onClick={remove}/>}
+                </Flex>
+            </Flex>
+            {
+                minimize ?
+                    <div style={{maxHeight: 80, overflow: 'hidden'}}><Text size={'xs'}
+                                                                           onClick={() => setMinimize(false)}>{value}</Text>
+                    </div> :
+                    <Textarea autosize={true} variant="unstyled" size={'xs'} defaultValue={value}/>
+            }
+        </Paper>
+    )
+}
+
 
 const PlaygroundPage = () => {
     const [opened, {toggle}] = useDisclosure(false);
+    const [prompts, setPrompts] = useState([
+        {
+            type: 'System',
+            value: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque eius ipsam omnis possimus sint vero voluptatem? Aut blanditiis debitis deserunt dignissimos dolore, dolores dolorum eos placeat porro quam unde velit?',
+            id: 0,
+        },
+        {
+            type: 'User',
+            value: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque eius ipsam omnis possimus sint vero voluptatem? Aut blanditiis debitis deserunt dignissimos dolore, dolores dolorum eos placeat porro quam unde velit?',
+            id: 1,
+        }
+    ])
 
     return (
         <>
@@ -51,33 +149,22 @@ const PlaygroundPage = () => {
                 </Grid.Col>
                 <Grid.Col span={2}
                           style={{
-                    borderRight: '1px solid gray',
-                }}>
+                              borderRight: '1px solid gray',
+                          }}>
                     <Flex direction={'column'} gap={12}>
-                        <Paper withBorder p="md">
-                            <Flex align={'center'} justify={'space-between'}>
-                                <Text size={'xs'}>System</Text>
-                                <IconArrowsDiagonal width={16}/>
-                            </Flex>
+                        {
+                            prompts.map((item) => <Prompt type={item.type} value={item.value} key={item.id} id={item.id}
+                                                                 remove={() => {
+                                                                     const p = prompts.filter((a, b) => a.id !== item.id)
+                                                                     setPrompts(p)
+                                                                 }}/>)
+                        }
 
-                            <Textarea autosize={true} variant="unstyled" size={'xs'} value={'Your prompt'}>
-                            </Textarea>
-                        </Paper>
-
-                        <Paper withBorder p="md">
-                            <Flex align={'center'} justify={'space-between'}>
-                                <Text size={'xs'}>User</Text>
-                                <Group>
-                                    <IconUpload width={16}/>
-                                    <IconArrowsDiagonalMinimize2 width={16}/>
-                                </Group>
-                            </Flex>
-
-                            <Textarea autosize={true} variant="unstyled" size={'xs'} value={'Your prompt'}>
-                            </Textarea>
-                        </Paper>
-
-                        <Button color="gray" size="xs" fullWidth leftSection={<IconSquareRoundedPlus width={14}/>}>
+                        <Button color="gray" size="xs" fullWidth leftSection={<IconSquareRoundedPlus width={14}/>}
+                                onClick={() => {
+                                    const newId = prompts.length > 0 ? prompts[prompts.length - 1].id + 1 : 1;
+                                    setPrompts([...prompts, {type: 'User', value: 'Bla bla bla', id: newId}]);
+                                }}>
                             Add Prompt
                         </Button>
                     </Flex>
@@ -86,40 +173,7 @@ const PlaygroundPage = () => {
                 <Grid.Col span={5} style={{
                     borderRight: '1px solid gray',
                 }}>
-                    <Paper withBorder p="md">
-                        <Flex align={'center'} justify={'space-between'}>
-                            <Text size={'xs'}>Response 1</Text>
-                            <Group>
-                                <IconTrash width={16}/>
-                                <IconArrowsDiagonalMinimize2 width={16}/>
-                            </Group>
-                        </Flex>
-
-                        <Textarea autosize={true} variant="unstyled" size={'xs'}
-                                  value={'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad culpa dolorum eveniet illo in itaque molestiae nemo, quae reiciendis rem? Beatae dolorum expedita illum ipsa optio quidem reiciendis, temporibus tenetur?'}/>
-                        <Flex justify={'space-between'} mt={24}>
-                            <Select
-                                size={'xs'}
-                                placeholder="Pick a type"
-                                data={['Text', 'Markdown', 'Form', 'Table', 'JSON']}
-                                defaultValue='Text'
-                            />
-
-
-                            <Flex gap={8}>
-                                <Button color="gray" size="xs" leftSection={<IconSquareRoundedArrowLeft width={14}/>}>
-                                    Move
-                                </Button>
-                                <Button color="gray" size="xs">
-                                    Clean
-                                </Button>
-                                <Button color="gray" size="xs">
-                                    Test
-                                </Button>
-                            </Flex>
-                        </Flex>
-
-                    </Paper>
+                    <Response/>
                 </Grid.Col>
                 <Grid.Col span={2}>
                     <Button color="gray" size="xs" fullWidth>
