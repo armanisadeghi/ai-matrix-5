@@ -15,7 +15,7 @@ export const Sidebar = ({ state }: SidebarProps) => {
     const { handleExpand, handleCollapse } = useSidebar();
 
     return (
-        <Box component="aside" p="xs">
+        <Box component="aside">
             <AppShell.Section>
                 {state === "compact" && (
                     <Group justify="flex-end" gap="xs">
