@@ -19,7 +19,7 @@ export default function ChatLayout({ children }: Props) {
     return (
         <ErrorBoundary>
             <LayoutProvider initialNavbarState="hidden">
-                <SidebarProvider initialAsideState="hidden">
+                <SidebarProvider initialAsideState="compact">
                     <FooterProvider initialState="hidden">
                         <HeaderProvider initialState="medium">
                             <MainLayout>

@@ -7,7 +7,6 @@ import {
     Menu,
     NavLink,
     ScrollArea,
-    Stack,
     useMantineTheme,
 } from "@mantine/core";
 import {

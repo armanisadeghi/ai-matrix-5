@@ -185,7 +185,7 @@ export function MainLayout({ children }: Props) {
                     </AmeAffix>
                 </AppShell.Main>
                 <AppShell.Aside>
-                    <Sidebar state={mobileMatch ? "hidden" : asideState} />
+                    <Sidebar state={asideState} />
                 </AppShell.Aside>
                 <AppShell.Footer>
                     <Footer state={footerState} />
