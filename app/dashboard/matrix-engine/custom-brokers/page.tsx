@@ -109,7 +109,7 @@ const Brokers: React.FC = () => {
                     </Transition>}
                 <Space h="md" />
             </Stack>
-            <BrokerList />
+            <BrokerList user={false} />
         </Container>
     );
 };
