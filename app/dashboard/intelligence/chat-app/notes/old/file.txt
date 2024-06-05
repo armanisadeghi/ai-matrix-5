@@ -1,0 +1,27 @@
+Here is the current plan that you can change whenever we need:
+
+**chat-app/**
+- **layout.tsx**: Defines the overall page layout, integrating context providers.
+- **page.tsx**: Main entry page for the chat feature, combining all chat components.
+- **components/**
+  - **ChatHistory.tsx**: Displays the chat history, pulls data from `ChatContext`.
+  - **ChatInput.tsx**: Manages user inputs and submits them using `ChatContext`.
+  - **ChatResponse.tsx**: Displays responses from the chat server.
+  - **simpleChatSettings.tsx**: Allows users to adjust chat settings, managed by `ChatContext`.
+  - **DynamicForm.tsx**: Renders forms dynamically based on chatbot prompts.
+  - **SpecialChatForm.tsx**: Handles multiple input fields, using `useForm` hook.
+- **context/**
+  - **ChatContext.tsx**: Manages chat data, including messages, settings, and history.
+  - **UserContext.tsx**: Manages user data and handles authentication status.
+- **hooks/**
+  - **useChat.ts**: Custom hook for accessing chat functionalities.
+  - **useForm.ts**: Custom hook for managing form states.
+- **types/**
+  - **chat.ts**: Defines types related to chat functionalities like messages and settings.
+- **utils/**
+  - **socket.ts**: Handles real-time communication with chat servers.
+  - **storage.ts**: Manages local storage
+
+ - Deleted "pages" directory. as well as the duplicated layout and page files.
+
+Here is the next batch of code:

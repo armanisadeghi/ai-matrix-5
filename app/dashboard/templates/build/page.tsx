@@ -10,7 +10,7 @@ import BrokerManagement from './steps/BrokerManagement';
 import ResponsePresentation from './steps/ResponsePresentation';
 import WorkflowConfigurations from './steps/WorkflowConfigurations';
 import AdvancedProcessing from './steps/AdvancedProcessing';
-import FormStepper from '../../../../components/FormStepper';
+import FormStepper from '../../../../ui/steps/FormStepper';
 
 const BuildPage: React.FC = () => {
     const steps = [

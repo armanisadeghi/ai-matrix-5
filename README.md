@@ -1,37 +1,80 @@
-# Mantine Next.js template
+# AI Matrix Solutions: The Anti-Chatbot
 
-This is a template for [Next.js](https://nextjs.org/) app router + [Mantine](https://mantine.dev/).
-If you want to use pages router instead, see [next-pages-template](https://github.com/mantinedev/next-pages-template).
+## Overview
 
-## Features
+AI Matrix Solutions bridges the gap between current AI capabilities and real-world business needs. While AI technology has advanced significantly, its practical application in business often falls short. Common AI implementations like chatbots, despite their appeal, fail to meet the complex demands of business operations. AI Matrix Engine and AI Matrix collectively strive to make sophisticated AI both accessible and practical for business use, overcoming the limitations of traditional AI applications.
 
-This template comes with the following features:
+### AI Matrix Engine
 
-- [PostCSS](https://postcss.org/) with [mantine-postcss-preset](https://mantine.dev/styles/postcss-preset)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Storybook](https://storybook.js.org/)
-- [Jest](https://jestjs.io/) setup with [React Testing Library](https://testing-library.com/docs/react-testing-library/intro)
-- ESLint setup with [eslint-config-mantine](https://github.com/mantinedev/eslint-config-mantine)
+- A core AI automation framework developed in Python.
+- Enables rapid development and deployment of complex AI systems.
+- Caters to businesses needing advanced AI integration without the constraints of traditional methods.
 
-## npm scripts
+### AI Matrix
 
-### Build and dev scripts
+- A user-friendly, no-code platform built using React, Next.js, and TypeScript.
+- Allows businesses to effortlessly build AI applications, making advanced AI tools accessible without extensive technical knowledge.
+- Currently under development, AI Matrix is the first of many no-code, user-friendly interfaces that will be built on top of the AI Matrix Engine.
 
-- `dev` – start dev server
-- `build` – bundle application for production
-- `analyze` – analyzes application bundle with [@next/bundle-analyzer](https://www.npmjs.com/package/@next/bundle-analyzer)
+## Development Guidelines
 
-### Testing scripts
+**Daily Workflow:**
 
-- `typecheck` – checks TypeScript types
-- `lint` – runs ESLint
-- `prettier:check` – checks files with Prettier
-- `jest` – runs jest tests
-- `jest:watch` – starts jest watch
-- `test` – runs `jest`, `prettier:check`, `lint` and `typecheck` scripts
+- **Morning:**
+  - At the start of each development day, pull the latest version of the 'main' branch.
+  - Merge it fully with your branch to ensure you have the latest changes.
+  - Resolve all conflicts and push the updated code to your branch.
 
-### Other scripts
+- **Evening:**
+  - At the end of your development day, repeat the morning steps: pull the latest 'main', merge, and resolve all conflicts within your code.
+  - Push the updated code to your branch.
+  - If there are issues that need to be resolved on 'main', report them to the lead developer, **Armani Sadeghi**.
 
-- `storybook` – starts storybook dev server
-- `storybook:build` – build production storybook bundle to `storybook-static`
-- `prettier:write` – formats all files with Prettier
+## Setup and Installation
+
+### Prerequisites
+
+Ensure you have Node.js and pnpm installed on your system. If you don't have pnpm, you can install it globally using:
+
+```bash
+npm install -g pnpm
+```
+
+### Installing Dependencies
+
+To set up the project, follow these steps:
+
+1. Clone the repository:
+
+```bash
+git clone <repository-url>
+cd ai-matrix
+```
+
+2. Install the project dependencies:
+
+```bash
+pnpm install
+```
+
+### Running the Server
+
+To start the development server, run:
+
+```bash
+pnpm run dev
+```
+
+This will start the Next.js server on [http://localhost:3000](http://localhost:3000). Navigate to this URL in your browser to view the application.
+
+## Contributing
+
+Contributions are welcome! Please adhere to this project's `Code of Conduct`.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE.md).
+
+## Acknowledgements
+
+Thanks to all contributors and our dedicated team who are working tirelessly to make AI Matrix a transformative tool in the AI and business landscape.

@@ -10,44 +10,44 @@ import BrokerManagement from './steps/BrokerManagement';
 import ResponsePresentation from './steps/ResponsePresentation';
 import WorkflowConfigurations from './steps/WorkflowConfigurations';
 import AdvancedProcessing from './steps/AdvancedProcessing';
-import FormStepper from '../../../../components/FormStepper';
+import FormStepper from '@/ui/steps/FormStepper';
 
 const BuildPage: React.FC = () => {
     const steps = [
         {
             label: 'Overview',
             description: 'The Basics',
-            content: <AppOverview />,
+            content: <AppOverview/>,
         },
         {
             label: 'AI Model',
             description: 'Specifications',
-            content: <AIModelDetails />,
+            content: <AIModelDetails/>,
         },
         {
             label: 'Prompts',
             description: 'AI Messages',
-            content: <AIConversation />,
+            content: <AIConversation/>,
         },
         {
             label: 'Brokers',
             description: 'Variables',
-            content: <BrokerManagement />,
+            content: <BrokerManagement/>,
         },
         {
             label: 'Presentation',
             description: 'Show Response',
-            content: <ResponsePresentation />,
+            content: <ResponsePresentation/>,
         },
         {
             label: 'Workflow',
             description: 'Next Steps',
-            content: <WorkflowConfigurations />,
+            content: <WorkflowConfigurations/>,
         },
         {
             label: 'Processing',
             description: 'Advanced',
-            content: <AdvancedProcessing />,
+            content: <AdvancedProcessing/>,
         }
     ];
 

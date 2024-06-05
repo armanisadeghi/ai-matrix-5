@@ -1,0 +1,85 @@
+{
+    "socketEvent": "matrix_chat",
+    "eventTask": "simple_chat",
+    "user": {
+        "userId": "user123",
+        "user_token": "auth0_token_example"
+    },
+    "metadata": {
+        "requestId": "request123",
+        "requestIndex": 1,
+        "requestTimestamp": "2024-05-25T12:00:00Z",
+        "requestType": "aiChat",
+        "requestSource": "simpleChat",
+        "requestChannel": "text"
+    },
+    "recipe": {
+        "recipeId": "none",
+        "fields": "removed for brevity"
+    },
+    "promptData": {
+        "chatId": "chat123",
+        "promptMessage": {
+            "role": "user",
+            "message": "Can you help me with travel tips?",
+            "formResponses": [
+                {
+                    "question": "",
+                    "response": ""
+                }
+            ],
+            "customInputs": [
+                {
+                    "inputId": "",
+                    "inputValue": ""
+                }
+            ]
+        },
+        "chatHistory": [
+            {
+                "role": "user | assistant",
+                "message": ""
+            }
+        ]
+    },
+    "requestSettings": {
+        "quickChatSettings": {
+            "aiPreferencesMain": "default",
+            "aiPreferencesSecond": "assistant",
+            "makeSmallTalk": true,
+            "quickAnswer": false,
+            "improveQuestions": true,
+            "submitOnEnter": true
+        },
+        "pageSettings": {
+            "fields": "removed for brevity"
+        },
+        "userSettings": {
+            "fields": "removed for brevity"
+        },
+        "matrixSettings": {
+            "fields": "removed for brevity"
+        },
+        "clientSettings": {
+            "fields": "removed for brevity"
+        },
+        "agencySettings": {
+            "fields": "removed for brevity"
+        },
+        "variablesSettings": {
+            "fields": "removed for brevity"
+        },
+        "responseSettings": {
+            "fields": "removed for brevity"
+        },
+        "brokerSettings": {
+            "fields": "removed for brevity"
+        },
+        "aiModelSettings": {
+            "fields": "removed for brevity"
+        },
+        "controlSettings": {
+            "fields": "removed for brevity"
+        }
+    }
+}

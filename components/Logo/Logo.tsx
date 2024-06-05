@@ -1,25 +1,24 @@
-import { Group, Highlight, UnstyledButton, useMantineTheme } from '@mantine/core';
-import { IconBrain } from '@tabler/icons-react';
+import { Group, GroupProps, Text, UnstyledButton, useMantineColorScheme, useMantineTheme } from "@mantine/core";
+import Image from "next/image";
+import { ReactElement } from "react";
 
-export function Logo() {
-  const theme = useMantineTheme();
-  return (
-    <Group component={UnstyledButton}>
-      <IconBrain color={theme.colors.violet[6]} />
-      <Highlight
-        highlight="ai"
-        fw={500}
-        fz="lg"
-        highlightStyles={{
-          backgroundImage:
-            'linear-gradient(45deg, var(--mantine-color-blue-5), var(--mantine-color-violet-7))',
-          fontWeight: 700,
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-        }}
-      >
-        AI Matrix
-      </Highlight>
-    </Group>
-  );
+interface LogoProps extends Partial<GroupProps> {}
+
+export function Logo({ ...others }: LogoProps): ReactElement {
+    const { colorScheme } = useMantineColorScheme();
+
+    return (
+        <Group gap="xs" component={UnstyledButton} {...others}>
+            <Image
+                src={colorScheme === "dark" ? "/logo-dark.svg" : "/logo-white.svg"}
+                alt="ai matrix logo"
+                height={24}
+                width={24}
+                style={{ borderRadius: "6px" }}
+            />
+            <Text fw={600} fz="lg">
+                AI Matrix
+            </Text>
+        </Group>
+    );
 }

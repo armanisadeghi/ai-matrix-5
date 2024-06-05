@@ -1,3 +1,6 @@
+// app/dashboard/matrix-apps/layout.tsx
+'use client';
+
 import React, { ReactNode } from 'react';
 
 interface LayoutProps {
@@ -6,7 +9,7 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => (
     <div>
-        <main>{children}</main>
+        {children}
     </div>
 );
 
