@@ -24,6 +24,7 @@ import { navItems } from "./navItems";
 import { useLayout } from "@/context/LayoutContext";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import AmeActionIcon from "@/ui/buttons/AmeActionIcon";
 
 const actionProps: ActionIconProps = {
     variant: "light",
@@ -43,27 +44,27 @@ export const Navbar = ({ state }: NavbarProps) => {
             <AppShell.Section>
                 {state === "compact" && (
                     <Group justify="flex-end" gap="xs">
-                        <ActionIcon onClick={handleNavbarCollapse} {...actionProps}>
+                        <AmeActionIcon title="shrink navbar" onClick={handleNavbarCollapse} {...actionProps}>
                             <IconArrowBarToLeft size={18} />
-                        </ActionIcon>
-                        <ActionIcon onClick={handleNavbarExpand} {...actionProps}>
+                        </AmeActionIcon>
+                        <AmeActionIcon title="expand navbar" onClick={handleNavbarExpand} {...actionProps}>
                             <IconArrowBarToRight size={18} />
-                        </ActionIcon>
+                        </AmeActionIcon>
                     </Group>
                 )}
 
                 {state === "full" && (
                     <Group justify="flex-end" gap="xs">
-                        <ActionIcon onClick={handleNavbarCollapse} {...actionProps}>
+                        <AmeActionIcon title="shrink navbar" onClick={handleNavbarCollapse} {...actionProps}>
                             <IconArrowBarLeft size={18} />
-                        </ActionIcon>
+                        </AmeActionIcon>
                     </Group>
                 )}
                 {state === "icons" && (
                     <Group justify="center" gap="xs">
-                        <ActionIcon onClick={handleNavbarExpand} {...actionProps}>
+                        <AmeActionIcon title="shrink navbar" onClick={handleNavbarExpand} {...actionProps}>
                             <IconArrowBarToRight size={18} />
-                        </ActionIcon>
+                        </AmeActionIcon>
                     </Group>
                 )}
             </AppShell.Section>

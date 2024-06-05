@@ -41,20 +41,20 @@ export function Header({ state, tabletMatch }: Props) {
                 <Logo />
                 {state === "medium" && (
                     <Group justify="flex-end" gap="xs">
-                        <ActionIcon onClick={handleCollapse} {...actionProps}>
+                        <AmeActionIcon title="shrink header" onClick={handleCollapse} {...actionProps}>
                             <IconArrowBarToUp size={18} />
-                        </ActionIcon>
-                        <ActionIcon onClick={handleExpand} {...actionProps}>
+                        </AmeActionIcon>
+                        <AmeActionIcon title="expand header" onClick={handleExpand} {...actionProps}>
                             <IconArrowBarToDown size={18} />
-                        </ActionIcon>
+                        </AmeActionIcon>
                     </Group>
                 )}
 
                 {state === "large" && (
                     <Group justify="flex-end" gap="xs">
-                        <ActionIcon onClick={handleCollapse} {...actionProps}>
+                        <AmeActionIcon title="shrink header" onClick={handleCollapse} {...actionProps}>
                             <IconArrowBarToUp size={18} />
-                        </ActionIcon>
+                        </AmeActionIcon>
                     </Group>
                 )}
             </Group>
@@ -71,11 +71,11 @@ export function Header({ state, tabletMatch }: Props) {
                 />
             </Group>
             <Group>
-                <AmeActionIcon hiddenFrom="md" size={componentSize} title="Search">
+                <AmeActionIcon hiddenFrom="md" size={componentSize} title="search">
                     <IconSearch size={18} />
                 </AmeActionIcon>
-                <ColorSchemeToggle />
-                <AmeActionIcon title="Notifications" size={componentSize}>
+                <ColorSchemeToggle size={componentSize} />
+                <AmeActionIcon title="notifications" size={componentSize}>
                     <IconBell size={18} />
                 </AmeActionIcon>
                 <Menu width={200} shadow="md">
