@@ -73,7 +73,7 @@ export function MainLayout({ children }: Props) {
     };
 
     const getHeaderHeight = () => {
-        if (!tabletMatch) return 0;
+        if (!tabletMatch) return 70;
         switch (headerState) {
             case "large":
                 return 80;
@@ -134,7 +134,7 @@ export function MainLayout({ children }: Props) {
                 }}
             >
                 <AppShell.Header>
-                    {headerState !== "hidden" && <Header state={headerState} tabletMatch={tabletMatch} />}
+                    <Header state={headerState} tabletMatch={tabletMatch} />
                 </AppShell.Header>
                 {navbarState !== "hidden" && (
                     <AppShell.Navbar p="xs" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
