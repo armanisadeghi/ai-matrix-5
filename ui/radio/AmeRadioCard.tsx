@@ -13,8 +13,14 @@ function AmeRadioCard({ description, icon: Icon, ...others }: AmeRadioCardProps)
             <Flex wrap="nowrap" align="center" gap="md">
                 {Icon && <Icon />}
                 <div>
-                    <Text className={classes.label}>{others.name}</Text>
-                    {description && <Text className={classes.description}>{description}</Text>}
+                    <Text className={classes.label} aria-label={others.name}>
+                        {others.name}
+                    </Text>
+                    {description && (
+                        <Text className={classes.description} aria-label={description}>
+                            {description}
+                        </Text>
+                    )}
                 </div>
                 <Radio.Indicator ml="auto" />
             </Flex>

@@ -1,15 +1,15 @@
 // app/samples/chat-sidebar/AmeActionTextInput.tsx
 
-import React, { useState, useRef, FocusEvent, ChangeEvent } from "react";
-import { TextInput, TextInputProps } from "@mantine/core";
+import React, { FocusEvent, useRef, useState } from "react";
+import { NumberInput, NumberInputProps } from "@mantine/core";
 import useColorUtils from "@/utils/colorUtils";
 
-interface AmeActionTextInputProps extends TextInputProps {
-    initialValue?: string;
+interface AmeNumberInputProps extends NumberInputProps {
+    initialValue?: string | number;
     editable?: boolean;
 }
 
-const AmeActionTextInput: React.FC<AmeActionTextInputProps> = ({ initialValue, editable = true, ...others }) => {
+const AmeActionNumberInput: React.FC<AmeNumberInputProps> = ({ initialValue, editable = true, ...others }) => {
     const [value, setValue] = useState(initialValue);
     const inputRef = useRef<HTMLInputElement>(null);
     const { getModerateTextColor } = useColorUtils();
@@ -18,17 +18,17 @@ const AmeActionTextInput: React.FC<AmeActionTextInputProps> = ({ initialValue, e
         event.target.select();
     };
 
-    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setValue(event.target.value);
+    const handleChange = (value: string | number) => {
+        setValue(value);
     };
 
     return (
-        <TextInput
+        <NumberInput
             value={value}
             onChange={handleChange}
             onFocus={handleFocus}
             ref={inputRef}
-            variant={"default"}
+            variant="default"
             size="sm"
             readOnly={!editable}
             placeholder="Enter text here..."
@@ -43,4 +43,4 @@ const AmeActionTextInput: React.FC<AmeActionTextInputProps> = ({ initialValue, e
     );
 };
 
-export default AmeActionTextInput;
+export default AmeActionNumberInput;
