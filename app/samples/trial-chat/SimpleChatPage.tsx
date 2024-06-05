@@ -1,24 +1,24 @@
 import React, { useState, useRef } from 'react';
 import { RoleType, MessageEntry } from '@/types/chat';
 import { Button, Space } from "@mantine/core";
-import UserMessageArea from "@/app/samples/ai-tests/shared/input/UserMessageArea";
+import UserMessageArea from "@/app/samples/ai-tests/not-needed/UserMessageArea";
 import { useRecoilState } from 'recoil';
 import { allChatsAtom, activeChatIdAtom, activeChatMessagesArrayAtom} from '@/context/atoms/chatAtoms';
-import { submitChatRequest } from '@/app/samples/ai-tests/shared/SteamOpenAi';
+import { submitChatRequest } from '@/app/samples/ai-tests/shared/servicees/SteamOpenAi';
 
 
 const ChatComponent: React.FC = () => {
     const [allChats, setAllChats] = useRecoilState(allChatsAtom);
+
+
     const [currentChatId, setCurrentChatId] = useRecoilState(activeChatIdAtom);
     const [currentChatMessages, setCurrentChatMessages] = useRecoilState(activeChatMessagesArrayAtom);
     const [userInput, setUserInput] = useState("");
     const inputRef = useRef<HTMLTextAreaElement>(null);
 
-
-
     const handleSendMessage = async () => {
         if (userInput.trim()) {
-            const newMessage: MessageEntry = { text: userInput, role: 'user' as RoleType };
+            const newMessage: MessageEntry = { text: userInput.trim(), role: 'user' as RoleType };
             const updatedChat = [...currentChatMessages, newMessage];
             setCurrentChatMessages(updatedChat);
             setUserInput("");

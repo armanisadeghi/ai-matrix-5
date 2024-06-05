@@ -5,13 +5,14 @@ import React, { useEffect } from 'react';
 import ChatDetail from '../../ChatComponents/ChatDetail';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { activeUserAtom } from '@/context/atoms/userAtoms';
-import { activeChatIdAtom } from "@/context/atoms/chatAtoms";
+import { activeChatIdAtom } from "@/app/samples/ai-tests/shared/servicees/chatAtoms";
 
 
 const ChatPage = ({ params }: { params: { chatId: string } }) => {
     const activeUser = useRecoilValue(activeUserAtom);
     const setActiveChatId = useSetRecoilState(activeChatIdAtom);
     const { chatId } = params;
+    console.log('ChatPage chatId:', chatId);
 
     useEffect(() => {
         setActiveChatId(chatId);

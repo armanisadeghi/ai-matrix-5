@@ -1,6 +1,6 @@
 // chat-app/utils/chatDefaults.ts
-import { ChatRequest } from '../../../../types/chat';
-import { ChatSettings, RequestSettings } from '../../../../types/settings';
+import { ChatRequest } from '../../../../../types/chat';
+import { ChatSettings, RequestSettings } from '../../../../../types/settings';
 
 
 export const aiPreferencesMainDefault = "direct_chat"

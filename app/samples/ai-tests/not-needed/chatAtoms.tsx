@@ -10,7 +10,7 @@ import {
     systemMessagesAtom,
     allChatsAtom
 } from "@/context/atoms/chatAtoms";
-import TestingUI from './tests/AtomTestUi';
+import TestingUI from '../shared/tests/AtomTestUi';
 
 interface AtomPageProps {
     showTests?: boolean;

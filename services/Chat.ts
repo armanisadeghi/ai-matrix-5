@@ -1,13 +1,8 @@
 // services/Chat.ts
 
 import supabase from "@/utils/supabase/client";
+import { Role, MessageEntry } from "@/types/chat";
 
-export type Role = 'system' | 'user' | 'assistant';
-
-export interface MessageEntry {
-    role: Role;
-    text: string;
-}
 
 class Chat {
     chat_id: string;

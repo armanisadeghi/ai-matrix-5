@@ -1,4 +1,5 @@
 'use client';
+
 import React, { useState, useRef, useEffect, forwardRef } from 'react';
 import { Textarea, ActionIcon, Group, Box, Grid, Slider } from '@mantine/core';
 import { MdPermMedia } from "react-icons/md";
@@ -6,13 +7,14 @@ import { RiDeleteBin3Line } from "react-icons/ri";
 import { FaExpandArrowsAlt } from "react-icons/fa";
 import styles from './DynamicTextarea.module.css';
 import { IoSettingsOutline } from "react-icons/io5";
+import { callbackFunctionAtom } from "@/app/samples/ai-tests/shared/tests/TrialAtoms";
+import { useRecoilValue } from "recoil";
 
 interface DynamicTextareaProps {
     systemText: string;
     placeholderText: string;
     userInput: string;
     handleInputChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
-    handleSendMessage: () => void;
 }
 
 const DynamicTextarea = forwardRef<HTMLDivElement, DynamicTextareaProps>((
@@ -21,11 +23,12 @@ const DynamicTextarea = forwardRef<HTMLDivElement, DynamicTextareaProps>((
         placeholderText,
         userInput,
         handleInputChange,
-        handleSendMessage
     }, ref) => {
+
     const [collapsed, setCollapsed] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const handleSendMessage = useRecoilValue(callbackFunctionAtom);
 
     const handleToggle = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation();
@@ -40,7 +43,9 @@ const DynamicTextarea = forwardRef<HTMLDivElement, DynamicTextareaProps>((
     };
 
     const handleUpload = () => {
-        // Placeholder for upload logic
+        // Placeholder for file upload logic
+        // Need to handle images, videos, audio, csv, pdf, text, etc.
+
     };
 
     const handleDelete = () => {
@@ -166,3 +171,29 @@ const DynamicTextarea = forwardRef<HTMLDivElement, DynamicTextareaProps>((
 DynamicTextarea.displayName = 'DynamicTextarea';
 
 export default DynamicTextarea;
+
+
+/*
+    const newMessage = {
+        role: 'user',
+        text: 'new message here'
+    };
+
+    const handleAddMessage = async () => {
+        const response = await fetch(`/api/chats?user_id=${user_id}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user_id, chat_id, role: 'user', text: messageText })
+        });
+
+        if (response.ok) {
+            setActiveChatMessages([...activeChatMessages, { role: 'user', text: messageText }]);
+
+            setMessageText('');
+        } else {
+            console.error('Failed to send message', await response.json());
+        }
+    };
+
+
+ */

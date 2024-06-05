@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
-import { ChatSidebarListAtom } from "@/context/atoms/chatAtoms";
 import AmeChatHistoryEntry from '@/components/AiChat/AmeChatHistoryEntry';
 import { Space, Stack, Text } from '@mantine/core';
+import { ChatSidebarListAtom } from "@/app/samples/ai-tests/shared/servicees/chatAtoms";
 
 interface ChatData {
     chatId: string;
     chatTitle: string;
 }
 
-const ChatSidebar = ({ user_id }: { user_id: string }) => {
+const ChatSidebar = ({user_id}: { user_id: string }) => {
     const [chats, setChats] = useRecoilState(ChatSidebarListAtom);
 
     useEffect(() => {
@@ -36,7 +36,10 @@ const ChatSidebar = ({ user_id }: { user_id: string }) => {
                 justify="flex-start"
                 gap="xs"
             >
-                {chats.map(({ chatId, chatTitle }) => (
+                {chats.map(({
+                                chatId,
+                                chatTitle
+                            }) => (
                     <AmeChatHistoryEntry
                         key={chatId}
                         keyProp={chatId}

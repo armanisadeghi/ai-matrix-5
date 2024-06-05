@@ -1,6 +1,6 @@
 // app/samples/trial-chat/components/SteamOpenAi.ts
 
-import { MessageEntry, RoleType } from '@/types/chat';
+import { MessageEntry, Role } from '@/types/chat';
 import { OpenAiStream } from "@/app/api/openai/route";
 
 export const submitChatRequest = (
@@ -19,7 +19,7 @@ export const submitChatRequest = (
                 content: chat.text
             }));
 
-            let assistantMessage: MessageEntry = { text: '', role: 'assistant' as RoleType };
+            let assistantMessage: MessageEntry = { text: '', role: 'assistant' as Role };
 
             await OpenAiStream(messages, (chunk) => {
                 assistantMessage.text += chunk;

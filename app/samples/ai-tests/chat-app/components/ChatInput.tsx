@@ -3,7 +3,7 @@
 import React, { useState, useContext } from 'react';
 import { ChatContext } from '@/context/AiContext/ChatContext';
 import { UserContext } from '@/context/AiContext/UserContext';
-import { emitEvent } from '@/app/samples/ai-tests/chat-app/utils/socket';
+import { emitEvent } from '@/utils/socketio/socket';
 
 const ChatInput = () => {
     const [input, setInput] = useState('');

@@ -10,6 +10,25 @@ import {
     ChatSettings
 } from "./settings";
 
+export type Role = 'system' | 'user' | 'assistant';
+
+export interface MessageEntry {
+    role: Role;
+    text: string;
+}
+
+export interface Chat {
+    chat_id: string;
+    chat_title: string;
+    user_id: string;
+    created_at: Date;
+    last_edited: Date;
+    metadata: Record<string, any>;
+}
+
+
+
+
 export interface ChatRequest {
     eventName: string;
     userToken: string;
@@ -176,23 +195,5 @@ export type RespondData = {
 };
 
 
-export enum RoleType {
-    system = 'system',
-    user = 'user',
-    assistant = 'assistant',
-}
 
-export interface MessageEntry {
-    text: string;
-    role: RoleType;
-}
 
-export interface Chat {
-    chatId: string;
-    chatTitle: string;
-    userId: string;
-    createdTimestamp: Date;
-    lastEditedTimestamp: Date;
-    messageManager: any; // Replace with actual type if available
-    metadata: Record<string, any>;
-}

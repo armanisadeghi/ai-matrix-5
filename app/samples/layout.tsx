@@ -9,6 +9,7 @@ import { ReactNode } from 'react';
 import { RecoilRoot, useRecoilState, useSetRecoilState } from 'recoil';
 import { UserManager } from '@/services/Users';
 import { activeUserAtom } from "@/context/atoms/userAtoms";
+import { DynamicSocketProvider } from "@/context/AiContext/socketContext";
 
 type Props = {
     children: ReactNode;
@@ -46,12 +47,14 @@ function Layout({children}: Props) {
         <RecoilRoot>
             <React.Suspense fallback={<div>Loading...</div>}>
                 <LayoutProvider initialNavbarState="icons">
-                    <SidebarProvider>
-                        <MainLayout>
-                            <LayoutContent/>
-                            {children}
-                        </MainLayout>
-                    </SidebarProvider>
+                    <DynamicSocketProvider>
+                        <SidebarProvider>
+                            <MainLayout>
+                                <LayoutContent/>
+                                {children}
+                            </MainLayout>
+                        </SidebarProvider>
+                    </DynamicSocketProvider>
                 </LayoutProvider>
             </React.Suspense>
         </RecoilRoot>
@@ -59,8 +62,3 @@ function Layout({children}: Props) {
 }
 
 export default Layout;
-
-/*
-            <p>ID: {activeUser.id} Name: {activeUser.firstName}</p>
-
- */

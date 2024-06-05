@@ -1,4 +1,4 @@
-// metadataAtoms.tsx
+// metadataAtoms.ts
 
 
 interface Metadata {

@@ -2,13 +2,14 @@
 
 import React, { useEffect, useRef } from 'react';
 import { Box, Grid, Text } from '@mantine/core';
-import { activeChatMessagesArrayAtom, } from "@/context/atoms/chatAtoms";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { LoadingOverlay, Space } from '@mantine/core';
 import AssistantMessage from './AssistantMessage';
-import { RoleType, MessageEntry } from '@/types/chat';
-import UserNew from "@/app/samples/ai-tests/shared/response/UserNew";
+import { Role, MessageEntry } from '@/types/chat';
+import UserMessage from "@/app/samples/ai-tests/shared/response/UserMessage";
 import { GiArtificialHive } from "react-icons/gi";
+import { activeChatMessagesArrayAtom } from "@/app/samples/ai-tests/shared/servicees/chatAtoms";
+import { requestEventTaskAtom, requestSocketEventAtom, requestIndexAtom, requestSourceAtom } from "@/app/samples/ai-tests/shared/servicees/metadataAtoms";
 
 interface ResponseAreaProps {
     bottomPadding: number;
@@ -17,6 +18,8 @@ interface ResponseAreaProps {
 const ResponseArea: React.FC<ResponseAreaProps> = ({bottomPadding}) => {
     const scrollRef = useRef<HTMLDivElement>(null);
     const activeChatMessages = useRecoilValue(activeChatMessagesArrayAtom);
+
+
 
     useEffect(() => {
         if (scrollRef.current) {
@@ -68,16 +71,18 @@ const ResponseArea: React.FC<ResponseAreaProps> = ({bottomPadding}) => {
                             <Space h={10}/>
 
                             <div>
-                            {activeChatMessages.map((entry: MessageEntry, entryIndex: number) => (
+                            {activeChatMessages.map((entry: MessageEntry, entryIndex: number) => {
+                                return (
                                     <div key={entryIndex}>
-                                        {entry.role === RoleType.assistant ? (
-                                            <AssistantMessage messageId={entryIndex.toString()}/>
+                                        {entry.role === 'assistant' ? (
+                                            <AssistantMessage entryIndex={entryIndex.toString()}/>
                                         ) : (
-                                            <UserNew messageId={entryIndex.toString()}/>
+                                            <UserMessage entryIndex={entryIndex.toString()}/>
                                         )}
                                         <Space h={10}/>
                                     </div>
-                                ))}
+                                );
+                            })}
                             </div>
 
                         </div>

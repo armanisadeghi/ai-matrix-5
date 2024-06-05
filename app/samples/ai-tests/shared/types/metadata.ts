@@ -1,15 +1,16 @@
 // /types/metadata.ts
 
-import { SOCKET_EVENTS, EVENT_TASKS, SOURCES, CHANNELS } from '../../../org/config/aiRequestOptions';
+import { SOCKET_EVENTS, EVENT_TASKS, SOURCES, CHANNELS } from '../config/aiRequestOptions';
 
 // RequestIdType
 export type RequestIdType = string; // DEFAULT: '', CHOICES: 'uuid', EXAMPLES: '0b9728d7-a0eb-407c-9519-b657240f0ec3'
 
 // SocketEventType
-export type SocketEventType = typeof SOCKET_EVENTS[number]; // DEFAULT: '', CHOICES: 'many options', EXAMPLES: 'matrix_chat'
+export type SocketEventType = typeof SOCKET_EVENTS[number] | null; // Update to include `null`
 
 // EventTaskType
 export type EventTaskType = typeof EVENT_TASKS[number]; // DEFAULT: '', CHOICES: 'many options', EXAMPLES: 'simple_chat', 'playground_stream', 'run_recipe', 'validation', 'workflow'
+
 
 // IndexType
 export type IndexType = number; // DEFAULT: 0, CHOICES: 'n/a', EXAMPLES: 0, 1, 2

@@ -7,6 +7,17 @@ const userManagerPromise = UserManager.getInstance();
 
 console.log('userAtoms.ts with userManagerPromise:', userManagerPromise);
 
+export const activeUserIdAtom = atom<string | undefined>({
+    key: 'activeUserIdAtom',
+    default: undefined,
+});
+
+export const activeUserTokenAtom = atom<string | null | undefined>({
+    key: 'activeUserTokenAtom',
+    default: undefined,
+});
+
+
 export const ForcedUserIdAtom = atom<string>({
     key: 'ForcedUserIdAtom',
     default: "a048d457-c058-481b-a9a1-7d821b6435d5",
@@ -34,11 +45,6 @@ export const allUsersAtom = atom<User[]>({
         const userManager = await userManagerPromise;
         return userManager.getAllUsers();
     })(),
-});
-
-export const activeUserIdAtom = atom<string | undefined>({
-    key: 'activeUserIdAtom',
-    default: undefined,
 });
 
 export const activeUserIdSelector = selector<string | undefined>({

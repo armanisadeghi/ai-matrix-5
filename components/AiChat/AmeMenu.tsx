@@ -6,8 +6,8 @@ import { SiXdadevelopers, SiAppstore } from "react-icons/si";
 import { CiViewList } from "react-icons/ci";
 import { IconTrash } from '@tabler/icons-react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { activeChatMessagesArrayAtom, activeChatIdAtom } from '@/context/atoms/chatAtoms';
 import { activeUserAtom } from '@/context/atoms/userAtoms';
+import { activeChatMessagesArrayAtom, activeChatIdAtom } from "@/app/samples/ai-tests/shared/servicees/chatAtoms";
 
 interface AmeMenuProps {
     children: ReactNode;

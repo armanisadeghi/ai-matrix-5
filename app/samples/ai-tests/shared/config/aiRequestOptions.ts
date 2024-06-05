@@ -1,20 +1,26 @@
 // app/mainModule/settings/aiRequestOptions.ts
 
-export const SOCKET_EVENTS = [
-    'matrix_chat',
-    'playground_stream',
-    'run_recipe',
-    'validation',
-    'workflow',
-] as const;
+
+
 
 export const EVENT_TASKS = [
+    'directChat',
     'simpleChat',
     'runRecipe',
     'runAction',
     'validateRequest',
     'processWorkflow',
     'dataProcessing',
+    'directStream',
+] as const;
+
+
+export const SOCKET_EVENTS = [
+    'matrix_chat',
+    'playground_stream',
+    'run_recipe',
+    'validation',
+    'workflow',
 ] as const;
 
 export const SOURCES = [
@@ -26,8 +32,9 @@ export const SOURCES = [
     'wordpress',
     'shopify',
     'thirdParty',
-    // Add unique source for each separate page
+    'ai-tests',
 ] as const;
+
 
 export const CHANNELS = [
     'text',

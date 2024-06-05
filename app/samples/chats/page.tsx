@@ -4,7 +4,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Burger } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import ResponseArea from '@/app/samples/ai-tests/shared/response/ResponseArea';
-import AmeUserMessageArea from '@/app/samples/ai-tests/shared/input/AmeUserInput/AmeUserInput';
+import AmeUserMessageArea from '@/app/samples/ai-tests/shared/input/AmeUserInput';
+import saveMessageToDb from "@/app/samples/ai-tests/shared/servicees/saveMessageToDb";
+import MessageEntry from "@/services/Chat";
+
 
 const ChatsPage = () => {
     const [bottomPadding, setBottomPadding] = useState(0);
@@ -44,7 +47,20 @@ const ChatsPage = () => {
 
     const handleSendMessage = () => {
         if (userInput.trim()) {
-            console.log("Message sent:", userInput);
+            console.log("DEBUG Received:", userInput);
+
+            const MessageEntry = {
+                role: 'user',
+                text: userInput.trim()
+            };
+
+            try {
+                const result = saveMessageToDb(MessageEntry);
+                console.log('Message added successfully:', result);
+            } catch (error) {
+                console.error('There was a problem adding the message:', error);
+            }
+
             setUserInput('');
         }
     };
@@ -65,7 +81,7 @@ const ChatsPage = () => {
                     ref={textareaContainerRef}
                     userInput={userInput}
                     handleInputChange={handleInputChange}
-                    handleSendMessage={handleSendMessage}
+                    //handleSendMessage={handleSendMessage} // Removed to test Atoms
                 />
             </div>
             {isSmallScreen && (

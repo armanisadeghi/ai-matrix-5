@@ -5,8 +5,8 @@ import AmeMenu from './AmeMenu';
 import useColorUtils from '@/utils/colorUtils';
 import AmeActionTextInput from '../../ui/input/AmeActionTextInput';
 import { useRecoilState, useRecoilValue } from "recoil";
-import { activeChatIdAtom, activeChatMessagesArrayAtom } from "@/context/atoms/chatAtoms";
 import { activeUserAtom } from "@/context/atoms/userAtoms";
+import { activeChatIdAtom, activeChatMessagesArrayAtom } from "@/app/samples/ai-tests/shared/servicees/chatAtoms";
 
 interface AmeHoverMenuChatProps {
     initialValue: string;
