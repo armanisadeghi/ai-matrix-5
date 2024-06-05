@@ -1,7 +1,9 @@
 export interface Broker {
     id: string;
-    name?: string;
+    name: string;
     dataType: string[];
+    description?: string;
+    defaultValue?: string | number | boolean | string[] | number[] | File;
     components: Component[];
 }
 

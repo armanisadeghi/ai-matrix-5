@@ -5,13 +5,15 @@ import { BrokerImage } from '@/components/Brokers/BrokerImage';
 import { useForm } from '@mantine/form';
 import { Component } from '@/types/broker';
 import { BrokerSlider } from "@/components/Brokers/BrokerSlider";
+import { useBroker } from '@/context/brokerContext';
 
 interface BrokerComponentProps {
     currentComponent: Component;
     type?: string;
+    handleDefaultValueChange?: Function;
 }
 
-const BrokerComponent: React.FC<BrokerComponentProps> = ({ type, currentComponent }) => {
+const BrokerComponent: React.FC<BrokerComponentProps> = ({ type, currentComponent, handleDefaultValueChange }) => {
     const { description, componentId, tableData, src, alt, radius, h, w, fit, options, groupOptions, label, placeholderText, defaultValue, displayOrder, validation, dependencies, required, size, color, exampleInputs, group, min, max, step, value, onChange, marks } = currentComponent;
 
     const currentData = useForm({
@@ -31,7 +33,7 @@ const BrokerComponent: React.FC<BrokerComponentProps> = ({ type, currentComponen
                     color={color}
                     defaultValue={defaultValue as string}
                     key={currentData.key('label')}
-                    onChange={value => currentData.setFieldValue('value', value.target.value)} />;
+                    onChange={value => handleDefaultValueChange ? handleDefaultValueChange(value.target.value) : currentData.setFieldValue('value', value.target.value)} />;
             case "Textarea":
                 return <Textarea
                     label={label}
@@ -40,7 +42,7 @@ const BrokerComponent: React.FC<BrokerComponentProps> = ({ type, currentComponen
                     size={size}
                     color={color}
                     defaultValue={defaultValue as string}
-                    onChange={value => currentData.setFieldValue('value', value.target.value)} />;
+                    onChange={value => handleDefaultValueChange ? handleDefaultValueChange(value.target.value) : currentData.setFieldValue('value', value.target.value)} />;
             case "Slider":
                 return <BrokerSlider
                     label={label}
@@ -51,18 +53,18 @@ const BrokerComponent: React.FC<BrokerComponentProps> = ({ type, currentComponen
                     size={size}
                     marks={marks}
                     color={color}
-                    onChange={value => currentData.setFieldValue('value', value)} />;
+                    onChange={value => handleDefaultValueChange ? handleDefaultValueChange(value) : currentData.setFieldValue('value', value)} />;
             case "YesNo":
                 return <Radio.Group
                     name={label}
                     label={label}
                     description={description}
                     required={required}
-                    onChange={value => currentData.setFieldValue('value', value ? 'yes' : 'no')}
+                    onChange={value => handleDefaultValueChange ? handleDefaultValueChange(value) : currentData.setFieldValue('value', value)}
                 >
                     <Group mt="xs">
                         <Radio value="yes" label="Yes" />
-                        <Radio value="np" label="No" />
+                        <Radio value="no" label="No" />
                     </Group>
                 </Radio.Group>
             case "Checkbox":
@@ -71,14 +73,14 @@ const BrokerComponent: React.FC<BrokerComponentProps> = ({ type, currentComponen
                     required={required}
                     size={size}
                     color={color}
-                    onChange={value => currentData.setFieldValue('value', value.target.checked)} />;
+                    onChange={value => handleDefaultValueChange ? handleDefaultValueChange(value.target.checked) : currentData.setFieldValue('value', value.target.checked)} />;
             case "CheckboxGroup":
                 return <>{options && <BrokerCheckBoxGroup
                     defaultValue={['red', 'blue']}
                     label={label}
                     options={options.map(option => ({ value: option, label: option }))}
                     required={required}
-                    onChange={(value) => currentData.setFieldValue('value', value)}
+                    onChange={(value) => handleDefaultValueChange ? handleDefaultValueChange(value) : currentData.setFieldValue('value', value)}
                 />}</>
             case "Switch":
                 return <Switch label={label} value={value as string} required={required} size={size} color={color} />;
@@ -88,13 +90,13 @@ const BrokerComponent: React.FC<BrokerComponentProps> = ({ type, currentComponen
                     required={required}
                     size={size}
                     color={color}
-                    onChange={(value) => currentData.setFieldValue('value', value)}>
+                    onChange={(value) => handleDefaultValueChange ? handleDefaultValueChange(value) : currentData.setFieldValue('value', value)}>
                     <Switch value="red" label="Red" mt={"md"} />
                     <Switch value="blue" label="Blue" mt={"md"} />
                     <Switch value="yellow" label="Yellow" mt={"md"} />
                 </SwitchGroup>;
             case "Select":
-                return <Select label={label} data={options} required={required} size={size} color={color} onChange={(value) => currentData.setFieldValue('value', value as string)} />;
+                return <Select label={label} data={options} required={required} size={size} color={color} onChange={(value) => handleDefaultValueChange ? handleDefaultValueChange(value as string) : currentData.setFieldValue('value', value as string)} />;
             case "Json":
                 return <JsonInput
                     label={label || "Json"}
@@ -104,7 +106,7 @@ const BrokerComponent: React.FC<BrokerComponentProps> = ({ type, currentComponen
                     autosize
                     minRows={4}
                     required={required}
-                    onChange={(value) => currentData.setFieldValue('value', value)}
+                    onChange={(value) => handleDefaultValueChange ? handleDefaultValueChange(value) : currentData.setFieldValue('value', value)}
                 />
             case "SelectWithOther":
                 return <Select
@@ -113,7 +115,7 @@ const BrokerComponent: React.FC<BrokerComponentProps> = ({ type, currentComponen
                     required={required}
                     size={size}
                     color={color}
-                    onChange={(value) => currentData.setFieldValue('value', value as string)}
+                    onChange={(value) => handleDefaultValueChange ? handleDefaultValueChange(value as string) : currentData.setFieldValue('value', value as string)}
                 />
             case "AttachmentsVideo":
                 return <div>Video</div>
@@ -127,7 +129,7 @@ const BrokerComponent: React.FC<BrokerComponentProps> = ({ type, currentComponen
                     required={required}
                     size={size}
                     color={color}
-                    onChange={(value: File | null) => currentData.setFieldValue('value', value as File)}
+                    onChange={(value: File | null) => handleDefaultValueChange ? handleDefaultValueChange(value as File) : currentData.setFieldValue('value', value as File)}
                 />
             case "AttachmentsURL":
                 return <div>URL</div>
@@ -139,7 +141,7 @@ const BrokerComponent: React.FC<BrokerComponentProps> = ({ type, currentComponen
                     w="auto"
                     fit="contain"
                     radius={radius}
-                    onChange={(value: File | null) => currentData.setFieldValue('value', value as File)} />
+                    onChange={(value: File | null) => handleDefaultValueChange ? handleDefaultValueChange(value as File) : currentData.setFieldValue('value', value as File)} />
             default:
                 return null;
         }

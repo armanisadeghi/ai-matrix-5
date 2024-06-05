@@ -6,13 +6,13 @@ import { Stack } from '@mantine/core';
 import { useBroker } from '@/context/brokerContext';
 
 
-const BrokerList = () => {
+const BrokerList = ({ user }: { user: boolean }) => {
     const { brokers } = useBroker();
 
     return (
         <Stack>
-            {brokers.map((broker) => (
-                <BrokerListItem key={broker.id} broker={broker} />
+            {brokers.reverse().map((broker) => (
+                <BrokerListItem key={broker.id} broker={broker} user={user} />
             ))}
         </Stack>
     );

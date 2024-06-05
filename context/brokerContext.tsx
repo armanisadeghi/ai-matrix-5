@@ -10,24 +10,23 @@ export const BrokerContext = React.createContext<BrokerContextValue>({
     deleteBroker: ({ }: string) => { },
 });
 
+const initialValues = {
+    id: '',
+    name: '',
+    description: '',
+    defaultValue: '',
+    dataType: [],
+    components: [],
+}
+
 export const BrokerProvider = ({ children }: { children: ReactNode }) => {
     const [brokers, setBrokers] = useState<Broker[]>([]);
-    const [currentBroker, setCurrentBroker] = useState<Broker>({
-        id: '',
-        name: '',
-        dataType: [],
-        components: [],
-    } as Broker);
+    const [currentBroker, setCurrentBroker] = useState<Broker>(initialValues as Broker);
 
     const deleteBroker = (id: string) => {
         setBrokers([...brokers.filter((b) => b.id !== id)]);
         if (currentBroker.id === id) {
-            setCurrentBroker({
-                id: '',
-                name: '',
-                dataType: [],
-                components: [],
-            } as Broker);
+            setCurrentBroker(initialValues as Broker);
         }
     };
 

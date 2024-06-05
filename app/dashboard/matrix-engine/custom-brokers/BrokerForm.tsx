@@ -4,18 +4,16 @@ import { Broker } from '@/types/broker';
 import { Button, Container, Flex, SimpleGrid, Space } from '@mantine/core';
 import BrokerComponent from './BrokerComponent';
 import { useBroker } from '@/context/brokerContext';
-import { useEffect } from 'react';
 import { uuid } from 'uuidv4';
 
 
 export const BrokerForm = () => {
     const { setBrokers, brokers, currentBroker, setCurrentBroker } = useBroker()
     const handleSave = () => {
-        setBrokers([...brokers.filter((broker) => broker.id !== currentBroker.id), {
+        setBrokers([{
             ...currentBroker, id: uuid(), name: `${currentBroker.components.map(c => c.type).join('-')}`,
-            dataType: ['string'],
-            components: currentBroker.components,
-        }]);
+            dataType: ['string'], components: currentBroker.components
+        }, ...brokers.filter((broker) => broker.id !== currentBroker.id)]);
     };
 
     return (
