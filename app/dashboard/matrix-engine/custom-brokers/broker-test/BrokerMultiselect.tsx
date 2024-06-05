@@ -3,27 +3,27 @@ import { useState } from 'react';
 import { CheckIcon, Combobox, Group, Input, Pill, PillsInput, useCombobox } from '@mantine/core';
 import { useBroker } from '@/context/brokerContext';
 
-export function BrokerMultiSelect({ setJsonValue }: any) {
+export function BrokerMultiSelect({ value, setValue }: any) {
     const combobox = useCombobox({
         onDropdownClose: () => combobox.resetSelectedOption(),
         onDropdownOpen: () => combobox.updateSelectedOptionIndex('active'),
     });
 
-    const [value, setValue] = useState<string[]>([]);
     const { brokers } = useBroker()
 
     const handleValueSelect = (val: string) => {
-        setValue((current) =>
-            current.includes(val) ? current.filter((v) => v !== val) : [...current, val]
-        );
-        setJsonValue(JSON.stringify(value));
-    }
-
+        setValue((current: string[]) => {
+            const updatedValue = current.includes(val)
+                ? current.filter((v) => v !== val)
+                : [...current, val];
+            return updatedValue;
+        });
+    };
 
     const handleValueRemove = (val: string) =>
-        setValue((current) => current.filter((v) => v !== val));
+        setValue((current: string[]) => current.filter((v) => v !== val));
 
-    const values = value.map((item) => (
+    const values = value.map((item: string) => (
         <Pill key={item} withRemoveButton onRemove={() => handleValueRemove(item)}>
             {item}
         </Pill>
