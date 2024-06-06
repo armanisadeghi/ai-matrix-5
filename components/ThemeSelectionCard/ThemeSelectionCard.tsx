@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { Flex, Paper, PaperProps, Radio, rem } from "@mantine/core";
+import { Divider, Flex, Grid, Paper, PaperProps, Radio, rem } from "@mantine/core";
 import { IconDeviceDesktop, IconDeviceFloppy, IconMoon, IconSun } from "@tabler/icons-react";
 import AmeRadioCard from "@/ui/radio/AmeRadioCard";
 import AmeTitle from "@/ui/typography/AmeTitle";
 import AmeButton from "@/ui/buttons/AmeButton";
+import AmeText from "@/ui/typography/AmeText";
+import AmePaper from "@/ui/surfaces/AmePaper";
 
 const data = [
     {
@@ -28,27 +30,31 @@ export function ThemeSelectionCard({ ...others }: ThemeSelectionCardProps) {
     const cards = data.map((item) => <AmeRadioCard value={item.name} key={item.name} {...item} />);
 
     return (
-        <Paper component="form" p="md" withBorder mb="md" {...others}>
-            <AmeTitle as="card-header" mb="md">
-                Color Mode
-            </AmeTitle>
-            <Radio.Group
-                value={colorMode}
-                onChange={setColorMode}
-                label="Choose if app's appearance should be light or dark, or follow your computer's settings."
-            >
-                <Flex gap="xs" mt="md">
-                    {cards}
-                </Flex>
-            </Radio.Group>
-            <AmeButton
-                type="submit"
-                mt="md"
-                leftSection={<IconDeviceFloppy style={{ height: rem(18), width: rem(18) }} />}
-                title="Save changes"
-            >
-                Save changes
-            </AmeButton>
+        <Paper component="form" p="md" mb="md" {...others}>
+            <Grid align="flex-start" mb="md">
+                <Grid.Col span={{ base: 12, md: 6, lg: 3 }}>
+                    <AmeTitle as="card-header" mb="md">
+                        Color Mode
+                    </AmeTitle>
+                    <AmeText size="sm" c="dimmed">
+                        Choose if app's appearance should be light or dark, or follow your computer's settings.
+                    </AmeText>
+                </Grid.Col>
+                <Grid.Col span={{ base: 12, md: 6, lg: 9 }}>
+                    <Radio.Group value={colorMode} onChange={setColorMode}>
+                        <Flex gap="xs">{cards}</Flex>
+                    </Radio.Group>
+                    <AmeButton
+                        type="submit"
+                        mt="md"
+                        leftSection={<IconDeviceFloppy style={{ height: rem(18), width: rem(18) }} />}
+                        title="Save changes"
+                    >
+                        Save changes
+                    </AmeButton>
+                </Grid.Col>
+            </Grid>
+            <Divider />
         </Paper>
     );
 }
