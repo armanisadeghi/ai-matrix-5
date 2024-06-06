@@ -1,6 +1,6 @@
 // app/dashboard/page.tsx
 import React, { Suspense } from 'react';
-import OpenAiMessages from './components/OpenAiMessages';
+import OpenAiMessages from './components/FullChat';
 import Loading from '@/app/dashboard/loading';
 
 export default function Dashboard() {

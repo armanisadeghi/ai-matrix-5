@@ -60,12 +60,18 @@ export const useChatMessages = () => {
         setMessages(newMessages);
     };
 
+    const addMessageWithRole = (text: string, role: Role) => {
+        const newMessageEntry: MessageEntry = { text, role };
+        addMessage(newMessageEntry);
+    };
+
     return {
         messages,
         addMessage,
         deleteMessage,
         resetToIndex,
         editMessage,
+        addMessageWithRole,
     };
 };
 
