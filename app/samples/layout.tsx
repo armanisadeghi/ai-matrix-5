@@ -10,6 +10,8 @@ import { RecoilRoot, useRecoilState, useSetRecoilState } from 'recoil';
 import { UserManager } from '@/services/Users';
 import { activeUserAtom } from "@/context/atoms/userAtoms";
 import { DynamicSocketProvider } from "@/context/AiContext/socketContext";
+import { HeaderProvider } from "@/context/HeaderContext";
+import { FooterProvider } from "@/context/FooterContext";
 
 type Props = {
     children: ReactNode;
@@ -49,10 +51,11 @@ function Layout({children}: Props) {
                 <LayoutProvider initialNavbarState="icons">
                     <DynamicSocketProvider>
                         <SidebarProvider>
-                            <MainLayout>
-                                <LayoutContent/>
-                                {children}
-                            </MainLayout>
+                <HeaderProvider>
+                    <FooterProvider>
+                        <MainLayout>{children}</MainLayout>
+                    </FooterProvider>
+                </HeaderProvider>
                         </SidebarProvider>
                     </DynamicSocketProvider>
                 </LayoutProvider>

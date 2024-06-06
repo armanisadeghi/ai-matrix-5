@@ -6,6 +6,8 @@ import AmeSelect from "@/ui/select/AmeSelect";
 import { IconDeviceFloppy } from "@tabler/icons-react";
 import { useForm } from "@mantine/form";
 import AmeActionTextInput from "@/ui/input/AmeActionTextInput";
+import AmeTextarea from "@/ui/input/AmeTextarea";
+import AmeNumberInput from "@/ui/input/AmeNumberInput";
 import AmeButton from "@/ui/buttons/AmeButton";
 
 interface ClientsFormProps extends Partial<PaperProps> {

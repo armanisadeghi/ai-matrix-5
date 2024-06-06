@@ -1,4 +1,4 @@
-// chat-app/types/chat.ts
+// /types/chat.ts
 import { ReactNode } from 'react';
 import {
     AIModelSettings,
@@ -15,6 +15,11 @@ export type Role = 'system' | 'user' | 'assistant';
 export interface MessageEntry {
     role: Role;
     text: string;
+}
+
+export interface ChatMessage {
+    role: Role;
+    content: string;
 }
 
 export interface Chat {

@@ -1,5 +1,4 @@
 import { BrokerProvider } from "@/context/brokerContext";
-import { MainLayout } from "@/layout"
 import { ReactNode } from "react";
 
 type Props = {
@@ -8,8 +7,8 @@ type Props = {
 
 export default function BrokersLayout({ children }: Props): JSX.Element {
     return (
-        <MainLayout><BrokerProvider>
+        <BrokerProvider>
             {children}
-        </BrokerProvider></MainLayout>
+        </BrokerProvider>
     );
 }

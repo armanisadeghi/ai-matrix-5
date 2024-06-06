@@ -2,7 +2,7 @@
 
 import { initializeSocket, emitEvent, waitForEvent, closeSocket } from '@/utils/socketio/socket';
 import { useRecoilValue } from 'recoil';
-import { quickChatSettingsAtom } from "@/context/atoms/settingsAtoms";
+import { quickChatSettingsAtom } from "@/app/samples/ai-tests/shared/atoms/settingsAtoms";
 import { requestEventTaskAtom, requestSocketEventAtom, requestIndexAtom } from '@/app/samples/ai-tests/shared/atoms/metadataAtoms';
 import { activeChatIdAtom, activeChatMessagesArrayAtom, customInputsAtom, formResponsesAtom } from "@/app/samples/ai-tests/shared/atoms/chatAtoms";
 import { activeUserIdAtom, activeUserTokenAtom } from "@/context/atoms/userAtoms";

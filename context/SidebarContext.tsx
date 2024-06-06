@@ -48,7 +48,7 @@ export const SidebarProvider = ({
     const handleCollapse = () => {
         if (asideConfig === "full") toggleAside("compact");
         else if (asideConfig === "compact") toggleAside("icons");
-        else toggleAside("hidden");
+        else if (asideConfig === "icons") toggleAside("hidden");
     };
 
     return (

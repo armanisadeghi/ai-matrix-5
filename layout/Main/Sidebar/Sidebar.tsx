@@ -1,47 +1,53 @@
-// layout/Main/Sidebar/Sidebar.tsx
-'use client';
+"use client";
+import { ActionIcon, ActionIconProps, AppShell, Box, Group, Stack, Title } from "@mantine/core";
+import { IconArrowBarRight, IconArrowBarToLeft, IconArrowBarToRight } from "@tabler/icons-react";
+import { useSidebar } from "@/context/SidebarContext";
+import AmeActionIcon from "@/ui/buttons/AmeActionIcon";
 
-import { ActionIcon } from "@mantine/core";
-import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
-import { useSidebar } from '@/context/SidebarContext';
-
-type SidebarProps = {
-    asideWidth: number;
+const actionProps: ActionIconProps = {
+    variant: "light",
 };
 
-const Sidebar = ({ asideWidth }: SidebarProps) => {
-    const { asideOpen, handleToggle, sidebarContent } = useSidebar();
-    const adjustedWidth = asideOpen ? asideWidth : 25;
+interface SidebarProps {
+    state: "full" | "compact" | "icons" | "hidden";
+}
+
+export const Sidebar = ({ state }: SidebarProps) => {
+    const { handleExpand, handleCollapse } = useSidebar();
 
     return (
-        <aside>
-            {asideOpen && (
-                <>
-                    {sidebarContent}
-                    <ActionIcon onClick={handleToggle} style={{
-                        position: 'absolute',
-                        top: '50%',
-                        right: adjustedWidth - 27,
-                        transform: 'translateY(-50%)'
-                    }}>
-                        <IconChevronRight size={12}/>
-                    </ActionIcon>
-                </>
-            )}
-            {!asideOpen && (
-                <ActionIcon
-                    onClick={handleToggle}
-                    style={{
-                        position: 'absolute',
-                        top: '50%',
-                        right: adjustedWidth,
-                        transform: 'translateY(-50%)'
-                    }}>
-                    <IconChevronLeft size={18}/>
-                </ActionIcon>
-            )}
-        </aside>
+        <Box component="aside" p="sm">
+            <AppShell.Section>
+                {state === "compact" && (
+                    <Group justify="flex-start" gap="xs">
+                        <AmeActionIcon title="expand sidebar" onClick={handleExpand} {...actionProps}>
+                            <IconArrowBarToLeft size={18} />
+                        </AmeActionIcon>
+                        <AmeActionIcon title="shrink sidebar" onClick={handleCollapse} {...actionProps}>
+                            <IconArrowBarToRight size={18} />
+                        </AmeActionIcon>
+                    </Group>
+                )}
+
+                {state === "full" && (
+                    <Group justify="flex-start" gap="xs">
+                        <AmeActionIcon title="shrink sidebar" onClick={handleCollapse} {...actionProps}>
+                            <IconArrowBarRight size={18} />
+                        </AmeActionIcon>
+                    </Group>
+                )}
+                {state === "icons" && (
+                    <Group justify="center" gap="xs">
+                        <AmeActionIcon title="shrink sidebar" onClick={handleCollapse} {...actionProps}>
+                            <IconArrowBarRight size={18} />
+                        </AmeActionIcon>
+                    </Group>
+                )}
+
+                <Stack mt="md" gap="xs" align="stretch">
+                    <Title>Aside</Title>
+                </Stack>
+            </AppShell.Section>
+        </Box>
     );
 };
-
-export default Sidebar;
