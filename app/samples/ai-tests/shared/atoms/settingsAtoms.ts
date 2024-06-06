@@ -1,5 +1,6 @@
 // recoil/atoms/settingsAtoms.ts
 import { atom, selector } from 'recoil';
+import {AIModel} from "@/app/data/aiModels";
 
 export const aiPreferencesMainAtom = atom<string>({
     key: 'aiPreferencesMainAtom',
@@ -41,4 +42,24 @@ export const quickChatSettingsAtom = selector({
         improveQuestions: get(improveQuestionsAtom),
         submitOnEnter: get(submitOnEnterAtom),
     }),
+});
+
+export const aiModelAtom = atom<AIModel>({
+    key: 'modelAtom',
+    default:     {
+        "id": "gpt-4o",
+        "created": "1715367049",
+        "object": "model",
+        "owned_by": "system"
+    },
+});
+
+export const temperatureAtom = atom<number>({
+    key: 'temperatureAtom',
+    default: 1,
+});
+
+export const maxTokensAtom = atom<number>({
+    key: 'maxTokens',
+    default: 500,
 });

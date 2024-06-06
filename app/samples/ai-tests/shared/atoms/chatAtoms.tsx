@@ -1,6 +1,7 @@
-import { atom, useRecoilState, useSetRecoilState, selector, useRecoilValue } from 'recoil';
-import { Role, MessageEntry } from '@/types/chat';
+import {atom, useRecoilState, useSetRecoilState, selector, useRecoilValue} from 'recoil';
+import {Role, MessageEntry} from '@/types/chat';
 import Chat from "@/services/Chat";
+
 
 
 export const userMessageAtom = atom<string>({
@@ -44,6 +45,7 @@ export const useChatMessages = () => {
 
     const addMessage = (messageEntry: MessageEntry) => {
         setMessages([...messages, messageEntry]);
+        console.log('useChatMessages messages', messages);
     };
 
     const deleteMessage = (index: number) => {
@@ -61,10 +63,11 @@ export const useChatMessages = () => {
     };
 
     const addMessageWithRole = (text: string, role: Role) => {
-        const newMessageEntry: MessageEntry = { text, role };
-        addMessage(newMessageEntry);
+        const newMessageEntry: MessageEntry = {text, role};
+        setMessages(currentMessages => [...currentMessages, newMessageEntry]);
+        console.log ('useChatMessages newMessageEntry', newMessageEntry);
+        console.log('useChatMessages updatedMessages', messages);
     };
-
     return {
         messages,
         addMessage,
@@ -76,12 +79,12 @@ export const useChatMessages = () => {
 };
 
 
-const messageFilterState = atom({
+export const messageFilterState = atom({
     key: 'messageFilterState',
     default: 'all',
 });
 
-const filteredMessagesState = selector({
+export const filteredMessagesState = selector({
     key: 'FilteredMessages',
     get: ({get}) => {
         const filter = get(messageFilterState);
@@ -99,6 +102,72 @@ const filteredMessagesState = selector({
         }
     },
 });
+
+const transformedMessagesState = selector<MessageEntry[]>({
+    key: 'TransformedMessages',
+    get: ({get}) => {
+        const messages: MessageEntry[] = get(activeChatMessagesArrayAtom);
+        const filter = get(messageFilterState); // Assumes a filter state that dictates the transformation
+
+        switch (filter) {
+            case 'matrix':
+                // Directly map MessageEntry to ChatMessage without changing values
+                return messages.map(message => ({
+                    role: message.role,
+                    content: message.text
+                }));
+
+            case 'openai':
+                // Replace "text" key with "content"
+                return messages.map(message => ({
+                    role: message.role,
+                    content: message.text
+                }));
+
+            case 'anthropic':
+                // Remove entries with role 'system' and update systemMessageAtom
+                const filteredMessages = messages.filter(message => message.role !== 'system');
+                const systemMessages = messages.filter(message => message.role === 'system').map(message => ({
+                    role: message.role,
+                    content: message.text
+                }));
+                // set(systemMessageAtom, systemMessages); // Assuming `set` is part of a Recoil selectorFamily or other suitable structure
+                return filteredMessages.map(message => ({
+                    role: message.role,
+                    content: message.text
+                }));
+
+            case 'google':
+                // Placeholder for future implementation
+                return messages.map(message => ({
+                    role: message.role,
+                    content: message.text
+                }));
+
+            case 'ollama':
+                // Placeholder for future implementation
+                return messages.map(message => ({
+                    role: message.role,
+                    content: message.text
+                }));
+
+            case 'hugging tree':
+                // Placeholder for future implementation
+                return messages.map(message => ({
+                    role: message.role,
+                    content: message.text
+                }));
+
+            default:
+                // If no filter matches, return unchanged messages
+                return messages.map(message => ({
+                    role: message.role,
+                    content: message.text
+                }));
+        }
+    },
+});
+
 
 
 export const assistantTextStreamAtom = atom<string>({
@@ -128,27 +197,20 @@ export const userMessageEntryAtom = atom<MessageEntry>({
 });
 
 
-
-
-
 // Selector to get the count of all messages
 export const messageCountSelector = selector<number>({
     key: 'messageCountSelector',
-    get: ({ get }) => {
+    get: ({get}) => {
         const messages = get(activeChatMessagesArrayAtom);
         return messages.length;
     },
 });
 
 
-
-
-
-
 // Selector to get character count for all messages
 export const totalCharacterCountSelector = selector<number>({
     key: 'totalCharacterCountSelector',
-    get: ({ get }) => {
+    get: ({get}) => {
         const messages = get(activeChatMessagesArrayAtom);
         return messages.reduce((total, message) => total + message.text.length, 0);
     },
@@ -158,14 +220,13 @@ export const totalCharacterCountSelector = selector<number>({
 export const characterCountByRoleSelector = (role: Role) =>
     selector<number>({
         key: `characterCountByRoleSelector-${role}`,
-        get: ({ get }) => {
+        get: ({get}) => {
             const messages = get(activeChatMessagesArrayAtom);
             return messages
                 .filter((message) => message.role === role)
                 .reduce((total, message) => total + message.text.length, 0);
         },
     });
-
 
 
 export const formResponsesAtom = atom<{ [key: string]: string }>({
@@ -179,11 +240,6 @@ export const customInputsAtom = atom<string[]>({
 });
 
 
-
-
-
-
-
 export const messagesAtom = atom<{ text: string, role: Role }[]>({
     key: 'messagesAtom',
     default: [],
@@ -194,8 +250,6 @@ export const allChatsAtom = atom<Chat[]>({
     key: 'allChatsAtom',
     default: [],
 });
-
-
 
 
 export const detailsForAllChatsAtom = atom<Chat[]>({

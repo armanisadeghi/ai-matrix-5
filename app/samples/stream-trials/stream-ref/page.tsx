@@ -1,4 +1,4 @@
-// app/samples/suspense-trial/stream-ref/page.tsx
+// app/samples/stream-trials/stream-ref/page.tsx
 
 'use client';
 
