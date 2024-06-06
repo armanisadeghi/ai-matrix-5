@@ -138,3 +138,5 @@ dist
 /junk/
 /armani/
 */junk/*
+
+app/api/openai/openaiClient.ts
