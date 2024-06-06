@@ -11,7 +11,7 @@ const initialValues = {
     id: '',
     name: 'New Broker',
     dataType: ["string"],
-    components: [{}] as Component[],
+    component: {} as Component,
     description: "Describe your new broker",
     defaultValue: undefined,
 }
@@ -28,7 +28,7 @@ export const BrokerCreateForm = () => {
     const handleInputTypeChange = (value: any) => {
         setCurrentBroker({
             ...currentBroker,
-            components: [{ ...currentBroker.components[0], type: value as ComponentType }]
+            component: { ...currentBroker.component, type: value as ComponentType }
         });
     };
 
@@ -65,7 +65,7 @@ export const BrokerCreateForm = () => {
                     <Text>{currentBroker.name}</Text>
                     <Text size='xs' c={'gray.6'}>{currentBroker.description}</Text>
                     <Space h="sm" />
-                    <BrokerComponent type={currentBroker.components[0].type} currentComponent={currentBroker.components[0]} handleDefaultValueChange={handleDefaultValueChange} />
+                    <BrokerComponent type={currentBroker.component.type} currentComponent={currentBroker.component} handleDefaultValueChange={handleDefaultValueChange} />
                 </Fieldset>
             </Grid.Col>
         </Grid>

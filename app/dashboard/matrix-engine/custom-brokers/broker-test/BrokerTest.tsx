@@ -1,30 +1,73 @@
 "use client";
-import React, { useState } from 'react'
-import { Button, Grid, JsonInput, Space } from '@mantine/core'
+import React, { useEffect, useState } from 'react'
+import { Button, Grid, JsonInput, Space, Text } from '@mantine/core'
 import Link from 'next/link';
 import { BrokerMultiSelect } from './BrokerMultiselect';
 import { useBroker } from '@/context/brokerContext';
+import { BrokerTestForm } from './BrokerTestForm';
+import { Component } from '@/types/broker';
+import { IconArrowLeft } from '@tabler/icons-react';
 
 const BrokerTest = () => {
     const [jsonValue, setJsonValue] = useState<string>('');
     const [value, setValue] = useState<string[]>([]);
+    const [question, setQuestion] = useState<string>('My question here');
+    const { brokers, setBrokers } = useBroker()
+    const [brokerValue, setBrokerValue] = useState<Component[]>([]);
 
-    const { brokers } = useBroker()
+    useEffect(() => {
+        setBrokerValue([...
+            brokers
+                .filter((broker) => value.includes(broker.name))
+                .flatMap((broker) => broker.component)
+        ]);
+    }, [value])
+
+    useEffect(() => {
+        setBrokers(brokers.map((broker) => {
+            if (!value.includes(broker.name)) {
+                return broker;
+            }
+
+            const correspondingComponent = brokerValue.find((component) => component.componentId === broker.component.componentId);
+            if (correspondingComponent) {
+                return { ...broker, component: correspondingComponent };
+            }
+
+            return broker;
+        }));
+    }, [brokerValue]);
 
     const handleButtonClick = () => {
-        setJsonValue(JSON.stringify(brokers.filter((broker) => value.includes(broker.name)).map((broker) => ({
-            [broker.name]: broker.defaultValue,
-        })), null, 2));
+        const brokerData = brokers.filter((broker) => value.includes(broker.name)).map((broker) => ({
+            [broker.name]: broker.component.defaultValue,
+        }));
+
+        const jsonObject = {
+            question: question,
+            data: brokerData
+        };
+
+        setJsonValue(JSON.stringify(jsonObject, null, 2));
     };
 
     return (
         <Grid>
             <Grid.Col span={12}>
-                <Link href="/dashboard/matrix-engine/custom-brokers/example">Go create some brokers</Link>
+                <Link href="/dashboard/matrix-engine/custom-brokers/example"><Button
+                    variant="light"
+                    leftSection={<IconArrowLeft size={14} />}
+                >
+                    Go create some brokers
+                </Button></Link>
                 <Space h="md" />
                 <BrokerMultiSelect setJsonValue={setJsonValue} value={value} setValue={setValue} />
             </Grid.Col>
-            <Grid.Col span={12}>
+            <Grid.Col span={6}>
+                <Text size="sm" fw={500} mb={5}>Prompt Form</Text>
+                <BrokerTestForm question={question} setQuestion={setQuestion} brokerValue={brokerValue} setBrokerValue={setBrokerValue} />
+            </Grid.Col>
+            <Grid.Col span={6}>
                 <JsonInput
                     label="Prompt Sample"
                     placeholder="Broker Values"

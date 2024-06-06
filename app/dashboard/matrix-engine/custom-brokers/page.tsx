@@ -2,7 +2,7 @@
 
 import { Component, ComponentType } from "@/types/broker";
 import { Container, Button, Space, Select, Paper, Transition, Stack, Flex } from "@mantine/core";
-import { IconPlus } from "@tabler/icons-react";
+import { IconArrowLeft, IconPlus } from "@tabler/icons-react";
 import { useState } from "react";
 import BrokerList from "./BrokerList";
 import { BrokerForm } from "./BrokerForm";
@@ -61,7 +61,7 @@ const Brokers: React.FC = () => {
             id: '',
             name: '',
             dataType: [],
-            components: [],
+            component: {} as Component,
         });
     };
 
@@ -73,7 +73,12 @@ const Brokers: React.FC = () => {
     return (
         <Container>
             <Flex justify="space-between">
-                <Link href="/dashboard/matrix-engine/custom-brokers/example">Sample Brokers</Link>
+                <Link href="/dashboard/matrix-engine/custom-brokers/example"><Button
+                    variant="light"
+                    leftSection={<IconArrowLeft size={14} />}
+                >
+                    Sample Brokers
+                </Button></Link>
 
                 <Button onClick={() => handleNewBroker()} variant="outline" leftSection={<IconPlus />}>
                     Add New Broker
@@ -99,8 +104,8 @@ const Brokers: React.FC = () => {
                             </Stack>
                         )}
                     </Transition>}
-                {currentBroker.components.length > 0 &&
-                    <Transition transition="slide-down" duration={200} mounted={currentBroker.components.length > 0}>
+                {currentBroker.component &&
+                    <Transition transition="slide-down" duration={200} mounted>
                         {(styles) => (
                             <Paper withBorder radius="xs" p="xl" style={styles}>
                                 <BrokerForm />

@@ -3,8 +3,7 @@ export interface Broker {
     name: string;
     dataType: string[];
     description?: string;
-    defaultValue?: string | number | boolean | string[] | number[] | File;
-    components: Component[];
+    component: Component;
 }
 
 interface TableDataRow {
@@ -24,13 +23,13 @@ export interface Component {
     description?: string;
     maxLength?: number;
     placeholderText?: string;
-    defaultValue?: string | number | boolean | string[] | number[];
+    defaultValue?: string | number | boolean | string[] | number[] | File;
     displayOrder?: number;
     validation?: string;
     dependencies?: string[];
     required?: boolean;
     options?: string[]
-    groupOptions: { value: string; label: string }[];
+    groupOptions?: { value: string; label: string }[];
     size?: "xs" | "sm" | "md" | "lg" | "xl";
     color?: string;
     exampleInputs?: string[];

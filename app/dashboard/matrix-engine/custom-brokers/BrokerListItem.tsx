@@ -29,16 +29,16 @@ const BrokerListItem = ({ broker, user }: BrokerListItemProps) => {
                                 Custom Broker
                             </Badge>
                             <Title order={5}>{broker.name}</Title>
-                            {broker.components && broker.components.map((c, i) => <Pill key={i}>{c.type}</Pill>)}
+                            {broker.component && <Pill>{broker.component.type}</Pill>}
                             <Text size='xs' c={'gray.6'}>{`Default Value: 
-                                ${typeof broker.defaultValue === 'string' ||
-                                    typeof broker.defaultValue === 'number' ||
-                                    typeof broker.defaultValue === 'boolean' ? (
-                                    broker.defaultValue.toString()
-                                ) : Array.isArray(broker.defaultValue) ? (
-                                    broker.defaultValue.join(', ')
-                                ) : broker.defaultValue instanceof File ? (
-                                    broker.defaultValue.name
+                                ${typeof broker.component.defaultValue === 'string' ||
+                                    typeof broker.component.defaultValue === 'number' ||
+                                    typeof broker.component.defaultValue === 'boolean' ? (
+                                    broker.component.defaultValue.toString()
+                                ) : Array.isArray(broker.component.defaultValue) ? (
+                                    broker.component.defaultValue.join(', ')
+                                ) : broker.component.defaultValue instanceof File ? (
+                                    broker.name
                                 ) : (
                                     'No value'
                                 )}`}

@@ -75,7 +75,7 @@ export const BrokerEdit = ({ type, setCurrentComponent, currentComponent }: Brok
                 </Fieldset>
                 <Space h="sm" />
                 <Button variant="primary" w="100%" onClick={() => {
-                    setCurrentBroker((prev) => ({ ...prev, components: [...prev.components, { ...currentComponent, componentId: uuid() }] }));
+                    setCurrentBroker((prev) => ({ ...prev, component: { ...currentComponent, componentId: uuid() } }));
                 }}>
                     Add Component To Broker
                 </Button>
