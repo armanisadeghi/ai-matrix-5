@@ -9,7 +9,7 @@ import {
     userTextInputAtom,
     useChatMessages, activeChatMessagesArrayAtom,
 } from "../../ai-tests/shared/atoms/chatAtoms";
-import { ChatMessage, MessageEntry } from '@/types/chat';
+import { OpenaiMessageEntry, MessageEntry } from '@/types/chat';
 import { OpenAiStream } from "@/app/api/openai/route";
 import { aiModelAtom } from "@/app/samples/ai-tests/shared/atoms/settingsAtoms";
 
@@ -36,7 +36,7 @@ const AutoChat: React.FC<AutoChatProps> = ({ userTextInputProp, userMessageEntry
 
         let isCancelled = false;
 
-        const prepareChatRequest = (): { chatMessages: ChatMessage[], model: string } => {
+        const prepareChatRequest = (): { chatMessages: OpenaiMessageEntry[], model: string } => {
             console.log('1. prepareChatRequest');
             console.log('userTextInputProp', userTextInputProp);
             console.log('userMessageEntry', userMessageEntry);
@@ -73,10 +73,11 @@ const AutoChat: React.FC<AutoChatProps> = ({ userTextInputProp, userMessageEntry
 
             const model = aiModel.id;
 
+            // @ts-ignore //TODO Armani: Fix this
             return { chatMessages, model };
         };
 
-        const submitChatRequest = async (chatMessages: ChatMessage[], model: string): Promise<void> => {
+        const submitChatRequest = async (chatMessages: OpenaiMessageEntry[], model: string): Promise<void> => {
             if (isRequestInProgress) return; // Prevent multiple triggers
             setIsRequestInProgress(true);
 

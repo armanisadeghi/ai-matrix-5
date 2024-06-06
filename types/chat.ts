@@ -17,10 +17,20 @@ export interface MessageEntry {
     text: string;
 }
 
-export interface ChatMessage {
+export interface OpenaiMessageEntry {
     role: Role;
     content: string;
 }
+
+export interface ChatMessage {
+    chatId: string | null;
+    user: string;
+    role: string;
+    message: string;
+    timestamp: Date;
+}
+
+
 
 export interface Chat {
     chat_id: string;
@@ -140,14 +150,6 @@ export interface ChatHistoryChat {
 
 
 
-
-export interface ChatMessage {
-    chatId: string | null;
-    user: string;
-    role: string;
-    message: string;
-    timestamp: Date;
-}
 
 // Chat Context Type
 export interface ChatContextType {

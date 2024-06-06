@@ -1,9 +1,7 @@
-import OpenAI from "openai";
+import openai from '../openai/openaiClient';
 
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-});
 
+// @ts-ignore
 const response = await openai.chat.completions.create({
     model: "gpt-4o",
     messages: [

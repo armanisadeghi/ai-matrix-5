@@ -103,8 +103,10 @@ export const filteredMessagesState = selector({
     },
 });
 
+
 const transformedMessagesState = selector<MessageEntry[]>({
     key: 'TransformedMessages',
+    // @ts-ignore //TODO Armani: Fix this
     get: ({get}) => {
         const messages: MessageEntry[] = get(activeChatMessagesArrayAtom);
         const filter = get(messageFilterState); // Assumes a filter state that dictates the transformation

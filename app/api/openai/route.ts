@@ -1,9 +1,6 @@
-import OpenAI from "openai";
+import openai from './openaiClient';
 
-
-const openai = new OpenAI({ apiKey, dangerouslyAllowBrowser: true });
-
-interface ChatMessage {
+interface OpenaiMessageEntry {
     role: 'system' | 'user' | 'assistant';
     content: string;
 }
@@ -18,14 +15,14 @@ interface OptionalParams {
 }
 
 export async function OpenAiStream(
-    messages: ChatMessage[],
+    messages: OpenaiMessageEntry[],
     callback: (chunk: string) => void,
     model: string = "gpt-4o",
     options?: OptionalParams
 ): Promise<void> {
     const requestParams: {
         model: string;
-        messages: ChatMessage[];
+        messages: OpenaiMessageEntry[];
         stream: boolean;
         temperature?: number;
         max_tokens?: number;
