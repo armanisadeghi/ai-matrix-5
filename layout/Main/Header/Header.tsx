@@ -14,23 +14,32 @@ const actionProps: ActionIconProps = {
 };
 
 type Props = {
-    state: "large" | "medium" | "hidden";
+    state: "large" | "medium" | "compact";
     tabletMatch?: boolean;
 };
 
 export function Header({ state, tabletMatch }: Props) {
-    const { toggleOpened, opened } = useNavbar();
+    const { toggleOpened, opened, toggleNavbar, navbarState } = useNavbar();
     const { headerState, handleCollapse, handleExpand } = useHeader();
 
     const componentSize: MantineSize = headerState === "large" ? "md" : "sm";
+
+    const handleNavToggle = () => {
+        if (navbarState === "full") {
+            toggleNavbar("compact");
+        } else {
+            toggleNavbar("full");
+        }
+    };
 
     return (
         <Group h="100%" px="md" align="center" justify="space-between" style={{ flexWrap: "nowrap" }}>
             <Group>
                 <Burger opened={opened} onClick={toggleOpened} hiddenFrom="sm" size="sm" />
+                <Burger opened={navbarState === "full"} onClick={handleNavToggle} visibleFrom="sm" size="sm" />
                 <Logo />
                 <Group visibleFrom="sm">
-                    {state === "medium" && (
+                    {(state === "medium" || state === "compact") && (
                         <Group justify="flex-end" gap="xs">
                             <AmeActionIcon title="shrink header" onClick={handleCollapse} {...actionProps}>
                                 <IconChevronUp size={18} />
@@ -50,7 +59,7 @@ export function Header({ state, tabletMatch }: Props) {
                     )}
                 </Group>
             </Group>
-            <Group visibleFrom="sm" style={{ flexGrow: 1, justifyContent: "center" }}>
+            <Group visibleFrom="md" style={{ flexGrow: 1, justifyContent: "center" }}>
                 <AmeNavButton asIcon navigateTo="back" />
                 <AmeNavButton asIcon navigateTo="next" />
                 <AmeSearchInput

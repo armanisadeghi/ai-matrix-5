@@ -7,7 +7,7 @@ import { Navbar } from "./Navbar";
 import { Header } from "./Header";
 import { Sidebar } from "./Sidebar";
 import { useSidebar } from "@/context/SidebarContext";
-import { IconChevronDown, IconChevronLeft, IconChevronRight, IconChevronUp } from "@tabler/icons-react";
+import { IconChevronLeft, IconChevronRight, IconChevronUp } from "@tabler/icons-react";
 import { useFooter } from "@/context/FooterContext";
 import { Footer } from "@/layout/Main/Footer";
 import { useHeader } from "@/context/HeaderContext";
@@ -24,11 +24,10 @@ export function MainLayout({ children }: Props) {
     const { opened, navbarState, handleIconMouseover, handleEndIconMouseover, toggleNavbar } = useNavbar();
     const { asideState, toggleAside } = useSidebar();
     const { footerState, toggleFooter } = useFooter();
-    const { headerState, toggleHeader } = useHeader();
+    const { headerState } = useHeader();
     const [hovered, setHovered] = useState(false);
     const tabletMatch = useMediaQuery("(min-width: 768px)");
     const mobileMatch = useMediaQuery("(max-width: 768px)");
-    const theme = useMantineTheme();
 
     const getNavbarWidth = () => {
         if (!tabletMatch) return "100%";
@@ -80,7 +79,7 @@ export function MainLayout({ children }: Props) {
             case "medium":
                 return 70;
             default:
-                return 0;
+                return 60;
         }
     };
 
@@ -161,16 +160,6 @@ export function MainLayout({ children }: Props) {
                     >
                         <AmeActionIcon title="open footer" onClick={() => toggleFooter("full")}>
                             <IconChevronUp />
-                        </AmeActionIcon>
-                    </AmeAffix>
-                    {/*toggle header*/}
-                    <AmeAffix
-                        transition="slide-down"
-                        position={{ top: headerHeight, left: "50%" }}
-                        mounted={headerState === "hidden"}
-                    >
-                        <AmeActionIcon title="open header" onClick={() => toggleHeader("medium")}>
-                            <IconChevronDown />
                         </AmeActionIcon>
                     </AmeAffix>
                     {/*toggle aside*/}
