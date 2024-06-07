@@ -1,5 +1,5 @@
 // AiContext/SidebarContext.tsx
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
 import { useLocalStorage } from "@mantine/hooks";
 
 type NavState = "full" | "compact" | "icons" | "hidden";
@@ -50,6 +50,10 @@ export const SidebarProvider = ({
         else if (asideConfig === "compact") toggleAside("icons");
         else if (asideConfig === "icons") toggleAside("hidden");
     };
+
+    useEffect(() => {
+        setSidebarContent(initialAsideState ?? "hidden");
+    }, [initialAsideState]);
 
     return (
         <SidebarContext.Provider

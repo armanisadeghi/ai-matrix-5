@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Grid, Paper, PaperProps, rem } from "@mantine/core";
+import { Grid, Paper, PaperProps } from "@mantine/core";
 import AmeActionTextInput from "@/ui/input/AmeActionTextInput";
 import { IconDeviceFloppy } from "@tabler/icons-react";
 import { useForm } from "@mantine/form";
@@ -32,7 +32,6 @@ export function UserDetailsForm({ ...others }: UserDetailsFormProps) {
                     <AmeActionTextInput
                         label="First name"
                         placeholder="first name"
-                        initialValue=""
                         key={form.key("firstName")}
                         {...form.getInputProps("firstName")}
                     />

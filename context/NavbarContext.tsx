@@ -1,5 +1,5 @@
 // AiContext/NavbarContext.tsx
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { useLocalStorage } from "@mantine/hooks";
 
 type NavState = "full" | "compact" | "icons" | "hidden";
@@ -22,7 +22,6 @@ const NavbarContext = createContext<NavbarContextProps | undefined>(undefined);
 export const NavbarProvider = ({ children, initialNavState }: { children: ReactNode; initialNavState?: NavState }) => {
     const [opened, setOpened] = useState(false);
     const [iconMouseOver, setIconMouseOver] = useState(false);
-    const [navbarContent, setNavbarContent] = useState<ReactNode>(null);
     const [navConfig, setNavConfig] = useLocalStorage<NavState>({
         key: "ai-matrix-navbar",
         defaultValue: initialNavState,
@@ -63,6 +62,10 @@ export const NavbarProvider = ({ children, initialNavState }: { children: ReactN
             setNavConfig("icons");
         }
     };
+
+    useEffect(() => {
+        setNavConfig(initialNavState ?? "compact");
+    }, [initialNavState]);
 
     return (
         <NavbarContext.Provider
