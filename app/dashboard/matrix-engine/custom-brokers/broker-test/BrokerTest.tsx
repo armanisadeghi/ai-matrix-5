@@ -12,12 +12,13 @@ const BrokerTest = () => {
     const [jsonValue, setJsonValue] = useState<string>('');
     const [value, setValue] = useState<string[]>([]);
     const [question, setQuestion] = useState<string>('My question here');
-    const { brokers, setBrokers } = useBroker()
+    const { brokers, system } = useBroker()
     const [brokerValue, setBrokerValue] = useState<Broker[]>([]);
 
     useEffect(() => {
-        setBrokerValue([...brokers.filter((broker) => value.includes(broker.name))]);
-    }, [value])
+        const allBrokers = [...system, ...brokers];
+        setBrokerValue(allBrokers.filter((broker) => value.includes(broker.name)));
+    }, [value]);
 
     const handleButtonClick = () => {
         const brokerData = brokerValue.map((broker) => ({

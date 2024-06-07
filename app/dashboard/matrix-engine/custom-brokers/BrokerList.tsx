@@ -7,11 +7,14 @@ import { useBroker } from '@/context/brokerContext';
 
 
 const BrokerList = ({ user }: { user: boolean }) => {
-    const { brokers } = useBroker();
+    const { brokers, system } = useBroker();
 
     return (
         <Stack>
-            {brokers.reverse().map((broker) => (
+            {system.map((broker) => (
+                <BrokerListItem key={broker.id} broker={broker} user={user} />
+            ))}
+            {brokers.map((broker) => (
                 <BrokerListItem key={broker.id} broker={broker} user={user} />
             ))}
         </Stack>

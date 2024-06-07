@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, CheckboxGroup, Fieldset, Paper, Space, Stack, Switch, TextInput, Text, Checkbox, Group, FileInput, Image, Grid, Select } from '@mantine/core';
+import { Button, Fieldset, Space, TextInput, Text, Grid, Select } from '@mantine/core';
 import BrokerComponent from './BrokerComponent';
 import { Component, ComponentType, Broker } from '@/types/broker';
 import { useState } from 'react';
@@ -9,10 +9,10 @@ import { uuid } from 'uuidv4';
 
 const initialValues = {
     id: '',
-    name: 'New Broker',
-    dataType: "string",
+    name: '',
+    dataType: "",
     component: {} as Component,
-    description: "Describe your new broker",
+    description: "",
 }
 
 export const BrokerCreateForm = () => {
@@ -42,22 +42,40 @@ export const BrokerCreateForm = () => {
         const newBroker = {
             ...currentBroker,
             id: currentBroker.id === '' ? uuid() : currentBroker.id,
+            component: { ...currentBroker.component, defaultValue: currentBroker.component.defaultValue ? currentBroker.component.defaultValue : currentBroker.name }
         };
         setBrokers([newBroker, ...brokers]);
+        setCurrentBroker(initialValues);
     };
 
     return (
         <Grid>
             <Grid.Col span={{ base: 12, md: 6 }}>
                 <Fieldset legend="Add properties">
-                    <TextInput label="Name" onChange={e => setCurrentBroker({ ...currentBroker, name: e.target.value })} defaultValue="My New Broker" placeholder='Enter a name' />
+                    <TextInput
+                        label="Name"
+                        value={currentBroker.name}
+                        onChange={e => setCurrentBroker({ ...currentBroker, name: e.target.value })}
+                        placeholder='Enter a name'
+                        error={
+                            brokers.some((broker) => broker.name === currentBroker.name)
+                                ? 'Name already exists. Please choose a different name.'
+                                : null
+                        }
+                    />
                     <Space h="sm" />
-                    <TextInput label="Description" onChange={e => setCurrentBroker({ ...currentBroker, description: e.target.value })} defaultValue="description" placeholder='Enter a description' />
+                    <TextInput label="Description" value={currentBroker.description} onChange={e => setCurrentBroker({ ...currentBroker, description: e.target.value })} placeholder='Enter a description' />
                     <Space h="sm" />
-                    <Select label="Type" description="Choose the type of component" placeholder="Choose the type of component" data={componentOptions} onChange={handleInputTypeChange} />
+                    <Select label="Type" value={currentBroker.component.type} description="Choose the type of component" placeholder="Choose the type of component" data={componentOptions} onChange={handleInputTypeChange} />
                 </Fieldset>
                 <Space h="sm" />
-                <Button variant="primary" onClick={handleAddBroker}>Save Broker</Button>
+                <Button
+                    variant="primary"
+                    onClick={handleAddBroker}
+                    disabled={
+                        brokers.some((broker) => broker.name === currentBroker.name) ||
+                        currentBroker.name.trim() === ''
+                    }>Save Broker</Button>
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 6 }}>
                 <Fieldset legend="Custom Broker" radius="md">

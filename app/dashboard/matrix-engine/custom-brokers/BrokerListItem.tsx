@@ -24,9 +24,9 @@ const BrokerListItem = ({ broker, user }: BrokerListItemProps) => {
                             <Badge
                                 size="xs"
                                 variant="gradient"
-                                gradient={{ from: 'blue', to: 'cyan', deg: 130 }}
+                                gradient={broker.id.split('-')[0] === 'system' ? { from: 'red', to: 'orange', deg: 130 } : { from: 'blue', to: 'green', deg: 130 }}
                             >
-                                Custom Broker
+                                {broker.id.split('-')[0] === 'system' ? 'System Broker' : 'Custom Broker'}
                             </Badge>
                             <Title order={5}>{broker.name}</Title>
                             {broker.component && <Pill>{broker.component.type}</Pill>}
@@ -47,7 +47,7 @@ const BrokerListItem = ({ broker, user }: BrokerListItemProps) => {
                         <Text size='xs' c={'gray.6'}>{broker.description}</Text>
                     </Stack>
                 </Group>
-                {user === false &&
+                {user === false && broker.id.split('-')[0] === 'custom' &&
                     <Group justify="flex-end">
                         <ActionIcon onClick={() => setCurrentBroker(broker)}>
                             <IconEdit size={16} />

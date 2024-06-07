@@ -75,6 +75,9 @@ export interface BrokerContextValue {
     currentBroker: Broker;
     setCurrentBroker: React.Dispatch<React.SetStateAction<Broker>>
     deleteBroker: (id: string) => void;
+    system: Broker[];
+    setSystem: React.Dispatch<React.SetStateAction<Broker[]>>
+
 }
 
 export type BrokerData = Record<string, string | number | string[] | undefined>;

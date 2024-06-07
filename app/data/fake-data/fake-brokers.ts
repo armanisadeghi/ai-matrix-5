@@ -1,8 +1,8 @@
 import { Broker } from "@/types/broker";
 
-export const brokersData: Broker[] = [
+export const customBrokers: Broker[] = [
     {
-        id: 'broker1',
+        id: 'custom-broker1',
         name: 'Company Name',
         dataType: 'string',
         description: 'Enter the name of the company',
@@ -14,7 +14,7 @@ export const brokersData: Broker[] = [
         }
     },
     {
-        id: 'broker2',
+        id: 'custom-broker2',
         name: 'Company Address',
         dataType: 'string',
         description: 'Enter the address of the company',
@@ -26,7 +26,7 @@ export const brokersData: Broker[] = [
         }
     },
     {
-        id: 'broker3',
+        id: 'custom-broker3',
         name: 'Is Tech Company',
         dataType: 'boolean',
         description: 'Specify if the company is a tech company',
@@ -37,7 +37,7 @@ export const brokersData: Broker[] = [
         }
     },
     {
-        id: 'broker4',
+        id: 'custom-broker4',
         name: 'Number of Employees',
         dataType: 'number',
         description: 'Specify the number of employees',
@@ -51,7 +51,7 @@ export const brokersData: Broker[] = [
         }
     },
     {
-        id: 'broker5',
+        id: 'custom-broker5',
         name: 'Tech Stack',
         dataType: 'string[]',
         description: 'Select the tech stack used by the company',
@@ -60,6 +60,71 @@ export const brokersData: Broker[] = [
             options: ["React", "Next.js", "Angular", "Vue.js"],
             defaultValue: "React",
             label: "Tech Stack",
+        }
+    },
+];
+
+export const systemBrokers: Broker[] = [
+    {
+        id: 'system-broker6',
+        name: 'First Name',
+        dataType: 'string',
+        description: 'your first name',
+        component: {
+            defaultValue: '',
+            label: "Name",
+            type: 'Input',
+            placeholderText: 'Enter your first name',
+        }
+    },
+    {
+        id: 'system-broker7',
+        name: 'Last Name',
+        dataType: 'string',
+        description: 'your last name',
+        component: {
+            defaultValue: '',
+            label: "Last Name",
+            type: 'Input',
+            placeholderText: 'Enter your last name',
+        }
+    },
+    {
+        id: 'system-broker8',
+        name: 'Email',
+        dataType: 'string',
+        description: 'your email address',
+        component: {
+            defaultValue: '',
+            label: "Email",
+            type: 'Input',
+            placeholderText: 'Enter your email address',
+        }
+    },
+    {
+        id: 'system-broker9',
+        name: 'Age',
+        dataType: 'number',
+        description: 'your age',
+        component: {
+            defaultValue: '',
+            label: "Age",
+            type: 'Input',
+            placeholderText: 'Enter your age',
+        }
+    },
+    {
+        id: 'system-broker10',
+        name: 'Gender',
+        dataType: 'string',
+        description: 'your gender',
+        component: {
+            defaultValue: '',
+            label: "Gender",
+            type: 'Select',
+            options: [
+                'Male', 'Female', 'Other'
+            ],
         }
     },
 ];
