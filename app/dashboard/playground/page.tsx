@@ -8,6 +8,9 @@ import {useState} from "react";
 import Prompt from "@/components/Prompt/Prompt";
 import ResponsePlayground from "@/components/ResponsePlayground/ResponsePlayground";
 import PlaygroundRunForm from "@/components/PlaygroundRunForm/PlaygroundRunForm";
+import VerticalSplitter from "@/ui/split/VerticalSplitter";
+import DynamicSplitter from "@/ui/split/DynamicSplitter";
+import HorizontalSplitter from "@/ui/split/HorizontalSplitter";
 
 
 const PlaygroundPage = () => {
@@ -26,7 +29,7 @@ const PlaygroundPage = () => {
 
     return (
         <>
-            <Flex align={'center'} gap={12}>
+            <Flex align={'center'} gap={12} mb={12}>
                 <Select
                     placeholder="Pick a Version"
                     data={['Version 01', 'Version 02', 'Version 03', 'Version 04']}
@@ -42,13 +45,9 @@ const PlaygroundPage = () => {
                 </Button>
 
             </Flex>
-            <Flex>
 
-            </Flex>
-            <Grid mt={24} gutter={16}>
-                <Grid.Col span={2} style={{
-                    borderRight: '1px solid gray',
-                }}>
+            <VerticalSplitter initialSizes={[150,250,500,200]} expandToMin={false}>
+                <div>
                     <Flex direction={'column'} gap={12}>
                         <Button color="gray" size="xs" fullWidth>
                             Convert to Variable
@@ -58,11 +57,8 @@ const PlaygroundPage = () => {
                         </Button>
                     </Flex>
 
-                </Grid.Col>
-                <Grid.Col span={2}
-                          style={{
-                              borderRight: '1px solid gray',
-                          }}>
+                </div>
+                <div>
                     <Flex direction={'column'} gap={12}>
                         {
                             prompts.map((item) => <Prompt type={item.type} value={item.value} key={item.id} id={item.id}
@@ -80,18 +76,15 @@ const PlaygroundPage = () => {
                             Add Prompt
                         </Button>
                     </Flex>
-                </Grid.Col>
+                </div>
 
-                <Grid.Col span={5} style={{
-                    borderRight: '1px solid gray',
-                }}>
+                <div>
                     <ResponsePlayground/>
-                </Grid.Col>
-                <Grid.Col span={2}>
+                </div>
+                <div>
                     <PlaygroundRunForm/>
-                </Grid.Col>
-            </Grid>
-
+                </div>
+            </VerticalSplitter>
         </>
     )
 }
