@@ -1,11 +1,17 @@
 "use client";
 
-import { ThemeSelectionCard } from "@/components";
+import { ColorSelectionForm, TableSelectionForm, ThemeSelectionCard } from "@/components";
+import { Divider } from "@mantine/core";
+import React from "react";
 
 function AppearancePage() {
     return (
         <div>
-            <ThemeSelectionCard />
+            <ThemeSelectionCard p={0} py="md" />
+            <Divider />
+            <ColorSelectionForm p={0} py="md" />
+            <Divider />
+            <TableSelectionForm p={0} py="md" />
         </div>
     );
 }

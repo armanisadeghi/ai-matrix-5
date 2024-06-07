@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Divider, Flex, Grid, Paper, PaperProps, Radio, rem } from "@mantine/core";
+import { Flex, Grid, PaperProps, Radio, rem } from "@mantine/core";
 import { IconDeviceDesktop, IconDeviceFloppy, IconMoon, IconSun } from "@tabler/icons-react";
 import AmeRadioCard from "@/ui/radio/AmeRadioCard";
 import AmeTitle from "@/ui/typography/AmeTitle";
@@ -22,15 +22,17 @@ const data = [
     },
 ];
 
-interface ThemeSelectionCardProps extends PaperProps {}
+interface ThemeSelectionCardProps extends PaperProps {
+    showSaveButton?: boolean;
+}
 
-export function ThemeSelectionCard({ ...others }: ThemeSelectionCardProps) {
+export function ThemeSelectionCard({ showSaveButton, ...others }: ThemeSelectionCardProps) {
     const [colorMode, setColorMode] = useState<string | null>(null);
 
     const cards = data.map((item) => <AmeRadioCard value={item.name} key={item.name} {...item} />);
 
     return (
-        <Paper component="form" p="md" mb="md" {...others}>
+        <AmePaper component="form" p="md" mb="md" {...others}>
             <Grid align="flex-start" mb="md">
                 <Grid.Col span={{ base: 12, md: 6, lg: 3 }}>
                     <AmeTitle as="card-header" mb="md">
@@ -44,17 +46,18 @@ export function ThemeSelectionCard({ ...others }: ThemeSelectionCardProps) {
                     <Radio.Group value={colorMode} onChange={setColorMode}>
                         <Flex gap="xs">{cards}</Flex>
                     </Radio.Group>
-                    <AmeButton
-                        type="submit"
-                        mt="md"
-                        leftSection={<IconDeviceFloppy style={{ height: rem(18), width: rem(18) }} />}
-                        title="Save changes"
-                    >
-                        Save changes
-                    </AmeButton>
+                    {showSaveButton && (
+                        <AmeButton
+                            type="submit"
+                            mt="md"
+                            leftSection={<IconDeviceFloppy style={{ height: rem(18), width: rem(18) }} />}
+                            title="Save changes"
+                        >
+                            Save changes
+                        </AmeButton>
+                    )}
                 </Grid.Col>
             </Grid>
-            <Divider />
-        </Paper>
+        </AmePaper>
     );
 }
