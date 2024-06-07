@@ -1,4 +1,4 @@
-// chat-app/components/response/UserMessage.tsx
+// chat-app/nice-working/response/UserMessage.tsx
 
 import React, { useState } from 'react';
 import { Paper, Textarea, Button, ActionIcon } from '@mantine/core';

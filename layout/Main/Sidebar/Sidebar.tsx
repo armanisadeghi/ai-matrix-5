@@ -3,6 +3,9 @@ import { ActionIcon, ActionIconProps, AppShell, Box, Group, Stack, Title } from 
 import { IconArrowBarRight, IconArrowBarToLeft, IconArrowBarToRight } from "@tabler/icons-react";
 import { useSidebar } from "@/context/SidebarContext";
 import AmeActionIcon from "@/ui/buttons/AmeActionIcon";
+import { useRecoilState } from "recoil";
+import { useEffect } from "react";
+import { sidebarWidthDirectAtom } from "@/context/atoms/layoutAtoms";
 
 const actionProps: ActionIconProps = {
     variant: "light",
@@ -10,13 +13,32 @@ const actionProps: ActionIconProps = {
 
 interface SidebarProps {
     state: "full" | "compact" | "icons" | "hidden";
+    title?: string;
 }
 
-export const Sidebar = ({ state }: SidebarProps) => {
+export const Sidebar = ({ state, title }: SidebarProps) => {
     const { handleExpand, handleCollapse } = useSidebar();
+    const [sidebarWidth, setSidebarWidth] = useRecoilState(sidebarWidthDirectAtom);
+
+    useEffect(() => {
+        switch (state) {
+            case "full":
+                setSidebarWidth(200);
+                break;
+            case "compact":
+                setSidebarWidth(150);
+                break;
+            case "icons":
+                setSidebarWidth(70);
+                break;
+            case "hidden":
+                setSidebarWidth(0);
+                break;
+        }
+    }, [state, setSidebarWidth]);
 
     return (
-        <Box component="aside" p="sm">
+        <Box component="aside" p="xs">
             <AppShell.Section>
                 {state === "compact" && (
                     <Group justify="flex-start" gap="xs">
@@ -45,7 +67,7 @@ export const Sidebar = ({ state }: SidebarProps) => {
                 )}
 
                 <Stack mt="md" gap="xs" align="stretch">
-                    <Title>Aside</Title>
+                    {title && <h3>{title}</h3>}
                 </Stack>
             </AppShell.Section>
         </Box>

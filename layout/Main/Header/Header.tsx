@@ -1,22 +1,14 @@
-import {
-    ActionIcon,
-    ActionIconProps,
-    Avatar,
-    Burger,
-    Group,
-    MantineSize,
-    Menu,
-    TextInput,
-    Tooltip,
-    Flex,
-} from "@mantine/core";
+"use client";
+
+import React, { useEffect, useRef } from "react";
+import { ActionIcon, ActionIconProps, Group, MantineSize, Burger, Menu } from "@mantine/core";
 import {
     IconArrowBarToDown,
     IconArrowBarToUp,
     IconBell,
     IconPalette,
     IconSearch,
-    IconSettings2,
+    IconSettings2
 } from "@tabler/icons-react";
 import { ColorSchemeToggle, Logo } from "@/components";
 import Link from "next/link";
@@ -26,6 +18,9 @@ import { useHeader } from "@/context/HeaderContext";
 import AmeNavButton from "@/ui/buttons/AmeNavButton";
 import AmeSearchInput from "@/ui/input/AmeSearchInput";
 import AmeActionIcon from "@/ui/buttons/AmeActionIcon";
+import { FaRegUser } from "react-icons/fa";
+import { atom, useRecoilState, useSetRecoilState } from 'recoil';
+import { headerHeightDirectAtom } from "@/context/atoms/layoutAtoms";
 
 const actionProps: ActionIconProps = {
     variant: "light",
@@ -39,6 +34,21 @@ type Props = {
 export function Header({ state, tabletMatch }: Props) {
     const { toggleOpened, opened } = useLayout();
     const { headerState, handleCollapse, handleExpand } = useHeader();
+    const [headerHeight, setHeaderHeight] = useRecoilState(headerHeightDirectAtom);
+
+    useEffect(() => {
+        switch (state) {
+            case "large":
+                setHeaderHeight(80);
+                break;
+            case "medium":
+                setHeaderHeight(70);
+                break;
+            default:
+                setHeaderHeight(0);
+                break;
+        }
+    }, [state, setHeaderHeight]);
 
     const componentSize: MantineSize = headerState === "large" ? "md" : "sm";
 
@@ -90,11 +100,8 @@ export function Header({ state, tabletMatch }: Props) {
                 </AmeActionIcon>
                 <Menu width={200} shadow="md">
                     <Menu.Target>
-                        <ActionIcon title="user menu" size={componentSize} variant="transparent">
-                            <Avatar
-                                src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-5.png"
-                                radius="50%"
-                            />
+                        <ActionIcon title="user menu" variant="transparent">
+                            <FaRegUser />
                         </ActionIcon>
                     </Menu.Target>
 

@@ -1,4 +1,4 @@
-// chat-app/components/settings/ChatSettings.tsx
+// chat-app/nice-working/settings/ChatSettings.tsx
 'use client';
 
 import React, { useContext } from 'react';

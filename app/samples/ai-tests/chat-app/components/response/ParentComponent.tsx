@@ -1,4 +1,4 @@
-// chat-app/components/response/ParentComponent.tsx
+// chat-app/nice-working/response/ParentComponent.tsx
 
 import React from 'react';
 import ResponseArea from './ResponseArea';

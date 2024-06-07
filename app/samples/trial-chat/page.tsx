@@ -19,20 +19,20 @@ export default SampleParentPage;
 /*
             <AtomPage/>
 
-import ChatStateInitializer from "@/app/samples/trial-chat/components/ChatStateInitializer";
+import ChatStateInitializer from "@/app/samples/trial-chat/nice-working/ChatStateInitializer";
 <ChatStateInitializer />
 
  */
 
 /*
 
-import ChatComponent from "@/app/samples/trial-chat/components/TrialChat";
+import ChatComponent from "@/app/samples/trial-chat/nice-working/TrialChat";
       <ChatComponent />
 
  */
 
 /*
-import AtomPage from "@/app/samples/trial-chat/components/atom-3";
+import AtomPage from "@/app/samples/trial-chat/nice-working/atom-3";
         <AtomPage />
 
  */

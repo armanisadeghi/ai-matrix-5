@@ -1,4 +1,4 @@
-// chat-app/components/response/ChatMessage.tsx
+// chat-app/nice-working/response/ChatMessage.tsx
 
 import { Group, Space } from '@mantine/core';
 import UserMessage from '@/app/chat/input/UserMessage';

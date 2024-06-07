@@ -1,4 +1,3 @@
-// AiContext/SidebarContext.tsx
 import React, { createContext, useContext, useState, ReactNode } from "react";
 import { useLocalStorage } from "@mantine/hooks";
 
@@ -7,8 +6,9 @@ type NavState = "full" | "compact" | "icons" | "hidden";
 interface SidebarContextProps {
     asideOpen: boolean;
     asideState: NavState;
+    title?: string;  // Optional title property added by Armani (TODO Kevin: Remove comments after seeing this)
     toggleAside: (value: NavState) => void;
-    setSidebarContent: (content: ReactNode) => void;
+    setSidebarContent: (content: ReactNode, title?: string) => void;  // Update to accept title
     sidebarContent: ReactNode;
     handleToggle: () => void;
     handleExpand: () => void;
@@ -17,15 +17,19 @@ interface SidebarContextProps {
 
 const SidebarContext = createContext<SidebarContextProps | undefined>(undefined);
 
-export const SidebarProvider = ({
+export const SidebarProvider = (
+    {
     children,
     initialAsideState,
+    initialTitle,
 }: {
     children: ReactNode;
     initialAsideState?: NavState;
+    initialTitle?: string;
 }) => {
     const [asideOpen, setAsideOpen] = useState(true);
     const [sidebarContent, setSidebarContent] = useState<ReactNode>(null);
+    const [title, setTitle] = useState<string | undefined>(initialTitle);
     const [asideConfig, setAsideConfig] = useLocalStorage<NavState>({
         key: "ai-matrix-aside",
         defaultValue: initialAsideState,
@@ -37,7 +41,7 @@ export const SidebarProvider = ({
         if (asideConfig === "full") toggleAside("compact");
         else if (asideConfig === "compact") toggleAside("icons");
         else if (asideConfig === "icons") toggleAside("hidden");
-        else toggleAside("full");
+        else toggleAside("hidden");
     };
 
     const handleExpand = () => {
@@ -56,8 +60,12 @@ export const SidebarProvider = ({
             value={{
                 asideOpen,
                 asideState: asideConfig,
+                title,  // Provide title in the context
                 toggleAside,
-                setSidebarContent,
+                setSidebarContent: (content, title) => {
+                    setSidebarContent(content);
+                    setTitle(title);
+                },
                 sidebarContent,
                 handleToggle,
                 handleExpand,

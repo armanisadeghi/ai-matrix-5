@@ -1,4 +1,4 @@
-// app/dashboard/intelligence/chat-app/components/dynamic-inputs/AiFormElements.tsx
+// app/dashboard/intelligence/chat-app/nice-working/dynamic-inputs/AiFormElements.tsx
 
 import { Checkbox, CheckboxGroup, Group, Input, Radio, RadioGroup, Select, Slider, Textarea } from "@mantine/core";
 

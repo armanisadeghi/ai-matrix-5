@@ -1,4 +1,4 @@
-// /ai-chatbot/components/response/UserMessage.tsx
+// /ai-chatbot/nice-working/response/UserMessage.tsx
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';

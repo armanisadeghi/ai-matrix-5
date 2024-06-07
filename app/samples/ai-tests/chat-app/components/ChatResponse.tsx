@@ -1,4 +1,4 @@
-// chat-app/components/ChatResponse.tsx
+// chat-app/nice-working/ChatResponse.tsx
 'use client';
 
 import React, { useEffect } from 'react';

@@ -14,16 +14,17 @@ interface AmeJsonInputProps extends Omit<JsonInputProps, 'size' | 'radius' | 'la
     validateJson?: boolean;
 }
 
-const AmeJsonInput: React.FC<AmeJsonInputProps> = ({
-                                                       enabled = true,
-                                                       errorMessage,
-                                                       label,
-                                                       value,
-                                                       onChange,
-                                                       showButton = false,
-                                                       validateJson = true,
-                                                       ...props
-                                                   }) => {
+const AmeJsonInput: React.FC<AmeJsonInputProps> = (
+    {
+        enabled = true,
+        errorMessage,
+        label,
+        value,
+        onChange,
+        showButton = false,
+        validateJson = true,
+        ...props
+    }) => {
     const [isEnabled, setIsEnabled] = useState<boolean>(enabled);
     const [inputValue, setInputValue] = useState<string>(value);
     const [error, setError] = useState<string | undefined>(errorMessage);
@@ -32,10 +33,10 @@ const AmeJsonInput: React.FC<AmeJsonInputProps> = ({
         setInputValue(value);
     }, [value]);
 
-    const handleJsonChange = (value: string) => {
-        setInputValue(value);
+    const handleJsonChange = (newValue: string) => {
+        setInputValue(newValue);
         if (onChange) {
-            onChange(value);
+            onChange(newValue);
         }
     };
 
@@ -44,7 +45,7 @@ const AmeJsonInput: React.FC<AmeJsonInputProps> = ({
             try {
                 JSON.parse(inputValue);
                 setError(undefined);
-            } catch {
+            } catch (e) {
                 setError('Invalid JSON');
             }
         }
@@ -69,7 +70,7 @@ const AmeJsonInput: React.FC<AmeJsonInputProps> = ({
             />
             {showButton && (
                 <>
-                    <Space h="md" />
+                    <Space h="md"/>
                     <Button onClick={() => setIsEnabled(!isEnabled)}>
                         {isEnabled ? 'Disable' : 'Enable'} Input
                     </Button>

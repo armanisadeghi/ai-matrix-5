@@ -30,6 +30,7 @@ const AutoChat: React.FC<AutoChatProps> = ({ userTextInputProp, userMessageEntry
     const [aiModel, setAiModel] = useRecoilState(aiModelAtom);
     const [isRequestInProgress, setIsRequestInProgress] = useState(false);
     const userMessage : MessageEntry = { text: userTextInput, role: 'user' };
+
     useEffect(() => {
         console.log('AutoChat useEffect Should start value: ', shouldStartRequest);
         if (!shouldStartRequest) return;

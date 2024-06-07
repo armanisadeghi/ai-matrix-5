@@ -1,4 +1,4 @@
-// chat-app/components/response/ResponseSection.tsx
+// chat-app/nice-working/response/ResponseSection.tsx
 'use client'
 import { Paper, Text, Space, Container } from '@mantine/core';
 import { ChatMessage } from './ChatMessage';

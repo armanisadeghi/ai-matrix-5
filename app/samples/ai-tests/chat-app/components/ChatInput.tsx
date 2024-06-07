@@ -1,4 +1,4 @@
-// chat-app/components/ChatInput.tsx
+// chat-app/nice-working/ChatInput.tsx
 'use client';
 import React, { useState, useContext } from 'react';
 import { ChatContext } from '@/context/AiContext/ChatContext';

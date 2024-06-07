@@ -1,4 +1,4 @@
-// /ai-chatbot/components/response/HistoryEntries.tsx
+// /ai-chatbot/nice-working/response/HistoryEntries.tsx
 
 import React from 'react';
 import { useRecoilValue } from 'recoil';

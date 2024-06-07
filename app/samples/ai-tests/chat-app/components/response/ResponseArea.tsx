@@ -1,4 +1,4 @@
-// chat-app/components/response/ResponseArea.tsx
+// chat-app/nice-working/response/ResponseArea.tsx
 
 import React from 'react';
 import { ScrollArea } from '@mantine/core';

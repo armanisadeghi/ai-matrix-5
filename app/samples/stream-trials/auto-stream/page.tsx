@@ -1,84 +1,46 @@
+// app/samples/stream-trials/page.tsx
 'use client';
 
-import React, { useState } from 'react';
-import { useRecoilState } from 'recoil';
-import AutoChat from './AutoChatComponent';
+import React, { Suspense } from 'react';
+import Loading from '@/app/dashboard/loading';
+import AtomsJsonViewer from "@/ui/json/AmeAtomTester";
 import {
     activeChatMessagesArrayAtom,
+    assistantMessageEntryAtom,
     assistantTextStreamAtom,
-    userTextInputAtom,
-} from '../../ai-tests/shared/atoms/chatAtoms';
-import {Textarea} from "@mantine/core";
-import AmeJsonInput from "@/ui/json/AmeJsonInput";
+    userTextInputAtom
+} from "@/app/samples/ai-tests/shared/atoms/chatAtoms";
+import { Grid } from '@mantine/core';
+import AutoStreamPage from "@/app/samples/stream-trials/auto-stream/ChatComponents";
 
-const AutoStreamPage = () => {
-    const [, setUserTextInput] = useRecoilState(userTextInputAtom);
-    const [assistantTextStream] = useRecoilState(assistantTextStreamAtom);
-    const [activeChatMessagesArray, setActiveChatMessagesArray] = useRecoilState(activeChatMessagesArrayAtom);
-    const [userInput, setUserInput] = useState('');
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [shouldStartRequest, setShouldStartRequest] = useState(false);
-
-    const handleSubmit = () => {
-        setIsSubmitting(true);
-        setUserTextInput(userInput);
-        setShouldStartRequest(true);
-        setUserInput('');
-    };
-
-    const handleRequestComplete = () => {
-        setIsSubmitting(false);
-        setShouldStartRequest(false);
-    };
-
-    const handleChangeValue = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setUserInput(e.target.value);
-    };
-
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            handleSubmit();
-        }
-    };
-
+export default function Dashboard() {
     return (
-        <div>
-            <div>
+        <section>
+            <Suspense fallback={<Loading />}>
+                <>
+                    <Grid>
+                        <Grid.Col span={7}>
+                            <AutoStreamPage key="chatInterface" />,
 
-                <textarea
-                    value={assistantTextStream}
-                    readOnly
-                    placeholder="Assistant's message will be streamed here..."
-                    rows={10}
-                    cols={50}
-                />
-            </div>
-            <div>
-                <textarea
-                    value={userInput}
-                    onChange={handleChangeValue}
-                    onKeyDown={handleKeyDown}
-                    placeholder="Type your message here..."
-                    rows={5}
-                    cols={50}
-                    disabled={isSubmitting}
-                />
-                {isSubmitting && <div className="spinner">Loading...</div>}
-            </div>
-            <div>
-                <button onClick={handleSubmit} disabled={isSubmitting}>Submit</button>
-            </div>
-            <AmeJsonInput
-                label="Active Chat Messages Array"
-                value={JSON.stringify(activeChatMessagesArray, null, 2)}
-            />
-            <AutoChat
-                shouldStartRequest={shouldStartRequest}
-                onRequestComplete={handleRequestComplete}
-            />
-        </div>
+                        </Grid.Col>
+                        <Grid.Col span={2}>
+                        </Grid.Col>
+
+                        <Grid.Col span={3}>
+                            <AtomsJsonViewer
+                                key="atomsJsonViewer"
+                                atomsInfo={[
+                                    { atom: userTextInputAtom, name: 'User Text Input' },
+                                    { atom: activeChatMessagesArrayAtom, name: 'Active Chat Messages Array' },
+                                    { atom: assistantMessageEntryAtom, name: 'Assistant Message Entry' },
+                                    { atom: assistantTextStreamAtom, name: 'Assistant Text Stream' },
+                                ]}
+                            />
+                        </Grid.Col>
+                    </Grid>
+
+                </>
+            </Suspense>
+        </section>
     );
-};
-
-export default AutoStreamPage;
+}

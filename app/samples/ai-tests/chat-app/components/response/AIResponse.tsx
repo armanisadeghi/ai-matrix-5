@@ -1,4 +1,4 @@
-// chat-app/components/response/AIResponse.tsx
+// chat-app/nice-working/response/AIResponse.tsx
 
 import React from 'react';
 import { Paper, Textarea } from '@mantine/core';

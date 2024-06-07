@@ -1,6 +1,7 @@
-// app/dashboard/page.tsx
+// app/samples/stream-trials/page.tsx
+
 import React, { Suspense } from 'react';
-import OpenAiMessages from './components/FullChat';
+import ChatInterface from './nice-working/FullChat';
 import Loading from '@/app/dashboard/loading';
 
 export default function Dashboard() {
@@ -8,7 +9,7 @@ export default function Dashboard() {
     return (
         <section>
             <Suspense fallback={<Loading />}>
-                <OpenAiMessages  />
+                <ChatInterface  />
 
             </Suspense>
         </section>

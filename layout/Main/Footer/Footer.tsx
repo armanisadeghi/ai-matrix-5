@@ -2,6 +2,9 @@
 import { ActionIcon, ActionIconProps, AppShell, Box, Group, Stack, Title } from "@mantine/core";
 import { IconArrowBarToDown, IconArrowBarToUp } from "@tabler/icons-react";
 import { useFooter } from "@/context/FooterContext";
+import { useEffect } from "react";
+import { useRecoilState } from "recoil";
+import { footerHeightDirectAtom } from "@/context/atoms/layoutAtoms";
 
 const actionProps: ActionIconProps = {
     variant: "light",
@@ -13,6 +16,24 @@ interface FooterProps {
 
 export const Footer = ({ state }: FooterProps) => {
     const { handleExpand, handleCollapse } = useFooter();
+    const [footerHeight, setFooterHeight] = useRecoilState(footerHeightDirectAtom);
+
+    useEffect(() => {
+        switch (state) {
+            case "full":
+                setFooterHeight(200);
+                break;
+            case "compact":
+                setFooterHeight(150);
+                break;
+            case "icons":
+                setFooterHeight(70);
+                break;
+            default:
+                setFooterHeight(0);
+                break;
+        }
+    }, [state, setFooterHeight]);
 
     return (
         <Box p="xs">

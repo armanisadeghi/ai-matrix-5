@@ -1,4 +1,4 @@
-// chat-app/components/settings/SettingsRegistry.tsx
+// chat-app/nice-working/settings/SettingsRegistry.tsx
 
 import SimpleChatSettings from './simpleChatSettings';
 // import PlaygroundChatSettings from './playgroundChatSettings';

@@ -1,4 +1,4 @@
-// chat-app/components/settings/simpleChatSettings.tsx
+// chat-app/nice-working/settings/simpleChatSettings.tsx
 'use client';
 
 import React from 'react';

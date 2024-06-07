@@ -12,9 +12,12 @@ import { activeUserAtom } from "@/context/atoms/userAtoms";
 import { DynamicSocketProvider } from "@/context/AiContext/socketContext";
 import { HeaderProvider } from "@/context/HeaderContext";
 import { FooterProvider } from "@/context/FooterContext";
+import ErrorBoundary from "@/components/ErrorManagement/ErrorBoundry";
+import { PresetType } from "@/context/atoms/layoutAtoms";
 
 type Props = {
     children: ReactNode;
+    preset: PresetType;
 };
 
 const LayoutContent: React.FC = () => {
@@ -38,30 +41,31 @@ const LayoutContent: React.FC = () => {
         return <div>Loading...</div>;
     }
 
-    return (
-        <>
-        </>
-    );
+    return null;
 };
 
-function Layout({children}: Props) {
+function Layout({ children, preset }: Props) {
     return (
-        <RecoilRoot>
-            <React.Suspense fallback={<div>Loading...</div>}>
-                <LayoutProvider initialNavbarState="icons">
-                    <DynamicSocketProvider>
-                        <SidebarProvider>
-                <HeaderProvider>
-                    <FooterProvider>
-                        <MainLayout>{children}</MainLayout>
-                    </FooterProvider>
-                </HeaderProvider>
+        <ErrorBoundary>
+            <RecoilRoot>
+                <React.Suspense fallback={<div>Loading...</div>}>
+                    <LayoutProvider initialNavbarState="icons">
+                        <SidebarProvider initialAsideState="compact">
+                            <HeaderProvider initialState="medium">
+                                <FooterProvider initialState="hidden">
+                                    <DynamicSocketProvider>
+                                        <MainLayout>{children}</MainLayout>
+                                    </DynamicSocketProvider>
+                                </FooterProvider>
+                            </HeaderProvider>
                         </SidebarProvider>
-                    </DynamicSocketProvider>
-                </LayoutProvider>
-            </React.Suspense>
-        </RecoilRoot>
-    );
+                    </LayoutProvider>
+                </React.Suspense>
+            </RecoilRoot>
+        </ErrorBoundary>
+
+    )
+        ;
 }
 
 export default Layout;

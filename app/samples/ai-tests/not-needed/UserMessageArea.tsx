@@ -1,4 +1,4 @@
-// chatbot/components/UserMessageArea.tsx
+// chatbot/nice-working/UserMessageArea.tsx
 import React, { forwardRef, useState } from 'react';
 import { ActionIcon, Grid, rem, Slider, Space, Textarea, Text } from '@mantine/core';
 import { CgAttachment } from "react-icons/cg";

@@ -11,7 +11,7 @@ import { RequestMetadataProvider } from './AiContext/RequestMetadataContext';
 import { SettingsProvider } from './AiContext/SettingsContext';
 import { HistoryProvider } from './AiContext/HistoryContext';
 import { AiResponseProvider } from './AiContext/AiResponseContext';
-import { ResponseProvider } from './components/response/ResponseContext'; // Duplicate to address later
+import { ResponseProvider } from './nice-working/response/ResponseContext'; // Duplicate to address later
 import ChatPage from './chatpage';
 
 interface LayoutProps {

@@ -17,7 +17,7 @@ function Layout({ children }: Props) {
     return (
         <ErrorBoundary>
             <LayoutProvider initialNavbarState="icons">
-                <SidebarProvider initialAsideState="icons">
+                <SidebarProvider initialAsideState="compact">
                     <HeaderProvider initialState="medium">
                         <FooterProvider initialState="hidden">
                             <MainLayout>{children}</MainLayout>

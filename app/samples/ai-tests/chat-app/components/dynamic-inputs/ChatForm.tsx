@@ -1,4 +1,4 @@
-// chat-app/components/dynamic-inputs/ChatForm.tsx
+// chat-app/nice-working/dynamic-inputs/ChatForm.tsx
 
 "use client"
 
