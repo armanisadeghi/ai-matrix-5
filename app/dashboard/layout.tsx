@@ -8,6 +8,7 @@ import { MainLayout } from "@/layout";
 import { ReactNode } from "react";
 import { HeaderProvider } from "@/context/HeaderContext";
 import { FooterProvider } from "@/context/FooterContext";
+import { NavbarProvider } from "@/context/NavbarContext";
 
 type Props = {
     children: ReactNode;
@@ -16,7 +17,7 @@ type Props = {
 function Layout({ children }: Props) {
     return (
         <ErrorBoundary>
-            <LayoutProvider initialNavbarState="icons">
+            <NavbarProvider initialNavState="icons">
                 <SidebarProvider initialAsideState="icons">
                     <HeaderProvider initialState="medium">
                         <FooterProvider initialState="hidden">
@@ -24,7 +25,7 @@ function Layout({ children }: Props) {
                         </FooterProvider>
                     </HeaderProvider>
                 </SidebarProvider>
-            </LayoutProvider>
+            </NavbarProvider>
         </ErrorBoundary>
     );
 }

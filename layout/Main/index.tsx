@@ -3,17 +3,17 @@
 import { AppShell, Box, useMantineTheme } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { ReactNode, useState } from "react";
-import { useLayout } from "@/context/LayoutContext";
 import { Navbar } from "./Navbar";
 import { Header } from "./Header";
 import { Sidebar } from "./Sidebar";
 import { useSidebar } from "@/context/SidebarContext";
-import { IconArrowBarLeft, IconArrowBarToDown, IconArrowBarToRight, IconArrowBarToUp } from "@tabler/icons-react";
+import { IconChevronDown, IconChevronLeft, IconChevronRight, IconChevronUp } from "@tabler/icons-react";
 import { useFooter } from "@/context/FooterContext";
 import { Footer } from "@/layout/Main/Footer";
 import { useHeader } from "@/context/HeaderContext";
 import AmeActionIcon from "@/ui/buttons/AmeActionIcon";
 import AmeAffix from "@/ui/affix/AmeAffix";
+import { useNavbar } from "@/context/NavbarContext";
 
 type Props = {
     children: ReactNode;
@@ -21,7 +21,7 @@ type Props = {
 };
 
 export function MainLayout({ children }: Props) {
-    const { opened, navbarState, handleIconMouseover, handleEndIconMouseover, toggleNavbar } = useLayout();
+    const { opened, navbarState, handleIconMouseover, handleEndIconMouseover, toggleNavbar } = useNavbar();
     const { asideState, toggleAside } = useSidebar();
     const { footerState, toggleFooter } = useFooter();
     const { headerState, toggleHeader } = useHeader();
@@ -145,42 +145,42 @@ export function MainLayout({ children }: Props) {
                     <Box>{children}</Box>
                     {/*toggle nav*/}
                     <AmeAffix
-                        transition="slide-up"
-                        position={{ top: headerHeight, left: 0 }}
+                        transition="slide-right"
+                        position={{ top: "50%", left: 0 }}
                         mounted={navbarState === "hidden"}
                     >
                         <AmeActionIcon title="open nav" onClick={() => toggleNavbar("full")}>
-                            <IconArrowBarToRight />
+                            <IconChevronRight />
                         </AmeActionIcon>
                     </AmeAffix>
                     {/*toggle footer*/}
                     <AmeAffix
                         transition="slide-up"
-                        position={{ bottom: 0, left: navbarWidth }}
+                        position={{ bottom: 0, left: "50%" }}
                         mounted={footerState === "hidden"}
                     >
                         <AmeActionIcon title="open footer" onClick={() => toggleFooter("full")}>
-                            <IconArrowBarToUp />
+                            <IconChevronUp />
                         </AmeActionIcon>
                     </AmeAffix>
                     {/*toggle header*/}
                     <AmeAffix
                         transition="slide-down"
-                        position={{ top: headerHeight, left: navbarWidth }}
+                        position={{ top: headerHeight, left: "50%" }}
                         mounted={headerState === "hidden"}
                     >
                         <AmeActionIcon title="open header" onClick={() => toggleHeader("medium")}>
-                            <IconArrowBarToDown />
+                            <IconChevronDown />
                         </AmeActionIcon>
                     </AmeAffix>
                     {/*toggle aside*/}
                     <AmeAffix
                         transition="slide-left"
-                        position={{ top: headerHeight, right: 0 }}
+                        position={{ top: "50%", right: 0 }}
                         mounted={asideState === "hidden"}
                     >
                         <AmeActionIcon title="open sidebar" onClick={() => toggleAside("full")} visibleFrom="md">
-                            <IconArrowBarLeft />
+                            <IconChevronLeft />
                         </AmeActionIcon>
                     </AmeAffix>
                 </AppShell.Main>

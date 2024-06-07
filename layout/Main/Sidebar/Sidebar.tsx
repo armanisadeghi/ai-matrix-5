@@ -1,6 +1,6 @@
 "use client";
-import { ActionIcon, ActionIconProps, AppShell, Box, Group, Stack, Title } from "@mantine/core";
-import { IconArrowBarRight, IconArrowBarToLeft, IconArrowBarToRight } from "@tabler/icons-react";
+import { ActionIconProps, AppShell, Box, Group, Stack, Title } from "@mantine/core";
+import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import { useSidebar } from "@/context/SidebarContext";
 import AmeActionIcon from "@/ui/buttons/AmeActionIcon";
 
@@ -21,10 +21,10 @@ export const Sidebar = ({ state }: SidebarProps) => {
                 {state === "compact" && (
                     <Group justify="flex-start" gap="xs">
                         <AmeActionIcon title="expand sidebar" onClick={handleExpand} {...actionProps}>
-                            <IconArrowBarToLeft size={18} />
+                            <IconChevronLeft size={18} />
                         </AmeActionIcon>
                         <AmeActionIcon title="shrink sidebar" onClick={handleCollapse} {...actionProps}>
-                            <IconArrowBarToRight size={18} />
+                            <IconChevronRight size={18} />
                         </AmeActionIcon>
                     </Group>
                 )}
@@ -32,14 +32,14 @@ export const Sidebar = ({ state }: SidebarProps) => {
                 {state === "full" && (
                     <Group justify="flex-start" gap="xs">
                         <AmeActionIcon title="shrink sidebar" onClick={handleCollapse} {...actionProps}>
-                            <IconArrowBarRight size={18} />
+                            <IconChevronRight size={18} />
                         </AmeActionIcon>
                     </Group>
                 )}
                 {state === "icons" && (
                     <Group justify="center" gap="xs">
                         <AmeActionIcon title="shrink sidebar" onClick={handleCollapse} {...actionProps}>
-                            <IconArrowBarRight size={18} />
+                            <IconChevronRight size={18} />
                         </AmeActionIcon>
                     </Group>
                 )}

@@ -1,31 +1,13 @@
-import {
-    ActionIcon,
-    ActionIconProps,
-    Avatar,
-    Burger,
-    Group,
-    MantineSize,
-    Menu,
-    TextInput,
-    Tooltip,
-    Flex,
-} from "@mantine/core";
-import {
-    IconArrowBarToDown,
-    IconArrowBarToUp,
-    IconBell,
-    IconPalette,
-    IconSearch,
-    IconSettings2,
-} from "@tabler/icons-react";
+import { ActionIcon, ActionIconProps, Avatar, Burger, Group, MantineSize, Menu } from "@mantine/core";
+import { IconBell, IconChevronDown, IconChevronUp, IconPalette, IconSearch, IconSettings2 } from "@tabler/icons-react";
 import { ColorSchemeToggle, Logo } from "@/components";
 import Link from "next/link";
 import { PATH_USER } from "@/routes";
-import { useLayout } from "@/context/LayoutContext";
 import { useHeader } from "@/context/HeaderContext";
 import AmeNavButton from "@/ui/buttons/AmeNavButton";
 import AmeSearchInput from "@/ui/input/AmeSearchInput";
 import AmeActionIcon from "@/ui/buttons/AmeActionIcon";
+import { useNavbar } from "@/context/NavbarContext";
 
 const actionProps: ActionIconProps = {
     variant: "light",
@@ -37,7 +19,7 @@ type Props = {
 };
 
 export function Header({ state, tabletMatch }: Props) {
-    const { toggleOpened, opened } = useLayout();
+    const { toggleOpened, opened } = useNavbar();
     const { headerState, handleCollapse, handleExpand } = useHeader();
 
     const componentSize: MantineSize = headerState === "large" ? "md" : "sm";
@@ -51,10 +33,10 @@ export function Header({ state, tabletMatch }: Props) {
                     {state === "medium" && (
                         <Group justify="flex-end" gap="xs">
                             <AmeActionIcon title="shrink header" onClick={handleCollapse} {...actionProps}>
-                                <IconArrowBarToUp size={18} />
+                                <IconChevronUp size={18} />
                             </AmeActionIcon>
                             <AmeActionIcon title="expand header" onClick={handleExpand} {...actionProps}>
-                                <IconArrowBarToDown size={18} />
+                                <IconChevronDown size={18} />
                             </AmeActionIcon>
                         </Group>
                     )}
@@ -62,7 +44,7 @@ export function Header({ state, tabletMatch }: Props) {
                     {state === "large" && (
                         <Group justify="flex-end" gap="xs">
                             <AmeActionIcon title="shrink header" onClick={handleCollapse} {...actionProps}>
-                                <IconArrowBarToUp size={18} />
+                                <IconChevronUp size={18} />
                             </AmeActionIcon>
                         </Group>
                     )}
