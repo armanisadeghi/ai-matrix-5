@@ -8,6 +8,7 @@ interface LayoutContextType {
     opened: boolean;
     asideOpen: boolean;
     toggleOpened: () => void;
+    toggleAside: () => void;
     navbarState: NavState;
     handleNavbarToggle: () => void;
     handleNavbarExpand: () => void;
@@ -41,7 +42,7 @@ export const LayoutProvider: React.FC<LayoutProviderProps> = ({ children, initia
     });
 
     const toggleOpened = () => setOpened(!opened);
-    // const toggleAside = () => setAsideOpen(!asideOpen);
+    const toggleAside = () => setAsideOpen(!asideOpen);
     const toggleNavbar = (state: NavState) => setNavbarConfig(state);
 
     const handleIconMouseover = () => {
@@ -83,6 +84,7 @@ export const LayoutProvider: React.FC<LayoutProviderProps> = ({ children, initia
             value={{
                 opened,
                 toggleOpened,
+                toggleAside,
                 asideOpen,
                 navbarState: navbarConfig,
                 handleNavbarToggle,

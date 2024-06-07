@@ -2,7 +2,6 @@
 "use client";
 
 import ErrorBoundary from "@/components/ErrorManagement/ErrorBoundry";
-import { LayoutProvider } from "@/context/LayoutContext";
 import { SidebarProvider } from "@/context/SidebarContext";
 import { MainLayout } from "@/layout";
 import { ReactNode } from "react";
@@ -17,8 +16,8 @@ type Props = {
 function Layout({ children }: Props) {
     return (
         <ErrorBoundary>
-            <NavbarProvider initialNavState="icons">
-                <SidebarProvider initialAsideState="icons">
+            <NavbarProvider initialState="icons">
+                <SidebarProvider initialState="icons">
                     <HeaderProvider initialState="medium">
                         <FooterProvider initialState="hidden">
                             <MainLayout>{children}</MainLayout>

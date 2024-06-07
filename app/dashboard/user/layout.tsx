@@ -1,12 +1,12 @@
 "use client";
 
 import { ReactNode } from "react";
-import { NavbarProvider } from "@/context/NavbarContext";
+import { SidebarProvider } from "@/context/SidebarContext";
 
 type Props = {
     children: ReactNode;
 };
 
 export default function AccountsLayout({ children }: Props) {
-    return <NavbarProvider initialNavState="icons">{children}</NavbarProvider>;
+    return <SidebarProvider initialState="icons">{children}</SidebarProvider>;
 }

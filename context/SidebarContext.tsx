@@ -17,18 +17,12 @@ interface SidebarContextProps {
 
 const SidebarContext = createContext<SidebarContextProps | undefined>(undefined);
 
-export const SidebarProvider = ({
-    children,
-    initialAsideState,
-}: {
-    children: ReactNode;
-    initialAsideState?: NavState;
-}) => {
+export const SidebarProvider = ({ children, initialState }: { children: ReactNode; initialState?: NavState }) => {
     const [asideOpen, setAsideOpen] = useState(true);
     const [sidebarContent, setSidebarContent] = useState<ReactNode>(null);
     const [asideConfig, setAsideConfig] = useLocalStorage<NavState>({
         key: "ai-matrix-aside",
-        defaultValue: initialAsideState,
+        defaultValue: initialState,
     });
 
     const toggleAside = (state: NavState) => setAsideConfig(state);
@@ -52,8 +46,8 @@ export const SidebarProvider = ({
     };
 
     useEffect(() => {
-        setSidebarContent(initialAsideState ?? "hidden");
-    }, [initialAsideState]);
+        setSidebarContent(initialState ?? "hidden");
+    }, [initialState]);
 
     return (
         <SidebarContext.Provider

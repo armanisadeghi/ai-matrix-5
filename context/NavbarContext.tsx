@@ -19,12 +19,12 @@ interface NavbarContextProps {
 
 const NavbarContext = createContext<NavbarContextProps | undefined>(undefined);
 
-export const NavbarProvider = ({ children, initialNavState }: { children: ReactNode; initialNavState?: NavState }) => {
+export const NavbarProvider = ({ children, initialState }: { children: ReactNode; initialState?: NavState }) => {
     const [opened, setOpened] = useState(false);
     const [iconMouseOver, setIconMouseOver] = useState(false);
     const [navConfig, setNavConfig] = useLocalStorage<NavState>({
         key: "ai-matrix-navbar",
-        defaultValue: initialNavState,
+        defaultValue: initialState,
     });
 
     const toggleOpened = () => setOpened(!opened);
@@ -64,8 +64,8 @@ export const NavbarProvider = ({ children, initialNavState }: { children: ReactN
     };
 
     useEffect(() => {
-        setNavConfig(initialNavState ?? "compact");
-    }, [initialNavState]);
+        setNavConfig(initialState ?? "compact");
+    }, [initialState]);
 
     return (
         <NavbarContext.Provider
