@@ -1,5 +1,5 @@
 "use client";
-import { Broker, BrokerContextValue } from '@/types/broker';
+import { Broker, BrokerContextValue, Component } from '@/types/broker';
 import React, { ReactNode, useContext, useEffect, useState } from "react";
 import { brokersData } from '../app/data/fake-data/fake-brokers';
 
@@ -16,8 +16,8 @@ const initialValues = {
     name: '',
     description: '',
     defaultValue: '',
-    dataType: [],
-    components: [],
+    dataType: '',
+    component: {} as Component,
 }
 
 export const BrokerProvider = ({ children }: { children: ReactNode }) => {

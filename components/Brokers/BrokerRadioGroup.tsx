@@ -12,19 +12,26 @@ interface BrokerRadioGroupProps {
     size: string
     color: string
     data: any
+    defaultValue?: any
 }
 
-const BrokerRadioGroup = ({ required, value, onChange, error, description, label, placeholder, size, color, data, }: BrokerRadioGroupProps) => {
+const BrokerRadioGroup = ({ required, value, onChange, error, description, label, placeholder, size, color, data, defaultValue }: BrokerRadioGroupProps) => {
     return (
         <Radio.Group
             name={label}
             label={label}
             description={description}
             required={required}
+            defaultValue={defaultValue}
+            defaultChecked={defaultValue}
         >
             <Group mt="xs">
-                <Radio value="yes" label="Yes" />
-                <Radio value="np" label="No" />
+                <Radio
+                    size={size}
+                    value="yes" label="Yes" />
+                <Radio
+                    size={size}
+                    value="np" label="No" />
             </Group>
         </Radio.Group>
     )

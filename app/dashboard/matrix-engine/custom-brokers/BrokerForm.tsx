@@ -11,15 +11,15 @@ export const BrokerForm = () => {
     const { setBrokers, brokers, currentBroker, setCurrentBroker } = useBroker()
     const handleSave = () => {
         setBrokers([{
-            ...currentBroker, id: uuid(), name: `${currentBroker.component.type})`,
-            dataType: ['string'], component: currentBroker.component
+            ...currentBroker, id: uuid(), name: currentBroker.name,
+            dataType: typeof currentBroker.component.defaultValue, component: currentBroker.component
         }, ...brokers.filter((broker) => broker.id !== currentBroker.id)]);
     };
 
     return (
         <Container>
             <SimpleGrid>
-                <div key={currentBroker.component.componentId}>
+                <div key={currentBroker.id}>
                     <BrokerComponent type={currentBroker.component.type} currentComponent={currentBroker.component} />
                     <Space h="xs" />
                     <Flex justify="flex-end">

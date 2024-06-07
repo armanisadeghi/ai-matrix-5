@@ -10,10 +10,9 @@ import { uuid } from 'uuidv4';
 const initialValues = {
     id: '',
     name: 'New Broker',
-    dataType: ["string"],
+    dataType: "string",
     component: {} as Component,
     description: "Describe your new broker",
-    defaultValue: undefined,
 }
 
 export const BrokerCreateForm = () => {
@@ -35,7 +34,7 @@ export const BrokerCreateForm = () => {
     const handleDefaultValueChange = (value: any) => {
         setCurrentBroker((prevBroker) => ({
             ...prevBroker,
-            defaultValue: value,
+            component: { ...prevBroker.component, defaultValue: value }
         }));
     };
 

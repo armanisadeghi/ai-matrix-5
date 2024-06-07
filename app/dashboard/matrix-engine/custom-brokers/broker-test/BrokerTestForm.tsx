@@ -1,19 +1,19 @@
 "use client";
 
-import { Paper, SimpleGrid, Space, Stack, Textarea } from '@mantine/core';
+import { Paper, SimpleGrid, Textarea } from '@mantine/core';
 import BrokerComponent from '../BrokerComponent';
-import { Component } from '@/types/broker';
+import { Broker } from '@/types/broker';
 
-export const BrokerTestForm = ({ question, setQuestion, brokerValue, setBrokerValue }: { question: string, setQuestion: any, brokerValue: Component[], setBrokerValue: Function }) => {
+export const BrokerTestForm = ({ question, setQuestion, brokerValue, setBrokerValue }: { question: string, setQuestion: any, brokerValue: Broker[], setBrokerValue: Function }) => {
 
-    const handleDefaultValueChange = (value: any, component: Component) => {
-        setBrokerValue((prev: Component[]) => prev.map(c => c.componentId === component.componentId ? { ...c, defaultValue: value } : c));
+    const handleDefaultValueChange = (value: any, broker: Broker) => {
+        setBrokerValue((prev: Broker[]) => [...prev.map((b) => b.id === broker.id ? { ...b, component: { ...b.component, defaultValue: value } } : b)]);
     };
 
     return (
         <SimpleGrid>
             <Textarea autosize onChange={(e) => setQuestion(e.target.value)} defaultValue={question} />
-            {brokerValue.length > 0 && <Paper withBorder p="md">{brokerValue.map((component) => <Paper key={component.componentId} p='md'><BrokerComponent currentComponent={component} type={component.type} handleDefaultValueChange={(value: any) => handleDefaultValueChange(value, component)} /></Paper>)}</Paper>}
+            {brokerValue.length > 0 && <Paper withBorder p="md">{brokerValue.map((broker) => <Paper key={broker.id} p='md'><BrokerComponent currentComponent={broker.component} type={broker.component.type} handleDefaultValueChange={(value: any) => handleDefaultValueChange(value, broker)} /></Paper>)}</Paper>}
         </SimpleGrid>
     )
 };

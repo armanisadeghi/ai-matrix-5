@@ -60,7 +60,7 @@ const Brokers: React.FC = () => {
         setCurrentBroker({
             id: '',
             name: '',
-            dataType: [],
+            dataType: '',
             component: {} as Component,
         });
     };

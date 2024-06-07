@@ -4,10 +4,9 @@ export const brokersData: Broker[] = [
     {
         id: 'broker1',
         name: 'Company Name',
-        dataType: ['string'],
+        dataType: 'string',
         description: 'Enter the name of the company',
         component: {
-            componentId: 'input1',
             defaultValue: 'AME',
             label: "Company Name",
             type: 'Input',
@@ -17,10 +16,9 @@ export const brokersData: Broker[] = [
     {
         id: 'broker2',
         name: 'Company Address',
-        dataType: ['string'],
+        dataType: 'string',
         description: 'Enter the address of the company',
         component: {
-            componentId: 'input2',
             type: 'Input',
             placeholderText: 'Company Address',
             defaultValue: 'USA',
@@ -30,22 +28,20 @@ export const brokersData: Broker[] = [
     {
         id: 'broker3',
         name: 'Is Tech Company',
-        dataType: ['boolean'],
+        dataType: 'boolean',
         description: 'Specify if the company is a tech company',
         component: {
-            componentId: 'switch1',
             type: 'YesNo',
             label: 'Is Tech Company',
-            defaultValue: true,
+            defaultValue: "yes",
         }
     },
     {
         id: 'broker4',
         name: 'Number of Employees',
-        dataType: ['number'],
+        dataType: 'number',
         description: 'Specify the number of employees',
         component: {
-            componentId: 'slider1',
             type: 'Slider',
             defaultValue: 7,
             min: 1,
@@ -57,13 +53,12 @@ export const brokersData: Broker[] = [
     {
         id: 'broker5',
         name: 'Tech Stack',
-        dataType: ['string[]'],
+        dataType: 'string[]',
         description: 'Select the tech stack used by the company',
         component: {
-            componentId: 'select1',
             type: 'Select',
             options: ["React", "Next.js", "Angular", "Vue.js"],
-            defaultValue: ["React"],
+            defaultValue: "React",
             label: "Tech Stack",
         }
     },

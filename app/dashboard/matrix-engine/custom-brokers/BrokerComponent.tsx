@@ -5,7 +5,6 @@ import { BrokerImage } from '@/components/Brokers/BrokerImage';
 import { useForm } from '@mantine/form';
 import { Component } from '@/types/broker';
 import { BrokerSlider } from "@/components/Brokers/BrokerSlider";
-import { useBroker } from '@/context/brokerContext';
 
 interface BrokerComponentProps {
     currentComponent: Component;
@@ -14,7 +13,7 @@ interface BrokerComponentProps {
 }
 
 const BrokerComponent: React.FC<BrokerComponentProps> = ({ type, currentComponent, handleDefaultValueChange }) => {
-    const { description, componentId, tableData, src, alt, radius, h, w, fit, options, groupOptions, label, placeholderText, defaultValue, displayOrder, validation, dependencies, required, size, color, exampleInputs, group, min, max, step, value, onChange, marks } = currentComponent;
+    const { description, tableData, src, alt, radius, h, w, fit, options, groupOptions, label, placeholderText, defaultValue, displayOrder, validation, dependencies, required, size, color, exampleInputs, group, min, max, step, value, onChange, marks } = currentComponent;
 
     const currentData = useForm({
         mode: 'uncontrolled',
@@ -66,8 +65,8 @@ const BrokerComponent: React.FC<BrokerComponentProps> = ({ type, currentComponen
                     onChange={value => handleDefaultValueChange ? handleDefaultValueChange(value) : currentData.setFieldValue('value', value)}
                 >
                     <Group mt="xs">
-                        <Radio value="yes" label="Yes" />
-                        <Radio value="no" label="No" />
+                        <Radio value="yes" label="Yes" defaultChecked={defaultValue === 'yes'} />
+                        <Radio value="no" label="No" defaultChecked={defaultValue === 'no'} />
                     </Group>
                 </Radio.Group>
             case "Checkbox":

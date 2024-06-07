@@ -5,41 +5,22 @@ import Link from 'next/link';
 import { BrokerMultiSelect } from './BrokerMultiselect';
 import { useBroker } from '@/context/brokerContext';
 import { BrokerTestForm } from './BrokerTestForm';
-import { Component } from '@/types/broker';
 import { IconArrowLeft } from '@tabler/icons-react';
+import { Broker } from '@/types/broker';
 
 const BrokerTest = () => {
     const [jsonValue, setJsonValue] = useState<string>('');
     const [value, setValue] = useState<string[]>([]);
     const [question, setQuestion] = useState<string>('My question here');
     const { brokers, setBrokers } = useBroker()
-    const [brokerValue, setBrokerValue] = useState<Component[]>([]);
+    const [brokerValue, setBrokerValue] = useState<Broker[]>([]);
 
     useEffect(() => {
-        setBrokerValue([...
-            brokers
-                .filter((broker) => value.includes(broker.name))
-                .flatMap((broker) => broker.component)
-        ]);
+        setBrokerValue([...brokers.filter((broker) => value.includes(broker.name))]);
     }, [value])
 
-    useEffect(() => {
-        setBrokers(brokers.map((broker) => {
-            if (!value.includes(broker.name)) {
-                return broker;
-            }
-
-            const correspondingComponent = brokerValue.find((component) => component.componentId === broker.component.componentId);
-            if (correspondingComponent) {
-                return { ...broker, component: correspondingComponent };
-            }
-
-            return broker;
-        }));
-    }, [brokerValue]);
-
     const handleButtonClick = () => {
-        const brokerData = brokers.filter((broker) => value.includes(broker.name)).map((broker) => ({
+        const brokerData = brokerValue.map((broker) => ({
             [broker.name]: broker.component.defaultValue,
         }));
 

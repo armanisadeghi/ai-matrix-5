@@ -1,7 +1,7 @@
 export interface Broker {
     id: string;
     name: string;
-    dataType: string[];
+    dataType: string;
     description?: string;
     component: Component;
 }
@@ -16,7 +16,6 @@ export type TableData = {
 };
 
 export interface Component {
-    componentId: string;
     type: string;
     label?: string;
     tooltip?: string;
@@ -24,6 +23,7 @@ export interface Component {
     maxLength?: number;
     placeholderText?: string;
     defaultValue?: string | number | boolean | string[] | number[] | File;
+    defaultChecked?: boolean;
     displayOrder?: number;
     validation?: string;
     dependencies?: string[];
