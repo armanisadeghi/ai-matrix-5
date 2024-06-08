@@ -5,6 +5,7 @@ import { BrokerImage } from '@/components/Brokers/BrokerImage';
 import { useForm } from '@mantine/form';
 import { Component } from '@/types/broker';
 import { BrokerSlider } from "@/components/Brokers/BrokerSlider";
+import BrokerRadioGroup from '@/components/Brokers/BrokerRadioGroup';
 
 interface BrokerComponentProps {
     currentComponent: Component;
@@ -56,19 +57,17 @@ const BrokerComponent: React.FC<BrokerComponentProps> = ({ type, currentComponen
                     color={color}
                     onChange={value => handleDefaultValueChange ? handleDefaultValueChange(value) : currentData.setFieldValue('value', value)} />;
             case "YesNo":
-                return <Radio.Group
+                return <BrokerRadioGroup
                     defaultValue={defaultValue as string}
-                    name={label}
-                    label={label}
-                    description={description}
+                    onChange={(value: any) => handleDefaultValueChange ? handleDefaultValueChange(value) : currentData.setFieldValue('value', value)}
                     required={required}
-                    onChange={value => handleDefaultValueChange ? handleDefaultValueChange(value) : currentData.setFieldValue('value', value)}
-                >
-                    <Group mt="xs">
-                        <Radio value="yes" label="Yes" defaultChecked={defaultValue === 'yes'} />
-                        <Radio value="no" label="No" defaultChecked={defaultValue === 'no'} />
-                    </Group>
-                </Radio.Group>
+                    value={value as string}
+                    description={description}
+                    label={label}
+                    placeholder={placeholderText}
+                    size={size}
+                    color={color} >
+                </BrokerRadioGroup>
             case "Checkbox":
                 return <Checkbox
                     label={label}

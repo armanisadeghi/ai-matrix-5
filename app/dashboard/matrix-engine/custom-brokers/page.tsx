@@ -15,39 +15,7 @@ const Brokers: React.FC = () => {
     const [selectedOption, setSelectedOption] = useState<string>('');
     const [isTypeSelected, setTypeSelected] = useState<boolean>(false);
     const { currentBroker, setCurrentBroker } = useBroker();
-    const [currentComponent, setCurrentComponent] = useState<Component>({
-        componentId: '',
-        type: '',
-        label: 'new label',
-        tooltip: 'new tooltip',
-        description: 'description',
-        maxLength: 200,
-        placeholderText: 'placeholder',
-        defaultValue: undefined,
-        displayOrder: undefined,
-        validation: '',
-        dependencies: [],
-        required: false,
-        options: [],
-        groupOptions: [],
-        size: 'md',
-        color: '',
-        exampleInputs: [],
-        group: '',
-        min: 1,
-        max: 10,
-        step: 1,
-        value: '',
-        onChange: () => { },
-        tableData: undefined,
-        src: '',
-        alt: '',
-        radius: 'md',
-        h: 'auto',
-        w: 'auto',
-        fit: 'fill',
-        marks: [],
-    } as Component);
+    const [currentComponent, setCurrentComponent] = useState<Component>({} as Component);
     const handleTypeSelection = (value: string) => {
         setSelectedOption(value);
         setTypeSelected(true);
@@ -79,39 +47,28 @@ const Brokers: React.FC = () => {
                 >
                     Sample Brokers
                 </Button></Link>
-
-                <Button onClick={() => handleNewBroker()} variant="outline" leftSection={<IconPlus />}>
-                    Add New Broker
-                </Button>
             </Flex>
             <Space h="md" />
 
             <Stack>
-                {showSelect &&
-                    <Transition transition="slide-down" duration={200} mounted={showSelect}>
-                        {(styles) => (
-                            <Stack style={styles}>
-                                <Select label="Type" description="Choose the type of component" placeholder="Choose the type of component" data={componentOptions} value={selectedOption} onChange={(option) => handleTypeSelection(option as ComponentType)} />
-                                <Space h="md" />
-                                <Transition transition="slide-down" duration={200} mounted={isTypeSelected}>
-                                    {(styles) => (
-                                        <div style={styles}>
-                                            {isTypeSelected && <BrokerEdit type={selectedOption} setCurrentComponent={setCurrentComponent} currentComponent={currentComponent} />}
-                                        </div>)}
-                                </Transition>
-                                <Space h="md" />
+                <Transition transition="slide-down" duration={200} mounted={showSelect}>
+                    {(styles) => (
+                        <Stack style={styles}>
+                            <Select label="Type" description="Choose the type of component" placeholder="Choose the type of component" data={componentOptions} value={selectedOption} onChange={(option) => handleTypeSelection(option as ComponentType)} />
+                            <Space h="md" />
+                            <BrokerEdit setCurrentComponent={setCurrentComponent} currentComponent={currentComponent} />
+                            <Space h="md" />
 
-                            </Stack>
-                        )}
-                    </Transition>}
-                {currentBroker.component &&
-                    <Transition transition="slide-down" duration={200} mounted>
-                        {(styles) => (
-                            <Paper withBorder radius="xs" p="xl" style={styles}>
-                                <BrokerForm />
-                            </Paper>
-                        )}
-                    </Transition>}
+                        </Stack>
+                    )}
+                </Transition>
+                <Transition transition="slide-down" duration={200} mounted>
+                    {(styles) => (
+                        <Paper withBorder radius="xs" p="xl" style={styles}>
+                            <BrokerForm />
+                        </Paper>
+                    )}
+                </Transition>
                 <Space h="md" />
             </Stack>
             <BrokerList user={false} />
