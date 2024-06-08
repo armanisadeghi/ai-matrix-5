@@ -4,7 +4,7 @@
 import React, { useEffect } from 'react';
 import { SidebarProvider, useSidebar } from '@/context/SidebarContext';
 import { Text, Space, Stack } from '@mantine/core';
-import AmeChatHistoryEntry from '@/components/AiChat/AmeChatHistoryEntry';
+import AmeChatHistoryEntry from '@/components/AiChat/Sidebar/AmeChatHistoryEntry';
 
 interface LayoutProps {
     children: React.ReactNode;

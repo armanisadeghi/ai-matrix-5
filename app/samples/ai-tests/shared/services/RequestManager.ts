@@ -1,71 +1,84 @@
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { requestEventTaskAtom, requestSocketEventAtom } from "@/app/samples/ai-tests/shared/atoms/metadataAtoms";
-import { userMessageAtom } from "../atoms/chatAtoms";
+import { activeChatMessagesArrayAtom } from "../atoms/chatAtoms";
 import { useDynamicSocketHandler } from "@/app/samples/ai-tests/shared/services/dynamicSocketHandler";
 import { EVENT_TASKS, SOCKET_EVENTS } from "@/app/samples/ai-tests/shared/config/aiRequestOptions";
 import apiHandlers from "./aiCallRouter";
+import { MessageEntry, Role } from "@/types";
+import { submitChatRequest } from "@/app/samples/ai-tests/shared/services/SteamOpenAi";
+import { OpenAiStream } from "@/app/api/openai/route";
 
 export const useRequestManager = () => {
     const eventTask = useRecoilValue(requestEventTaskAtom);
     const socketEvent = useRecoilValue(requestSocketEventAtom);
-    const newMessage = useRecoilValue(userMessageAtom);
+    const activeChatMessagesArray = useRecoilState(activeChatMessagesArrayAtom);
     const { handleDynamicElements } = useDynamicSocketHandler();
-    console.log('Request Manager eventTask:', eventTask);
-    console.log('Request Manager socketEvent:', socketEvent);
+
+    const openai_stream_request = ( activeChatMessagesArray: MessageEntry[], updateCallback: (message: string) => void, finalizeCallback: (message: MessageEntry) => void): Promise<void> => {
+
+        console.log('openai_stream_request activeChatMessagesArray:', activeChatMessagesArray);
+
+        return new Promise(async (resolve, reject) => {
+            try {
+                if (!Array.isArray(activeChatMessagesArray)) {
+                    throw new Error('updatedChat should be an array');
+                }
+
+                const messages = activeChatMessagesArray.map(chat => ({
+                    role: chat.role as 'system' | 'user' | 'assistant',
+                    content: chat.text
+                }));
+
+                let assistantMessage: string = '';
+
+                await OpenAiStream(messages, (chunk) => {
+                    assistantMessage += chunk;
+                    updateCallback(chunk);
+                });
+
+                const fullResponse: MessageEntry = { text: assistantMessage, role: 'assistant' as Role };
+                finalizeCallback(fullResponse);
+                resolve();
+            } catch (error) {
+                console.error('Error during OpenAI stream:', error);
+                reject(error);
+            }
+        });
+    };
+
 
     const handleRequest = async (data: any) => {
         try {
-            console.log('handleRequest 1 Request Manager data:', data);
+            if (typeof apiHandlers[eventTask] === 'function') {
+                console.log(`Handling ${eventTask} with custom handler`);
+                const response = await apiHandlers[eventTask](data);
+                console.log('API response:', response);
 
-            switch (eventTask) {
-                case "directChat":
-                    console.log('handleRequest 2 Event:', eventTask);
-                case "simpleChat":
-                    console.log('handleRequest 2 Event:', eventTask);
-                case "runRecipe":
-                    console.log('handleRequest 2 Event:', eventTask);
-                case "runAction":
-                    console.log('handleRequest 2 Event:', eventTask);
-                case "validateRequest":
-                    console.log('handleRequest 2 Event:', eventTask);
-                case "processWorkflow":
-                    console.log('handleRequest 2 Event:', eventTask);
-                case "dataProcessing":
-                    console.log('handleRequest 2 Event:', eventTask);
-                case "directStream":
-                    console.log('handleRequest 2 Event:', eventTask);
-                case "openai_stream_request":
-                    console.log('handleRequest 2 Event:', eventTask);
-                    console.log('handleRequest 3 API request:', data);
-                    const invokeOpenAIStreamRequest = async (data: any) => {
-                        try {
-                            return await apiHandlers["openai_stream_request"]({
-                                updatedChat: data.updatedChat,
-                                updateCallback: data.updateCallback,
-                                finalizeCallback: data.finalizeCallback,
-                            });
-                        } catch (error) {
-                            console.error('Error invoking openai_stream_request:', error);
-                            throw error;
+            } else {
+                // Handle known static tasks
+                console.log(`Handling static task for ${eventTask}`);
+                switch (eventTask) {
+                    case "directChat":
+                    case "simpleChat":
+                    case "runRecipe":
+                    case "runAction":
+                    case "validateRequest":
+                    case "processWorkflow":
+                    case "dataProcessing":
+                    case "directStream":
+                    case "openai_stream_request":
+                        console.log('handleRequest 2 Event:', eventTask);
+                        console.log('handleRequest 3 API request:', data);
+                        await openai_stream_request(data);
+                        break;
+                    default:
+                        console.log('No handler found, entering default case');
+                        if (EVENT_TASKS.includes(eventTask as typeof EVENT_TASKS[number]) && SOCKET_EVENTS.includes(socketEvent as typeof SOCKET_EVENTS[number])) {
+                            await handleDynamicElements();
                         }
-                    };
-
-                    await invokeOpenAIStreamRequest(data);
-                    break;
-
-                case apiHandlers:
-                    console.log('Entering apiHandlers case'); // NEW LOG
-                    const response = await apiHandlers[eventTask](data);
-                    console.log('API response:', response);
-                    break;
-
-                default:
-                    console.log('Entering default case'); // NEW LOG
-                    if (EVENT_TASKS.includes(eventTask as typeof EVENT_TASKS[number]) && SOCKET_EVENTS.includes(socketEvent as typeof SOCKET_EVENTS[number])) {
-                        await handleDynamicElements();
-                    }
+                        break;
+                }
             }
-
         } catch (error) {
             console.error('Error handling request:', error);
         }

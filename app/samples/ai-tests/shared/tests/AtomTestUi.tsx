@@ -10,8 +10,11 @@ import {
     systemMessagesAtom,
     chatTitlesAndIdsAtom,
     allChatsAtom
-} from "@/app/samples/ai-tests/shared/atoms/chatAtoms";
+} from "../atoms/chatAtoms";
 import { activeUserAtom } from "@/context/atoms/userAtoms";
+
+
+// @ts-ignore
 import { ChatManager } from '@/services/Chat';
 
 interface TestingUIProps {

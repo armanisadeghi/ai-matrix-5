@@ -34,6 +34,7 @@ export const activeUserSelector = selector<User | undefined>({
     }
 });
 
+
 export const activeUserAtom = atom<User | undefined>({
     key: 'activeUserAtom',
     default: undefined,

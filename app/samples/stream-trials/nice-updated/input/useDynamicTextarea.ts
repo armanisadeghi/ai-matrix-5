@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { useSetRecoilState } from 'recoil';
-import { activeChatMessagesArrayAtom, useChatMessages } from "@/app/samples/ai-tests/shared/atoms/chatAtoms";
+import { activeChatMessagesArrayAtom, useChatMessages } from "../../../ai-tests/shared/atoms/chatAtoms";
 import { useRequestManager } from "@/app/samples/ai-tests/shared/services/RequestManager";
 
 type Role = 'user' | 'assistant' | 'system'
@@ -55,6 +55,8 @@ export const useDynamicTextarea = (handleInputChange: (event: React.ChangeEvent<
             addMessage(newUserMessage);
             handleInputChange({ target: { value: '' } } as React.ChangeEvent<HTMLTextAreaElement>);
             textareaRef.current?.focus();
+
+            console.log('DEBUG: Sending message:');
 
             await handleRequest({
                 updatedChat: [newUserMessage],

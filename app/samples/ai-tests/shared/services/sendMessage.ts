@@ -4,8 +4,8 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { activeUserAtom } from "@/context/atoms/userAtoms";
 import saveMessageToDb from "./saveMessageToDb";
 import { submitChatRequest } from './SteamOpenAi';
-import { handleDynamicElements } from "./dynamicSocketHandler";
-import { activeChatIdAtom, activeChatMessagesArrayAtom } from "@/app/samples/ai-tests/shared/atoms/chatAtoms";
+import { useDynamicSocketHandler } from "./dynamicSocketHandler";
+import { activeChatIdAtom, activeChatMessagesArrayAtom } from "../atoms/chatAtoms";
 import { MessageEntry } from "@/types/chat";
 
 

@@ -9,11 +9,11 @@ import {
     totalCharacterCountSelector,
     characterCountByRoleSelector,
     activeChatMessagesArrayAtom,
-} from '@/app/samples/ai-tests/shared/atoms/chatAtoms';
+} from '../../ai-tests/shared/atoms/chatAtoms';
 import { Box, Grid, Space, Button, TextInput, Select, Textarea } from "@mantine/core";
 import { MessageEntry, Role } from "@/types/chat";
-import AssistantMessage from "@/app/samples/ai-tests/shared/response/AssistantMessage";
-import UserMessage from "@/app/samples/ai-tests/shared/response/UserMessage";
+import AssistantMessage from "@/components/AiChat/Response/AssistantMessage";
+import UserMessage from "@/components/AiChat/Response/extra/UserMessage";
 import { submitChatRequest } from '@/app/samples/ai-tests/shared/services/SteamOpenAi';
 
 const ChatComponent: React.FC = () => {

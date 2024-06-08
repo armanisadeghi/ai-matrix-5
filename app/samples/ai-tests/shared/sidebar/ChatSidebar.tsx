@@ -1,6 +1,6 @@
 import React from 'react';
 import { ChatHistoryChat } from '@/types/chat';
-import AmeChatHistoryEntry from '@/components/AiChat/AmeChatHistoryEntry';
+import AmeChatHistoryEntry from '@/components/AiChat/Sidebar/AmeChatHistoryEntry';
 import { Space, Stack, Text, Container, LoadingOverlay } from '@mantine/core';
 
 interface ChatSidebarProps {

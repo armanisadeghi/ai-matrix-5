@@ -3,7 +3,7 @@ import { ActionIcon, Paper } from '@mantine/core';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import AmeMenu from './AmeMenu';
 import useColorUtils from '@/utils/colorUtils';
-import AmeActionTextInput from '../../ui/input/AmeActionTextInput';
+import AmeActionTextInput from '@/ui/input/AmeActionTextInput';
 import { useRecoilState, useRecoilValue } from "recoil";
 import { activeUserAtom } from "@/context/atoms/userAtoms";
 import { activeChatIdAtom, activeChatMessagesArrayAtom } from "@/app/samples/ai-tests/shared/atoms/chatAtoms";
@@ -26,7 +26,7 @@ interface AmeHoverMenuChatProps {
 const AmeHoverMenuChat: React.FC<AmeHoverMenuChatProps> = (
     {
         initialValue, // Pass this value as the text for "on peak" action
-        editable = true,
+        editable = false,
         keyProp,
         context,
         onPeak,
@@ -105,16 +105,15 @@ const AmeHoverMenuChat: React.FC<AmeHoverMenuChatProps> = (
                         cursor: 'pointer',
                         backgroundColor: backgroundColor,
                         color: textColor,
-                        paddingLeft: '3px',
                         transition: 'background-color 0.3s',
                     }}
-                    radius="md"
+                    radius="xs"
                     onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = hoverBackgroundColor)}
                     onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = backgroundColor)}
-                    onClick={handlePaperClick} // Add onClick event to trigger setCurrentChatId and fetch messages
+                    onClick={handlePaperClick}
                 >
-                    <AmeActionTextInput initialValue={initialValue} editable={editable}/>
-                    <ActionIcon variant="transparent" size="sm" style={{cursor: 'pointer'}} onClick={handleIconClick}>
+                    <AmeActionTextInput variant={"unstyled"} style={{ marginLeft: '5px' }} initialValue={initialValue} editable={editable} highlightOnClick={false} onClick={handlePaperClick}/>
+                    <ActionIcon variant="transparent" size="xs" style={{cursor: 'pointer'}} onClick={handleIconClick}>
                         <BsThreeDotsVertical/>
                     </ActionIcon>
                 </Paper>

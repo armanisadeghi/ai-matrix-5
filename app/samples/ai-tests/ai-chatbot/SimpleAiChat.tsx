@@ -4,6 +4,7 @@ import { allChatsAtom, chatIdAtom, chatTitleAtom, chatMessagesAtom, addMessageAt
 import AmeJsonInput from '@/ui/json/AmeJsonInput';
 import { Button, Space, Textarea } from "@mantine/core";
 import UserMessageArea from "@/app/samples/ai-tests/not-needed/UserMessageArea";
+import { Role } from "@/types";
 
 const ChatComponent: React.FC = () => {
     const allChats = useAtomValue(allChatsAtom);
@@ -34,7 +35,7 @@ const ChatComponent: React.FC = () => {
 
     const handleSendMessage = () => {
         if (userInput.trim()) {
-            addMessage({ text: userInput, role: 'user' as RoleType });
+            addMessage({ text: userInput, role: 'user' as Role });
             setUserInput("");
             if (inputRef.current) {
                 inputRef.current.focus();

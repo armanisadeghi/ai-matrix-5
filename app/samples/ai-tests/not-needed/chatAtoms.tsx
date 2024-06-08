@@ -9,7 +9,7 @@ import {
     detailsForAllChatsAtom,
     systemMessagesAtom,
     allChatsAtom
-} from "@/app/samples/ai-tests/shared/atoms/chatAtoms";
+} from "../shared/atoms/chatAtoms";
 import TestingUI from '../shared/tests/AtomTestUi';
 
 interface AtomPageProps {

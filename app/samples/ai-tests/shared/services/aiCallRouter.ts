@@ -13,13 +13,6 @@ import { requestEventTaskAtom, requestSocketEventAtom } from "@/app/samples/ai-t
 // Example API handlers using native fetch
 const apiHandlers: Record<string, (data: any) => Promise<any>> = {
 
-    openai_stream_request: async (data: { updatedChat: MessageEntry[], updateCallback: (message: MessageEntry) => void, finalizeCallback: (message: MessageEntry) => void }) => {
-        return new Promise<void>((resolve, reject) => {
-            submitChatRequest(data.updatedChat, data.updateCallback, data.finalizeCallback)
-                .then(() => resolve())
-                .catch((error) => reject(error));
-        });
-    },
     directChat: async (data: any) => {
         const response = await fetch('/api/directChat', {
             method: 'POST',

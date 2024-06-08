@@ -20,8 +20,8 @@ const SidebarContext = createContext<SidebarContextProps | undefined>(undefined)
 export const SidebarProvider = (
     {
     children,
-    initialAsideState,
-    initialTitle,
+    initialAsideState = "hidden",
+    initialTitle = "",
 }: {
     children: ReactNode;
     initialAsideState?: NavState;

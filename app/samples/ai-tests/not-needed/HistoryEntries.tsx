@@ -4,8 +4,8 @@ import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { Container, LoadingOverlay, Space, Textarea } from '@mantine/core';
 import { activeChatMessagesArrayAtom, chatTitlesAndIdsAtom } from '@/context/atoms/chatAtoms';
-import AssistantMessage from '../shared/response/AssistantMessage';
-import UserMessage from '../shared/response/UserMessage';
+import AssistantMessage from '../../../../components/AiChat/Response/AssistantMessage';
+import UserMessage from '../../../../components/AiChat/Response/extra/UserMessage';
 import { RoleType, MessageEntry } from '@/types/chat';
 
 interface HistoryEntriesProps {

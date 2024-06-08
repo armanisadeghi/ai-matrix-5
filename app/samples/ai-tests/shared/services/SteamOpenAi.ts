@@ -2,12 +2,12 @@
 
 import { MessageEntry, Role } from '@/types/chat';
 import { OpenAiStream } from "@/app/api/openai/route";
+import { useRecoilState } from "recoil";
+import { assistantTextStreamAtom } from "@/app/samples/ai-tests/shared/atoms/chatAtoms";
 
-export const submitChatRequest = (
-    updatedChat: MessageEntry[],
-    updateCallback: (message: string) => void,
-    finalizeCallback: (message: MessageEntry) => void
-): Promise<void> => {
+export const submitChatRequest = ( updatedChat: MessageEntry[], updateCallback: (message: string) => void, finalizeCallback: (message: MessageEntry) => void): Promise<void> => {
+    const [assistantTextStream, setAssistantTextStream] = useRecoilState(assistantTextStreamAtom);
+
     return new Promise(async (resolve, reject) => {
         try {
             if (!Array.isArray(updatedChat)) {

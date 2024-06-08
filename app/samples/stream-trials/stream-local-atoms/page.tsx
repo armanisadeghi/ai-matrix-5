@@ -13,7 +13,7 @@ import {
     userMessageEntryAtom,
     userTextInputAtom,
     useChatMessages,
-} from "@/app/samples/ai-tests/shared/atoms/chatAtoms";
+} from "../../ai-tests/shared/atoms/chatAtoms";
 
 
 const ResponseTextArea: React.FC<{ response: string }> = ({ response }) => {

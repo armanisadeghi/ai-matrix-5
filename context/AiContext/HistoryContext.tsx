@@ -2,8 +2,8 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { HistoryContextProps, HistoryProviderProps, ChatHistoryChat } from '@/types/chat';
-import { loadChatHistory } from '@/app/samples/ai-tests/ai-chatbot/utils/loadChatHistory';
 import { UserContext } from './UserContext';
+import loadChatHistory from "@/app/data/fake-data/fake-chat-history/fake-chat-history";
 
 interface ChatHistory {
     [index: string]: ChatHistoryChat[];

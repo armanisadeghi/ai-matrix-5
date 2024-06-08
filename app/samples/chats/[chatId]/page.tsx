@@ -1,11 +1,13 @@
 // app/samples/chats/[chatId]/page.tsx
 'use client';
 
+console.log('app/samples/chats/[chatId]/page.tsx');
+
 import React, { useEffect } from 'react';
-import ChatDetail from '../../ChatComponents/ChatDetail';
+import ChatDetail from '../components/ChatDetail';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { activeUserAtom } from '@/context/atoms/userAtoms';
-import { activeChatIdAtom } from "@/app/samples/ai-tests/shared/atoms/chatAtoms";
+import { activeChatIdAtom } from "../../ai-tests/shared/atoms/chatAtoms";
 
 
 const ChatPage = ({ params }: { params: { chatId: string } }) => {

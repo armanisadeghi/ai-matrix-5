@@ -3,7 +3,7 @@ import { Role, MessageEntry } from '@/types/chat';
 import { Button, Space } from "@mantine/core";
 import UserMessageArea from "@/app/samples/ai-tests/not-needed/UserMessageArea";
 import { useRecoilState } from 'recoil';
-import { allChatsAtom, activeChatIdAtom, activeChatMessagesArrayAtom} from '@/app/samples/ai-tests/shared/atoms/chatAtoms';
+import { allChatsAtom, activeChatIdAtom, activeChatMessagesArrayAtom} from '../ai-tests/shared/atoms/chatAtoms';
 import { submitChatRequest } from '@/app/samples/ai-tests/shared/services/SteamOpenAi';
 
 

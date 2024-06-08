@@ -204,6 +204,7 @@ export const messageCountSelector = selector<number>({
     key: 'messageCountSelector',
     get: ({get}) => {
         const messages = get(activeChatMessagesArrayAtom);
+
         return messages.length;
     },
 });

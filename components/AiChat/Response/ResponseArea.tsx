@@ -1,10 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import { Box, Grid, Space, LoadingOverlay } from '@mantine/core';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import AssistantMessage from './AssistantMessage';
-import UserMessage from "@/app/samples/ai-tests/shared/response/UserMessage";
+import UserMessage from "@/components/AiChat/Response/extra/UserMessage";
 import { activeChatMessagesArrayAtom } from "@/app/samples/ai-tests/shared/atoms/chatAtoms";
 import { MessageEntry } from '@/types/chat';
+import styles from "./chat.module.css";
 
 interface ResponseAreaProps {
     bottomPadding: number;
@@ -12,7 +13,7 @@ interface ResponseAreaProps {
 
 const ResponseArea: React.FC<ResponseAreaProps> = ({ bottomPadding }) => {
     const scrollRef = useRef<HTMLDivElement>(null);
-    const activeChatMessages = useRecoilValue(activeChatMessagesArrayAtom);
+    const [activeChatMessages, setActiveChatMessages] = useRecoilState(activeChatMessagesArrayAtom);
 
     useEffect(() => {
         if (scrollRef.current) {
@@ -35,6 +36,10 @@ const ResponseArea: React.FC<ResponseAreaProps> = ({ bottomPadding }) => {
         }
     }, []);
 
+    const clearMessages = () => {
+        setActiveChatMessages([]);
+    };
+
     if (!activeChatMessages) {
         return <LoadingOverlay visible />;
     }
@@ -51,11 +56,11 @@ const ResponseArea: React.FC<ResponseAreaProps> = ({ bottomPadding }) => {
                                 {activeChatMessages.map((entry: MessageEntry, entryIndex: number) => (
                                     <div key={entryIndex}>
                                         {entry.role === 'assistant' ? (
-                                            <AssistantMessage entryIndex={entryIndex.toString()} />
+                                            <AssistantMessage text={entry.text}/>
                                         ) : (
-                                            <UserMessage entryIndex={entryIndex.toString()} />
+                                            <UserMessage text={entry.text}/>
                                         )}
-                                        <Space h={10} />
+                                        <Space h={10}/>
                                     </div>
                                 ))}
                             </div>

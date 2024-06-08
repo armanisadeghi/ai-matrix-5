@@ -21,23 +21,14 @@ const renderers = {
     tr: ({ children }) => <CustomTableRow>{children}</CustomTableRow>,
     th: ({ children }) => <CustomTableHeaderCell>{children}</CustomTableHeaderCell>,
     td: ({ children }) => <CustomTableCell>{children}</CustomTableCell>,
-    li: ({ children }) => (
-        <li>
-            {React.Children.map(children, (child) =>
-                typeof child === 'string' ? (
-                    child
-                ) : (
-                    <div>{child}</div>
-                )
-            )}
-        </li>
-    ),
+    li: ({ children }) => <li>{children}</li>,
     h1: ({ children }) => <h1>{children}</h1>,
     h2: ({ children }) => <h2>{children}</h2>,
     h3: ({ children }) => <h3>{children}</h3>,
     h4: ({ children }) => <h4>{children}</h4>,
     h5: ({ children }) => <h5>{children}</h5>,
     h6: ({ children }) => <h6>{children}</h6>,
+    p: ({ children }) => <p>{children}</p>,
 };
 
 export default renderers;

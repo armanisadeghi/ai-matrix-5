@@ -8,7 +8,7 @@ import {
     assistantTextStreamAtom,
     userMessageEntryAtom,
     userTextInputAtom,
-    useChatMessages,
+    useChatMessages, activeChatMessagesArrayAtom,
 } from "../../../ai-tests/shared/atoms/chatAtoms";
 import { MessageEntry } from "@/types";
 
@@ -18,6 +18,7 @@ export const useChatSubmission = () => {
     const [userMessageEntry, setUserMessageEntry] = useRecoilState(userMessageEntryAtom);
     const [assistantTextStream, setAssistantTextStream] = useRecoilState(assistantTextStreamAtom);
     const [assistantMessageEntry, setAssistantMessageEntry] = useRecoilState(assistantMessageEntryAtom);
+    const [activeChatMessagesArray, setActiveChatMessagesArray] = useRecoilState(activeChatMessagesArrayAtom);
     const [messages, setMessages] = useState<{ userMessage: string, response: string }[]>([]);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {

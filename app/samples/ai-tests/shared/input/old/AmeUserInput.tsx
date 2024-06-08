@@ -1,3 +1,4 @@
+/*
 import React, { useEffect, useRef, forwardRef, useState } from 'react';
 import { Textarea, ActionIcon, Group, Box, Grid, Slider } from '@mantine/core';
 import { MdPermMedia } from "react-icons/md";
@@ -229,3 +230,4 @@ const DynamicTextarea = forwardRef<HTMLDivElement, DynamicTextareaProps>((
 
 DynamicTextarea.displayName = 'DynamicTextarea';
 export default DynamicTextarea;
+*/

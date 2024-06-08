@@ -6,9 +6,8 @@ import { LayoutProvider } from '@/context/LayoutContext';
 import { SidebarProvider } from '@/context/SidebarContext';
 import { MainLayout } from '@/layout';
 import { ReactNode } from 'react';
-import { RecoilRoot, useRecoilState, useSetRecoilState } from 'recoil';
-import { UserManager } from '@/services/Users';
-import { activeUserAtom } from "@/context/atoms/userAtoms";
+import { RecoilRoot, useRecoilState, useRecoilValueLoadable } from 'recoil';
+import { activeUserAtom, activeUserSelector } from "@/context/atoms/userAtoms";
 import { DynamicSocketProvider } from "@/context/AiContext/socketContext";
 import { HeaderProvider } from "@/context/HeaderContext";
 import { FooterProvider } from "@/context/FooterContext";
@@ -21,27 +20,25 @@ type Props = {
 };
 
 const LayoutContent: React.FC = () => {
-    const [activeUser, setActiveUser] = useRecoilState(UserManager.ActiveUser);
-    const setActiveUserAtom = useSetRecoilState(activeUserAtom);
+    const [activeUser, setActiveUser] = useRecoilState(activeUserAtom);
+    const activeUserLoadable = useRecoilValueLoadable(activeUserSelector);
 
     useEffect(() => {
-        const fetchActiveUser = async () => {
-            const userManager = UserManager.getInstance();
-            const user = await userManager.getActiveUser();
+        if (activeUserLoadable.state === 'hasValue') {
+            const user = activeUserLoadable.contents;
+            console.log('app/samples/layout.tsx - Active user:', user);
+
             if (user) {
                 setActiveUser(user);
-                setActiveUserAtom(user);
+                console.log('app/samples/layout.tsx After setActiveUser - Active user atom:', user);
             }
-        };
-
-        fetchActiveUser();
-    }, [setActiveUser, setActiveUserAtom]);
+        }
+    }, [activeUserLoadable, setActiveUser]);
 
     if (!activeUser) {
         return <div>Loading...</div>;
     }
-
-    return null;
+    return <div>Active user loaded</div>;
 };
 
 function Layout({ children, preset }: Props) {
@@ -49,11 +46,12 @@ function Layout({ children, preset }: Props) {
         <ErrorBoundary>
             <RecoilRoot>
                 <React.Suspense fallback={<div>Loading...</div>}>
-                    <LayoutProvider initialNavbarState="icons">
-                        <SidebarProvider initialAsideState="compact">
+                    <LayoutProvider initialNavbarState="compact">
+                        <SidebarProvider initialAsideState="icons" initialTitle="Sample Pages">
                             <HeaderProvider initialState="medium">
                                 <FooterProvider initialState="hidden">
                                     <DynamicSocketProvider>
+                                        <LayoutContent />
                                         <MainLayout>{children}</MainLayout>
                                     </DynamicSocketProvider>
                                 </FooterProvider>
@@ -63,9 +61,7 @@ function Layout({ children, preset }: Props) {
                 </React.Suspense>
             </RecoilRoot>
         </ErrorBoundary>
-
-    )
-        ;
+    );
 }
 
 export default Layout;

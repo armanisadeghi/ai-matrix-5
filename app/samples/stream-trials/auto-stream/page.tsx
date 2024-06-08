@@ -9,7 +9,7 @@ import {
     assistantMessageEntryAtom,
     assistantTextStreamAtom,
     userTextInputAtom
-} from "@/app/samples/ai-tests/shared/atoms/chatAtoms";
+} from "../../ai-tests/shared/atoms/chatAtoms";
 import { Grid } from '@mantine/core';
 import AutoStreamPage from "@/app/samples/stream-trials/auto-stream/ChatComponents";
 

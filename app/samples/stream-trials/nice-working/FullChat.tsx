@@ -125,18 +125,25 @@ export default function ChatInterface() {
         setMessages((prevMessages) => [...prevMessages, { userMessage: userTextInput, response: '' }]);
         setUserTextInput('');
 
+
         await submitChatRequest(
             [userMessage],
             (chunk) => {
                 responseRef.current += chunk;
+
                 setAssistantTextStream(responseRef.current);
+
                 setMessages((prevMessages) => {
+
                     const newMessages = [...prevMessages];
+
                     newMessages[newMessages.length - 1].response = responseRef.current;
+
                     return newMessages;
                 });
             },
             (finalMessage) => {
+
                 setAssistantMessageEntry(finalMessage);
             }
         );
@@ -156,6 +163,10 @@ export default function ChatInterface() {
                                 </div>
                             ))}
                         </div>
+
+                        <Space h={15}/>
+                        <div>{assistantTextStream}</div>
+                        <Space h={15}/>
 
                         <form onSubmit={handleSubmit}>
                             <Space h={8}/>

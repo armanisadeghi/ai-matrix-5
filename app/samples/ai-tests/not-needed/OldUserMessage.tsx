@@ -6,7 +6,7 @@ import { Paper, Textarea, Button, ActionIcon, Box, Group } from '@mantine/core';
 import { FiEdit2 } from "react-icons/fi";
 import { activeChatMessagesArrayAtom } from '@/context/atoms/chatAtoms';
 import { MessageEntry } from '@/types/chat';
-import styles from "@/app/samples/ai-tests/shared/input/DynamicTextarea.module.css";
+import styles from "@/components/AiChat/input/DynamicTextarea.module.css";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdPermMedia } from "react-icons/md";
 import { RiDeleteBin3Line } from "react-icons/ri";

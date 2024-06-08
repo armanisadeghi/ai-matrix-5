@@ -3,18 +3,27 @@
 
 import React from 'react';
 import { useHeader } from "@/context/HeaderContext";
-import { useChatMessages } from "../../../ai-tests/shared/atoms/chatAtoms";
-import styles from './chat.module.css';
+import { activeChatMessagesArrayAtom, useChatMessages } from "../../../ai-tests/shared/atoms/chatAtoms";
+import styles from '../../../../../components/AiChat/Response/chat.module.css';
 import { useChatSubmission } from "./../hooks/useChatSubmission";
 import UserInputArea from '../input/UserInputArea';
-import ResponseColumn from '../Response/ResponseColumn';
+import ResponseColumn from '../../../../../components/AiChat/Response/extra/ResponseColumn';
 import { useMediaQuery } from "@mantine/hooks";
+import { Space, Textarea } from "@mantine/core";
+import { useRecoilState, useRecoilValue } from "recoil";
+import AmeJsonInput from "@/ui/json/AmeJsonInput";
+import { ChatSidebarListAtom } from "../../../ai-tests/shared/atoms/chatAtoms";
 
 export default function Chat() {
     const { userTextInput, setUserTextInput, messages, handleSubmit } = useChatSubmission();
-    const activeChatMessagesArray = useChatMessages();
     const { headerState } = useHeader();
     const isSmallScreen = useMediaQuery('(max-width: 600px)');
+    const combinedResponses = messages.map(msg => msg.response).join("\n");
+
+    const [ activeChatMessagesArray, setActiveChatMessagesArray ] = useRecoilState(activeChatMessagesArrayAtom);
+    const [ chatSidebarList ] = useRecoilState(ChatSidebarListAtom);
+
+    console.log('activeChatMessagesArray', activeChatMessagesArray);
 
     return (
         <>
@@ -30,6 +39,18 @@ export default function Chat() {
                     handleSubmit={handleSubmit}
                 />
             </div>
+            <Space h={10} />
+
+            <AmeJsonInput
+                value={JSON.stringify(activeChatMessagesArray, null, 2)}
+                label="Message Array From Atom"
+            />
+            <AmeJsonInput
+                value={JSON.stringify(chatSidebarList, null, 2)}
+                label="Message Array From Atom"
+            />
+
+
             {isSmallScreen && (
                 <div style={{
                     position: 'fixed',
