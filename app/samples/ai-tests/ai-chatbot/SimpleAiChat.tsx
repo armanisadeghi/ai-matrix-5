@@ -3,7 +3,7 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { allChatsAtom, chatIdAtom, chatTitleAtom, chatMessagesAtom, addMessageAtom, switchChatAtom, startNewChatAtom, editChatTitleAtom, currentChatAtom } from '@/armaniLocal/org/atoms/ChatAtoms';
 import AmeJsonInput from '@/ui/json/AmeJsonInput';
 import { Button, Space, Textarea } from "@mantine/core";
-import UserMessageArea from "@/app/samples/ai-tests/not-needed/UserMessageArea";
+import UserMessageArea from "@/armaniLocal/junk_saves/not-needed/UserMessageArea";
 import { Role } from "@/types";
 
 const ChatComponent: React.FC = () => {

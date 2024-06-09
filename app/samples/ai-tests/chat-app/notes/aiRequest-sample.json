@@ -60,24 +60,30 @@
                 ],
                 "messages": [
                     {
+                        "index": 0,
                         "roleType": "system",
-                        "text": "You are a helpful assistant."
+                        "text": "The chat is ready."
                     },
                     {
-                        "roleType": "assistant",
-                        "text": "Sure, I can help you with that. What do you need help with?"
-                    },
-                    {
+                        "index": 1,
                         "roleType": "user",
-                        "text": "I'm taking my kids to New York. What are some fun things to do there?"
+                        "text": "Hi."
                     },
+
                     {
+                        "index": 2,
                         "roleType": "assistant",
-                        "text": "Tell me more about your travel preferences and I will create the perfect list of things to do."
+                        "text": "Hello. How are you?"
                     },
                     {
+                        "index": 3,
                         "roleType": "user",
-                        "text": "We love going out, eating great food, and seeing the sights."
+                        "text": "I'm great. When will you be here?"
+                    },
+                    {
+                        "index": 4,
+                        "roleType": "assistant",
+                        "text": "I'm only 5 minutes away."
                     }
                 ],
                 "requestSettings": {

@@ -1,6 +1,135 @@
-import {atom, useRecoilState, useSetRecoilState, selector, useRecoilValue} from 'recoil';
-import {Role, MessageEntry} from '@/types/chat';
+// app/samples/ai-tests/shared/atoms/chatAtoms.tsx
+
+import { atom, atomFamily, selectorFamily, useRecoilCallback, useRecoilState, useSetRecoilState, selector, useRecoilValue } from 'recoil';
+import { syncEffect } from 'recoil-sync';
+import { array, object, string, number } from '@recoiljs/refine';
+import supabase from "@/utils/supabase/client";
+import { activeUserAtom } from "@/context/atoms/userAtoms";
+
+import { ChatMessages, ChatSummary, MessageEntry, Role } from '@/types/chat';
 import Chat from "@/services/Chat";
+
+
+export const chatSummariesSelector = selector({
+    key: 'chatSummariesSelector',
+    get: async ({ get }) => {
+        const userId = get(activeUserAtom)?.id;
+        if (!userId) throw new Error('User not found');
+
+        const { data, error } = await supabase
+            .from('chats')
+            .select('chat_id, chat_title')
+            .eq('user_id', userId);
+
+        if (error) throw error;
+
+        return data.map(chat => ({
+            chatId: chat.chat_id,
+            chatTitle: chat.chat_title
+        }));
+    },
+});
+
+export const chatDetailsSelector = selector({
+    key: 'chatDetailsSelector',
+    get: async ({ get }) => {
+        const chatId = get(selectedChatIdAtom);
+        if (!chatId) throw new Error('Chat not selected');
+
+        const { data, error } = await supabase
+            .from('chats')
+            .select('*')
+            .eq('chat_id', chatId)
+            .single();
+
+        if (error) throw error;
+
+        return {
+            chatId: data.chat_id,
+            createdAt: data.created_at,
+            userId: data.user_id,
+            chatTitle: data.chat_title,
+            messagesArray: data.messages_array,
+            lastEdited: data.last_edited,
+            metadata: data.metadata,
+        };
+    },
+});
+
+export const chatMessagesAtomFamily = atomFamily<ChatMessages, string>({
+    key: 'chatMessages',
+    default: [],
+    effects: (chatId) => [syncEffect({
+        itemKey: `chatMessages-${chatId}`,
+        refine: array(object({
+            index: number(),
+            role: string(),
+            text: string()
+        }))
+    })]
+});
+
+export const useFetchAndStoreChatDetails = () => {
+    return useRecoilCallback(({ snapshot, set }) => async (chatId: string) => {
+        const chatDetails = await snapshot.getPromise(chatDetailsSelector);
+        set(chatMessagesAtomFamily(chatId), chatDetails.messagesArray);
+        set(activeChatMessagesArrayAtom, chatDetails.messagesArray);
+        return chatDetails;
+    });
+};
+
+
+
+
+export const selectedChatIdAtom = atom<string | null>({
+    key: 'selectedChatId',
+    default: null
+});
+
+export const selectedChatMessagesSelector = selectorFamily<ChatMessages, string>({
+    key: 'selectedChatMessages',
+    get: (chatId) => ({ get }) => get(chatMessagesAtomFamily(chatId)),
+});
+
+export const assistantTextStreamAtom = atom<string>({
+    key: 'assistantTextStreamAtom',
+    default: '',
+});
+
+export const userTextInputAtom = atom<string>({
+    key: 'userTextInputAtom',
+    default: '',
+});
+
+export const systemMessagesAtom = atom<{ index: number, text: string, role: Role }>({
+    key: 'systemMessagesAtom',
+    default: {
+        index: 0,
+        text: 'You are a helpful assistant.',
+        role: 'system'
+    },
+});
+
+export const activeChatMessagesArrayAtom = atom<MessageEntry[]>({
+    key: 'activeChatMessagesArrayAtom',
+    default: [],
+});
+
+
+
+
+
+
+export const chatSummaryAtom = atom<ChatSummary[]>({
+    key: 'chatSummary',
+    default: [],
+    effects: [syncEffect({
+        refine: array(object({
+            chatId: string(),
+            chatTitle: string()
+        }))
+    })]
+});
 
 
 
@@ -14,30 +143,16 @@ export const activeChatIdAtom = atom<string>({
     default: 'new-chat',
 });
 
-export const systemMessagesAtom = atom<{ text: string, role: Role }[]>({
-    key: 'systemMessagesAtom',
-    default: [{
-        text: 'You are a helpful assistant.',
-        role: 'system'
-    }],
-});
-
-export const activeChatMessagesArrayAtom = atom<MessageEntry[]>({
-    key: 'activeChatMessagesArrayAtom',
-    default: [],
-});
 
 export const ChatSidebarListAtom = atom<{ chatId: string, chatTitle: string }[]>({
     key: 'ChatSidebarListAtom',
     default: [],
 });
 
-
 export const chatTitlesAndIdsAtom = atom<{ chatId: string, chatTitle: string }[]>({
     key: 'chatTitlesAndIdsAtom',
     default: [],
 });
-
 
 // Utility Functions
 export const useChatMessages = () => {
@@ -63,9 +178,12 @@ export const useChatMessages = () => {
     };
 
     const addMessageWithRole = (text: string, role: Role) => {
-        const newMessageEntry: MessageEntry = {text, role};
+        const newMessageEntry: MessageEntry = {
+            text,
+            role
+        };
         setMessages(currentMessages => [...currentMessages, newMessageEntry]);
-        console.log ('useChatMessages newMessageEntry', newMessageEntry);
+        console.log('useChatMessages newMessageEntry', newMessageEntry);
         console.log('useChatMessages updatedMessages', messages);
     };
     return {
@@ -79,10 +197,12 @@ export const useChatMessages = () => {
 };
 
 
+
 export const messageFilterState = atom({
     key: 'messageFilterState',
     default: 'all',
 });
+
 
 export const filteredMessagesState = selector({
     key: 'FilteredMessages',
@@ -102,7 +222,6 @@ export const filteredMessagesState = selector({
         }
     },
 });
-
 
 const transformedMessagesState = selector<MessageEntry[]>({
     key: 'TransformedMessages',
@@ -170,13 +289,6 @@ const transformedMessagesState = selector<MessageEntry[]>({
     },
 });
 
-
-
-export const assistantTextStreamAtom = atom<string>({
-    key: 'assistantTextStreamAtom',
-    default: '',
-});
-
 export const assistantMessageEntryAtom = atom<MessageEntry>({
     key: 'assistantMessageEntryAtom',
     default: {
@@ -185,10 +297,6 @@ export const assistantMessageEntryAtom = atom<MessageEntry>({
     },
 });
 
-export const userTextInputAtom = atom<string>({
-    key: 'userTextInputAtom',
-    default: '',
-});
 
 export const userMessageEntryAtom = atom<MessageEntry>({
     key: 'userMessageEntryAtom',
@@ -197,7 +305,6 @@ export const userMessageEntryAtom = atom<MessageEntry>({
         role: 'user'
     },
 });
-
 
 // Selector to get the count of all messages
 export const messageCountSelector = selector<number>({
@@ -208,7 +315,6 @@ export const messageCountSelector = selector<number>({
         return messages.length;
     },
 });
-
 
 // Selector to get character count for all messages
 export const totalCharacterCountSelector = selector<number>({
@@ -231,7 +337,6 @@ export const characterCountByRoleSelector = (role: Role) =>
         },
     });
 
-
 export const formResponsesAtom = atom<{ [key: string]: string }>({
     key: 'formResponsesAtom',
     default: {},
@@ -242,18 +347,15 @@ export const customInputsAtom = atom<string[]>({
     default: [],
 });
 
-
 export const messagesAtom = atom<{ text: string, role: Role }[]>({
     key: 'messagesAtom',
     default: [],
 });
 
-
 export const allChatsAtom = atom<Chat[]>({
     key: 'allChatsAtom',
     default: [],
 });
-
 
 export const detailsForAllChatsAtom = atom<Chat[]>({
     key: 'detailsForAllChatsAtom',

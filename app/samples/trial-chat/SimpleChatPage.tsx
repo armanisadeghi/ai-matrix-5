@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Role, MessageEntry } from '@/types/chat';
 import { Button, Space } from "@mantine/core";
-import UserMessageArea from "@/app/samples/ai-tests/not-needed/UserMessageArea";
+import UserMessageArea from "@/armaniLocal/junk_saves/not-needed/UserMessageArea";
 import { useRecoilState } from 'recoil';
 import { allChatsAtom, activeChatIdAtom, activeChatMessagesArrayAtom} from '../ai-tests/shared/atoms/chatAtoms';
 import { submitChatRequest } from '@/app/samples/ai-tests/shared/services/SteamOpenAi';

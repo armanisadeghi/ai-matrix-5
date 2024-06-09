@@ -1,5 +1,5 @@
 import React, { useState, useContext, ReactNode } from 'react';
-import { Menu, rem, Modal, Text, TextInput, Button, Box } from '@mantine/core';
+import { Menu, rem, Modal, Text, TextInput, Button, Box, Space } from '@mantine/core';
 import { BsPencil, BsCloudDownload } from "react-icons/bs";
 import { FaShareFromSquare } from "react-icons/fa6";
 import { SiXdadevelopers, SiAppstore } from "react-icons/si";
@@ -8,6 +8,9 @@ import { IconTrash } from '@tabler/icons-react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { activeUserAtom } from '@/context/atoms/userAtoms';
 import { activeChatMessagesArrayAtom, activeChatIdAtom } from "@/app/samples/ai-tests/shared/atoms/chatAtoms";
+import { MessageEntry } from "@/types";
+import AssistantMessage from "@/components/AiChat/Response/AssistantMessage";
+import UserMessage from "@/components/AiChat/Response/extra/UserMessage";
 
 interface AmeMenuProps {
     children: ReactNode;
@@ -163,6 +166,8 @@ const AmeMenu: React.FC<AmeMenuProps> & { Target: React.FC<{ children: ReactNode
             <Modal
                 opened={modalOpened}
                 onClose={() => setModalOpened(false)}
+                size="xl"
+
                 title={modalTitle}  // Display the initial value as the title
                 transitionProps={{
                     transition: 'fade',
@@ -171,10 +176,17 @@ const AmeMenu: React.FC<AmeMenuProps> & { Target: React.FC<{ children: ReactNode
                 }}
             >
                 <Box>
-                    {messages.map((msg, index) => (
-                        <Text key={index} size="sm" style={{ whiteSpace: 'pre-wrap', marginBottom: '10px' }}>
-                            {msg.role}: {msg.text}
-                        </Text>
+                    {messages.map((entry: MessageEntry, entryIndex: number) => (
+
+                        <div key={entryIndex}>
+                            {entry.role === 'assistant' ? (
+                                <AssistantMessage text={entry.text}/>
+                            ) : (
+                                <UserMessage text={entry.text}/>
+                            )}
+                            <Space h={10}/>
+                        </div>
+
                     ))}
                 </Box>
             </Modal>

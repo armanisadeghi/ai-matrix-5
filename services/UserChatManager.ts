@@ -48,7 +48,7 @@ class UserChatManager {
         }
     }
 
-    async addMessageToActiveChat(role: Role, text: string) {
+    async addMessageToActiveChat(role: string, text: string) {
         if (this.activeChat) {
             await this.activeChat.addMessage(role, text);
         } else {
@@ -91,6 +91,26 @@ class UserChatManager {
         } else {
             await chat.loadMessagesFromDb();
         }
+    }
+
+    async deleteChatById(chat_id: string) {
+        const { error } = await supabase
+            .from('chats')
+            .delete()
+            .eq('chat_id', chat_id);
+
+        if (error) throw error;
+
+        delete this._chats[chat_id];
+    }
+
+    async resetChat(chat_id: string, index: number) {
+        const chat = this._chats[chat_id];
+        if (!chat) {
+            throw new Error('Chat not found');
+        }
+
+        await chat.resetChat(index);
     }
 
     getAllChats(): Record<string, any>[] {

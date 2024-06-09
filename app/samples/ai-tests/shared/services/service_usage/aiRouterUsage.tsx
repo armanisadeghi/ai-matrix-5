@@ -18,7 +18,7 @@ const YourComponent = () => {
             requestData.finalizeCallback = (message: MessageEntry) => console.log('Finalize:', message);
         }
 
-        await handleRequest(requestData);
+        await handleRequest(requestData.updatedChat, requestData.updateCallback, requestData.finalizeCallback);
     };
 
     return (

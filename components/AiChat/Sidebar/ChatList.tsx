@@ -1,32 +1,32 @@
 import React, { useEffect } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
 import AmeChatHistoryEntry from '@/components/AiChat/Sidebar/AmeChatHistoryEntry';
 import { Stack, Text } from '@mantine/core';
-import { activeChatMessagesArrayAtom, ChatSidebarListAtom } from "@/app/samples/ai-tests/shared/atoms/chatAtoms";
+import {
+    activeChatMessagesArrayAtom, chatDetailsSelector,
+    ChatSidebarListAtom,
+    chatSummariesSelector, selectedChatIdAtom, selectedChatMessagesSelector, useFetchAndStoreChatDetails
+} from "@/app/samples/ai-tests/shared/atoms/chatAtoms";
 import AmeActionIcon from "@/ui/button/AmeActionIcon";
 import { BsFillPatchPlusFill } from "react-icons/bs";
+import { ChatSummary } from "@/types";
+import { activeUserAtom } from "@/context/atoms/userAtoms";
 
-interface ChatData {
-    chatId: string;
-    chatTitle: string;
-}
-
-const ChatSidebar = ({ user_id }: { user_id: string }) => {
+const ChatSidebar = ({user_id}: { user_id: string }) => {
     const [chats, setChats] = useRecoilState(ChatSidebarListAtom);
     const setActiveChatMessages = useSetRecoilState(activeChatMessagesArrayAtom);
+    const activeUser = useRecoilValue(activeUserAtom);
+    const chatSummariesLoadable = useRecoilValueLoadable(chatSummariesSelector);
+    const chatDetailsLoadable = useRecoilValueLoadable(chatDetailsSelector);
+    const [selectedChatId, setSelectedChatId] = useRecoilState(selectedChatIdAtom);
+    const chatMessages = useRecoilValue(selectedChatMessagesSelector(selectedChatId || ''));
+    const userId = activeUser?.id ?? '';
+    const fetchAndStoreChatDetails = useFetchAndStoreChatDetails();
 
-    useEffect(() => {
-        fetch(`/api/chats?user_id=${user_id}`)
-            .then(res => res.json())
-            .then((data: Record<string, string>) => {
-                const chatList: ChatData[] = Object.entries(data).map(([chatId, chatTitle]) => ({
-                    chatId,
-                    chatTitle,
-                }));
-                setChats(chatList);
-            })
-            .catch(error => console.error('Error fetching chats:', error));
-    }, [user_id, setChats]);
+    const handleChatSelect = async (chatId: string) => {
+        setSelectedChatId(chatId);
+        await fetchAndStoreChatDetails(chatId);
+    };
 
     const handleNewChat = () => {
         // Clear the page of the current chat to start a new one
@@ -36,19 +36,19 @@ const ChatSidebar = ({ user_id }: { user_id: string }) => {
 
     return (
         <>
-            <AmeActionIcon title="New Chat" onClick={handleNewChat}>
-                <BsFillPatchPlusFill size={18} />
-            </AmeActionIcon>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: '10px' }}>
+                <AmeActionIcon title="New Chat" onClick={handleNewChat}>
+                    <BsFillPatchPlusFill size={18}/>
+                </AmeActionIcon>
+            </div>
 
-            <Text size="xs" fw={700} style={{ marginLeft: '5px', marginTop: '5px' }}>Recent Chats</Text>
-            <Stack
-                h={300}
-                bg="var(--mantine-color-body)"
-                align="stretch"
-                justify="flex-start"
-                gap="xs"
-            >
-                {chats.map(({ chatId, chatTitle }) => (
+            <Text size="xs" fw={700} style={{
+                marginLeft: '5px',
+                marginTop: '5px'
+            }}>Recent Chats</Text>
+            <Stack h={300} bg="var(--mantine-color-body)" align="stretch" justify="flex-start" gap="xs">
+                {chatSummariesLoadable.state === 'hasValue' && chatSummariesLoadable.contents.map((
+                    { chatId, chatTitle }) => (
                     <AmeChatHistoryEntry
                         key={chatId}
                         keyProp={chatId}

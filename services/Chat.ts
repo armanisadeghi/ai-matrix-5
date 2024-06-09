@@ -1,8 +1,5 @@
-// services/Chat.ts
-
 import supabase from "@/utils/supabase/client";
 import { Role, MessageEntry } from "@/types/chat";
-
 
 class Chat {
     chat_id: string;
@@ -49,6 +46,26 @@ class Chat {
             this.last_edited = new Date();
 
             // Update the chat in the Supabase database with the edited message
+            const { error } = await supabase
+                .from('chats')
+                .update({
+                    messages_array: this._messages,
+                    last_edited: this.last_edited
+                })
+                .eq('chat_id', this.chat_id);
+
+            if (error) throw error;
+        } else {
+            throw new Error('Message index out of range');
+        }
+    }
+
+    async resetChat(index: number) {
+        if (0 <= index && index < this._messages.length) {
+            this._messages = this._messages.slice(0, index + 1);
+            this.last_edited = new Date();
+
+            // Update the chat in the Supabase database with the reset messages
             const { error } = await supabase
                 .from('chats')
                 .update({

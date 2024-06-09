@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Burger } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import ResponseArea from '@/components/AiChat/Response/ResponseArea';
-import UserMessageArea from '@/app/samples/ai-tests/not-needed/UserMessageArea';
+import UserMessageArea from '@/armaniLocal/junk_saves/not-needed/UserMessageArea';
 import { useSidebar } from "@/context/SidebarContext";
 import ChatSidebar from "@/app/samples/ai-tests/shared/sidebar/ChatSidebar";
 
