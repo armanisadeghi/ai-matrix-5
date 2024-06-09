@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import AmeActionIcon from "@/ui/buttons/AmeActionIcon";
 import AmeButton from "@/ui/buttons/AmeButton";
-import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
+import { IconArrowLeft, IconArrowRight, IconChevronCompactLeft, IconChevronRight } from "@tabler/icons-react";
 import { ActionIconProps, ButtonProps } from "@mantine/core";
 
 interface AmeNavButtonProps {
@@ -47,7 +47,7 @@ function AmeNavButton({ navigateTo, asIcon }: AmeNavButtonProps) {
     };
 
     const text = navigateTo === "back" ? "Go back" : "Go forward";
-    const icon = navigateTo === "back" ? <IconChevronLeft size={18} /> : <IconChevronRight size={18} />;
+    const icon = navigateTo === "back" ? <IconArrowLeft size={18} /> : <IconArrowRight size={18} />;
 
     let buttonProps: ButtonProps = {
         disabled: !canNavigate(),

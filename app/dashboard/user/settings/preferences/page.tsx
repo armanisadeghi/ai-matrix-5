@@ -1,12 +1,11 @@
 "use client";
 
-import { UserLocationForm, ThemeSelectionCard } from "@/components";
+import { UserLocationForm } from "@/components";
 
 function Preferences() {
     return (
         <>
-            <UserLocationForm mb="md" />
-            <ThemeSelectionCard />
+            <UserLocationForm />
         </>
     );
 }

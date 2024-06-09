@@ -3,7 +3,7 @@
 import React from 'react';
 import { Paper, ActionIcon, Grid, Text } from '@mantine/core';
 import { LiaEditSolid } from "react-icons/lia";
-import styles from "../chat.module.css";
+import styles from "../../AiChat/Response/chat.module.css";
 
 
 interface UserMessageProps {

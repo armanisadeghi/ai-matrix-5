@@ -12,7 +12,7 @@ import { BsFillPatchPlusFill } from "react-icons/bs";
 import { ChatSummary } from "@/types";
 import { activeUserAtom } from "@/context/atoms/userAtoms";
 
-const ChatSidebar = ({user_id}: { user_id: string }) => {
+const ChatSidebar = () => {
     const [chats, setChats] = useRecoilState(ChatSidebarListAtom);
     const setActiveChatMessages = useSetRecoilState(activeChatMessagesArrayAtom);
     const activeUser = useRecoilValue(activeUserAtom);

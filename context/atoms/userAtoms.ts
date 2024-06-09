@@ -5,7 +5,15 @@ import { User, UserManager } from '@/services/Users';
 
 const userManagerPromise = UserManager.getInstance();
 
-console.log('userAtoms.ts with userManagerPromise:', userManagerPromise);
+export const activeUserSelector = selector<User | undefined>({
+    key: 'activeUserSelector',
+    get: async ({ get }) => {
+        const userManager = await userManagerPromise; // Ensure the promise is awaited correctly
+        const activeUser = await userManager.getActiveUser();
+        return activeUser ?? undefined; // Return undefined if activeUser is null
+    }
+});
+
 
 export const activeUserIdAtom = atom<string | undefined>({
     key: 'activeUserIdAtom',
@@ -24,15 +32,6 @@ export const ForcedUserIdAtom = atom<string>({
 });
 
 
-export const activeUserSelector = selector<User | undefined>({
-    key: 'activeUserSelector',
-    get: async ({ get }) => {
-        const userManager = await userManagerPromise; // Ensure the promise is awaited correctly
-        const activeUser = await userManager.getActiveUser();
-        console.log('activeUserSelector activeUser:', activeUser);
-        return activeUser ?? undefined; // Return undefined if activeUser is null
-    }
-});
 
 
 export const activeUserAtom = atom<User | undefined>({

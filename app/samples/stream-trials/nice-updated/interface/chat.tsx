@@ -7,7 +7,7 @@ import { activeChatMessagesArrayAtom, useChatMessages } from "../../../ai-tests/
 import styles from '../../../../../components/AiChat/Response/chat.module.css';
 import { useChatSubmission } from "./../hooks/useChatSubmission";
 import UserInputArea from '../input/UserInputArea';
-import ResponseColumn from '../../../../../components/AiChat/Response/extra/ResponseColumn';
+import ResponseColumn from '@/components/Abstain/extra/ResponseColumn';
 import { useMediaQuery } from "@mantine/hooks";
 import { Space, Textarea } from "@mantine/core";
 import { useRecoilState, useRecoilValue } from "recoil";

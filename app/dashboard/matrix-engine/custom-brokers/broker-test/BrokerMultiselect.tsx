@@ -1,5 +1,4 @@
 "use client";
-import { useState } from 'react';
 import { CheckIcon, Combobox, Group, Input, Pill, PillsInput, useCombobox } from '@mantine/core';
 import { useBroker } from '@/context/brokerContext';
 
@@ -9,7 +8,7 @@ export function BrokerMultiSelect({ value, setValue }: any) {
         onDropdownOpen: () => combobox.updateSelectedOptionIndex('active'),
     });
 
-    const { brokers } = useBroker()
+    const { brokers, system } = useBroker()
 
     const handleValueSelect = (val: string) => {
         setValue((current: string[]) => {
@@ -30,6 +29,15 @@ export function BrokerMultiSelect({ value, setValue }: any) {
     ));
 
     const options = brokers.map((item) => (
+        <Combobox.Option value={item.name} key={item.id} active={value.includes(item.name)}>
+            <Group gap="sm">
+                {value.includes(item.name) ? <CheckIcon size={12} /> : null}
+                <span>{item.name}</span>
+            </Group>
+        </Combobox.Option>
+    ));
+
+    const systemBrokersOptions = system.map((item) => (
         <Combobox.Option value={item.name} key={item.id} active={value.includes(item.name)}>
             <Group gap="sm">
                 {value.includes(item.name) ? <CheckIcon size={12} /> : null}
@@ -66,7 +74,10 @@ export function BrokerMultiSelect({ value, setValue }: any) {
             </Combobox.DropdownTarget>
 
             <Combobox.Dropdown>
-                <Combobox.Options>{options}</Combobox.Options>
+                <Combobox.Options>
+                    <Combobox.Group label="System Brokers">{systemBrokersOptions}</Combobox.Group>
+                    <Combobox.Group label="Custom Brokers">{options}</Combobox.Group>
+                </Combobox.Options>
             </Combobox.Dropdown>
         </Combobox>
     );

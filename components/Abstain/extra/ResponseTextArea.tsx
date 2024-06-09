@@ -2,7 +2,7 @@
 import React from 'react';
 import { Grid, Text } from "@mantine/core";
 import { GiArtificialHive } from "react-icons/gi";
-import styles from "../chat.module.css";
+import styles from "../../AiChat/Response/chat.module.css";
 import MarkdownRenderer from '@/components/AiChat/Response/markdown/MarkdownRenderer';
 
 const ResponseTextArea: React.FC<{ response: string }> = ({ response }) => {

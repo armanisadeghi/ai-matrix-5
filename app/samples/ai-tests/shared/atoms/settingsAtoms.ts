@@ -1,6 +1,6 @@
 // recoil/atoms/settingsAtoms.ts
 import { atom, selector } from 'recoil';
-import {AIModel} from "@/app/data/aiModels";
+import {AIModel} from "@/app/samples/ai-tests/shared/config/aiModels";
 
 export const aiPreferencesMainAtom = atom<string>({
     key: 'aiPreferencesMainAtom',

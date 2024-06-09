@@ -1,3 +1,5 @@
+// components/AiChat/UserInput/useDynamicTextarea.tsx
+
 import { useState, useRef, useEffect } from 'react';
 
 export const useDynamicTextArea = (handleSubmitMessage: () => void) => {

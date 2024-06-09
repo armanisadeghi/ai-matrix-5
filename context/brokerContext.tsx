@@ -1,6 +1,7 @@
 "use client";
-import { Broker, BrokerContextValue } from '@/types/broker';
+import { Broker, BrokerContextValue, Component } from '@/types/broker';
 import React, { ReactNode, useContext, useEffect, useState } from "react";
+import { customBrokers, systemBrokers } from '../app/data/fake-data/fake-brokers';
 
 export const BrokerContext = React.createContext<BrokerContextValue>({
     brokers: [],
@@ -8,6 +9,8 @@ export const BrokerContext = React.createContext<BrokerContextValue>({
     currentBroker: {} as Broker,
     setCurrentBroker: () => { },
     deleteBroker: ({ }: string) => { },
+    system: [],
+    setSystem: () => { }
 });
 
 const initialValues = {
@@ -15,12 +18,13 @@ const initialValues = {
     name: '',
     description: '',
     defaultValue: '',
-    dataType: [],
-    components: [],
+    dataType: '',
+    component: {} as Component,
 }
 
 export const BrokerProvider = ({ children }: { children: ReactNode }) => {
-    const [brokers, setBrokers] = useState<Broker[]>([]);
+    const [brokers, setBrokers] = useState<Broker[]>(customBrokers as Broker[]);
+    const [system, setSystem] = useState<Broker[]>(systemBrokers as Broker[]);
     const [currentBroker, setCurrentBroker] = useState<Broker>(initialValues as Broker);
 
     const deleteBroker = (id: string) => {
@@ -31,7 +35,7 @@ export const BrokerProvider = ({ children }: { children: ReactNode }) => {
     };
 
     return (
-        <BrokerContext.Provider value={{ brokers, setBrokers, currentBroker, setCurrentBroker, deleteBroker }}>
+        <BrokerContext.Provider value={{ brokers, setBrokers, currentBroker, setCurrentBroker, deleteBroker, system, setSystem }}>
             {children}
         </BrokerContext.Provider>
     );

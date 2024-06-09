@@ -1,17 +1,31 @@
 import React from 'react'
 import BrokerList from '../BrokerList'
-import { Center, Space, Stack, Text } from '@mantine/core'
+import { Button, Center, Space, Stack } from '@mantine/core'
 import Link from 'next/link'
 import { BrokerCreateForm } from '../BrokerCreateForm'
+import { IconArrowLeft, IconArrowRight } from '@tabler/icons-react'
 
 const SampleBrokerPage: React.FC = () => {
     return (
         <Stack>
-            <Center><Text>Broker List</Text></Center>
             <Center>
-                <Link href="/dashboard/matrix-engine/custom-brokers">Go to a Broker lab</Link>
+                <Link href="/dashboard/matrix-engine/custom-brokers">
+                    <Button
+                        variant="light"
+                        leftSection={<IconArrowLeft size={14} />}
+                    >
+                        Go to a Broker lab
+                    </Button>
+                </Link>
                 <Space w="md" />
-                <Link href="/dashboard/matrix-engine/custom-brokers/broker-test">Go to a Testing Page</Link>
+                <Link href="/dashboard/matrix-engine/custom-brokers/broker-test">
+                    <Button
+                        variant="light"
+                        rightSection={<IconArrowRight size={14} />}
+                    >
+                        Go to a Testing Page
+                    </Button>
+                </Link>
             </Center>
             <BrokerCreateForm />
             <BrokerList user={false} />

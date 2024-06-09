@@ -10,7 +10,7 @@ import { activeUserAtom } from '@/context/atoms/userAtoms';
 import { activeChatMessagesArrayAtom, activeChatIdAtom } from "@/app/samples/ai-tests/shared/atoms/chatAtoms";
 import { MessageEntry } from "@/types";
 import AssistantMessage from "@/components/AiChat/Response/AssistantMessage";
-import UserMessage from "@/components/AiChat/Response/extra/UserMessage";
+import UserMessage from "@/components/Abstain/extra/UserMessage";
 
 interface AmeMenuProps {
     children: ReactNode;

@@ -19,7 +19,7 @@ const ChatLayout = ({children}: { children: React.ReactNode }) => {
 
     useEffect(() => {
         if (activeUser) {
-            memoizedSetSidebarContent(<ChatSidebar user_id={activeUser.id}/>);
+            memoizedSetSidebarContent(<ChatSidebar />);
             memoizedToggleAside("full");
         } else {
         }

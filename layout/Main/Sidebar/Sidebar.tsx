@@ -65,7 +65,7 @@ export const Sidebar = ({ state, title }: SidebarProps) => {
                         </AmeActionIcon>
                     </Group>
                 )}
-                <div style={{marginLeft: '4px !important'}}>
+                <div style={{marginLeft: '24px'}}>
                     {title && <h3>{title}</h3>}
                 </div>
                 <Stack mt="0" gap="xs" align="stretch">

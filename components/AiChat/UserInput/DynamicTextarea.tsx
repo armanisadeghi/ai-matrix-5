@@ -1,14 +1,21 @@
+// chat-app/nice-working/DynamicTextarea.tsx
+
 import React, { forwardRef, useState } from 'react';
-import { Textarea, ActionIcon, Group, Box, Grid, Slider } from '@mantine/core';
+import { Textarea, ActionIcon, Group, Box, FileButton } from '@mantine/core';
 import { MdPermMedia } from "react-icons/md";
 import { RiDeleteBin3Line } from "react-icons/ri";
 import { FaExpandArrowsAlt } from "react-icons/fa";
 import styles from './DynamicTextarea.module.css';
-import { IoSettingsOutline } from "react-icons/io5";
 import { useDynamicTextArea } from './useDynamicTextarea';
 import { useHandleSubmitMessage } from './handleSubmitMessage';
-import useKeyDownHandler from "@/components/AiChat/input/useKeyDownHandler";
+import useKeyDownHandler from "@/components/AiChat/UserInput/useKeyDownHandler";
 import StreamOpenai from '../../../app/samples/chats/hooks/openAiStream';
+import ResponsiveSlider from '@/components/AiChat/UserInput/settings/MatrixSlider/ResponsiveSlider';
+import SimpleChatSettingsModal from "./settings/SimpleChatSettingsModal";
+import { quickChatSettingsAtom } from "@/app/samples/ai-tests/shared/atoms/settingsAtoms";
+import { useRecoilValue } from "recoil";
+import useFileUpload from "@/app/samples/ai-tests/shared/hooks/useFileUpload";
+import { RiSettings2Line } from "react-icons/ri";
 
 interface DynamicTextareaProps {
     systemText: string;
@@ -22,9 +29,19 @@ const DynamicTextarea = forwardRef<HTMLDivElement, DynamicTextareaProps>((
     const { handleSubmitMessage, streamTrigger, setStreamTrigger } = useHandleSubmitMessage(handleInputChange);
     const { collapsed, isFocused, textareaRef, handleToggle, handleBoxClick } = useDynamicTextArea(() => handleSubmitMessage(textareaRef));
     const handleKeyDown = useKeyDownHandler((e) => handleSubmitMessage(textareaRef));
+    const aiSettings = useRecoilValue(quickChatSettingsAtom);
+    const handleFileUpload = useFileUpload();
 
-    const handleUpload = () => {
-        // Placeholder for file upload logic
+    const [settingsModalOpened, setSettingsModalOpened] = useState(false);
+
+
+
+    const openSettingsModal = () => {
+        setSettingsModalOpened(true);
+    };
+
+    const closeSettingsModal = () => {
+        setSettingsModalOpened(false);
     };
 
     const handleDelete = () => {
@@ -40,22 +57,33 @@ const DynamicTextarea = forwardRef<HTMLDivElement, DynamicTextareaProps>((
             <Box className={`${styles.dynamicTextareaContainer} ${isFocused ? styles.focused : ''}`}
                  onClick={handleBoxClick} tabIndex={-1}>
                 <Group justify='space-between' style={{ width: '100%', alignItems: 'center' }}>
-                    <div style={{ fontSize: '0.75rem', fontWeight: 'normal', color: '#909090', userSelect: 'none' }}>
+                    <div style={{ fontSize: '0.7rem', fontWeight: 'normal', color: '#909090', userSelect: 'none' }}>
                         {systemText}
                     </div>
                     <div>
-                        <ActionIcon size="md" variant="transparent" style={{ color: '#909090' }}>
-                            <IoSettingsOutline />
+                    <ActionIcon.Group>
+                        <ActionIcon size="sm" variant="transparent" onClick={openSettingsModal} style={{ color: '#909090' }}>
+                            <RiSettings2Line />
                         </ActionIcon>
-                        <ActionIcon size="sm" variant="transparent" onClick={handleUpload} style={{ color: '#909090' }}>
+                        <FileButton onChange={handleFileUpload} accept="*/*">
+                            {(props) => (
+                                <ActionIcon
+                                    size="sm"
+                                    variant="transparent"
+                                    {...props}
+                                    style={{ color: '#909090' }}
+                                >
                             <MdPermMedia />
                         </ActionIcon>
+                            )}
+                        </FileButton>
                         <ActionIcon size="sm" variant="transparent" onClick={handleDelete} style={{ color: '#909090' }}>
                             <RiDeleteBin3Line />
                         </ActionIcon>
                         <ActionIcon size="sm" variant="transparent" onClick={handleToggle} style={{ color: '#909090' }}>
                             <FaExpandArrowsAlt />
                         </ActionIcon>
+                    </ActionIcon.Group>
                     </div>
                 </Group>
                 <Textarea
@@ -72,30 +100,10 @@ const DynamicTextarea = forwardRef<HTMLDivElement, DynamicTextareaProps>((
                     onKeyDown={handleKeyDown}
                 />
             </Box>
-            <div style={{ height: '1px', marginTop: '10px', alignItems: 'center' }}>
-                <Grid>
-                    <Grid.Col span={1}></Grid.Col>
-                    <Grid.Col span={10}>
-                        <Slider
-                            color="gray"
-                            size="xs"
-                            min={0}
-                            max={10}
-                            marks={[
-                                { value: 0, label: 'Matrix AI' },
-                                { value: 2, label: 'GPT-4o' },
-                                { value: 4, label: 'Conductor' },
-                                { value: 6, label: 'Lattice' },
-                                { value: 8, label: 'Cluster' },
-                                { value: 10, label: 'Hypercluster' },
-                            ]}
-                        />
-                    </Grid.Col>
-                    <Grid.Col span={1}></Grid.Col>
-                </Grid>
-            </div>
+            <ResponsiveSlider />
             <div style={{ height: '185px' }}></div>
             {streamTrigger && <StreamOpenai trigger={streamTrigger} onComplete={handleStreamComplete} />}
+            <SimpleChatSettingsModal opened={settingsModalOpened} onClose={closeSettingsModal} />
         </div>
     );
 });

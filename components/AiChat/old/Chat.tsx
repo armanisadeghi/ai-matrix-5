@@ -7,7 +7,7 @@ import { useChat } from "@/context/chatContext";
 import { eRoleType, iMessage } from "@/utils/types";
 import { Container, Paper, Space } from '@mantine/core';
 import { useSocketManager } from '@/lib/socket';
-import ChatSettings from '@/app/samples/ai-tests/chat-app/components/settings/ChatSettings';
+import ChatSettings from '@/components/AiChat/UserInput/settings/ChatSettings';
 
 export interface SettingsProps {
     aiPreferencesMain: string;

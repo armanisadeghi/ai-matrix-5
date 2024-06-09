@@ -4,7 +4,7 @@
 
 import React from 'react';
 import ChatInput from './components/ChatInput';
-import ChatSettings from '@/app/samples/ai-tests/chat-app/components/settings/ChatSettings';
+import ChatSettings from '@/components/AiChat/UserInput/settings/ChatSettings';
 import ChatResponse from './components/ChatResponse';
 import ChatHistory from '@/app/samples/ai-tests/shared/sidebar/ChatHistory';
 import AiResponseForm from '@/app/samples/ai-tests/chat-app/components/dynamic-inputs/ChatForm';

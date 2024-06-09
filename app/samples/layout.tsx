@@ -13,6 +13,7 @@ import { HeaderProvider } from "@/context/HeaderContext";
 import { FooterProvider } from "@/context/FooterContext";
 import ErrorBoundary from "@/components/ErrorManagement/ErrorBoundry";
 import { PresetType } from "@/context/atoms/layoutAtoms";
+import { NavbarProvider } from "@/context/NavbarContext";
 
 type Props = {
     children: ReactNode;
@@ -26,11 +27,10 @@ const LayoutContent: React.FC = () => {
     useEffect(() => {
         if (activeUserLoadable.state === 'hasValue') {
             const user = activeUserLoadable.contents;
-            console.log('app/samples/layout.tsx - Active user:', user);
 
             if (user) {
                 setActiveUser(user);
-                console.log('app/samples/layout.tsx After setActiveUser - Active user atom:', user);
+                console.log('/samples/layout.tsx After setActiveUser - Active user atom:', user);
             }
         }
     }, [activeUserLoadable, setActiveUser]);
@@ -41,22 +41,27 @@ const LayoutContent: React.FC = () => {
     return <div>Active user loaded</div>;
 };
 
-function Layout({ children, preset }: Props) {
+function Layout({
+                    children,
+                    preset
+                }: Props) {
     return (
         <ErrorBoundary>
             <RecoilRoot>
                 <React.Suspense fallback={<div>Loading...</div>}>
-                    <LayoutProvider initialNavbarState="compact">
-                        <SidebarProvider initialAsideState="icons" initialTitle="Sample Pages">
-                            <HeaderProvider initialState="medium">
-                                <FooterProvider initialState="hidden">
-                                    <DynamicSocketProvider>
-                                        <LayoutContent />
-                                        <MainLayout>{children}</MainLayout>
-                                    </DynamicSocketProvider>
-                                </FooterProvider>
-                            </HeaderProvider>
-                        </SidebarProvider>
+                    <LayoutProvider initialNavbarState="icons">
+                        <NavbarProvider initialState="icons">
+                            <SidebarProvider initialState="icons">
+                                <HeaderProvider initialState="medium">
+                                    <FooterProvider initialState="hidden">
+                                        <LayoutContent/>
+                                        <DynamicSocketProvider>
+                                            <MainLayout>{children}</MainLayout>
+                                        </DynamicSocketProvider>
+                                    </FooterProvider>
+                                </HeaderProvider>
+                            </SidebarProvider>
+                        </NavbarProvider>
                     </LayoutProvider>
                 </React.Suspense>
             </RecoilRoot>

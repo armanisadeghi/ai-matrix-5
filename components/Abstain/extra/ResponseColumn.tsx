@@ -2,8 +2,8 @@
 
 import React from 'react';
 import ResponseTextArea from './ResponseTextArea';
-import UserMessagePaper from '../UserMessagePaper';
-import styles from "../chat.module.css";
+import UserMessagePaper from '../../AiChat/Response/UserMessagePaper';
+import styles from "../../AiChat/Response/chat.module.css";
 
 interface ResponseColumnProps {
     messages: { userMessage: string; response: string }[];

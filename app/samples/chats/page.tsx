@@ -1,8 +1,8 @@
 // ai-chatbot/ChatsPage.tsx
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Burger } from '@mantine/core';
-import DynamicTextarea from '@/components/AiChat/input/DynamicTextarea';
+import DynamicTextarea from '@/components/AiChat/UserInput/DynamicTextarea';
 import ResponseArea from '@/components/AiChat/Response/ResponseArea';
 import useChatLogic from './hooks/useChatLogic';
 
@@ -18,9 +18,37 @@ const ChatsPage = () => {
         isSmallScreen,
     } = useChatLogic();
 
+    const [containerHeight, setContainerHeight] = useState('96%');
+
+    useEffect(() => {
+        const handleResize = () => {
+            const height = window.innerHeight;
+            if (height > 1500) {
+                setContainerHeight('95.5%');
+            } else if (height > 1300) {
+                setContainerHeight('96%');
+            } else if (height > 1100) {
+                setContainerHeight('96.5%');
+            } else if (height > 800) {
+                setContainerHeight('97%');
+            } else if (height > 600) {
+                setContainerHeight('97.5%');
+            } else {
+                setContainerHeight('98%');
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+        handleResize();
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
     return (
         <>
-            <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', height: containerHeight }}>
 
                 <ResponseArea bottomPadding={bottomPadding} />
 
@@ -33,11 +61,6 @@ const ChatsPage = () => {
                     //handleSendMessage={handleSendMessage} // Removed to test Atoms
                 />
             </div>
-            {isSmallScreen && (
-                <div style={{ position: 'fixed', top: '0px', left: '10px', zIndex: 1000}}>
-                    <Burger opened={opened} onClick={() => setOpened((o) => !o)} />
-                </div>
-            )}
         </>
     );
 };

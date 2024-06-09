@@ -6,7 +6,8 @@ import { LiaEditSolid } from "react-icons/lia";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import styles from "./chat.module.css";
-import renderers from '@/components/AiChat/Response/markdown/renderers';
+import renderers from './markdown/renderers';
+import { GrFormEdit } from "react-icons/gr";
 
 const UserMessagePaper: React.FC<{ text: string }> = ({ text }) => {
     return (
@@ -21,6 +22,7 @@ const UserMessagePaper: React.FC<{ text: string }> = ({ text }) => {
                         </ReactMarkdown>
 
 
+
                         <ActionIcon
                             className={styles.actionIcon}
                             variant="transparent"
@@ -28,7 +30,7 @@ const UserMessagePaper: React.FC<{ text: string }> = ({ text }) => {
                             size="sm"
                             aria-label="Edit Message"
                         >
-                            <LiaEditSolid />
+                            <GrFormEdit />
                         </ActionIcon>
                     </Text>
                 </Grid.Col>
