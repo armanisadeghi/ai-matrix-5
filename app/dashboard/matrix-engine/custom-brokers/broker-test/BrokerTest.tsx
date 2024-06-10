@@ -3,14 +3,15 @@ import React, { useEffect, useState } from 'react'
 import { Button, Container, Grid, Paper, Space } from '@mantine/core'
 import Link from 'next/link';
 import { BrokerMultiSelect } from './BrokerMultiselect';
-import { useBroker } from '@/context/brokerContext';
 import { IconArrowLeft } from '@tabler/icons-react';
 import { BrokerFormComponent } from './BrokerFormComponent';
+import { brokersAtom } from '@/context/atoms/brokerAtoms';
+import { useRecoilValue } from 'recoil';
 
 const BrokerTest = () => {
     const [value, setValue] = useState<string[]>([]);
-    const brokers = [...useBroker().system, ...useBroker().brokers];
     const [brokerId, setBrokerId] = useState<string[]>([]);
+    const brokers = useRecoilValue(brokersAtom);
 
     useEffect(() => {
         setBrokerId(brokers.filter((broker) => value.includes(broker.name)).map(b => b.id));

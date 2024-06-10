@@ -1,6 +1,6 @@
 "use client";
 import { Broker, BrokerContextValue, Component } from '@/types/broker';
-import React, { ReactNode, useContext, useEffect, useState } from "react";
+import React, { ReactNode, useContext, useState } from "react";
 import { customBrokers, systemBrokers } from '../app/data/fake-data/fake-brokers';
 
 export const BrokerContext = React.createContext<BrokerContextValue>({

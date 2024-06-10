@@ -3,7 +3,7 @@ import React from 'react';
 import { Pill, ActionIcon, Group, Paper, Title, Button, Card, Stack, Text, Badge } from '@mantine/core';
 import { IconTrash, IconEdit } from '@tabler/icons-react';
 import { Broker } from '@/types/broker';
-import { useBroker } from '@/context/brokerContext';
+import { createBrokerManager } from '@/services/brokerService';
 
 interface BrokerListItemProps {
     broker: Broker;
@@ -11,10 +11,17 @@ interface BrokerListItemProps {
 }
 
 const BrokerListItem = ({ broker, user }: BrokerListItemProps) => {
-    const { deleteBroker, setCurrentBroker } = useBroker();
+    const brokerManager = createBrokerManager();
 
+    const handleDelete = async () => {
+        await brokerManager.deleteBroker(broker.id);
+    };
+
+    const handleEdit = () => {
+        brokerManager.setCurrentBroker(broker)
+    }
     return (
-        <Card radius="md" withBorder p="xs" w="100%" onClick={() => setCurrentBroker(broker)} onMouseEnter={(e) => (e.currentTarget.style.border = '1px solid gray')}
+        <Card radius="md" withBorder p="xs" w="100%" onClick={handleEdit} onMouseEnter={(e) => (e.currentTarget.style.border = '1px solid gray')}
             onMouseLeave={(e) => (e.currentTarget.style.border = '')}
             style={{ transition: 'border-color 0.3s ease' }}>
             <Group justify='space-between' align='flex-start'>
@@ -45,7 +52,7 @@ const BrokerListItem = ({ broker, user }: BrokerListItemProps) => {
                 </Group>
                 {user === false && broker.id.split('-')[0] === 'custom' &&
                     <Group justify="flex-end">
-                        <ActionIcon onClick={() => deleteBroker(broker.id)}>
+                        <ActionIcon onClick={handleDelete}>
                             <IconTrash size={14} />
                         </ActionIcon>
                     </Group>

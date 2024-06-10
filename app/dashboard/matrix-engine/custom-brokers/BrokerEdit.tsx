@@ -9,15 +9,17 @@ import { Button, CheckboxGroup, Fieldset, Paper, Space, Stack, Switch, TextInput
 import BrokerComponent from './BrokerComponent';
 import { IconPlus } from '@tabler/icons-react';
 import { BrokerSizeSlider } from '@/components/Brokers/BrokerSizeSlider';
-import { useBroker } from '@/context/brokerContext';
-import { uuid } from 'uuidv4';
 import { Component } from '@/types/broker';
+import { createBrokerManager } from '@/services/brokerService';
+import { currentBrokerAtom } from '../../../../context/atoms/brokerAtoms';
+import { useRecoilValue } from 'recoil';
 
 export const BrokerEdit = ({ setCurrentComponent, currentComponent }: BrokerFormProps) => {
     const [imageUploaded, setImageUploaded] = useState(false);
     const [imageSrc, setImageSrc] = useState('');
     const [uploadedImage, setUploadedImage] = useState<File | null>(null);
-    const { setCurrentBroker } = useBroker();
+    const currentBrokerAtomValue = useRecoilValue(currentBrokerAtom);
+    const brokerManager = createBrokerManager();
 
 
     useEffect(() => {
@@ -31,6 +33,14 @@ export const BrokerEdit = ({ setCurrentComponent, currentComponent }: BrokerForm
     const handleImageUpload = (file: File | null) => {
         setImageUploaded(true);
         setUploadedImage(file);
+    };
+
+    const handleUpdate = () => {
+        const updatedBroker = {
+            ...currentBrokerAtomValue,
+            ...currentComponent,
+        }
+        brokerManager.updateBroker(updatedBroker);
     };
 
     useEffect(() => {
@@ -73,9 +83,7 @@ export const BrokerEdit = ({ setCurrentComponent, currentComponent }: BrokerForm
                     <BrokerSizeSlider label="Size" onChange={(e) => setCurrentComponent((prev: Component) => ({ ...prev, size: e as any }))} />
                 </Fieldset>
                 <Space h="sm" />
-                <Button variant="primary" w="100%" onClick={() => {
-                    setCurrentBroker((prev) => ({ ...prev, component: { ...currentComponent, componentId: uuid() } }));
-                }}>
+                <Button variant="primary" w="100%" onClick={handleUpdate}>
                     Add Component To Broker
                 </Button>
             </Grid.Col>
