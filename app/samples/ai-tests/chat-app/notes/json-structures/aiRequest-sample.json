@@ -1,0 +1,161 @@
+{
+    "aiRequest": {
+        "metadata": {
+            "requestId": "0b9728d7-a0eb-407c-9519-b657240f0ec3",
+            "socketEvent": "matrix_chat",
+            "eventTask": "simple_chat",
+            "index": 1,
+            "timestamp": "2024-05-25T12:00:00Z",
+            "source": "simpleChat",
+            "channel": "text"
+        },
+        "user": {
+            "id": "ab19aaff-e0cc-49a7-9570-d296f9d6a9fb",
+            "token": "96822df4-a3de-45f4-befa-512226614005"
+        },
+        "recipe": {
+            "id": "48ccae16-1864-4735-84ba-414e4e30b201",
+            "name": "Blog writer extraordinaire",
+            "tags": [],
+            "description": "Writes amazing blog articles and so much more",
+            "permissions": {},
+            "messages": [],
+            "callParams": {},
+            "postParams": {},
+            "sampleOutput": ""
+        },
+        "chatData": {
+            "id": "5d046884-3cf5-4d18-a9b9-468ff2b86118",
+            "currentMessage": {
+                "promptMessage": {
+                    "index": 2,
+                    "roleType": "user",
+                    "message": "Can you help me with travel tips?"
+                },
+                "formResponses": [
+                    {
+                        "index": 0,
+                        "question": "What type of travel plans are you looking for?",
+                        "response": "Information on things to do"
+                    }
+                ],
+                "customInputs": [
+                    {
+                        "index": 0,
+                        "inputBroker": "7610e3ba-f2a3-4de0-9497-d21af234bfa7",
+                        "inputValue": "Some user input for this question"
+                    }
+                ],
+                "chatHistory": [
+                    {
+                        "index": 0,
+                        "roleType": "assistant",
+                        "message": "Sure, I can help you with that. What do you need help with?"
+                    },
+                    {
+                        "index": 1,
+                        "roleType": "user",
+                        "message": "I'm taking my kids to New York. What are some fun things to do there?"
+                    }
+                ],
+                "messages": [
+                    {
+                        "index": 0,
+                        "roleType": "system",
+                        "text": "The chat is ready."
+                    },
+                    {
+                        "index": 1,
+                        "roleType": "user",
+                        "text": "Hi."
+                    },
+
+                    {
+                        "index": 2,
+                        "roleType": "assistant",
+                        "text": "Hello. How are you?"
+                    },
+                    {
+                        "index": 3,
+                        "roleType": "user",
+                        "text": "I'm great. When will you be here?"
+                    },
+                    {
+                        "index": 4,
+                        "roleType": "assistant",
+                        "text": "I'm only 5 minutes away."
+                    }
+                ],
+                "requestSettings": {
+                    "quickChatSettings": {
+                        "aiPreferencesMain": "default",
+                        "aiPreferencesSecond": "assistant",
+                        "makeSmallTalk": true,
+                        "quickAnswer": false,
+                        "improveQuestions": true,
+                        "submitOnEnter": true
+                    },
+                    "aiModelSettings": {
+                        "id": "",
+                        "model": "",
+                        "commonName": "",
+                        "class": "",
+                        "type": "",
+                        "api": {
+                            "provider": "",
+                            "endpoint": ""
+                        },
+                        "limitations": {
+                            "contextWindow": 0,
+                            "maxTokens": 0,
+                            "capabilities": []
+                        },
+                        "controls": {}
+                    },
+                    "controlSettings": {
+                        "id": "",
+                        "componentType": "slider",
+                        "label": "Temperature",
+                        "helpText": "",
+                        "type": "float",
+                        "value": 0.0,
+                        "min": 0.0,
+                        "max": 0.0,
+                        "step": 0.01,
+                        "choices": [
+                            {
+                                "id": "",
+                                "label": "",
+                                "value": false
+                            }
+                        ]
+                    }
+                },
+                "pageSettings": {
+                    "fields": "removed for brevity"
+                },
+                "userSettings": {
+                    "fields": "removed for brevity"
+                },
+                "matrixSettings": {
+                    "fields": "removed for brevity"
+                },
+                "clientSettings": {
+                    "fields": "removed for brevity"
+                },
+                "agencySettings": {
+                    "fields": "removed for brevity"
+                },
+                "variablesSettings": {
+                    "fields": "removed for brevity"
+                },
+                "responseSettings": {
+                    "fields": "removed for brevity"
+                },
+                "brokerSettings": {
+                    "fields": "removed for brevity"
+                }
+            }
+        }
+    }
+}

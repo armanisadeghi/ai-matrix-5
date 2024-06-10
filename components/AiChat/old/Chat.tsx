@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import ResponseSection from "@/app/chat/response/ResponseSection";
-import ChatFormInput from "@/app/chat/input/ChatFormInput";
+import ResponseSection from "@/app/samples/ai-tests/response/ResponseSection";
+import ChatFormInput from "@/app/samples/ai-tests/chat/input/ChatFormInput";
 import { useChat } from "@/context/chatContext";
 import { eRoleType, iMessage } from "@/utils/types";
 import { Container, Paper, Space } from '@mantine/core';
 import { useSocketManager } from '@/lib/socket';
-import ChatSettings from '@/app/dashboard/intelligence/chat-app/components/settings/ChatSettings';
+import ChatSettings from '@/components/AiChat/UserInput/settings/ChatSettings';
 
 export interface SettingsProps {
     aiPreferencesMain: string;

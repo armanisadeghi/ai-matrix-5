@@ -1,0 +1,46 @@
+{
+    "chatsFields": [
+        {
+            "name": "chat_id",
+            "frontend": "chatId",
+            "data_type": "uuid",
+            "format": "uuid"
+        },
+        {
+            "name": "user_id",
+            "frontend": "userId",
+            "data_type": "uuid",
+            "format": "uuid"
+        },
+        {
+            "name": "chat_title",
+            "frontend": "chatTitle",
+            "data_type": "text",
+            "format": "text"
+        },
+        {
+            "name": "messages_array",
+            "frontend": "messagesArray",
+            "data_type": "ARRAY",
+            "format": "_jsonb"
+        },
+        {
+            "name": "created_at",
+            "frontend": "createdAt",
+            "data_type": "timestamp with time zone",
+            "format": "timestamptz"
+        },
+        {
+            "name": "last_edited",
+            "frontend": "lastEdited",
+            "data_type": "timestamp without time zone",
+            "format": "timestamp"
+        },
+        {
+            "name": "metadata",
+            "frontend": "metadata",
+            "data_type": "jsonb",
+            "format": "jsonb"
+        }
+    ]
+}

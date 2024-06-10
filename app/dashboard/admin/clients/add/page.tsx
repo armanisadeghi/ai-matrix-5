@@ -1,19 +1,20 @@
 "use client";
 
-import { Box, Title } from "@mantine/core";
+import { Box } from "@mantine/core";
 import { ClientsForm } from "@/components";
+import AmeTitle from "@/ui/typography/AmeTitle";
 
 const NewClientsPage = () => {
-  return (
-    <>
-      <Box>
-        <Title order={3} mb="md">
-          Add a new client
-        </Title>
-        <ClientsForm showAgency />
-      </Box>
-    </>
-  );
+    return (
+        <>
+            <Box>
+                <AmeTitle as="page-header" mb="lg">
+                    Add new client
+                </AmeTitle>
+                <ClientsForm showAgency />
+            </Box>
+        </>
+    );
 };
 
 export default NewClientsPage;

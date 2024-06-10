@@ -5,6 +5,8 @@ import { IconPlus, IconTableExport } from "@tabler/icons-react";
 import { ClientsTable } from "@/components";
 import Link from "next/link";
 import clients from "../../../data/clients.json";
+import AmeSearchInput from "@/ui/input/AmeSearchInput";
+import { PATH_ADMIN } from "@/routes";
 
 const ClientsPage = () => {
     return (
@@ -14,12 +16,12 @@ const ClientsPage = () => {
                     Clients
                 </Title>
                 <Flex justify="space-between" mb="md">
-                    <TextInput placeholder="search" />
+                    <AmeSearchInput placeholder="search" />
                     <Group gap="xs">
                         <Button variant="default" leftSection={<IconTableExport />}>
                             Export
                         </Button>
-                        <Button leftSection={<IconPlus />} component={Link} href="/agency/clients/add">
+                        <Button leftSection={<IconPlus />} component={Link} href={PATH_ADMIN.clients.add}>
                             Add client
                         </Button>
                     </Group>

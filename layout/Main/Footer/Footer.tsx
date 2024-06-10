@@ -1,6 +1,6 @@
 "use client";
 import { ActionIcon, ActionIconProps, AppShell, Box, Group, Stack, Title } from "@mantine/core";
-import { IconArrowBarToDown, IconArrowBarToUp } from "@tabler/icons-react";
+import { IconArrowBarToDown, IconArrowBarToUp, IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { useFooter } from "@/context/FooterContext";
 
 const actionProps: ActionIconProps = {
@@ -20,10 +20,10 @@ export const Footer = ({ state }: FooterProps) => {
                 {state === "compact" && (
                     <Group justify="flex-end" gap="xs">
                         <ActionIcon onClick={handleExpand} {...actionProps}>
-                            <IconArrowBarToUp size={18} />
+                            <IconChevronUp size={18} />
                         </ActionIcon>
                         <ActionIcon onClick={handleCollapse} {...actionProps}>
-                            <IconArrowBarToDown size={18} />
+                            <IconChevronDown size={18} />
                         </ActionIcon>
                     </Group>
                 )}
@@ -31,14 +31,14 @@ export const Footer = ({ state }: FooterProps) => {
                 {state === "full" && (
                     <Group justify="flex-end" gap="xs">
                         <ActionIcon onClick={handleCollapse} {...actionProps}>
-                            <IconArrowBarToDown size={18} />
+                            <IconChevronDown size={18} />
                         </ActionIcon>
                     </Group>
                 )}
                 {state === "icons" && (
                     <Group justify="center" gap="xs">
                         <ActionIcon onClick={handleCollapse} {...actionProps}>
-                            <IconArrowBarToDown size={18} />
+                            <IconChevronDown size={18} />
                         </ActionIcon>
                     </Group>
                 )}

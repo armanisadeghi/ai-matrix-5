@@ -1,13 +1,20 @@
 "use client";
 
 import { rem, Tabs } from "@mantine/core";
-import { IconAffiliate, IconBellCog, IconMoodCog, IconSettings, IconUserCircle } from "@tabler/icons-react";
+import {
+    IconAffiliate,
+    IconBellCog,
+    IconMoodCog,
+    IconPalette,
+    IconSettings,
+    IconUserCircle,
+} from "@tabler/icons-react";
 import { ReactNode, useState } from "react";
 import { notFound, usePathname, useRouter } from "next/navigation";
 import { getActiveTab } from "@/utils/tabUtils";
 import { PATH_USER } from "@/routes";
 
-const iconStyle = { width: rem(14), height: rem(14) };
+const iconStyle = { width: rem(18), height: rem(18) };
 
 type Props = {
     children: ReactNode;
@@ -33,6 +40,9 @@ function Layout({ children }: Props) {
                 <Tabs.List mb="lg" style={{ flexWrap: "nowrap", width: "100%", overflowY: "auto" }}>
                     <Tabs.Tab value="personal" leftSection={<IconUserCircle style={iconStyle} />}>
                         Personal Information
+                    </Tabs.Tab>
+                    <Tabs.Tab value="appearance" leftSection={<IconPalette style={iconStyle} />}>
+                        Appearance
                     </Tabs.Tab>
                     <Tabs.Tab value="preferences" leftSection={<IconMoodCog style={iconStyle} />}>
                         Preferences

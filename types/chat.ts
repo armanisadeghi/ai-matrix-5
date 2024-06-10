@@ -1,4 +1,4 @@
-// chat-app/types/chat.ts
+// /types/chat.ts
 import { ReactNode } from 'react';
 import {
     AIModelSettings,
@@ -9,6 +9,81 @@ import {
     VariablesData,
     ChatSettings
 } from "./settings";
+
+
+export type ChatId = string;
+export type CreatedAt= string;
+export type UserId= string;
+export type ChatTitle= string;
+export type LastEdited= string;
+export type Metadata = Record<string, any>;
+
+export type Role = string;
+export type MessageIndex= number;
+export type MessageText= string;
+
+export interface MatrixMessage {
+    index: MessageIndex;
+    role: Role;
+    text: MessageText;
+}
+
+export interface Chat {
+    chatId: ChatId;
+    createdAt: CreatedAt;
+    userId: UserId;
+    chatTitle: ChatTitle;
+    messagesArray: MatrixMessage[];
+    lastEdited: LastEdited;
+    metadata: Metadata;
+}
+
+export type ChatSummary = {
+    chatId: string;
+    chatTitle: string;
+};
+
+export type ChatMessages = MatrixMessage[];
+
+
+export interface OaiMessage {
+    role: Role;
+    content: MessageText;
+}
+
+
+
+
+export interface MessageEntry {
+    role: string;
+    text: string;
+}
+
+export interface ChatData {
+    chatId: string;
+    chatTitle: string;
+}
+
+
+
+
+export interface OpenaiMessageEntry {
+    role: Role;
+    content: string;
+}
+
+export interface ChatMessage {
+    chatId: string | null;
+    user: string;
+    role: string;
+    message: string;
+    timestamp: Date;
+}
+
+
+
+
+
 
 export interface ChatRequest {
     eventName: string;
@@ -117,14 +192,6 @@ export interface ChatHistoryChat {
 
 
 
-export interface ChatMessage {
-    chatId: string | null;
-    user: string;
-    role: string;
-    message: string;
-    timestamp: Date;
-}
-
 // Chat Context Type
 export interface ChatContextType {
     messages: ChatMessage[];
@@ -174,5 +241,7 @@ export type Question = {
 export type RespondData = {
     questions: Question[];
 };
+
+
 
 

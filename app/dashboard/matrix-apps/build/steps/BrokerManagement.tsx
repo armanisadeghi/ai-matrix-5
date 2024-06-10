@@ -6,7 +6,7 @@ const BrokerManagement = () => {
         <div>
             <h2>Broker Management</h2>
             <p>Here, you would put your form elements or other content specific to this step.</p>
-            {/* Form elements or other interactive components */}
+            {/* Form elements or other interactive nice-working */}
         </div>
     );
 };

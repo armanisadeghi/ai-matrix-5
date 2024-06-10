@@ -1,4 +1,4 @@
-// components/ErrorManagement/ErrorBoundry.tsx
+// nice-working/ErrorManagement/ErrorBoundry.tsx
 import React, { Component, ReactNode, ErrorInfo } from 'react';
 
 interface Props {

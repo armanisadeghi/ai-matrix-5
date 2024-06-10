@@ -1,4 +1,4 @@
-// chat-app/components/response/ResponseContext.tsx
+// chat-app/nice-working/response/ResponseContext.tsx
 'use client';
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';

@@ -3,9 +3,9 @@ import dynamic from 'next/dynamic';
 import { exampleCode, cssCode, pythonCode } from '@/app/samples/code-highlight/data/exampleCode';
 
 export const componentMap: { [key: string]: React.ComponentType<any> } = {
-    AIResponse: dynamic(() => import('@/app/chat/response/AIResponse')),
+    AIResponse: dynamic(() => import('@/app/samples/ai-tests/response/AIResponse')),
     AmeMultiCodeHighlight: dynamic(() => import('@/ui/highlight/AmeMultiCodeHighlight')),
-    ChatSidebar: dynamic(() => import('@/app/dashboard/intelligence/ai-chatbot/components/sidebar/ChatSidebar')),
+    ChatSidebar: dynamic(() => import('@/app/samples/ai-tests/shared/sidebar/ChatSidebar')),
     DynamicSplitter: dynamic(() => import('@/ui/split/DynamicSplitter')),
     AmeCheckbox: dynamic(() => import('@/ui/checkbox/AmeCheckbox')),
     AmeCheckboxGroup: dynamic(() => import('@/ui/checkbox/AmeCheckboxGroup')),
@@ -19,7 +19,7 @@ export const componentMap: { [key: string]: React.ComponentType<any> } = {
     AmeSearchInput: dynamic(() => import('@/ui/input/AmeSearchInput')),
     AmePillsInput: dynamic(() => import('@/ui/pills/AmePillsInput')),
     SelectableList: dynamic(() => import('@/ui/pills/AmeSearchablePill')),
-    AmeHoverMenuChat: dynamic(() => import('@/components/AiChat/AmeChatHistoryEntry')),
+    AmeHoverMenuChat: dynamic(() => import('@/components/AiChat/Sidebar/AmeChatHistoryEntry')),
     AmeRadioCard: dynamic(() => import('@/ui/radio/AmeRadioCard')),
     AmeSelect: dynamic(() => import('@/ui/select/AmeSelect')),
     AmeSlider: dynamic(() => import('@/ui/slider/AmeSlider')),
@@ -27,7 +27,7 @@ export const componentMap: { [key: string]: React.ComponentType<any> } = {
     FormStepper: dynamic(() => import('@/ui/steps/FormStepper')),
     NotesCard: dynamic(() => import('@/components/NotesCard/NotesCard').then(mod => mod.NotesCard)),
     RichTextEditorPage: dynamic(() => import('@/components/RichTextEditor/RichTextEditorPage')),
-    AmeJsonInput: dynamic(() => import('@/app/samples/json-sample/AmeJsonInput')),
+    AmeJsonInput: dynamic(() => import('@/ui/json/AmeJsonInput')),
 };
 
 export const propDefinitions: { [key: string]: any } = {
