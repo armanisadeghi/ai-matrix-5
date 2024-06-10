@@ -70,7 +70,7 @@ export const BrokerCreateForm = () => {
                     <Text>{currentData.name}</Text>
                     <Text size='xs' c={'gray.6'}>{currentData.description}</Text>
                     <Space h="sm" />
-                    <BrokerComponent type={currentData.component.type} currentComponent={currentData.component} handleDefaultValueChange={value => setCurrentData({ ...currentData, component: { ...currentData.component, defaultValue: value } })} />
+                    <BrokerComponent currentComponent={currentData.component} type={currentData.component.type} handleDefaultValueChange={value => setCurrentData({ ...currentData, component: { ...currentData.component, defaultValue: value } })} />
                 </Fieldset>
             </Grid.Col>
         </Grid>

@@ -18,8 +18,8 @@ export function createBrokerManager() {
 
         if (error) {
             console.log('fetching fake data');
-            setBrokersAtom([...systemBrokers, ...customBrokers]);
             const data = [...systemBrokers, ...customBrokers];
+            setBrokersAtom(data);
             return data;
         }
 
@@ -39,21 +39,22 @@ export function createBrokerManager() {
 
         if (error) {
             console.log('fetching fake data');
-            setBrokersAtom([...systemBrokers, ...customBrokers, broker]);
+            const id = uuid();
+            const data = { ...broker, id: id, dataType: typeof broker.component.defaultValue };
+            setBrokersAtom([...systemBrokers, ...customBrokers, data]);
             setCurrentBrokerAtom({
-                id: uuid(),
+                id: id,
                 name: broker.name,
                 description: broker.description,
                 dataType: typeof broker.component.defaultValue,
                 component: broker.component,
             });
-
             return broker;
         }
-
-        setBrokersAtom((prevBrokers: Broker[]) => [...prevBrokers, data]);
+        const id = uuid();
+        setBrokersAtom((prevBrokers: Broker[]) => [...prevBrokers, { ...broker, id: id, dataType: typeof broker.component.defaultValue }]);
         setCurrentBrokerAtom({
-            id: uuid(),
+            id: id,
             name: broker.name,
             description: broker.description,
             dataType: typeof broker.component.defaultValue,
@@ -70,13 +71,8 @@ export function createBrokerManager() {
 
         if (error) {
             console.log('fetching fake data');
-            setBrokersAtom((prevBrokers) =>
-                prevBrokers.map((prevBroker) =>
-                    prevBroker.id === broker.id ? data : prevBroker
-                )
-            );
+            setBrokersAtom(prevBrokers => [...prevBrokers.filter((prevBroker) => prevBroker.id !== broker.id), broker]);
             setCurrentBrokerAtom(broker);
-
             return broker;
         }
 

@@ -56,7 +56,7 @@ const Brokers: React.FC = () => {
                         <Stack style={styles}>
                             <Select label="Type" description="Choose the type of component" placeholder="Choose the type of component" data={componentOptions} value={selectedOption} onChange={(option) => handleTypeSelection(option as ComponentType)} />
                             <Space h="md" />
-                            <BrokerEdit setCurrentComponent={setCurrentComponent} currentComponent={currentComponent} />
+                            <BrokerEdit />
                             <Space h="md" />
 
                         </Stack>
@@ -71,7 +71,7 @@ const Brokers: React.FC = () => {
                 </Transition>
                 <Space h="md" />
             </Stack>
-            <BrokerList user={false} />
+            <BrokerList user={true} />
         </Container>
     );
 };

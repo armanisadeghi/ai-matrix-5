@@ -28,7 +28,7 @@ const SampleBrokerPage: React.FC = () => {
                 </Link>
             </Center>
             <BrokerCreateForm />
-            <BrokerList user={false} />
+            <BrokerList user={true} />
         </Stack>
     )
 }

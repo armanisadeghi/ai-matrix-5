@@ -14,28 +14,28 @@ export const BrokerForm = () => {
 
     const handleSave = () => {
         brokerManager.createBroker(currentBroker);
-        // brokerManager.setCurrentBroker({ ...currentBroker, component: {} as Component });
+        brokerManager.setCurrentBroker({ ...currentBroker, component: {} as Component });
     };
 
     const handleEdit = () => {
-        // brokerManager.setCurrentBroker({ ...currentBroker, component: {} as Component });
+        brokerManager.setCurrentBroker({ ...currentBroker, component: {} as Component });
     };
 
     return (
         <Container>
-            {/* <SimpleGrid>
+            <SimpleGrid>
                 {currentBroker.component && <div>
-                    <BrokerComponent type={currentBroker.component.type} currentComponent={currentBroker.component} />
+                    <BrokerComponent
+                        currentComponent={currentBroker.component}
+                        type={currentBroker.component.type} />
                     <Space h="xs" />
                     <Flex justify="flex-end">
-                        (
                         <Button variant="light" onClick={handleEdit}>
                             Delete
                         </Button>
-                        )
                     </Flex>
                 </div>}
-            </SimpleGrid> */}
+            </SimpleGrid>
             <Space h="md" />
             <Button variant="primary" onClick={handleSave}>Save Broker</Button>
         </Container>

@@ -31,6 +31,10 @@ export const BrokerFormComponent = ({ brokerIds }: { brokerIds: string[] }) => {
         });
     };
 
+    const handleSubmit = () => {
+        console.log(values);
+    };
+
     return (
         <Container w='100%'>
             <Paper withBorder p='sm'>
@@ -46,7 +50,7 @@ export const BrokerFormComponent = ({ brokerIds }: { brokerIds: string[] }) => {
             </Paper>
             <Space h="sm" />
             <Flex justify="end">
-                <Button variant="outline" onClick={() => console.log(values)}>Submit</Button>
+                <Button variant="outline" onClick={handleSubmit}>Submit</Button>
             </Flex>
         </Container>
     )

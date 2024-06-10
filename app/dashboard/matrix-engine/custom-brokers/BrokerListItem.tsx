@@ -50,13 +50,11 @@ const BrokerListItem = ({ broker, user }: BrokerListItemProps) => {
                     </Text>
                     <Text size='xs' c={'gray.6'}>{broker.description}</Text>
                 </Group>
-                {user === false && broker.id.split('-')[0] === 'custom' &&
-                    <Group justify="flex-end">
-                        <ActionIcon onClick={handleDelete}>
-                            <IconTrash size={14} />
-                        </ActionIcon>
-                    </Group>
-                }
+                <Group justify="flex-end">
+                    <ActionIcon onClick={handleDelete}>
+                        <IconTrash size={14} />
+                    </ActionIcon>
+                </Group>
             </Group>
 
         </Card>
