@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { activeChatMessagesArrayAtom } from "../../ai-tests/shared/atoms/chatAtoms";
+import { activeChatMessagesArrayAtom } from "@/state/aiAtoms/chatAtoms";
 console.log('ChatDetail');
 
 

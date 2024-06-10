@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import ResponseSection from "@/app/chat/response/ResponseSection";
-import ChatFormInput from "@/app/chat/input/ChatFormInput";
+import ResponseSection from "@/app/samples/ai-tests/response/ResponseSection";
+import ChatFormInput from "@/app/samples/ai-tests/chat/input/ChatFormInput";
 import { useChat } from "@/context/chatContext";
 import { eRoleType, iMessage } from "@/utils/types";
 import { Container, Paper, Space } from '@mantine/core';

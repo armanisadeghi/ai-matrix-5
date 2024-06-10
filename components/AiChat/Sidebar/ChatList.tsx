@@ -5,8 +5,8 @@ import { Stack, Text } from '@mantine/core';
 import {
     activeChatMessagesArrayAtom, chatDetailsSelector,
     ChatSidebarListAtom,
-    chatSummariesSelector, selectedChatIdAtom, selectedChatMessagesSelector, useFetchAndStoreChatDetails
-} from "@/app/samples/ai-tests/shared/atoms/chatAtoms";
+    chatSummariesSelector, activeChatIdAtom, selectedChatMessagesSelector, useFetchAndStoreChatDetails
+} from "@/state/aiAtoms/chatAtoms";
 import AmeActionIcon from "@/ui/button/AmeActionIcon";
 import { BsFillPatchPlusFill } from "react-icons/bs";
 import { ChatSummary } from "@/types";
@@ -18,8 +18,8 @@ const ChatSidebar = () => {
     const activeUser = useRecoilValue(activeUserAtom);
     const chatSummariesLoadable = useRecoilValueLoadable(chatSummariesSelector);
     const chatDetailsLoadable = useRecoilValueLoadable(chatDetailsSelector);
-    const [selectedChatId, setSelectedChatId] = useRecoilState(selectedChatIdAtom);
-    const chatMessages = useRecoilValue(selectedChatMessagesSelector(selectedChatId || ''));
+    const [activeChatId, setSelectedChatId] = useRecoilState(activeChatIdAtom);
+    const chatMessages = useRecoilValue(selectedChatMessagesSelector(activeChatId || ''));
     const userId = activeUser?.id ?? '';
     const fetchAndStoreChatDetails = useFetchAndStoreChatDetails();
 

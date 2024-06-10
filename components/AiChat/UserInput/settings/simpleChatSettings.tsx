@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { Select } from '@mantine/core';
-import { aiPreferencesMainOptions, aiPreferencesSecondOptions } from '@/app/samples/ai-tests/shared/config/chatSettingsOptions';
+import { aiPreferencesMainOptions, aiPreferencesSecondOptions } from '@/app/samples/chats/shared/config/chatSettingsOptions';
 import AmeFieldset from '@/ui/fieldset/AmeFieldset';
 import AmeCheckbox from '@/ui/checkbox/AmeCheckbox';
 import { ChatSettings } from '../../../../types/settings';

@@ -13,10 +13,10 @@ import {
     quickAnswerAtom,
     improveQuestionsAtom,
     submitOnEnterAtom
-} from '@/app/samples/ai-tests/shared/atoms/settingsAtoms';
+} from '@/state/aiAtoms/settingsAtoms';
 import AmeFieldset from '@/ui/fieldset/AmeFieldset';
 import AmeCheckbox from '@/ui/checkbox/AmeCheckbox';
-import { aiPreferencesMainOptions, aiPreferencesSecondOptions } from "@/app/samples/ai-tests/shared/config/chatSettingsOptions";
+import { aiPreferencesMainOptions, aiPreferencesSecondOptions } from "@/app/samples/chats/shared/config/chatSettingsOptions";
 
 const SimpleChatSettingsModal: React.FC<{ opened: boolean; onClose: () => void }> = ({ opened, onClose }) => {
     const [aiPreferencesMain, setAiPreferencesMain] = useRecoilState(aiPreferencesMainAtom);

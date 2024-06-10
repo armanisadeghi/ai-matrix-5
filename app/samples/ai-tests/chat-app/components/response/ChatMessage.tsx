@@ -1,8 +1,8 @@
 // chat-app/nice-working/response/ChatMessage.tsx
 
 import { Group, Space } from '@mantine/core';
-import UserMessage from '@/app/chat/input/UserMessage';
-import AssistantMessage from '@/app/chat/response/AssistantMessage';
+import UserMessage from '@/app/samples/ai-tests/chat/input/UserMessage';
+import AssistantMessage from '@/app/samples/ai-tests/response/AssistantMessage';
 import { eRoleType, iMessage } from "@/app/samples/ai-tests/chat-app/types/types";
 
 interface ChatMessageProps {

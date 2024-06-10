@@ -2,59 +2,64 @@ import { useRecoilState, useRecoilValue, useRecoilValueLoadable } from 'recoil';
 import {
     chatSummariesSelector,
     chatDetailsSelector,
-    selectedChatIdAtom,
+    activeChatIdAtom,
     selectedChatMessagesSelector,
     useFetchAndStoreChatDetails,
     userTextInputAtom,
-    systemMessagesAtom,
-    activeChatMessagesArrayAtom
-} from '@/app/samples/ai-tests/shared/atoms/chatAtoms';
+    activeChatMessagesArrayAtom, startingMessageArrayAtom
+} from '@/state/aiAtoms/chatAtoms';
 import { activeUserAtom } from '@/context/atoms/userAtoms';
 import { useState } from 'react';
 import supabase from "@/utils/supabase/client";
 import { v4 as uuidv4 } from "uuid";
+import { MatrixMessage } from "@/types";
 
-export const useChatManager = () => {
+
+export const useChatDbAtoms = () => {
     const activeUser = useRecoilValue(activeUserAtom);
-    const [selectedChatId, setSelectedChatId] = useRecoilState(selectedChatIdAtom);
+    const [activeChatId, setSelectedChatId] = useRecoilState(activeChatIdAtom);
     const chatSummariesLoadable = useRecoilValueLoadable(chatSummariesSelector);
     const chatDetailsLoadable = useRecoilValueLoadable(chatDetailsSelector);
-    const chatMessages = useRecoilValue(selectedChatMessagesSelector(selectedChatId || ''));
+    const chatMessages = useRecoilValue(selectedChatMessagesSelector(activeChatId || ''));
     const fetchAndStoreChatDetails = useFetchAndStoreChatDetails();
 
     const [userTextInput, setUserTextInput] = useRecoilState(userTextInputAtom);
-    const [activeChatMessages, setActiveChatMessages] = useRecoilState(activeChatMessagesArrayAtom);
+    const [activeChatMessagesArray, setActiveChatMessagesArray] = useRecoilState(activeChatMessagesArrayAtom);
+
     const [newMessage, setNewMessage] = useState('');
     const [newChatTitle, setNewChatTitle] = useState('');
 
     const userId = activeUser?.id ?? '';
     const firstName = activeUser?.firstName ?? '';
-    const systemMessage = useRecoilValue(systemMessagesAtom);
-
-
+    const startingMessageArray = useRecoilValue(startingMessageArrayAtom);
 
     const handleChatSelect = async (chatId: string) => {
         setSelectedChatId(chatId);
         await fetchAndStoreChatDetails(chatId);
     };
 
-
-
-
-    const handleCreateChat = () => {
+    const handleCreateChatLocal = () => {
         setSelectedChatId(null);
         setNewChatTitle('New Chat');
         setNewMessage('');
-        setActiveChatMessages([]);
+        setActiveChatMessagesArray([]);
     };
 
+    const newUserMessageEntry: MatrixMessage = {
+        index: startingMessageArray.length,
+        role: 'user',
+        text: userTextInput,
+    };
+
+    const firstUserInputToDb = async () => {
+
+    }
+
     const addNewChatToDatabase = async () => {
-        const title = newMessage.slice(0, 20);
+        const title = userTextInput.slice(0, 20);
         const newChatId = uuidv4();
-        const initialMessages = [
-            { index: 0, text: systemMessage.text, role: systemMessage.role },
-            { index: 1, role: 'user', text: userTextInput }
-        ];
+
+        const initialMessages = [...startingMessageArray, newUserMessageEntry];
 
         const { data, error } = await supabase
             .from('chats')
@@ -76,29 +81,41 @@ export const useChatManager = () => {
         }
     };
 
-    const handleAddMessage = async () => {
-        if (!newMessage) return;
+    const addUserMessageToDb = () => {
+        if (!userTextInput) {
+            console.error('User message is empty. User Text Input Value:', userTextInput);
+            return;
+        }
+        updateMessageArray(newUserMessageEntry);
+        pushUpdatedArrayToDb();
+    }
 
-        setUserTextInput(newMessage);
+    const updateMessageArray =(newMessageEntry: MatrixMessage) => {
+        const updatedArray = [...activeChatMessagesArray, newUserMessageEntry];
+        setActiveChatMessagesArray(updatedArray);
+    }
 
-        const newMessageEntry = { index: activeChatMessages.length, role: 'user', text: newMessage };
-        const updatedMessagesArray = [...activeChatMessages, newMessageEntry];
-        setActiveChatMessages(updatedMessagesArray);
+    const pushUpdatedArrayToDb = async () => {
+        console.log('Pushing updated array to database:', activeChatMessagesArray);
+        if (!activeChatId && !userTextInput) {
+            throw new Error('No Chat ID and No User Text Input. Cannot add message to database.');
+        }
 
-        if (!selectedChatId) {
+        if (!activeChatId && userTextInput) {
             await addNewChatToDatabase();
+
         } else {
             const { data, error } = await supabase
                 .from('chats')
-                .update({ messages_array: updatedMessagesArray, last_edited: new Date() })
-                .match({ chat_id: selectedChatId })
+                .update({ messages_array: activeChatMessagesArray, last_edited: new Date() })
+                .match({ chat_id: activeChatId })
                 .select();
 
             if (error) {
                 console.error('Error adding message:', error);
             } else {
                 console.log('Message added:', data);
-                fetchAndStoreChatDetails(selectedChatId);
+                fetchAndStoreChatDetails(activeChatId);
             }
         }
 
@@ -107,24 +124,23 @@ export const useChatManager = () => {
 
     return {
         activeUser,
-        selectedChatId,
+        activeChatId,
         setSelectedChatId,
         chatSummariesLoadable,
         chatDetailsLoadable,
         chatMessages,
         userTextInput,
         setUserTextInput,
-        activeChatMessages,
-        setActiveChatMessages,
         newMessage,
         setNewMessage,
         newChatTitle,
         setNewChatTitle,
         userId,
         firstName,
-        systemMessage,
         handleChatSelect,
-        handleCreateChat,
-        handleAddMessage,
+        addNewChatToDatabase,
+        handleCreateChatLocal,
+        addUserMessageToDb,
+        pushUpdatedArrayToDb,
     };
 };

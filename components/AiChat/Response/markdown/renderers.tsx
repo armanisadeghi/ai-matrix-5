@@ -1,7 +1,13 @@
 // renderers.tsx
-import React from 'react';
+import React, { ReactNode } from 'react';
 import AmeCodeHighlight from "@/ui/highlight/AmeCodeHighlight";
 import { CustomTable, CustomTableHead, CustomTableBody, CustomTableRow, CustomTableCell, CustomTableHeaderCell } from './CustomTable';
+
+const isBlockLevelElement = (element: ReactNode) => {
+    if (!React.isValidElement(element)) return false;
+    const blockElements = ['table', 'thead', 'tbody', 'tr', 'th', 'td', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'code', 'pre', 'div'];
+    return blockElements.includes(element.type as string);
+};
 
 const renderers = {
     code: ({ className, children }) => {
@@ -28,7 +34,15 @@ const renderers = {
     h4: ({ children }) => <h4>{children}</h4>,
     h5: ({ children }) => <h5>{children}</h5>,
     h6: ({ children }) => <h6>{children}</h6>,
-    p: ({ children }) => <p>{children}</p>,
+    p: ({ children }) => {
+        const childrenArray = React.Children.toArray(children);
+        const hasBlockChild = childrenArray.some(isBlockLevelElement);
+
+        if (hasBlockChild) {
+            return <div>{children}</div>;
+        }
+        return <p>{children}</p>;
+    },
 };
 
 export default renderers;

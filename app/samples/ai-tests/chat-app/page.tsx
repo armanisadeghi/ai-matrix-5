@@ -7,7 +7,7 @@ import ChatInput from './components/ChatInput';
 import ChatSettings from '@/components/AiChat/UserInput/settings/ChatSettings';
 import ChatResponse from './components/ChatResponse';
 import ChatHistory from '@/app/samples/ai-tests/shared/sidebar/ChatHistory';
-import AiResponseForm from '@/app/samples/ai-tests/chat-app/components/dynamic-inputs/ChatForm';
+import AiResponseForm from '@/app/samples/ai-tests/chat-app/components/dynamic-forms/ChatForm';
 import { useAiResponse, AiResponseProvider } from '@/context/AiContext/AiResponseContext';
 
 const Page: React.FC = () => {

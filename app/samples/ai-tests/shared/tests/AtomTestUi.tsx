@@ -10,7 +10,7 @@ import {
     systemMessagesAtom,
     chatTitlesAndIdsAtom,
     allChatsAtom
-} from "../atoms/chatAtoms";
+} from "@/state/aiAtoms/chatAtoms";
 import { activeUserAtom } from "@/context/atoms/userAtoms";
 
 

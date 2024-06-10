@@ -1,4 +1,4 @@
-// context/atoms/layoutAtoms.ts
+// context/aiAtoms/layoutAtoms.ts
 import { atom, selector, waitForAll } from 'recoil';
 
 export type PresetType =

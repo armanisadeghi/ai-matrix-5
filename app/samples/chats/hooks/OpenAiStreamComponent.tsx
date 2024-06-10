@@ -2,11 +2,12 @@ import React, { useEffect } from 'react';
 import { MessageEntry, Role } from '@/types/chat';
 import { OpenAiStream } from "@/app/api/openai/route";
 import { useRecoilState } from "recoil";
-import { activeChatMessagesArrayAtom, assistantTextStreamAtom } from "@/app/samples/ai-tests/shared/atoms/chatAtoms";
+import { activeChatMessagesArrayAtom, assistantTextStreamAtom } from "@/state/aiAtoms/chatAtoms";
 
 const StreamOpenai: React.FC = () => {
     const [assistantTextStream, setAssistantTextStream] = useRecoilState(assistantTextStreamAtom);
     const [activeChatMessagesArray, setActiveChatMessagesArray] = useRecoilState(activeChatMessagesArrayAtom);
+    console.log('app/samples/chats/hooks/OpenAiStreamComponent.tsx StreamOpenai activeChatMessagesArray:', activeChatMessagesArray);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -19,7 +20,9 @@ const StreamOpenai: React.FC = () => {
                 let assistantMessage: string = '';
 
                 await OpenAiStream(messages, (chunk) => {
+                    console.log('Chunk:', chunk);
                     assistantMessage += chunk;
+                    console.log('Assistant message:', assistantMessage);
                     setAssistantTextStream(assistantMessage);
                 });
 

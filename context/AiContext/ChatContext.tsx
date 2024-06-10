@@ -3,7 +3,7 @@
 
 import React, { createContext, useContext, useState } from 'react';
 import { ChatRequest, ChatContextProps, ChatProviderProps } from '@/types/chat';
-import { defaultChatRequest } from '@/app/samples/ai-tests/shared/config/chatDefaults';
+import { defaultChatRequest } from '@/app/samples/chats/shared/config/chatDefaults';
 
 
 export const ChatContext = createContext<ChatContextProps>({

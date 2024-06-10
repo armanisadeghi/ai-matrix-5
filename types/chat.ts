@@ -11,13 +11,14 @@ import {
 } from "./settings";
 
 
-export type Role = string;
 export type ChatId = string;
 export type CreatedAt= string;
 export type UserId= string;
 export type ChatTitle= string;
 export type LastEdited= string;
 export type Metadata = Record<string, any>;
+
+export type Role = string;
 export type MessageIndex= number;
 export type MessageText= string;
 

@@ -8,7 +8,7 @@ import CustomCollapse from "@/ui/collapse/CustomCollapse";
 import AmeSelect from "@/ui/select/AmeSelect";
 import AmeSlider from "@/ui/slider/AmeSlider";
 import AmePillsInput from "@/ui/pills/AmePillsInput";
-import { aiModels, apiProviders, apiEndpoints } from "@/app/samples/ai-tests/shared/config/aiModels";
+import { aiModels, apiProviders, apiEndpoints } from "@/app/samples/chats/shared/config/aiModels";
 
 // TODO: Replace many of these with api call to get these values
 

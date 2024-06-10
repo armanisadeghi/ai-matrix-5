@@ -7,10 +7,10 @@ import { CiViewList } from "react-icons/ci";
 import { IconTrash } from '@tabler/icons-react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { activeUserAtom } from '@/context/atoms/userAtoms';
-import { activeChatMessagesArrayAtom, activeChatIdAtom } from "@/app/samples/ai-tests/shared/atoms/chatAtoms";
+import { activeChatMessagesArrayAtom, activeChatIdAtom } from "@/state/aiAtoms/chatAtoms";
 import { MessageEntry } from "@/types";
 import AssistantMessage from "@/components/AiChat/Response/AssistantMessage";
-import UserMessage from "@/components/Abstain/extra/UserMessage";
+import UserMessage from "@/components/AiChat/Response/UserMessagePaper";
 
 interface AmeMenuProps {
     children: ReactNode;
@@ -168,7 +168,7 @@ const AmeMenu: React.FC<AmeMenuProps> & { Target: React.FC<{ children: ReactNode
                 onClose={() => setModalOpened(false)}
                 size="xl"
 
-                title={modalTitle}  // Display the initial value as the title
+                title={modalTitle}
                 transitionProps={{
                     transition: 'fade',
                     duration: 600,

@@ -7,7 +7,7 @@ import React, { useEffect } from 'react';
 import ChatDetail from '../components/ChatDetail';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { activeUserAtom } from '@/context/atoms/userAtoms';
-import { activeChatIdAtom } from "../../ai-tests/shared/atoms/chatAtoms";
+import { activeChatIdAtom } from "@/state/aiAtoms/chatAtoms";
 
 
 const ChatPage = ({ params }: { params: { chatId: string } }) => {

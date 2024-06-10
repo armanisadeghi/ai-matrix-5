@@ -3,7 +3,7 @@
 
 import React, { useEffect } from 'react';
 import { useAiResponse } from '@/context/AiContext/AiResponseContext';
-import { handleDynamicElements } from '@/app/samples/ai-tests/shared/services/dynamicSocketHandler';
+import { handleDynamicElements } from '@/app/samples/chats/services/dynamicSocketHandler';
 
 const ChatResponse: React.FC = () => {
     const { triggerResponse, setRespondData } = useAiResponse();
