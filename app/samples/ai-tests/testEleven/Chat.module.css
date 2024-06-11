@@ -1,0 +1,47 @@
+.ame-chat-fullpage {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 100px);
+    justify-content: space-between;
+}
+
+
+
+.ame-chat-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    align-items: center;
+    border: 1px solid #b52d2d;
+
+}
+
+.ame-chat-messages {
+    width: 100%;
+    padding: 0 16px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #123dff;
+    height: calc(75vh - 100px);
+
+
+}
+
+.ame-chat-inputForm {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #0fe12b;
+    border-radius: 8px;
+    margin-top: 8px;
+
+}
+
+.ame-chat-fixedBottom {
+    width: 100%;
+    height: 20vh;
+    border: 1px solid gray;
+}

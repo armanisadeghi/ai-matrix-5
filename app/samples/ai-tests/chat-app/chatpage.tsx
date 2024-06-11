@@ -40,7 +40,7 @@ function ChatPage() {
     }, [textareaContainerRef.current]);
 
     return (
-        <Container fluid style={{ height: '100vh', display: 'flex', padding: '0' }}>
+        <Container fluid style={{ height: '90vh', display: 'flex', padding: '0' }}>
             <Grid grow style={{ flex: 1 }} columns={12} gutter={0}>
 
                 {!isSmallScreen && (
@@ -56,7 +56,7 @@ function ChatPage() {
                 <Grid.Col span={8} style={{
                     display: 'flex',
                     flexDirection: 'column',
-                    height: '100vh',
+                    height: '90vh',
                     maxWidth: '800px',
                     padding: '0',
                     margin: '0 auto'

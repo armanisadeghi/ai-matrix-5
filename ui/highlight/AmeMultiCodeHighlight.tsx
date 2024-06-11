@@ -16,11 +16,12 @@ interface AmeMultiCodeHighlightProps {
     useLoadingEffect?: boolean;
 }
 
-const AmeMultiCodeHighlight: React.FC<AmeMultiCodeHighlightProps> = ({
-                                                                         codeSnippets,
-                                                                         startCollapsed = false,
-                                                                         useLoadingEffect = false,
-                                                                     }) => {
+const AmeMultiCodeHighlight: React.FC<AmeMultiCodeHighlightProps> = (
+    {
+        codeSnippets,
+        startCollapsed = false,
+        useLoadingEffect = false,
+    }) => {
     return (
         <div>
             {codeSnippets.map((snippet, index) => (

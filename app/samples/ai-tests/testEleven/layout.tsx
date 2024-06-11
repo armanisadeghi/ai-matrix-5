@@ -15,7 +15,6 @@ import ErrorBoundary from "@/components/ErrorManagement/ErrorBoundry";
 import { PresetType } from "@/context/atoms/layoutAtoms";
 import { NavbarProvider } from "@/context/NavbarContext";
 import Loading from "@/app/dashboard/loading";
-import { UserProvider } from "@auth0/nextjs-auth0/client"
 
 type Props = {
     children: ReactNode;
@@ -48,27 +47,10 @@ function Layout({
                     preset
                 }: Props) {
     return (
-        <ErrorBoundary>
-            <UserProvider>
-                <RecoilRoot>
-                    <React.Suspense fallback={<Loading/>}>
-                        <LayoutProvider initialNavbarState="icons">
-                            <NavbarProvider initialState="icons">
-                                <SidebarProvider initialState="icons">
-                                    <HeaderProvider initialState="medium">
-                                        <FooterProvider initialState="hidden">
-                                            <DynamicSocketProvider>
-                                                <MainLayout>{children}</MainLayout>
-                                            </DynamicSocketProvider>
-                                        </FooterProvider>
-                                    </HeaderProvider>
-                                </SidebarProvider>
-                            </NavbarProvider>
-                        </LayoutProvider>
-                    </React.Suspense>
-                </RecoilRoot>
-            </UserProvider>
-        </ErrorBoundary>
+        <section>
+            {children}
+        </section>
+
     );
 }
 
