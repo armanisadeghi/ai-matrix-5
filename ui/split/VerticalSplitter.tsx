@@ -5,9 +5,10 @@ import Split from 'react-split';
 interface VerticalSplitterProps {
     children: ReactNode[];
     initialSizes?: number[];
+    expandToMin?: boolean;
 }
 
-const VerticalSplitter: React.FC<VerticalSplitterProps> = ({ children, initialSizes }) => {
+const VerticalSplitter: React.FC<VerticalSplitterProps> = ({ children, initialSizes, expandToMin = true }) => {
     const sections = children.length;
     const defaultSizes = Array(sections).fill(100 / sections);
     const [sizes, setSizes] = useState<number[]>(initialSizes || defaultSizes);
@@ -26,7 +27,7 @@ const VerticalSplitter: React.FC<VerticalSplitterProps> = ({ children, initialSi
         <Split
             sizes={sizes}
             minSize={125}
-            expandToMin={true}
+            expandToMin={expandToMin}
             gutterSize={15}
             gutterAlign="center"
             snapOffset={10}

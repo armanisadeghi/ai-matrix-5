@@ -6,9 +6,9 @@ import React from 'react';
 import ChatInput from './components/ChatInput';
 import ChatSettings from '@/components/AiChat/UserInput/settings/ChatSettings';
 import ChatResponse from './components/ChatResponse';
-import ChatHistory from '@/app/samples/ai-tests/shared/sidebar/ChatHistory';
 import AiResponseForm from '@/app/samples/ai-tests/chat-app/components/dynamic-forms/ChatForm';
 import { useAiResponse, AiResponseProvider } from '@/context/AiContext/AiResponseContext';
+import ChatSidebar from "@/components/AiChat/Sidebar/ChatList";
 
 const Page: React.FC = () => {
     const { respondData, setRespondData } = useAiResponse();
@@ -23,7 +23,7 @@ const Page: React.FC = () => {
         <div>
             <ChatResponse />
             <ChatInput />
-            <ChatHistory />
+            <ChatSidebar />
             <ChatSettings />
             {respondData && (
                 <AiResponseForm

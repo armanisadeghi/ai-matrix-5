@@ -25,7 +25,7 @@ function Layout({children}: Props) {
                 <React.Suspense fallback={<Loading/>}>
                     <LayoutProvider initialNavbarState="icons">
                         <NavbarProvider initialState="icons">
-                            <SidebarProvider initialState="icons">
+                            <SidebarProvider initialAsideState="icons">
                                 <HeaderProvider initialState="medium">
                                     <FooterProvider initialState="hidden">
                                         <DynamicSocketProvider>

@@ -4,8 +4,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Container, Grid, Burger, Space, Textarea } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-//@ts-ignore
-import ChatSidebar from '@/app/samples/ai-tests/shared/sidebar/ChatHistory';
 import ResponseArea from '@/app/samples/ai-tests/response/ResponseArea';
 
 function ChatPage() {
@@ -47,7 +45,7 @@ function ChatPage() {
                 {!isSmallScreen && (
                     <>
                         <Grid.Col span={2} style={{ flexGrow: 0, flexShrink: 0, maxWidth: '200px', padding: '0' }}>
-                            <ChatSidebar />
+                            <div>used to be chat sidebar</div>
                         </Grid.Col>
 
                         <Grid.Col span={1} style={{ flexGrow: 1, flexShrink: 1, flexBasis: '0%', padding: '0' }}></Grid.Col>

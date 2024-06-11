@@ -3,7 +3,7 @@
 
 import React, { useEffect } from 'react';
 import { useAiResponse } from '@/context/AiContext/AiResponseContext';
-import { handleDynamicElements } from '@/app/samples/chats/services/dynamicSocketHandler';
+import { useDynamicSocketHandler } from "@/app/samples/chats/services/dynamicSocketHandler";
 
 const ChatResponse: React.FC = () => {
     const { triggerResponse, setRespondData } = useAiResponse();
@@ -11,19 +11,24 @@ const ChatResponse: React.FC = () => {
     useEffect(() => {
         if (!triggerResponse) return;
 
-        const userToken = 'your-user-token'; // Replace with actual user token
-        const message = 'your-message'; // Replace with the actual message to be sent
-
-        const { close } = handleDynamicElements(userToken, message, (streamBuffer) => {
+        const { handleDynamicElements } = useDynamicSocketHandler((data) => {
+            console.log('Received data:', data);
+        }, (streamBuffer) => {
             const response = JSON.parse(streamBuffer);
             if (response.form) {
                 setRespondData(response.form);
             }
-            // Handle the end of the stream here
         });
 
+        const initialize = async () => {
+            const { close } = await handleDynamicElements();
+            return close;
+        };
+
+        const closeSocket = initialize();
+
         return () => {
-            close();
+            closeSocket.then(close => close());
         };
     }, [triggerResponse, setRespondData]); // Depend on triggerResponse
 
