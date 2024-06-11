@@ -1,29 +1,29 @@
 // app/samples/chat-sidebar/AmeActionTextInput.tsx
 
-import React, { useState, useRef, FocusEvent, ChangeEvent } from "react";
-import { TextInput, TextInputProps } from "@mantine/core";
+import React, { ChangeEvent, FocusEvent, useRef, useState } from "react";
+import { Textarea, TextareaProps } from "@mantine/core";
 import useColorUtils from "@/utils/colorUtils";
 
-interface AmeActionTextInputProps extends TextInputProps {
+interface AmeTextareaProps extends TextareaProps {
     initialValue?: string;
     editable?: boolean;
 }
 
-const AmeActionTextInput: React.FC<AmeActionTextInputProps> = ({ initialValue, editable = true, ...others }) => {
+const AmeActionTextarea: React.FC<AmeTextareaProps> = ({ initialValue, editable = true, ...others }) => {
     const [value, setValue] = useState(initialValue);
-    const inputRef = useRef<HTMLInputElement>(null);
+    const inputRef = useRef<HTMLTextAreaElement>(null);
     const { getModerateTextColor } = useColorUtils();
 
-    const handleFocus = (event: FocusEvent<HTMLInputElement>) => {
+    const handleFocus = (event: FocusEvent<HTMLTextAreaElement>) => {
         event.target.select();
     };
 
-    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
         setValue(event.target.value);
     };
 
     return (
-        <TextInput
+        <Textarea
             value={value}
             onChange={handleChange}
             onFocus={handleFocus}
@@ -43,4 +43,4 @@ const AmeActionTextInput: React.FC<AmeActionTextInputProps> = ({ initialValue, e
     );
 };
 
-export default AmeActionTextInput;
+export default AmeActionTextarea;

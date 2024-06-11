@@ -7,7 +7,7 @@ import { notFound, usePathname, useRouter } from "next/navigation";
 import { getActiveTab } from "@/utils/tabUtils";
 import { PATH_USER } from "@/routes";
 
-const iconStyle = { width: rem(14), height: rem(14) };
+const iconStyle = { width: rem(18), height: rem(18) };
 
 type Props = {
     children: ReactNode;
