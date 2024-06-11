@@ -5,7 +5,7 @@ import { useRecoilValue } from 'recoil';
 import { quickChatSettingsAtom } from "@/state/aiAtoms/settingsAtoms";
 import { requestEventTaskAtom, requestSocketEventAtom, requestIndexAtom } from '@/state/aiAtoms/metadataAtoms';
 import { activeChatIdAtom, activeChatMessagesArrayAtom, customInputsAtom, formResponsesAtom } from "@/state/aiAtoms/chatAtoms";
-import { activeUserIdAtom, activeUserTokenAtom } from "@/context/atoms/userAtoms";
+import { activeUserIdAtom, activeUserTokenAtom } from "@/state/userAtoms";
 
 export const useDynamicSocketHandler = (callback?: (data: any) => void, onStreamEnd?: (streamBuffer: string) => void) => {
     const eventTask = useRecoilValue(requestEventTaskAtom);

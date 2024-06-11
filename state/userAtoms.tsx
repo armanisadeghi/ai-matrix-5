@@ -18,12 +18,3 @@ export const activeUserTokenAtom = atom<string | null | undefined>({
     default: undefined,
 });
 
-
-export const ForcedUserIdAtom = atom<string>({
-    key: 'ForcedUserIdAtom',
-    default: "a048d457-c058-481b-a9a1-7d821b6435d5",
-});
-
-
-
-
