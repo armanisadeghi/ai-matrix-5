@@ -21,7 +21,7 @@ export interface Component {
     tooltip?: string;
     description?: string;
     maxLength?: number;
-    placeholderText?: string;
+    placeholder?: string;
     defaultValue?: string | number | boolean | string[] | number[] | File;
     defaultChecked?: boolean;
     displayOrder?: number;

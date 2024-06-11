@@ -4,8 +4,9 @@ import { Button, Fieldset, Space, TextInput, Text, Grid, Select } from '@mantine
 import BrokerComponent from './BrokerComponent';
 import { Component, ComponentType, Broker } from '@/types/broker';
 import { useState } from 'react';
-import { useBroker } from '@/context/brokerContext';
-import { uuid } from 'uuidv4';
+import { brokersAtom } from '@/context/atoms/brokerAtoms';
+import { useRecoilValue } from 'recoil';
+import { createBrokerManager } from '@/services/brokerService';
 
 const initialValues = {
     id: '',
@@ -16,36 +17,21 @@ const initialValues = {
 }
 
 export const BrokerCreateForm = () => {
-    const [currentBroker, setCurrentBroker] = useState<Broker>(initialValues);
-    const { setBrokers, brokers } = useBroker()
+    const brokers = useRecoilValue(brokersAtom);
+    const brokerManager = createBrokerManager();
+    const [currentData, setCurrentData] = useState<Broker>({
+        ...initialValues,
+    } as Broker);
 
     const componentOptions = Object.keys(ComponentType).map((key) => ({
         value: key,
         label: key,
     })) as { value: string; label: string }[];
 
-    const handleInputTypeChange = (value: any) => {
-        setCurrentBroker({
-            ...currentBroker,
-            component: { ...currentBroker.component, type: value as ComponentType }
-        });
-    };
-
-    const handleDefaultValueChange = (value: any) => {
-        setCurrentBroker((prevBroker) => ({
-            ...prevBroker,
-            component: { ...prevBroker.component, defaultValue: value }
-        }));
-    };
-
     const handleAddBroker = () => {
-        const newBroker = {
-            ...currentBroker,
-            id: currentBroker.id === '' ? uuid() : currentBroker.id,
-            component: { ...currentBroker.component, defaultValue: currentBroker.component.defaultValue ? currentBroker.component.defaultValue : currentBroker.name }
-        };
-        setBrokers([newBroker, ...brokers]);
-        setCurrentBroker(initialValues);
+        brokerManager.setCurrentBroker(initialValues);
+        brokerManager.createBroker(currentData);
+        setCurrentData(initialValues);
     };
 
     return (
@@ -54,35 +40,37 @@ export const BrokerCreateForm = () => {
                 <Fieldset legend="Add properties">
                     <TextInput
                         label="Name"
-                        value={currentBroker.name}
-                        onChange={e => setCurrentBroker({ ...currentBroker, name: e.target.value })}
+                        onChange={value => setCurrentData({ ...currentData, name: value.target.value })}
+                        value={currentData.name}
                         placeholder='Enter a name'
                         error={
-                            brokers.some((broker) => broker.name === currentBroker.name)
+                            brokers.some((broker) => broker.name === currentData.name)
                                 ? 'Name already exists. Please choose a different name.'
                                 : null
                         }
                     />
                     <Space h="sm" />
-                    <TextInput label="Description" value={currentBroker.description} onChange={e => setCurrentBroker({ ...currentBroker, description: e.target.value })} placeholder='Enter a description' />
+                    <TextInput label="Description" value={currentData.description}
+                        onChange={value => setCurrentData({ ...currentData, description: value.target.value })} placeholder='Enter a description' />
                     <Space h="sm" />
-                    <Select label="Type" value={currentBroker.component.type} description="Choose the type of component" placeholder="Choose the type of component" data={componentOptions} onChange={handleInputTypeChange} />
+                    <Select label="Type" description="Choose the type of component" placeholder="Choose the type of component" data={componentOptions} value={currentData.component.type}
+                        onChange={value => setCurrentData({ ...currentData, component: { ...currentData.component, type: value } })} />
                 </Fieldset>
                 <Space h="sm" />
                 <Button
                     variant="primary"
                     onClick={handleAddBroker}
                     disabled={
-                        brokers.some((broker) => broker.name === currentBroker.name) ||
-                        currentBroker.name.trim() === ''
+                        brokers.some((broker) => broker.name === currentData.name) ||
+                        currentData.name.trim() === ''
                     }>Save Broker</Button>
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 6 }}>
                 <Fieldset legend="Custom Broker" radius="md">
-                    <Text>{currentBroker.name}</Text>
-                    <Text size='xs' c={'gray.6'}>{currentBroker.description}</Text>
+                    <Text>{currentData.name}</Text>
+                    <Text size='xs' c={'gray.6'}>{currentData.description}</Text>
                     <Space h="sm" />
-                    <BrokerComponent type={currentBroker.component.type} currentComponent={currentBroker.component} handleDefaultValueChange={handleDefaultValueChange} />
+                    <BrokerComponent currentComponent={currentData.component} type={currentData.component.type} handleDefaultValueChange={value => setCurrentData({ ...currentData, component: { ...currentData.component, defaultValue: value } })} />
                 </Fieldset>
             </Grid.Col>
         </Grid>

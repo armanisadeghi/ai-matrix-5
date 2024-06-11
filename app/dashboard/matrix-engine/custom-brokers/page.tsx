@@ -6,16 +6,16 @@ import { IconArrowLeft, IconPlus } from "@tabler/icons-react";
 import { useState } from "react";
 import BrokerList from "./BrokerList";
 import { BrokerForm } from "./BrokerForm";
-import { useBroker } from "@/context/brokerContext";
 import { BrokerEdit } from "./BrokerEdit";
 import Link from "next/link";
+import { createBrokerManager } from "@/services/brokerService";
 
 const Brokers: React.FC = () => {
     const [showSelect, setShowSelect] = useState(false);
     const [selectedOption, setSelectedOption] = useState<string>('');
     const [isTypeSelected, setTypeSelected] = useState<boolean>(false);
-    const { currentBroker, setCurrentBroker } = useBroker();
     const [currentComponent, setCurrentComponent] = useState<Component>({} as Component);
+    const brokerManager = createBrokerManager();
     const handleTypeSelection = (value: string) => {
         setSelectedOption(value);
         setTypeSelected(true);
@@ -25,7 +25,7 @@ const Brokers: React.FC = () => {
         setShowSelect(true);
         setTypeSelected(false);
         setSelectedOption('');
-        setCurrentBroker({
+        brokerManager.setCurrentBroker({
             id: '',
             name: '',
             dataType: '',
@@ -56,7 +56,7 @@ const Brokers: React.FC = () => {
                         <Stack style={styles}>
                             <Select label="Type" description="Choose the type of component" placeholder="Choose the type of component" data={componentOptions} value={selectedOption} onChange={(option) => handleTypeSelection(option as ComponentType)} />
                             <Space h="md" />
-                            <BrokerEdit setCurrentComponent={setCurrentComponent} currentComponent={currentComponent} />
+                            <BrokerEdit />
                             <Space h="md" />
 
                         </Stack>
@@ -71,7 +71,7 @@ const Brokers: React.FC = () => {
                 </Transition>
                 <Space h="md" />
             </Stack>
-            <BrokerList user={false} />
+            <BrokerList user={true} />
         </Container>
     );
 };

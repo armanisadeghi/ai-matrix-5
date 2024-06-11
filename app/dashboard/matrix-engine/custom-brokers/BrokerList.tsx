@@ -3,11 +3,12 @@
 import React from 'react';
 import BrokerListItem from './BrokerListItem';
 import { Stack } from '@mantine/core';
-import { useBroker } from '@/context/brokerContext';
+import { brokersAtom } from '@/context/atoms/brokerAtoms';
+import { useRecoilValue } from 'recoil';
 
 
 const BrokerList = ({ user }: { user: boolean }) => {
-    const brokers = useBroker().brokers;
+    const brokers = useRecoilValue(brokersAtom);
 
     return (
         <Stack>

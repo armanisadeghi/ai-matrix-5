@@ -14,7 +14,7 @@ interface BrokerComponentProps {
 }
 
 const BrokerComponent: React.FC<BrokerComponentProps> = ({ type, currentComponent, handleDefaultValueChange }) => {
-    const { description, tableData, src, alt, radius, h, w, fit, options, groupOptions, label, placeholderText, defaultValue, displayOrder, validation, dependencies, required, size, color, exampleInputs, group, min, max, step, value, onChange, marks } = currentComponent;
+    const { description, tableData, src, alt, radius, h, w, fit, options, groupOptions, label, placeholder, defaultValue, displayOrder, validation, dependencies, required, size, color, exampleInputs, group, min, max, step, value, onChange, marks } = currentComponent;
 
     const currentData = useForm({
         mode: 'uncontrolled',
@@ -28,7 +28,7 @@ const BrokerComponent: React.FC<BrokerComponentProps> = ({ type, currentComponen
                 return <TextInput
                     label={label}
                     description={description}
-                    placeholder={placeholderText}
+                    placeholder={placeholder}
                     required={required}
                     size={size}
                     color={color}
@@ -38,7 +38,7 @@ const BrokerComponent: React.FC<BrokerComponentProps> = ({ type, currentComponen
             case "Textarea":
                 return <Textarea
                     label={label}
-                    placeholder={placeholderText}
+                    placeholder={placeholder}
                     required={required}
                     size={size}
                     color={color}
@@ -64,7 +64,7 @@ const BrokerComponent: React.FC<BrokerComponentProps> = ({ type, currentComponen
                     value={value as string}
                     description={description}
                     label={label}
-                    placeholder={placeholderText}
+                    placeholder={placeholder}
                     size={size}
                     color={color} >
                 </BrokerRadioGroup>
@@ -134,7 +134,7 @@ const BrokerComponent: React.FC<BrokerComponentProps> = ({ type, currentComponen
                 return <FileInput
                     label={label}
                     description={description}
-                    placeholder={placeholderText}
+                    placeholder={placeholder}
                     required={required}
                     size={size}
                     color={color}
