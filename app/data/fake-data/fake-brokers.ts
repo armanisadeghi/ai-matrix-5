@@ -10,7 +10,7 @@ export const customBrokers: Broker[] = [
             defaultValue: 'AME',
             label: "Company Name",
             type: 'Input',
-            placeholderText: 'Company Name',
+            placeholder: 'Company Name',
         }
     },
     {
@@ -20,7 +20,7 @@ export const customBrokers: Broker[] = [
         description: 'Enter the address of the company',
         component: {
             type: 'Input',
-            placeholderText: 'Company Address',
+            placeholder: 'Company Address',
             defaultValue: 'USA',
             label: "Company Address",
         }
@@ -74,7 +74,7 @@ export const systemBrokers: Broker[] = [
             defaultValue: '',
             label: "Name",
             type: 'Input',
-            placeholderText: 'Enter your first name',
+            placeholder: 'Enter your first name',
         }
     },
     {
@@ -86,7 +86,7 @@ export const systemBrokers: Broker[] = [
             defaultValue: '',
             label: "Last Name",
             type: 'Input',
-            placeholderText: 'Enter your last name',
+            placeholder: 'Enter your last name',
         }
     },
     {
@@ -98,7 +98,7 @@ export const systemBrokers: Broker[] = [
             defaultValue: '',
             label: "Email",
             type: 'Input',
-            placeholderText: 'Enter your email address',
+            placeholder: 'Enter your email address',
         }
     },
     {
@@ -110,7 +110,7 @@ export const systemBrokers: Broker[] = [
             defaultValue: '',
             label: "Age",
             type: 'Input',
-            placeholderText: 'Enter your age',
+            placeholder: 'Enter your age',
         }
     },
     {

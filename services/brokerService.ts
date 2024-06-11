@@ -1,11 +1,11 @@
 import { createClient } from '@supabase/supabase-js';
-import { Broker, Component } from "@/types/broker";
+import { Broker } from "@/types/broker";
 import { brokersAtom, currentBrokerAtom } from 'context/atoms/brokerAtoms';
 import { useSetRecoilState } from 'recoil';
-import { systemBrokers, customBrokers } from '../app/data/fake-data/fake-brokers';
 import { uuid } from 'uuidv4';
 
-const supabase = createClient('https://ame-matrix-5.supabase.co', '111');
+const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,);
 
 export function createBrokerManager() {
     const setBrokersAtom = useSetRecoilState(brokersAtom);
@@ -13,18 +13,16 @@ export function createBrokerManager() {
 
     async function fetchBrokers(): Promise<Broker[]> {
         const { data, error } = await supabase
-            .from('brokers')
+            .from('broker')
             .select('*');
 
         if (error) {
-            console.log('fetching fake data');
-            const data = [...systemBrokers, ...customBrokers];
-            setBrokersAtom(data);
-            return data;
+            console.error('Error fetching brokers:', error);
+            return [];
         }
 
-        setBrokersAtom(data);
-        return data;
+        setBrokersAtom(data.map((broker) => ({ ...broker, dataType: broker.data_type })));
+        return data.map((broker) => ({ ...broker, dataType: broker.data_type }));
     }
 
     async function setCurrentBroker(broker: Broker | undefined) {
@@ -33,46 +31,34 @@ export function createBrokerManager() {
     };
 
     async function createBroker(broker: Broker): Promise<Broker> {
+        const brokerId = uuid();
         const { data, error } = await supabase
-            .from('brokers')
-            .insert(broker);
-
-        if (error) {
-            console.log('fetching fake data');
-            const id = uuid();
-            const data = { ...broker, id: id, dataType: typeof broker.component.defaultValue };
-            setBrokersAtom([...systemBrokers, ...customBrokers, data]);
-            setCurrentBrokerAtom({
-                id: id,
+            .from('broker')
+            .insert({
                 name: broker.name,
                 description: broker.description,
-                dataType: typeof broker.component.defaultValue,
+                id: brokerId,
                 component: broker.component,
+                data_type: broker.dataType,
             });
+
+        if (error) {
+            console.error('Error creating broker:', error);
             return broker;
         }
-        const id = uuid();
-        setBrokersAtom((prevBrokers: Broker[]) => [...prevBrokers, { ...broker, id: id, dataType: typeof broker.component.defaultValue }]);
-        setCurrentBrokerAtom({
-            id: id,
-            name: broker.name,
-            description: broker.description,
-            dataType: typeof broker.component.defaultValue,
-            component: broker.component,
-        });
+        setBrokersAtom((prevBrokers) => [...prevBrokers, { ...broker, id: brokerId }]);
+        setCurrentBrokerAtom(data);
         return data;
     }
 
     async function updateBroker(broker: Broker): Promise<Broker> {
         const { data, error } = await supabase
-            .from('brokers')
+            .from('broker')
             .update(broker)
             .eq('id', broker.id);
 
         if (error) {
-            console.log('fetching fake data');
-            setBrokersAtom(prevBrokers => [...prevBrokers.filter((prevBroker) => prevBroker.id !== broker.id), broker]);
-            setCurrentBrokerAtom(broker);
+            console.error('Error updating broker:', error);
             return broker;
         }
 
@@ -87,7 +73,7 @@ export function createBrokerManager() {
 
     async function deleteBroker(brokerId: string): Promise<void> {
         await supabase
-            .from('brokers')
+            .from('broker')
             .delete()
             .eq('id', brokerId);
 

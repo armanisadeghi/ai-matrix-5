@@ -34,20 +34,20 @@ const BrokerListItem = ({ broker, user }: BrokerListItemProps) => {
                         {broker.id.split('-')[0] === 'system' ? 'System Broker' : 'Custom Broker'}
                     </Badge> */}
                     <Title order={6}>{broker.name}</Title>
-                    {broker.component && <Pill>{broker.component.type}</Pill>}
-                    <Text size='xs' c={'gray.6'}>{`Default Value: 
+                    {broker.component && <><Pill>{broker.component.type}</Pill>
+                        <Text size='xs' c={'gray.6'}>{`Default Value: 
                                 ${typeof broker.component.defaultValue === 'string' ||
-                            typeof broker.component.defaultValue === 'number' ||
-                            typeof broker.component.defaultValue === 'boolean' ? (
-                            broker.component.defaultValue.toString()
-                        ) : Array.isArray(broker.component.defaultValue) ? (
-                            broker.component.defaultValue.join(', ')
-                        ) : broker.component.defaultValue instanceof File ? (
-                            broker.name
-                        ) : (
-                            'No value'
-                        )}`}
-                    </Text>
+                                typeof broker.component.defaultValue === 'number' ||
+                                typeof broker.component.defaultValue === 'boolean' ? (
+                                broker.component.defaultValue.toString()
+                            ) : Array.isArray(broker.component.defaultValue) ? (
+                                broker.component.defaultValue.join(', ')
+                            ) : broker.component.defaultValue instanceof File ? (
+                                broker.name
+                            ) : (
+                                'No value'
+                            )}`}
+                        </Text></>}
                     <Text size='xs' c={'gray.6'}>{broker.description}</Text>
                 </Group>
                 <Group justify="flex-end">
