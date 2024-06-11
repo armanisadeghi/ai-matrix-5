@@ -22,6 +22,8 @@ type Props = {
     preset: PresetType;
 };
 
+console.log('user provider', UserProvider);
+
 const LayoutContent: React.FC = () => {
     const [activeUser, setActiveUser] = useRecoilState(activeUserAtom);
     const activeUserLoadable = useRecoilValueLoadable(activeUserSelector);
