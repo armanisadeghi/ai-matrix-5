@@ -10,12 +10,12 @@ import {
 import AmeActionIcon from "@/ui/button/AmeActionIcon";
 import { BsFillPatchPlusFill } from "react-icons/bs";
 import { ChatSummary } from "@/types";
-import { activeUserAtom } from "@/context/atoms/userAtoms";
+import { activeUserAtom } from "@/state/userAtoms";
 
 const ChatSidebar = () => {
     const [chats, setChats] = useRecoilState(ChatSidebarListAtom);
     const setActiveChatMessages = useSetRecoilState(activeChatMessagesArrayAtom);
-    const activeUser = useRecoilValue(activeUserAtom);
+    const [activeUser, setActiveUser] = useRecoilState(activeUserAtom);
     const chatSummariesLoadable = useRecoilValueLoadable(chatSummariesSelector);
     const chatDetailsLoadable = useRecoilValueLoadable(chatDetailsSelector);
     const [activeChatId, setSelectedChatId] = useRecoilState(activeChatIdAtom);

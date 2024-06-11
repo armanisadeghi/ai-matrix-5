@@ -8,15 +8,15 @@ import {
     userTextInputAtom,
     activeChatMessagesArrayAtom, startingMessageArrayAtom
 } from '@/state/aiAtoms/chatAtoms';
-import { activeUserAtom } from '@/context/atoms/userAtoms';
 import { useState } from 'react';
 import supabase from "@/utils/supabase/client";
 import { v4 as uuidv4 } from "uuid";
 import { MatrixMessage } from "@/types";
+import { activeUserAtom } from "@/state/userAtoms";
 
 
 export const useChatDbAtoms = () => {
-    const activeUser = useRecoilValue(activeUserAtom);
+    const [activeUser, setActiveUser] = useRecoilState(activeUserAtom);
     const [activeChatId, setSelectedChatId] = useRecoilState(activeChatIdAtom);
     const chatSummariesLoadable = useRecoilValueLoadable(chatSummariesSelector);
     const chatDetailsLoadable = useRecoilValueLoadable(chatDetailsSelector);

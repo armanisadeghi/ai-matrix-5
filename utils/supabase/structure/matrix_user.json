@@ -1,0 +1,20 @@
+{
+    "matrix_user": {
+        "user_id": "uuid",
+        "auth0_id": "varchar",
+        "email": "varchar",
+        "name": "varchar",
+        "nickname": "varchar",
+        "picture": "text",
+        "updated_at": "text",
+        "token": "text",
+        "account_type": "varchar",
+        "org_id": "uuid",
+        "phone": "varchar",
+        "role": "varchar",
+        "status": "varchar",
+        "created_at": "text",
+        "last_login": "text",
+        "last_activity": "text"
+    }
+}

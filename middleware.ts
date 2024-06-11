@@ -3,11 +3,11 @@ import type { NextRequest } from 'next/server'
 
 // This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
-    if (request.nextUrl.pathname.startsWith('/samples')) {
+    if (request.nextUrl.pathname.startsWith('/samples/sample-login')) {
         return NextResponse.rewrite(new URL('/api/auth/login', request.url))
     }
 
-    if (request.nextUrl.pathname.startsWith('/dashboard')) {
+    if (request.nextUrl.pathname.startsWith('/dashboard/sample-login')) {
         return NextResponse.rewrite(new URL('/api/auth/login', request.url))
     }
 }

@@ -3,15 +3,15 @@
 import React, { useEffect, useCallback } from "react";
 import { Container, Grid } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import { UserProvider } from "@/context/AiContext/UserContext";
-import { useRecoilValue } from "recoil";
-import { activeUserAtom } from "@/context/atoms/userAtoms";
+import { useRecoilState } from "recoil";
 import { useSidebar } from "@/context/SidebarContext";
 import ChatSidebar from "@/components/AiChat/Sidebar/ChatList";
+import { UserProvider } from "@auth0/nextjs-auth0/client"
+import { activeUserAtom } from "@/state/userAtoms";
 
 const ChatLayout = ({children}: { children: React.ReactNode }) => {
     const isSmallScreen = useMediaQuery("(max-width: 600px)");
-    const activeUser = useRecoilValue(activeUserAtom);
+    const [activeUser, setActiveUser] = useRecoilState(activeUserAtom);
     const { setSidebarContent, toggleAside } = useSidebar();
 
     const memoizedSetSidebarContent = useCallback(setSidebarContent, []);

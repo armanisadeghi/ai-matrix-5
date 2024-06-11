@@ -1,5 +1,6 @@
 import { ActionIcon, ActionIconProps, Avatar, Burger, Group, MantineSize, Menu } from "@mantine/core";
 import { IconBell, IconChevronDown, IconChevronUp, IconPalette, IconSearch, IconSettings2 } from "@tabler/icons-react";
+import { FaRegUser } from "react-icons/fa6";
 import { ColorSchemeToggle, Logo } from "@/components";
 import Link from "next/link";
 import { PATH_USER } from "@/routes";
@@ -8,6 +9,9 @@ import AmeNavButton from "@/ui/buttons/AmeNavButton";
 import AmeSearchInput from "@/ui/input/AmeSearchInput";
 import AmeActionIcon from "@/ui/buttons/AmeActionIcon";
 import { useNavbar } from "@/context/NavbarContext";
+import { useRecoilState } from "recoil";
+import { activeUserAtom } from "@/state/userAtoms";
+import { useEffect } from "react";
 
 const actionProps: ActionIconProps = {
     variant: "light",
@@ -21,6 +25,10 @@ type Props = {
 export function Header({ state, tabletMatch }: Props) {
     const { toggleOpened, opened, toggleNavbar, navbarState } = useNavbar();
     const { headerState, handleCollapse, handleExpand } = useHeader();
+    const [activeUser, setActiveUser] = useRecoilState(activeUserAtom);
+    const userPictureLink = activeUser.picture;
+
+    useEffect(() => {}, [activeUser]);
 
     const componentSize: MantineSize = headerState === "large" ? "md" : "sm";
 
@@ -82,10 +90,11 @@ export function Header({ state, tabletMatch }: Props) {
                 <Menu width={200} shadow="md">
                     <Menu.Target>
                         <ActionIcon title="user menu" size={componentSize} variant="transparent">
-                            <Avatar
-                                src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-5.png"
-                                radius="50%"
-                            />
+                            {userPictureLink ? (
+                                <Avatar src={userPictureLink} radius='xs' size={componentSize}/>
+                            ) : (
+                                <FaRegUser size={componentSize === 'md' ? 24 : 18} />
+                            )}
                         </ActionIcon>
                     </Menu.Target>
 

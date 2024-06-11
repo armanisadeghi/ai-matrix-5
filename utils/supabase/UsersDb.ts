@@ -1,9 +1,9 @@
 import supabase from "./client";
-import { User } from '@/services/Users';
+import { MatrixUser } from '@/services/Users';
 
 
 export class UsersDb {
-    async getUserById(userId: string): Promise<User | null> {
+    async getUserById(userId: string): Promise<MatrixUser | null> {
         const { data, error } = await supabase
             .from('user')
             .select('*')
@@ -20,11 +20,11 @@ export class UsersDb {
             return null;
         }
 
-        return data as User;
+        return data as MatrixUser;
     }
 
     /*
-    async createUser(user: User): Promise<void> {
+    async createUser(user: MatrixUser): Promise<void> {
         const { error } = await supabase
             .from('user')
             .insert([user]);
@@ -35,7 +35,7 @@ export class UsersDb {
     }
     */
 
-    async updateUser(userId: string, updatedData: Partial<User>): Promise<void> {
+    async updateUser(userId: string, updatedData: Partial<MatrixUser>): Promise<void> {
         const { error } = await supabase
             .from('user')
             .update(updatedData)

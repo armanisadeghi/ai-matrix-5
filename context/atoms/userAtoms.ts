@@ -1,3 +1,7 @@
+
+// See /state/users.tsx
+
+/*
 // recoil/aiAtoms/userAtoms.ts
 
 import { atom, selector } from 'recoil';
@@ -62,3 +66,4 @@ export const activeUserTokenSelector = selector<string | null | undefined>({
         return activeUser ? activeUser.token : undefined;
     },
 });
+*/
