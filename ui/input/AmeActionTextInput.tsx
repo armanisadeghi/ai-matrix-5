@@ -7,14 +7,17 @@ import useColorUtils from "@/utils/colorUtils";
 interface AmeActionTextInputProps extends TextInputProps {
     initialValue?: string;
     editable?: boolean;
+    variant?: "default" | "filled" | "unstyled";
+    highlightOnClick?: boolean;
 }
 
-const AmeActionTextInput: React.FC<AmeActionTextInputProps> = ({ initialValue, editable = true, ...others }) => {
+const AmeActionTextInput: React.FC<AmeActionTextInputProps> = ({ initialValue, editable = true, highlightOnClick = true, ...others }) => {
     const [value, setValue] = useState(initialValue);
     const inputRef = useRef<HTMLInputElement>(null);
     const { getModerateTextColor } = useColorUtils();
 
     const handleFocus = (event: FocusEvent<HTMLInputElement>) => {
+        if (!highlightOnClick) return;
         event.target.select();
     };
 

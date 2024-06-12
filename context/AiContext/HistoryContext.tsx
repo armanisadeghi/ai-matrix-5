@@ -2,8 +2,8 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { HistoryContextProps, HistoryProviderProps, ChatHistoryChat } from '@/types/chat';
-import { loadChatHistory } from '@/app/dashboard/intelligence/ai-chatbot/utils/loadChatHistory';
 import { UserContext } from './UserContext';
+import loadChatHistory from "@/app/data/fake-data/fake-chat-history/fake-chat-history";
 
 interface ChatHistory {
     [index: string]: ChatHistoryChat[];
@@ -26,14 +26,33 @@ export const HistoryProvider: React.FC<HistoryProviderProps> = ({ children }) =>
         const loadAndTransformChatHistory = async () => {
             if (userContext && userContext.userData.isAuthenticated) {
                 setIsLoading(true);
+                console.log("User is authenticated. User AiContext:", userContext.userData);
                 try {
                     const loadedHistory = await loadChatHistory(userContext.userData.userId, userContext.userData);
-                    setChatHistory(prev => ({ ...loadedHistory.chatHistory }));
+                    console.log("Loaded chat history:", loadedHistory);
+
+                    // Log and process each chat entry
+                    if (loadedHistory.chatHistory) {
+                        Object.keys(loadedHistory.chatHistory).forEach((chatId: string) => {
+                            loadedHistory.chatHistory[chatId].forEach((entry: ChatHistoryChat, index: number) => {
+                                console.log(`Chat ID: ${chatId}, Entry ${index} - Role: ${entry.role}, Content: ${entry.content}`);
+                            });
+                        });
+                    }
+
+                    // Ensure state is updated with a new object
+                    setChatHistory(prev => {
+                        console.log("Previous chat history:", prev);
+                        console.log("New chat history to set:", loadedHistory.chatHistory);
+                        return { ...loadedHistory.chatHistory };
+                    });
                 } catch (error) {
                     console.error("Failed to load and transform chat history", error);
                 } finally {
                     setIsLoading(false);
                 }
+            } else {
+                console.log("User is not authenticated or user AiContext is missing:", userContext);
             }
         };
 
@@ -43,28 +62,19 @@ export const HistoryProvider: React.FC<HistoryProviderProps> = ({ children }) =>
     }, [userContext?.userData]);
 
     const updateChatHistory = (newHistory: ChatHistoryChat[], chatId: string) => {
+        console.log("Updating chat history with new history:", newHistory);
         setChatHistory(prev => ({
             ...prev,
             [chatId]: newHistory
         }));
     };
 
-    useEffect(() => {
-        if (!isLoading) {
-            console.log("HistoryContext is set:", {
-                chatHistory,
-                isLoading,
-                userContext,
-            });
-        }
-    }, [chatHistory, isLoading, userContext]);
-
     return (
         <HistoryContext.Provider value={{
             chatHistory,
             updateChatHistory,
-            setActiveChat: () => {}, // Need to set this properly
-            activeChat: null, // Should not be null
+            setActiveChat: () => {}, // No-op for now
+            activeChat: null, // Ignored for now
             isLoading,
         }}>
             {children}

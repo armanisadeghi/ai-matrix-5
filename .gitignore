@@ -133,3 +133,10 @@ dist
 
 .idea
 /armaniLocal/
+/org/atoms/old/
+/services/junk/
+/junk/
+/armani/
+*/junk/*
+
+app/api/openai/openaiClient.ts

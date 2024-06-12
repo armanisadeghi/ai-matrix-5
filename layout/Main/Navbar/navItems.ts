@@ -15,7 +15,7 @@ export const navItems = [
     {
         label: "Intelligence",
         icon: IconGauge,
-        initiallyOpened: true,
+        initiallyOpened: false,
         links: [
             {
                 label: "AI Chat",
@@ -209,7 +209,7 @@ export const navItems = [
             },
             {
                 label: "Custom Brokers",
-                link: "/"
+                link: "/dashboard/matrix-engine/custom-brokers"
             },
         ],
     },

@@ -7,13 +7,11 @@ import {
     Menu,
     NavLink,
     ScrollArea,
-    Stack,
     useMantineTheme,
 } from "@mantine/core";
 import {
-    IconArrowBarLeft,
-    IconArrowBarToLeft,
-    IconArrowBarToRight,
+    IconChevronLeft,
+    IconChevronRight,
     IconDots,
     IconFile,
     IconHelp,
@@ -21,10 +19,11 @@ import {
     IconSettings,
     IconShield,
 } from "@tabler/icons-react";
-import { navItems } from "./navItems";
-import { useLayout } from "@/context/LayoutContext";
-import { usePathname } from "next/navigation";
+import {navItems} from "./navItems";
+import {usePathname} from "next/navigation";
 import Link from "next/link";
+import AmeActionIcon from "@/ui/buttons/AmeActionIcon";
+import {useNavbar} from "@/context/NavbarContext";
 
 const actionProps: ActionIconProps = {
     variant: "light",
@@ -34,8 +33,8 @@ interface NavbarProps {
     state: "full" | "compact" | "icons" | "hidden";
 }
 
-export const Navbar = ({ state }: NavbarProps) => {
-    const { handleNavbarExpand, handleNavbarCollapse } = useLayout();
+export const Navbar = ({state}: NavbarProps) => {
+    const {handleNavbarExpand, handleNavbarCollapse} = useNavbar();
     const theme = useMantineTheme();
     const pathname = usePathname();
 
@@ -44,27 +43,27 @@ export const Navbar = ({ state }: NavbarProps) => {
             <AppShell.Section>
                 {state === "compact" && (
                     <Group justify="flex-end" gap="xs">
-                        <ActionIcon onClick={handleNavbarCollapse} {...actionProps}>
-                            <IconArrowBarToLeft size={18} />
-                        </ActionIcon>
-                        <ActionIcon onClick={handleNavbarExpand} {...actionProps}>
-                            <IconArrowBarToRight size={18} />
-                        </ActionIcon>
+                        <AmeActionIcon title="shrink navbar" onClick={handleNavbarCollapse} {...actionProps}>
+                            <IconChevronLeft size={18}/>
+                        </AmeActionIcon>
+                        <AmeActionIcon title="expand navbar" onClick={handleNavbarExpand} {...actionProps}>
+                            <IconChevronRight size={18}/>
+                        </AmeActionIcon>
                     </Group>
                 )}
 
                 {state === "full" && (
                     <Group justify="flex-end" gap="xs">
-                        <ActionIcon onClick={handleNavbarCollapse} {...actionProps}>
-                            <IconArrowBarLeft size={18} />
-                        </ActionIcon>
+                        <AmeActionIcon title="shrink navbar" onClick={handleNavbarCollapse} {...actionProps}>
+                            <IconChevronLeft size={18}/>
+                        </AmeActionIcon>
                     </Group>
                 )}
                 {state === "icons" && (
                     <Group justify="center" gap="xs">
-                        <ActionIcon onClick={handleNavbarExpand} {...actionProps}>
-                            <IconArrowBarToRight size={18} />
-                        </ActionIcon>
+                        <AmeActionIcon title="shrink navbar" onClick={handleNavbarExpand} {...actionProps}>
+                            <IconChevronRight size={18}/>
+                        </AmeActionIcon>
                     </Group>
                 )}
             </AppShell.Section>
@@ -73,13 +72,13 @@ export const Navbar = ({ state }: NavbarProps) => {
                 {navItems.map((item, index) => (
                     <>
                         <NavLink
-                            key={item.label}
+                            key={item.label + index + window.performance.now()}
                             label={
                                 <Group
-                                    style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
+                                    style={{whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}
                                     gap="xs"
                                 >
-                                    <item.icon size={20} />
+                                    <item.icon size={20}/>
                                     {state !== "icons" && (
                                         <span
                                             style={{
@@ -97,12 +96,12 @@ export const Navbar = ({ state }: NavbarProps) => {
                             childrenOffset={28}
                             defaultOpened={item.initiallyOpened}
                             mb="xs"
-                            style={{ borderRadius: theme.radius.sm }}
+                            style={{borderRadius: theme.radius.sm}}
                         >
                             {state !== "icons" &&
                                 item.links.map((link, linkIndex) => (
                                     <NavLink
-                                        key={linkIndex}
+                                        key={item.label + link.label + window.performance.now()}
                                         label={link.label}
                                         component={Link}
                                         href={link.link}
@@ -125,43 +124,43 @@ export const Navbar = ({ state }: NavbarProps) => {
                     {state !== "icons" ? (
                         <>
                             <ActionIcon variant="transparent" size="sm">
-                                <IconSettings />
+                                <IconSettings/>
                             </ActionIcon>
                             <ActionIcon variant="transparent" size="sm">
-                                <IconMessage />
+                                <IconMessage/>
                             </ActionIcon>
                             <ActionIcon variant="transparent" size="sm">
-                                <IconHelp />
+                                <IconHelp/>
                             </ActionIcon>
                             <ActionIcon variant="transparent" size="sm">
-                                <IconFile />
+                                <IconFile/>
                             </ActionIcon>
                             <ActionIcon variant="transparent" size="sm">
-                                <IconShield />
+                                <IconShield/>
                             </ActionIcon>
                         </>
                     ) : (
                         <Menu>
                             <Menu.Target>
                                 <ActionIcon>
-                                    <IconDots />
+                                    <IconDots/>
                                 </ActionIcon>
                             </Menu.Target>
                             <Menu.Dropdown>
                                 <Menu.Item>
-                                    <IconSettings />
+                                    <IconSettings/>
                                 </Menu.Item>
                                 <Menu.Item>
-                                    <IconMessage />
+                                    <IconMessage/>
                                 </Menu.Item>
                                 <Menu.Item>
-                                    <IconHelp />
+                                    <IconHelp/>
                                 </Menu.Item>
                                 <Menu.Item>
-                                    <IconFile />
+                                    <IconFile/>
                                 </Menu.Item>
                                 <Menu.Item>
-                                    <IconShield />
+                                    <IconShield/>
                                 </Menu.Item>
                             </Menu.Dropdown>
                         </Menu>

@@ -1,24 +1,13 @@
-import OpenAI from 'openai';
+import { openai } from '@ai-sdk/openai';
+import { streamText } from 'ai';
 
-const openai = new OpenAI({
-});
+export async function POST(req: Request) {
+    const { messages } = await req.json();
 
-interface chatMessages {
-    role: 'system' | 'user' | 'assistant';
-    content: string;
-}
-
-async function openAiStream(messages: chatMessages[], onData: (chunk: string) => void) {
-    const stream = await openai.chat.completions.create({
-        model: 'gpt-4o',
-        messages: messages,
-        stream: true,
+    const result = await streamText({
+        model: openai('gpt-4o'),
+        messages,
     });
 
-    for await (const chunk of stream) {
-        const content = chunk.choices[0]?.delta?.content || '';
-        onData(content);
-    }
+    return result.toAIStreamResponse();
 }
-
-export default openAiStream;

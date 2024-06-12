@@ -86,7 +86,7 @@ export default function Selector({item, isOpen, onClick, type}) {
                         gap: 8
                     }}>
                         <CollapseBtn onCollapse={isOpen} onClick={handleCollapse}/>
-                        <Checkbox onChange={handleSelect} disabled={item['disabled']} checked={isSelected} />
+                        <Checkbox onChange={handleSelect} disabled={item['disabled']} checked={isSelected} radius={12}/>
                         <FolderIco isOpen={isOpen}/>
                     </div>
                     <Text item={item} isSelected={isSelected} onClick={null}/>

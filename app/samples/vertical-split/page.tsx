@@ -1,23 +1,23 @@
-'use client';
-import { CSSProperties, useState, useRef } from 'react';
-import { Checkbox, Group } from '@mantine/core';
-import AmeCheckbox from '@/ui/checkbox/AmeCheckbox';
-import Split from 'react-split';
+"use client";
+import { CSSProperties, useState, useRef } from "react";
+import { Checkbox, Group } from "@mantine/core";
+import AmeCheckbox from "@/ui/checkbox/AmeCheckbox";
+import Split from "react-split";
 
 const RunPage = () => {
     const [sizes, setSizes] = useState<number[]>([33.33, 33.33, 33.33]);
     const gutters = useRef<HTMLDivElement[]>([]);
 
     const panelStyle: CSSProperties = {
-        padding: '4px',
+        padding: "4px",
     };
 
     const gutterStyle: CSSProperties = {
-        backgroundColor: '#403f3f',
+        backgroundColor: "#403f3f",
     };
 
     return (
-        <div style={{ padding: 1 }}>
+        <div style={{ padding: 1, width: "100%" }}>
             <Split
                 sizes={sizes}
                 minSize={125}
@@ -28,51 +28,47 @@ const RunPage = () => {
                 dragInterval={1}
                 direction="horizontal"
                 cursor="col-resize"
-                onDragEnd={newSizes => setSizes(newSizes)}
-
+                onDragEnd={(newSizes) => setSizes(newSizes)}
                 style={{
-                    display: 'flex',
-                    height: 'calc(1000vh - 10px)'
+                    display: "flex",
+                    height: "calc(1000vh - 10px)",
+                    width: "85dvw",
                 }}
-
                 gutter={(index, direction) => {
-                    const gutter = document.createElement('div');
+                    const gutter = document.createElement("div");
                     gutter.style.cssText = `height: 100%; background-color: transparent; width: 30px; cursor: col-resize; position: relative;`;
 
-                    const innerGutter = document.createElement('div');
+                    const innerGutter = document.createElement("div");
                     innerGutter.style.cssText = `height: 100%; background-color: #403f3f; width: 1px; position: absolute; left: 2.5px;`;
 
                     gutter.appendChild(innerGutter);
                     gutters.current[index] = gutter;
 
-                    gutter.addEventListener('mouseenter', () => {
-                        gutter.style.cursor = 'col-resize';
+                    gutter.addEventListener("mouseenter", () => {
+                        gutter.style.cursor = "col-resize";
                     });
-                    gutter.addEventListener('mouseleave', () => {
-                        gutter.style.cursor = 'default';
+                    gutter.addEventListener("mouseleave", () => {
+                        gutter.style.cursor = "default";
                     });
 
                     return gutter;
                 }}
-
-
-
             >
                 <div style={panelStyle}>
                     <p>This is the Cool App Page.</p>
                     <Checkbox.Group
-                        defaultValue={['aimatrix']}
+                        defaultValue={["aimatrix"]}
                         label="Select your favorite Artificial Intelligence Frameworks"
                         description="Choose one or more of the following options:"
                         withAsterisk
                     >
                         <Group mt="xs">
-                            <AmeCheckbox value="aimatrix" label="AI Matrix"/>
-                            <AmeCheckbox value="autogen" label="Microsoft Autogen"/>
-                            <AmeCheckbox value="langchain" label="Langchain"/>
-                            <AmeCheckbox value="crewai" label="Crew AI"/>
-                            <AmeCheckbox value="ollama" label="Ollama"/>
-                            <AmeCheckbox value="unsloth" label="Unsloth"/>
+                            <AmeCheckbox value="aimatrix" label="AI Matrix" />
+                            <AmeCheckbox value="autogen" label="Microsoft Autogen" />
+                            <AmeCheckbox value="langchain" label="Langchain" />
+                            <AmeCheckbox value="crewai" label="Crew AI" />
+                            <AmeCheckbox value="ollama" label="Ollama" />
+                            <AmeCheckbox value="unsloth" label="Unsloth" />
                         </Group>
                     </Checkbox.Group>
                 </div>
@@ -80,36 +76,36 @@ const RunPage = () => {
                 <div style={panelStyle}>
                     <p>This is a duplicate of the Cool App Page.</p>
                     <Checkbox.Group
-                        defaultValue={['aimatrix']}
+                        defaultValue={["aimatrix"]}
                         label="Select your favorite Artificial Intelligence Frameworks"
                         description="Choose one or more of the following options:"
                         withAsterisk
                     >
                         <Group mt="xs">
-                            <AmeCheckbox value="aimatrix" label="AI Matrix"/>
-                            <AmeCheckbox value="autogen" label="Microsoft Autogen"/>
-                            <AmeCheckbox value="langchain" label="Langchain"/>
-                            <AmeCheckbox value="crewai" label="Crew AI"/>
-                            <AmeCheckbox value="ollama" label="Ollama"/>
-                            <AmeCheckbox value="unsloth" label="Unsloth"/>
+                            <AmeCheckbox value="aimatrix" label="AI Matrix" />
+                            <AmeCheckbox value="autogen" label="Microsoft Autogen" />
+                            <AmeCheckbox value="langchain" label="Langchain" />
+                            <AmeCheckbox value="crewai" label="Crew AI" />
+                            <AmeCheckbox value="ollama" label="Ollama" />
+                            <AmeCheckbox value="unsloth" label="Unsloth" />
                         </Group>
                     </Checkbox.Group>
                 </div>
                 <div style={panelStyle}>
                     <p>This is a duplicate of the Cool App Page.</p>
                     <Checkbox.Group
-                        defaultValue={['aimatrix']}
+                        defaultValue={["aimatrix"]}
                         label="Select your favorite Artificial Intelligence Frameworks"
                         description="Choose one or more of the following options:"
                         withAsterisk
                     >
                         <Group mt="xs">
-                            <AmeCheckbox value="aimatrix" label="AI Matrix"/>
-                            <AmeCheckbox value="autogen" label="Microsoft Autogen"/>
-                            <AmeCheckbox value="langchain" label="Langchain"/>
-                            <AmeCheckbox value="crewai" label="Crew AI"/>
-                            <AmeCheckbox value="ollama" label="Ollama"/>
-                            <AmeCheckbox value="unsloth" label="Unsloth"/>
+                            <AmeCheckbox value="aimatrix" label="AI Matrix" />
+                            <AmeCheckbox value="autogen" label="Microsoft Autogen" />
+                            <AmeCheckbox value="langchain" label="Langchain" />
+                            <AmeCheckbox value="crewai" label="Crew AI" />
+                            <AmeCheckbox value="ollama" label="Ollama" />
+                            <AmeCheckbox value="unsloth" label="Unsloth" />
                         </Group>
                     </Checkbox.Group>
                 </div>

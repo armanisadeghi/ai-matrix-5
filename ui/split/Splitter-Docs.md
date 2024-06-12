@@ -86,7 +86,7 @@ The `DynamicSplitter` component provides a flexible layout that can dynamically 
 
 ```tsx
 import React from 'react';
-import DynamicSplitter from '@/components/DynamicSplitter';
+import DynamicSplitter from '@/nice-working/DynamicSplitter';
 
 const DynamicExample: React.FC = () => {
     const verticalSections = [
