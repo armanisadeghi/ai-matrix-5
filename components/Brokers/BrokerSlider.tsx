@@ -11,7 +11,7 @@ type BrokerSizeSliderProps = {
     min?: number,
     max?: number,
     color?: string,
-    defaultValue?: number
+    defaultValue?: number,
 };
 
 export const BrokerSlider = ({ defaultValue, color, description, onChange, label, size, marks, min = 1, max = 10, steps = 1, ...props }: BrokerSizeSliderProps) => {
@@ -19,7 +19,6 @@ export const BrokerSlider = ({ defaultValue, color, description, onChange, label
 
     return (
         <Box w="100%" mx="auto">
-            <Text size="sm">{label}: {value}</Text>
             <Text size="sm">{description}</Text>
             <Flex justify="space-between" mt={10} w="100%" gap={10}>
                 <Text size="xs">{min}</Text>

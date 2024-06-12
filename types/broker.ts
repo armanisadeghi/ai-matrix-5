@@ -1,6 +1,8 @@
 export interface Broker {
     id: string;
     name: string;
+    defaultValue?: string | number | boolean | string[] | number[] | File;
+    officialName: string;
     dataType: string;
     description?: string;
     component: Component;
@@ -68,16 +70,6 @@ export enum ComponentType {
     AttachmentsURL = 'attachments-url',
     AttachmentsMore = 'attachments-more',
     Image = 'image-paste',
-}
-export interface BrokerContextValue {
-    brokers: Broker[];
-    setBrokers: React.Dispatch<React.SetStateAction<Broker[]>>;
-    currentBroker: Broker;
-    setCurrentBroker: React.Dispatch<React.SetStateAction<Broker>>
-    deleteBroker: (id: string) => void;
-    system: Broker[];
-    setSystem: React.Dispatch<React.SetStateAction<Broker[]>>
-
 }
 
 export type BrokerData = Record<string, string | number | string[] | undefined>;

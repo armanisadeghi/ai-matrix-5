@@ -10,7 +10,8 @@ import { createBrokerManager } from '@/services/brokerService';
 
 const initialValues = {
     id: '',
-    name: '',
+    name: 'Broker Name',
+    officialName: 'BROKER_NAME',
     dataType: "",
     component: {} as Component,
     description: "",
@@ -30,7 +31,7 @@ export const BrokerCreateForm = () => {
 
     const handleAddBroker = () => {
         brokerManager.setCurrentBroker(initialValues);
-        brokerManager.createBroker(currentData);
+        brokerManager.createBroker({ ...currentData, dataType: typeof currentData.component.defaultValue, officialName: currentData.name.toUpperCase().replace(/\s/g, '_') });
         setCurrentData(initialValues);
     };
 

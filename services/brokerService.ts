@@ -21,8 +21,8 @@ export function createBrokerManager() {
             return [];
         }
 
-        setBrokersAtom(data.map((broker) => ({ ...broker, dataType: broker.data_type })));
-        return data.map((broker) => ({ ...broker, dataType: broker.data_type }));
+        setBrokersAtom(data.map((broker) => ({ ...broker, dataType: broker.data_type, defaultValue: broker.component.default_value })));
+        return data.map((broker) => ({ ...broker, dataType: broker.data_type, defaultValue: broker.component.default_value }));
     }
 
     async function setCurrentBroker(broker: Broker | undefined) {
@@ -35,11 +35,15 @@ export function createBrokerManager() {
         const { data, error } = await supabase
             .from('broker')
             .insert({
-                name: broker.name,
-                description: broker.description,
+                user_id: '3dba9e59-fcb6-4242-b584-a4e7370df940',
                 id: brokerId,
+                name: broker.name,
+                official_name: broker.officialName,
+                description: broker.description,
+                default_value: broker.component.defaultValue,
                 component: broker.component,
                 data_type: broker.dataType,
+                category: "custom",
             });
 
         if (error) {
@@ -54,7 +58,15 @@ export function createBrokerManager() {
     async function updateBroker(broker: Broker): Promise<Broker> {
         const { data, error } = await supabase
             .from('broker')
-            .update(broker)
+            .update({
+                name: broker.name,
+                official_name: broker.officialName,
+                description: broker.description,
+                default_value: broker.component.defaultValue,
+                component: broker.component,
+                data_type: broker.dataType,
+                category: "custom",
+            })
             .eq('id', broker.id);
 
         if (error) {
@@ -64,7 +76,7 @@ export function createBrokerManager() {
 
         setBrokersAtom((prevBrokers) =>
             prevBrokers.map((prevBroker) =>
-                prevBroker.id === broker.id ? data : prevBroker
+                prevBroker.id === broker.id ? { ...prevBroker, ...broker } : prevBroker
             )
         );
         setCurrentBrokerAtom(data);

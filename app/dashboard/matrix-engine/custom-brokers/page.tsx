@@ -21,18 +21,6 @@ const Brokers: React.FC = () => {
         setTypeSelected(true);
     };
 
-    const handleNewBroker = () => {
-        setShowSelect(true);
-        setTypeSelected(false);
-        setSelectedOption('');
-        brokerManager.setCurrentBroker({
-            id: '',
-            name: '',
-            dataType: '',
-            component: {} as Component,
-        });
-    };
-
     const componentOptions = Object.keys(ComponentType).map((key) => ({
         value: key,
         label: key,
