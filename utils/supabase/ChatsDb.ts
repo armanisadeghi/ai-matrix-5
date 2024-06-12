@@ -1,5 +1,6 @@
+/*
 import supabase from "./client";
-import { MessageManager, Chat as ChatClass } from '@/services/Chat';
+import { Chat as ChatClass } from '@/services/Chat';
 
 // Define the Chat interface
 interface Chat {
@@ -70,7 +71,7 @@ export class ChatsDb {
         return data.map((chatData: any) => this.transformToChat(chatData));
     }
 
-    /*
+    /!*
     async createChat(chat: ChatClass): Promise<void> {
         const { error } = await supabase
             .from('chats')
@@ -103,5 +104,6 @@ export class ChatsDb {
             console.error('Error updating chat:', error);
         }
     }
-    */
+    *!/
 }
+*/

@@ -54,8 +54,8 @@ export const BrokerCreateForm = () => {
                     <TextInput label="Description" value={currentData.description}
                         onChange={value => setCurrentData({ ...currentData, description: value.target.value })} placeholder='Enter a description' />
                     <Space h="sm" />
-                    <Select label="Type" description="Choose the type of component" placeholder="Choose the type of component" data={componentOptions} value={currentData.component.type}
-                        onChange={value => setCurrentData({ ...currentData, component: { ...currentData.component, type: value } })} />
+                    {/* <Select label="Type" description="Choose the type of component" placeholder="Choose the type of component" data={componentOptions} value={currentData.component.type}
+                        onChange={value => setCurrentData({ ...currentData, component: { ...currentData.component, type: value } })} /> */}
                 </Fieldset>
                 <Space h="sm" />
                 <Button
@@ -71,7 +71,7 @@ export const BrokerCreateForm = () => {
                     <Text>{currentData.name}</Text>
                     <Text size='xs' c={'gray.6'}>{currentData.description}</Text>
                     <Space h="sm" />
-                    <BrokerComponent currentComponent={currentData.component} type={currentData.component.type} handleDefaultValueChange={value => setCurrentData({ ...currentData, component: { ...currentData.component, defaultValue: value } })} />
+                    {/* <BrokerComponent currentComponent={currentData.component} type={currentData.component.type} handleDefaultValueChange={value => setCurrentData({ ...currentData, component: { ...currentData.component, defaultValue: value } })} /> */}
                 </Fieldset>
             </Grid.Col>
         </Grid>

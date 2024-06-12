@@ -1,9 +1,74 @@
+/*
 // chat-app/AiContext/ChatContext.tsx
 'use client';
 
 import React, { createContext, useContext, useState } from 'react';
-import { ChatRequest, ChatContextProps, ChatProviderProps } from '@/types/chat';
-import { defaultChatRequest } from '@/app/samples/chats/shared/config/chatDefaults';
+import { ChatSettings } from "@/types/settings";
+import { ChatContextProps, ChatProviderProps, ChatRequest } from "@/types";
+
+// put this crap here to get it to build!
+
+// chat-app/utils/chatDefaults.ts
+
+
+export const aiPreferencesMainDefault = "direct_chat"
+export const aiPreferencesSecondDefault = "one_ai_chat"
+export const makeSmallTalkDefault = false
+export const quickAnswerDefault = false
+export const improveQuestionsDefault = false
+export const submitOnEnterDefault = true
+
+
+export const defaultChatSettings: ChatSettings = {
+    aiPreferencesMain: aiPreferencesMainDefault,
+    aiPreferencesSecond: aiPreferencesSecondDefault,
+    makeSmallTalk: makeSmallTalkDefault,
+    quickAnswer: quickAnswerDefault,
+    improveQuestions: improveQuestionsDefault,
+    submitOnEnter: submitOnEnterDefault
+};
+
+
+export const defaultRequestSettings: RequestSettings = {
+    chatSettings: defaultChatSettings,
+    variablesData: {},
+    responseData: {},
+    brokerData: {},
+    aiModelSettings: {},
+    controlSettings: {},
+    pageSettings: {},
+    userSettings: {},
+    matrixSettings: {},
+    clientSettings: {},
+    agencySettings: {}
+};
+
+export const defaultChatRequest: ChatRequest = {
+    eventName: "",
+    userToken: "",
+    task: "",
+    requestMetadata: {
+        requestId: "",
+        requestIndex: 1,
+        uid: "",
+        requestTimestamp: "",
+        requestType: "chat",
+        requestSource: "chat_app_main",
+        requestChannel: "chat"
+    },
+    recipeId: "",
+    promptData: [],
+    formResponses: [],
+    customInputs: [],
+    settings: defaultRequestSettings,
+    variablesData: {},
+    responseData: {},
+    brokerData: {},
+    modelData: {},
+    controls: {},
+    activeChatId: null
+};
+
 
 
 export const ChatContext = createContext<ChatContextProps>({
@@ -35,3 +100,4 @@ export const useChat = (): ChatContextProps => {
     }
     return context;
 };
+*/

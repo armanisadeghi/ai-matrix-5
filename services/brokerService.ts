@@ -30,7 +30,7 @@ export function createBrokerManager() {
         return broker;
     };
 
-    async function createBroker(broker: Broker): Promise<Broker> {
+    async function createBroker(broker: Broker) {
         const brokerId = uuid();
         const { data, error } = await supabase
             .from('broker')
@@ -51,11 +51,11 @@ export function createBrokerManager() {
             return broker;
         }
         setBrokersAtom((prevBrokers) => [...prevBrokers, { ...broker, id: brokerId }]);
-        setCurrentBrokerAtom(data);
-        return data;
+        // setCurrentBrokerAtom(data);
+        // return data;
     }
 
-    async function updateBroker(broker: Broker): Promise<Broker> {
+    async function updateBroker(broker: Broker) {
         const { data, error } = await supabase
             .from('broker')
             .update({
@@ -79,8 +79,8 @@ export function createBrokerManager() {
                 prevBroker.id === broker.id ? { ...prevBroker, ...broker } : prevBroker
             )
         );
-        setCurrentBrokerAtom(data);
-        return data;
+        // setCurrentBrokerAtom(data);
+        // return data;
     }
 
     async function deleteBroker(brokerId: string): Promise<void> {

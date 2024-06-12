@@ -7,11 +7,11 @@ import styles from './DynamicTextarea.module.css';
 import { useDynamicTextArea } from './useDynamicTextarea';
 import useDynamicTextareaLogic from './hooks/useDynamicTextareaLogic';
 import useKeyDownHandler from "@/utils/commonUtils/useKeyDownHandler";
-import StreamOpenai from '../../../app/samples/chats/services/openAiStream';
 import ResponsiveSlider from '@/components/AiChat/UserInput/settings/MatrixSlider/ResponsiveSlider';
 import SimpleChatSettingsModal from "./settings/SimpleChatSettingsModal";
-import useFileUpload from "@/app/samples/chats/shared/hooks/useFileUpload";
+import useFileUpload from "../../../hooks/ui/useFileUpload";
 import { RiSettings2Line } from "react-icons/ri";
+import StreamOpenai from "@/hooks/ai/openAiStream";
 
 interface DynamicTextareaProps {
     systemText: string;

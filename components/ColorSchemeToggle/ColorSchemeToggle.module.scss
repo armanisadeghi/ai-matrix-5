@@ -1,0 +1,28 @@
+// Function to convert px to rem
+@function rem($px) {
+    $base: 16px; // Define base font-size
+    @return $px / $base * 1rem;
+}
+
+@mixin dark {
+    display: none;
+}
+
+@mixin light {
+    display: block;
+}
+
+.icon {
+    width: rem(18px); // Use the rem function
+    height: rem(18px);
+}
+
+.dark {
+    @include dark;
+    @include light;
+}
+
+.light {
+    @include light;
+    @include dark;
+}

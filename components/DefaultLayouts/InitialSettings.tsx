@@ -57,7 +57,7 @@ const InitialSettings: React.FC<InitialSettingsProps> = ({ preset }) => {
                 case "Public":
                     toggleNavbar("hidden");
                     toggleAside("hidden");
-                    toggleHeader("hidden");
+                    //toggleHeader("hidden");  Commented this out because there is no option for this.
                     toggleFooter("hidden");
                     break;
                 default:

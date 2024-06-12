@@ -20,10 +20,10 @@ export const BrokerForm = () => {
     return (
         <Container>
             <SimpleGrid>
-                {currentBroker && currentBroker.component && <BrokerComponent
+                {/* {currentBroker && currentBroker.component && <BrokerComponent
                     currentComponent={currentBroker.component}
                     type={currentBroker.component.type}
-                    handleDefaultValueChange={(value) => setEditedBroker({ ...currentBroker, component: { ...currentBroker.component, defaultValue: value } })} />}
+                    handleDefaultValueChange={(value) => setEditedBroker({ ...currentBroker, component: { ...currentBroker.component, defaultValue: value } })} />} */}
             </SimpleGrid>
             <Space h="md" />
             <Button variant="primary" onClick={handleSave}>Save Broker</Button>

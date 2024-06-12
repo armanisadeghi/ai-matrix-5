@@ -3,7 +3,6 @@
 import { Button, Divider, Flex, Paper, Select, Stack, Text, Title } from "@mantine/core";
 import { useState } from "react";
 import { IconCircleKey, IconDeviceMobile, IconMessage } from "@tabler/icons-react";
-import { PasswordResetForm } from "@/components";
 import AmeTitle from "@/ui/typography/AmeTitle";
 import AmeSelect from "@/ui/select/AmeSelect";
 
@@ -27,12 +26,15 @@ const twoFactorAuths = [
     },
 ];
 
+// TODO: Password reset would need to be changed to a link that takes you to Auth0's password reset page
+// Armani removed it to eliminate errors.
+
 function Security() {
     const [preferredAuth, setPreferredAuth] = useState<string | null>("Authenticator App");
 
     return (
         <>
-            <PasswordResetForm mb="md" />
+
             <Paper withBorder p="md">
                 <AmeTitle as="card-header" mb="sm">
                     Two-factor authentication

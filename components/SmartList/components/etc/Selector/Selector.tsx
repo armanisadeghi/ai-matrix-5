@@ -1,7 +1,6 @@
 import {useEffect, useState} from "react";
-import FolderIco from "@/components/SmartList/components/etc/FolderIco.tsx";
-import Text from "@/components/SmartList/components/etc/Text.tsx"
-// @ts-ignore
+import FolderIco from "@/components/SmartList/components/etc/FolderIco"
+import Text from "@/components/SmartList/components/etc/Text"
 import {IconFile} from '@tabler/icons-react';
 import {useListProvider} from "@/components/SmartList/SmartList";
 import CollapseBtn from "@/components/SmartList/components/etc/Collapsebtn";

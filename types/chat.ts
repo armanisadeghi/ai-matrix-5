@@ -28,6 +28,9 @@ export interface MatrixMessage {
     text: MessageText;
 }
 
+export type ChatMessagesArray = MatrixMessage[];
+
+
 export interface Chat {
     chatId: ChatId;
     createdAt: CreatedAt;
@@ -49,8 +52,11 @@ export type ChatMessages = MatrixMessage[];
 export interface OaiMessage {
     role: Role;
     content: MessageText;
+    tool_call_id?: string
+    name?: string;
 }
 
+export type OaiMessagesArray = OaiMessage[];
 
 
 

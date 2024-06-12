@@ -1,10 +1,14 @@
-// app/sample/page.tsx
+// app/samples/page.tsx
+'use client';
 
-import React from 'react';
 
-const SampleAppPage = () => {
-    return <div>Sample App Home Page</div>;
-};
+export default function Index() {
 
-export default SampleAppPage;
+    return (
+        <div>
+            Sample Page
+        </div>
+    );
+}
+
 

@@ -14,7 +14,6 @@ export * from "./UserDetailsForm";
 export * from "./ThemeSelectionCard";
 export * from "./PaymentForm";
 export * from "./UserBillingForm";
-export * from "./PasswordResetForm";
 export * from "./ColorSelectionForm";
 export * from "./TableSelectionForm";
 

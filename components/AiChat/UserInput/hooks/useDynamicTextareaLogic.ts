@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
-import saveMessageToDb from "@/app/samples/chats/services/underTesting/saveMessageToDb";
+import saveMessageToDb from "@/services/chat-services/underTesting/saveMessageToDb";
 import { useMediaQuery } from '@mantine/hooks';
 import { useRecoilState } from 'recoil';
 import { activeChatMessagesArrayAtom, assistantTextStreamAtom, userTextInputAtom } from "@/state/aiAtoms/chatAtoms";
 import { MatrixMessage, MessageEntry } from '@/types/chat';
-import { useChatDbAtoms } from "@/app/samples/chats/hooks/useChatDbAtoms";
+import { useChatDbAtoms } from "@/hooks/ai/useChatDbAtoms";
 
 const useDynamicTextareaLogic = () => {
     const [userInput, setUserInput] = useState('');

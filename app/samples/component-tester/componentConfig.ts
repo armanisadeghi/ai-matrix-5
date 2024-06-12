@@ -1,11 +1,10 @@
 // app/config/componentConfig.ts
 import dynamic from 'next/dynamic';
-import { exampleCode, cssCode, pythonCode } from '@/app/samples/code-highlight/data/exampleCode';
+import { exampleCode, cssCode, pythonCode } from '../code-highlight/data/exampleCode';
 
 export const componentMap: { [key: string]: React.ComponentType<any> } = {
     AIResponse: dynamic(() => import('@/app/samples/ai-tests/response/AIResponse')),
     AmeMultiCodeHighlight: dynamic(() => import('@/ui/highlight/AmeMultiCodeHighlight')),
-    ChatSidebar: dynamic(() => import('@/app/samples/ai-tests/shared/sidebar/ChatSidebar')),
     DynamicSplitter: dynamic(() => import('@/ui/split/DynamicSplitter')),
     AmeCheckbox: dynamic(() => import('@/ui/checkbox/AmeCheckbox')),
     AmeCheckboxGroup: dynamic(() => import('@/ui/checkbox/AmeCheckboxGroup')),

@@ -2,8 +2,9 @@
 'use client';
 import React from 'react';
 import DynamicTextarea from '@/components/AiChat/UserInput/DynamicTextarea';
-import ResponseArea from '@/components/AiChat/Response/ResponseArea';
-import useDynamicLayout from './hooks/useDynamicChatLayout';
+import useDynamicLayout from '@/hooks/ai/useDynamicChatLayout';
+import ResponseArea from "@/components/AiChat/Response/ResponseArea";
+import Styles from 'Chats.module.css';
 
 const ChatsPage = () => {
     const { bottomPadding, containerHeight, textareaContainerRef } = useDynamicLayout();

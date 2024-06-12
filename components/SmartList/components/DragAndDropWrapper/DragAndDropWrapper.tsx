@@ -1,4 +1,4 @@
-import {useListProvider} from "../../SmartList.tsx"
+
 import {
     closestCenter,
     DndContext, DragOverlay,
@@ -11,6 +11,7 @@ import {
 } from '@dnd-kit/core';
 import {useEffect, useState} from "react";
 import {arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy} from "@dnd-kit/sortable";
+import { useListProvider } from "@/components/SmartList/SmartList";
 
 
 export default function DragAndDropWrapper({children}) {
