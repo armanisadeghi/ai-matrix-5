@@ -1,7 +1,7 @@
-import { User } from "@/services/Users";
+import { MatrixUser } from "@/services/Users";
 
-export class preferences {
-    user: User;
+export class Preferences {
+    user: MatrixUser;
     darkMode: boolean;
     notifications: boolean;
     autoSave: boolean;
@@ -11,7 +11,7 @@ export class preferences {
     simpleChatSettings: object;
 
     constructor(
-        user: User,
+        user: MatrixUser,
         darkMode: boolean,
         notifications: boolean,
         autoSave: boolean,
@@ -19,7 +19,6 @@ export class preferences {
         submitOnEnter: boolean,
         primaryAiModel: string,
         simpleChatSettings: object,
-
     ) {
         this.user = user;
         this.darkMode = darkMode;
@@ -31,7 +30,6 @@ export class preferences {
         this.simpleChatSettings = simpleChatSettings;
     }
 }
-
 
 export class UserPreferences {
     private static instance: UserPreferences;
@@ -64,12 +62,12 @@ export class UserPreferences {
         this.preferences = {};
     }
 
-    setUserPreference(user: User, key: string, value: any) {
-        this.preferences[user.id] = this.preferences[user.id] || {};
-        this.preferences[user.id][key] = value;
+    setUserPreference(user: MatrixUser, key: string, value: any) {
+        this.preferences[user.user_id] = this.preferences[user.user_id] || {};
+        this.preferences[user.user_id][key] = value;
     }
 
-    getUserPreference(user: User, key: string): any {
-        return this.preferences[user.id]?.[key];
+    getUserPreference(user: MatrixUser, key: string): any {
+        return this.preferences[user.user_id]?.[key];
     }
 }

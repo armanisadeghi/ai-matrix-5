@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, Text } from '@mantine/core';
 import { GiArtificialHive } from "react-icons/gi";
-import styles from "./chat.module.css";
+import styles from "./ResponseArea.module.css";
 import MarkdownRenderer from "./markdown/MarkdownRenderer";
 
 interface AssistantMessageProps {

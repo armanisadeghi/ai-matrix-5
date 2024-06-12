@@ -1,14 +1,14 @@
 "use client";
+import { brokersAtom } from '@/context/atoms/brokerAtoms';
 import { CheckIcon, Combobox, Group, Input, Pill, PillsInput, useCombobox } from '@mantine/core';
-import { useBroker } from '@/context/brokerContext';
+import { useRecoilValue } from 'recoil';
 
 export function BrokerMultiSelect({ value, setValue }: any) {
     const combobox = useCombobox({
         onDropdownClose: () => combobox.resetSelectedOption(),
         onDropdownOpen: () => combobox.updateSelectedOptionIndex('active'),
     });
-
-    const { brokers, system } = useBroker()
+    const brokers = useRecoilValue(brokersAtom);
 
     const handleValueSelect = (val: string) => {
         setValue((current: string[]) => {
@@ -37,14 +37,14 @@ export function BrokerMultiSelect({ value, setValue }: any) {
         </Combobox.Option>
     ));
 
-    const systemBrokersOptions = system.map((item) => (
-        <Combobox.Option value={item.name} key={item.id} active={value.includes(item.name)}>
-            <Group gap="sm">
-                {value.includes(item.name) ? <CheckIcon size={12} /> : null}
-                <span>{item.name}</span>
-            </Group>
-        </Combobox.Option>
-    ));
+    // const systemBrokersOptions = system.map((item) => (
+    //     <Combobox.Option value={item.name} key={item.id} active={value.includes(item.name)}>
+    //         <Group gap="sm">
+    //             {value.includes(item.name) ? <CheckIcon size={12} /> : null}
+    //             <span>{item.name}</span>
+    //         </Group>
+    //     </Combobox.Option>
+    // ));
 
     return (
         <Combobox store={combobox} onOptionSubmit={handleValueSelect} withinPortal={false}>
@@ -75,7 +75,7 @@ export function BrokerMultiSelect({ value, setValue }: any) {
 
             <Combobox.Dropdown>
                 <Combobox.Options>
-                    <Combobox.Group label="System Brokers">{systemBrokersOptions}</Combobox.Group>
+                    {/* <Combobox.Group label="System Brokers">{systemBrokersOptions}</Combobox.Group> */}
                     <Combobox.Group label="Custom Brokers">{options}</Combobox.Group>
                 </Combobox.Options>
             </Combobox.Dropdown>

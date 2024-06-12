@@ -1,11 +1,11 @@
-import ListNested from "../ListNested.tsx";
-import {useListProvider} from "../../../SmartList.tsx";
+import ListNested from "../ListNested";
+import {useListProvider} from "../../../SmartList";
 import {useState} from "react";
 import {useSortable} from "@dnd-kit/sortable";
 import {CSS} from "@dnd-kit/utilities";
-import ListNestedDragAndDrop from "../ListNestedDragAndDrop.tsx";
+import ListNestedDragAndDrop from "../ListNestedDragAndDrop";
 import Selector from '../../etc/Selector/Selector'
-import DropIndicator from "../../etc/DropIndicator/DropIndicator.tsx";
+import DropIndicator from "../../etc/DropIndicator/DropIndicator";
 import {Text, useMantineColorScheme} from "@mantine/core";
 
 

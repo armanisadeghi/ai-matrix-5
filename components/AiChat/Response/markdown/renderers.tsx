@@ -2,6 +2,7 @@
 import React, { ReactNode } from 'react';
 import AmeCodeHighlight from "@/ui/highlight/AmeCodeHighlight";
 import { CustomTable, CustomTableHead, CustomTableBody, CustomTableRow, CustomTableCell, CustomTableHeaderCell } from './CustomTable';
+import { Code } from '@mantine/core';
 
 const isBlockLevelElement = (element: ReactNode) => {
     if (!React.isValidElement(element)) return false;
@@ -9,18 +10,29 @@ const isBlockLevelElement = (element: ReactNode) => {
     return blockElements.includes(element.type as string);
 };
 
+/*
+const logRendererInfo = (type, props) => {
+    console.log(`Renderer type: ${type}`);
+    console.log('Props received:', props);
+
+};
+*/
+
 const renderers = {
-    code: ({ className, children }) => {
-        const language = className ? className.replace('language-', '') : '';
-        return (
+    code: ({ node, className, children, ...props }) => {
+        const match = /language-(\w+)/.exec(className ?? "");
+
+        return match ? (
             <AmeCodeHighlight
                 code={String(children).trim()}
-                language={language}
-                title={language.charAt(0).toUpperCase() + language.slice(1)}
+                language={match[1]}
+                title={match[1].charAt(0).toUpperCase() + match[1].slice(1)}
+                {...props}
             />
+        ) : (
+            <Code color="var(--mantine-color-blue-light)">{children}</Code>
         );
     },
-    inlineCode: ({ children }) => <code>{children}</code>,
     table: ({ children }) => <CustomTable>{children}</CustomTable>,
     thead: ({ children }) => <CustomTableHead>{children}</CustomTableHead>,
     tbody: ({ children }) => <CustomTableBody>{children}</CustomTableBody>,
@@ -41,7 +53,7 @@ const renderers = {
         if (hasBlockChild) {
             return <div>{children}</div>;
         }
-        return <p>{children}</p>;
+        return <span>{children}</span>;
     },
 };
 

@@ -1,3 +1,5 @@
+// theme.ts
+
 "use client";
 
 import { ActionIcon, Button, createTheme } from "@mantine/core";

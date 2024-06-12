@@ -1,6 +1,6 @@
 // /types/metadata.ts
 
-import { SOCKET_EVENTS, EVENT_TASKS, SOURCES, CHANNELS } from '../config/aiRequestOptions';
+import { SOCKET_EVENTS, EVENT_TASKS, SOURCES, CHANNELS } from '@/utils/config/aiRequestOptions';
 
 // RequestIdType
 export type RequestIdType = string; // DEFAULT: '', CHOICES: 'uuid', EXAMPLES: '0b9728d7-a0eb-407c-9519-b657240f0ec3'
@@ -27,10 +27,10 @@ export type ChannelType = typeof CHANNELS[number]; // DEFAULT: 'text', CHOICES: 
 // Metadata interface
 export interface Metadata {
     requestId: RequestIdType;
-    socketEvent: SocketEventType;
     eventTask: EventTaskType;
+    socketEvent: SocketEventType | null;
+    source: SourceType;
     index: IndexType;
     timestamp: TimestampType;
-    source: SourceType;
     channel: ChannelType;
 }

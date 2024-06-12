@@ -1,4 +1,4 @@
-import openai from './openaiClient';
+import openai from './oaiClient';
 
 interface OpenaiMessageEntry {
     role: 'system' | 'user' | 'assistant';

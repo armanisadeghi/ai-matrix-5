@@ -1,5 +1,5 @@
-import { Extension } from '@tiptap/core';
 import '@tiptap/extension-text-style';
+import { Extension } from "@tiptap/core";
 
 export type FontSizeOptions = {
     types: string[];

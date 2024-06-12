@@ -29,7 +29,7 @@ import { FooterProvider } from "@/context/FooterContext";
 const MainLayout = ({ children }) => {
     return (
         <NavbarProvider initialState="icons">
-            <SidebarProvider initialState="icons">
+            <SidebarProvider initialAsideState="icons">
                 <HeaderProvider initialState="medium">
                     <FooterProvider initialState="hidden">
                         {children}

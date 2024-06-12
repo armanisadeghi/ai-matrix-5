@@ -3,12 +3,12 @@
 'use client';
 
 import React from 'react';
-import ChatComponent from "@/app/samples/new-db/ChatComponent";
+import ChatSidebar from "@/components/AiChat/Sidebar/ChatList";
 
 const ChatPage = () => {
     return (
             <div>
-                <ChatComponent />
+                <ChatSidebar />
             </div>
     );
 };

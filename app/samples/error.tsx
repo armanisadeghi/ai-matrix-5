@@ -4,7 +4,7 @@ import { Card, Title, Text, Button, Container, Center } from '@mantine/core';
 
 const NotFoundPage = () => {
     return (
-        <Container style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Container style={{ height: '90vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Card shadow="sm" padding="lg" radius="md" withBorder>
                 <Center>
                     <Title order={1} style={{ fontSize: 100, fontWeight: 900 }}>404</Title>

@@ -1,4 +1,5 @@
-import { eRoleType, iChat } from "@/utils/types";
+/*
+
 import {
     createContext,
     ReactNode,
@@ -8,6 +9,7 @@ import {
 } from "react";
 // import axios from 'axios';
 import loadChatHistory from '../app/data/fake-data/fake-chat-history/fake-chat-history';
+import { iChat } from "@/app/samples/ai-tests/chat-app/types/types";
 
 const ChatContext = createContext<{
     chatHistory: iChat[];
@@ -21,7 +23,7 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
     const [chatHistory, setChatHistory] = useState<iChat[]>([]);
 
     // Uncomment below to switch to real API data fetching
-    /*
+    /!*
     useEffect(() => {
         const handledata = async () => {
             const result = await axios.get('https://aimatrix-api.vercel.app/api/aichat', {
@@ -40,7 +42,7 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
         };
         handledata();
     }, []);
-    */
+    *!/
 
     return (
         <ChatContext.Provider
@@ -61,3 +63,4 @@ export const useChat = () => {
     }
     return context;
 };
+*/

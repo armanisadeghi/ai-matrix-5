@@ -1,8 +1,8 @@
-import {useListProvider} from "../../../SmartList.tsx";
+import {useListProvider} from "../../../SmartList";
 import {useSortable} from "@dnd-kit/sortable";
-import {CSS} from "@dnd-kit/utilities";
-import Selector from "../../etc/Selector/Selector.tsx";
-import DropIndicator from "../../etc/DropIndicator/DropIndicator.tsx";
+import {CSS} from '@dnd-kit/utilities';
+import Selector from "../../etc/Selector/Selector";
+import DropIndicator from "../../etc/DropIndicator/DropIndicator";
 import {theme} from "@/theme";
 import {useMantineColorScheme} from "@mantine/core";
 

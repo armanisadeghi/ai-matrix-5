@@ -4,32 +4,41 @@
 import ErrorBoundary from "@/components/ErrorManagement/ErrorBoundry";
 import { SidebarProvider } from "@/context/SidebarContext";
 import { MainLayout } from "@/layout";
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { HeaderProvider } from "@/context/HeaderContext";
 import { FooterProvider } from "@/context/FooterContext";
 import { NavbarProvider } from "@/context/NavbarContext";
 import { RecoilRoot } from "recoil";
+import { LayoutProvider } from "@/context/LayoutContext";
+import Loading from "@/app/dashboard/loading";
 
 type Props = {
     children: ReactNode;
 };
 
-function Layout({ children }: Props) {
+function Layout({children}: Props) {
     return (
+
         <ErrorBoundary>
             <RecoilRoot>
-                <NavbarProvider initialState="full">
-                    <SidebarProvider initialState="icons">
-                        <HeaderProvider initialState="medium">
-                            <FooterProvider initialState="hidden">
-                                <MainLayout>{children}</MainLayout>
-                            </FooterProvider>
-                        </HeaderProvider>
-                    </SidebarProvider>
-                </NavbarProvider>
+                <React.Suspense fallback={<Loading/>}>
+                    <LayoutProvider initialNavbarState="icons">
+                        <NavbarProvider initialState="icons">
+                            <SidebarProvider initialAsideState="icons">
+                                <HeaderProvider initialState="medium">
+                                    <FooterProvider initialState="hidden">
+                                        <MainLayout>{children}</MainLayout>
+                                    </FooterProvider>
+                                </HeaderProvider>
+                            </SidebarProvider>
+                        </NavbarProvider>
+                    </LayoutProvider>
+                </React.Suspense>
             </RecoilRoot>
         </ErrorBoundary>
+
     );
 }
 
 export default Layout;
+

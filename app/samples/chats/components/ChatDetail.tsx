@@ -1,11 +1,17 @@
+/*
 import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { activeChatMessagesArrayAtom } from "@/state/aiAtoms/chatAtoms";
-console.log('ChatDetail');
+import { MatrixMessage } from "@/types";
 
 
-const ChatDetail = ({ user_id, chat_id }: { user_id: string; chat_id: string }) => {
-    const [messages, setMessages] = useRecoilState(activeChatMessagesArrayAtom);
+interface ChatDetailProps {
+    user_id: string;
+    chat_id: string;
+}
+
+const ChatDetail: React.FC<ChatDetailProps> = ({ user_id, chat_id }) => {
+    const [messages, setMessages] = useRecoilState<MatrixMessage[]>(activeChatMessagesArrayAtom);
     const [messageText, setMessageText] = useState<string>('');
 
     useEffect(() => {
@@ -22,7 +28,13 @@ const ChatDetail = ({ user_id, chat_id }: { user_id: string; chat_id: string }) 
         });
 
         if (response.ok) {
-            setMessages([...messages, { role: 'user', text: messageText }]);
+            const newMessage: MatrixMessage = {
+                index: messages.length, // Calculate the next available index
+                role: 'user',
+                text: messageText,
+                // Add other necessary fields here, if any
+            };
+            setMessages([...messages, newMessage]);
             setMessageText('');
         } else {
             console.error('Failed to send message', await response.json());
@@ -50,3 +62,4 @@ const ChatDetail = ({ user_id, chat_id }: { user_id: string; chat_id: string }) 
 };
 
 export default ChatDetail;
+*/

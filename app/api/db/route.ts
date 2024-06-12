@@ -57,9 +57,12 @@ async function handleRequest(
                     return NextResponse.json({ error: error.message }, { status: 404 });
                 }
 
+                if (data) {
+
                 const transformedData = data.map((record: any) => transformData(table, 'toFrontend', record));
                 console.log(`Transformed data: ${JSON.stringify(transformedData)}`);
                 return NextResponse.json(transformedData, { status: 200 });
+            }
 
             case 'POST':
                 const transformedBodyParams = transformData(table, 'toBackend', bodyParams);

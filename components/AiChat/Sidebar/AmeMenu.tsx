@@ -6,11 +6,11 @@ import { SiXdadevelopers, SiAppstore } from "react-icons/si";
 import { CiViewList } from "react-icons/ci";
 import { IconTrash } from '@tabler/icons-react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { activeUserAtom } from '@/context/atoms/userAtoms';
 import { activeChatMessagesArrayAtom, activeChatIdAtom } from "@/state/aiAtoms/chatAtoms";
 import { MessageEntry } from "@/types";
 import AssistantMessage from "@/components/AiChat/Response/AssistantMessage";
 import UserMessage from "@/components/AiChat/Response/UserMessagePaper";
+import { activeUserAtom } from "@/state/userAtoms";
 
 interface AmeMenuProps {
     children: ReactNode;

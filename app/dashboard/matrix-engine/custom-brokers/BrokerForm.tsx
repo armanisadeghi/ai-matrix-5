@@ -3,33 +3,38 @@
 import { Broker, Component } from '@/types/broker';
 import { Button, Container, Flex, SimpleGrid, Space } from '@mantine/core';
 import BrokerComponent from './BrokerComponent';
-import { useBroker } from '@/context/brokerContext';
-import { uuid } from 'uuidv4';
+import { useRecoilValue } from 'recoil';
+import { createBrokerManager } from '@/services/brokerService';
+import { currentBrokerAtom } from '../../../../context/atoms/brokerAtoms';
 
 
 export const BrokerForm = () => {
-    const { setBrokers, brokers, currentBroker, setCurrentBroker } = useBroker()
+    const currentBroker = useRecoilValue(currentBrokerAtom);
+    const brokerManager = createBrokerManager();
+
     const handleSave = () => {
-        setBrokers([{
-            ...currentBroker, id: uuid(), name: currentBroker.name,
-            dataType: typeof currentBroker.component.defaultValue, component: currentBroker.component
-        }, ...brokers.filter((broker) => broker.id !== currentBroker.id)]);
+        brokerManager.createBroker(currentBroker);
+        brokerManager.setCurrentBroker({ ...currentBroker, component: {} as Component });
+    };
+
+    const handleEdit = () => {
+        brokerManager.setCurrentBroker({ ...currentBroker, component: {} as Component });
     };
 
     return (
         <Container>
             <SimpleGrid>
-                <div key={currentBroker.id}>
-                    <BrokerComponent type={currentBroker.component.type} currentComponent={currentBroker.component} />
+                {currentBroker.component && <div>
+                    <BrokerComponent
+                        currentComponent={currentBroker.component}
+                        type={currentBroker.component.type} />
                     <Space h="xs" />
                     <Flex justify="flex-end">
-                        {currentBroker.component && (
-                            <Button variant="light" onClick={() => setCurrentBroker({ ...currentBroker, component: {} as Component })}>
-                                Delete
-                            </Button>
-                        )}
+                        <Button variant="light" onClick={handleEdit}>
+                            Delete
+                        </Button>
                     </Flex>
-                </div>
+                </div>}
             </SimpleGrid>
             <Space h="md" />
             <Button variant="primary" onClick={handleSave}>Save Broker</Button>

@@ -3,12 +3,12 @@
 import { Button, Center, Container, Flex, Grid, Paper, Space, Stack } from '@mantine/core';
 import BrokerComponent from '../BrokerComponent';
 import { Broker } from '@/types/broker';
-import { useBroker } from '@/context/brokerContext';
 import { useEffect, useState } from 'react';
-import { wrap } from 'module';
+import { useRecoilValue } from 'recoil';
+import { brokersAtom } from '@/context/atoms/brokerAtoms';
 
 export const BrokerFormComponent = ({ brokerIds }: { brokerIds: string[] }) => {
-    const brokers = [...useBroker().system, ...useBroker().brokers];
+    const brokers = useRecoilValue(brokersAtom);
     const [values, setValues] = useState([] as any[]);
     const [idBrokers, setIdBrokers] = useState([] as Broker[]);
 
@@ -31,6 +31,10 @@ export const BrokerFormComponent = ({ brokerIds }: { brokerIds: string[] }) => {
         });
     };
 
+    const handleSubmit = () => {
+        console.log(values);
+    };
+
     return (
         <Container w='100%'>
             <Paper withBorder p='sm'>
@@ -46,7 +50,7 @@ export const BrokerFormComponent = ({ brokerIds }: { brokerIds: string[] }) => {
             </Paper>
             <Space h="sm" />
             <Flex justify="end">
-                <Button variant="outline" onClick={() => console.log(values)}>Submit</Button>
+                <Button variant="outline" onClick={handleSubmit}>Submit</Button>
             </Flex>
         </Container>
     )

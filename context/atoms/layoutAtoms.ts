@@ -1,6 +1,4 @@
-// context/aiAtoms/layoutAtoms.ts
 import { atom, selector, waitForAll } from 'recoil';
-import {useLocalStorage} from "@mantine/hooks";
 
 export type PresetType =
     | "Standard"
@@ -20,34 +18,32 @@ export const splitterDimensionsState = atom({
     default: { width: 0, height: 0 },
 });
 
-
-
-export const headerHeightDirectAtom = atom({
+export const headerHeightDirectAtom = atom<number | null>({
     key: 'headerHeightDirectAtom',
     default: null,
 });
 
-export const footerHeightDirectAtom = atom({
+export const footerHeightDirectAtom = atom<number | null>({
     key: 'footerHeightDirectAtom',
     default: null,
 });
 
-export const navbarWidthDirectAtom = atom({
+export const navbarWidthDirectAtom = atom<number | null>({
     key: 'navbarWidthDirectAtom',
     default: null,
 });
 
-export const sidebarWidthDirectAtom = atom({
+export const sidebarWidthDirectAtom = atom<number | null>({
     key: 'sidebarWidthDirectAtom',
     default: null,
 });
 
-export const windowWidthState = atom({
+export const windowWidthState = atom<number | null>({
     key: 'windowWidthState',
     default: null,
 });
 
-export const windowHeightState = atom({
+export const windowHeightState = atom<number | null>({
     key: 'windowHeightState',
     default: null,
 });
@@ -55,25 +51,29 @@ export const windowHeightState = atom({
 export const availableWidthSelector = selector({
     key: 'availableWidthSelector',
     get: ({ get }) => {
-        const dimensions = get(waitForAll({
+        const { leftNavWidth, rightNavWidth, windowWidth } = get(waitForAll({
             leftNavWidth: navbarWidthDirectAtom,
             rightNavWidth: sidebarWidthDirectAtom,
             windowWidth: windowWidthState
         }));
-        console.log('Width Data:', dimensions);
-        return dimensions;
+        console.log('Width Data:', { leftNavWidth, rightNavWidth, windowWidth });
+        return {
+            width: windowWidth - (leftNavWidth ?? 0) - (rightNavWidth ?? 0)
+        };
     }
 });
 
 export const availableHeightSelector = selector({
     key: 'availableHeightSelector',
     get: ({ get }) => {
-        const heights = get(waitForAll({
+        const { headerHeight, footerHeight, windowHeight } = get(waitForAll({
             headerHeight: headerHeightDirectAtom,
             footerHeight: footerHeightDirectAtom,
             windowHeight: windowHeightState
         }));
-        console.log('Height Data:', heights);
-        return heights;
+        console.log('Height Data:', { headerHeight, footerHeight, windowHeight });
+        return {
+            height: windowHeight - (headerHeight ?? 0) - (footerHeight ?? 0)
+        };
     }
 });
