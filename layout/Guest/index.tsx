@@ -3,7 +3,9 @@
 import { AppShell, Burger, Button, Group, Skeleton } from '@mantine/core';
 import { useDisclosure, useHeadroom } from '@mantine/hooks';
 import { ReactNode } from 'react';
+import Link from 'next/link';
 import { Logo } from '@/components';
+import { useUser } from '@auth0/nextjs-auth0/client';
 
 type Props = { children: ReactNode };
 
@@ -11,6 +13,7 @@ export function GuestLayout(props: Props) {
   const { children } = props;
   const [opened, { toggle }] = useDisclosure();
   const pinned = useHeadroom({ fixedAt: 120 });
+  const { user } = useUser();
 
   return (
     <AppShell
@@ -27,7 +30,13 @@ export function GuestLayout(props: Props) {
             <Button variant="subtle">Features</Button>
             <Button variant="subtle">Testimonials</Button>
             <Button variant="subtle">Pricing</Button>
-            <Button variant="subtle">Sign In</Button>
+            {
+              user ? (
+                <Button variant="subtle" component={Link} href="/api/auth/logout">{user?.name}</Button>
+              ) : (
+                <Button variant="subtle" component={Link} href="/api/auth/login">Sign In</Button>
+              )
+            }
           </Group>
         </Group>
       </AppShell.Header>

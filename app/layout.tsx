@@ -25,24 +25,22 @@ const inter = Inter({
     display: "swap",
 });
 
-export default function RootLayout({children}: { children: React.ReactNode }) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <UserProvider>
-
             <html lang="en" className={inter.className}>
-            <head>
-                <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
-                <title>AI Matrix</title>
-                <ColorSchemeScript defaultColorScheme="dark"/>
-            </head>
-            <body>
-            <MantineProvider theme={theme} defaultColorScheme="dark">
-                <Notifications position="bottom-right" zIndex={1000}/>
-                <ModalsProvider>{children}</ModalsProvider>
-            </MantineProvider>
-            </body>
+                <head>
+                    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+                    <title>AI Matrix</title>
+                    <ColorSchemeScript defaultColorScheme="dark" />
+                </head>
+                <body>
+                    <MantineProvider theme={theme} defaultColorScheme="dark">
+                        <Notifications position="bottom-right" zIndex={1000} />
+                        <ModalsProvider>{children}</ModalsProvider>
+                    </MantineProvider>
+                </body>
             </html>
         </UserProvider>
-
     );
 }
