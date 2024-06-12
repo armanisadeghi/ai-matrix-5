@@ -11,6 +11,9 @@ import BrokerComponent from './BrokerComponent';
 import { IconPlus } from '@tabler/icons-react';
 import AmeFieldset from '@/ui/fieldset/AmeFieldset';
 
+// TODO: Natalie... Armani  changed placeholderText to placeholder (For build purposes) -- probably not right.
+
+
 export const BrokerEdit = ({ type }: BrokerFormProps) => {
     const [currentBroker, setCurrentBroker] = useState<Component>({
         type: type,
@@ -37,7 +40,7 @@ export const BrokerEdit = ({ type }: BrokerFormProps) => {
             <div style={{ width: '50%', justifyContent: 'flex-end', display: 'flex', flexDirection: 'column' }}>
                 <AmeFieldset legend="Add properties" >
                     <TextInput label="Name" onChange={(e) => setCurrentBroker({ ...currentBroker, label: e.target.value })} />
-                    <TextInput label="Placeholder" onChange={(e) => setCurrentBroker({ ...currentBroker, placeholderText: e.target.value })} />
+                    <TextInput label="Placeholder" onChange={(e) => setCurrentBroker({ ...currentBroker, placeholder: e.target.value })} />
                     <TextInput label="Default Value" onChange={(e) => setCurrentBroker({ ...currentBroker, defaultValue: e.target.value })} />
                     <Switch label="Required" onChange={(e) => setCurrentBroker({ ...currentBroker, required: e.target.checked })} />
                 </AmeFieldset>

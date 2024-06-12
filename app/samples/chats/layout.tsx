@@ -1,36 +1,15 @@
+// app/samples/chats/layout.tsx
+
 "use client";
 
-import React, { useEffect, useCallback } from "react";
+import React from "react";
 import { Container, Grid } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import { UserProvider } from "@/context/AiContext/UserContext";
-import { useRecoilValue } from "recoil";
-import { activeUserAtom } from "@/context/atoms/userAtoms";
-import { useSidebar } from "@/context/SidebarContext";
-import ChatSidebar from "@/components/AiChat/Sidebar/ChatList";
 
 const ChatLayout = ({children}: { children: React.ReactNode }) => {
     const isSmallScreen = useMediaQuery("(max-width: 600px)");
-    const activeUser = useRecoilValue(activeUserAtom);
-    const { setSidebarContent, toggleAside } = useSidebar();
-
-    const memoizedSetSidebarContent = useCallback(setSidebarContent, []);
-    const memoizedToggleAside = useCallback(toggleAside, []);
-
-    useEffect(() => {
-        if (activeUser) {
-            memoizedSetSidebarContent(<ChatSidebar />);
-            memoizedToggleAside("full");
-        } else {
-        }
-
-        return () => {
-            memoizedSetSidebarContent(null);
-        };
-    }, [activeUser, memoizedSetSidebarContent, memoizedToggleAside]);
 
     return (
-        <UserProvider>
             <Container fluid h={1200} bg="var(--mantine-color-dark-7)">
                 <Grid grow style={{ flex: 1 }} columns={12} gutter={0}>
                     {!isSmallScreen && (
@@ -50,7 +29,6 @@ const ChatLayout = ({children}: { children: React.ReactNode }) => {
                     )}
                 </Grid>
             </Container>
-        </UserProvider>
     );
 };
 

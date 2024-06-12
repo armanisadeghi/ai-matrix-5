@@ -1,8 +1,8 @@
 // /chat-app/nice-working/SpecialChatForm.tsx
 
 import React from 'react';
-import { useForm } from '@/app/samples/ai-tests/chat-app/hooks/useForm';
 import { FormData } from '@/types/chat';
+import { useForm } from "@/app/samples/ai-tests/chat-app/components/dynamic-forms/useForm";
 
 const initialFormData: FormData = {
     promptData: [

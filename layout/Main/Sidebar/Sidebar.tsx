@@ -13,7 +13,7 @@ const actionProps: ActionIconProps = {
 
 interface SidebarProps {
     state: "full" | "compact" | "icons" | "hidden";
-    title?: string;
+    title?: string | null;
 }
 
 export const Sidebar = ({ state, title }: SidebarProps) => {

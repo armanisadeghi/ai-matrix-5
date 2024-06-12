@@ -1,4 +1,4 @@
-import { Group, GroupProps, Text, UnstyledButton, useMantineColorScheme, useMantineTheme } from "@mantine/core";
+import { Group, GroupProps, Text, UnstyledButton, useMantineColorScheme } from "@mantine/core";
 import Image from "next/image";
 import { ReactElement } from "react";
 

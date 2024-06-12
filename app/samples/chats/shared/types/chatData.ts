@@ -1,7 +1,7 @@
 // /types/chatData.ts
-import { ROLE_TYPES } from '../../../org/config/aiRequestOptions';
 
-// RoleType
+import { ROLE_TYPES } from "@/utils/config/aiRequestOptions";
+
 export type RoleType = typeof ROLE_TYPES[number];
 
 // ID and Timestamp types

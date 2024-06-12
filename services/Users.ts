@@ -1,64 +1,109 @@
-import { UserConnection } from './Connection';
-import { UsersDb } from '@/utils/supabase/UsersDb';
+// services/Users.ts
+'use client';
+
 import { atom, RecoilState } from 'recoil';
-// this.users = [...this.users, user]; // Create a new array with the new user to ensure mutability - save.
+import { useUser } from "@auth0/nextjs-auth0/client";
+import { UserConnection } from './UserConnection';
+import { UsersDb } from '@/utils/supabase/UsersDb';
 
+// Auth0 UserProfile interface with additional fields
+export interface UserProfile {
+    email?: string | null;
+    email_verified?: boolean | null;
+    name?: string | null;
+    nickname?: string | null;
+    picture?: string | null;
+    sub?: string | null;
+    updated_at?: string | null;
+    org_id?: string | null;
+    given_name?: string;
+    family_name?: string;
+    sid?: string;
+    [key: string]: unknown;
+}
 
+export const guestUserProfile: UserProfile = {
+    email: null,
+    email_verified: null,
+    name: 'Guest User',
+    nickname: 'guest',
+    picture: null,
+    sub: null,
+    updated_at: null,
+    org_id: null,
+    given_name: 'Guest',
+    family_name: 'User',
+    sid: null,
+};
 
-export class User {
-    id: string;
-    token: string | null;
-    accountType: string | null;
-    organizationId: string | null;
-    firstName: string | null;
-    lastName: string | null;
-    email: string | null;
-    phone: string | null;
-    role: string | null;
-    status: string | null;
-    created_at: Date | null;
-    updated_at: Date | null;
-    lastLogin: Date | null;
-    lastActivity: Date | null;
+// MatrixUserProfile extending UserProfile with additional custom fields
+export interface MatrixUserProfile extends UserProfile {
+    token?: string | null;
+    account_type?: string | null;
+    org_id?: string | null;
+    phone?: string | null;
+    role?: string | null;
+    status?: string | null;
+    created_at?: string | null;
+    last_login?: string | null;
+    last_activity?: string | null;
+}
 
-    constructor(
-        id: string,
-        token: string | null,
-        accountType: string | null,
-        firstName: string | null,
-        lastName: string | null,
-        role: string | null,
-        status: string | null,
-        organizationId: string | null,
-        email: string | null,
-        phone: string | null,
-        lastLogin: Date | null,
-        lastActivity: Date | null,
-    ) {
-        this.id = id;
-        this.token = token;
-        this.accountType = accountType;
-        this.organizationId = organizationId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phone = phone;
-        this.role = role;
-        this.status = status;
-        this.created_at = new Date();
-        this.updated_at = new Date();
-        this.lastLogin = lastLogin;
-        this.lastActivity = lastActivity;
+// MatrixUser class implementing MatrixUserProfile with internal naming conventions
+export class MatrixUser implements MatrixUserProfile {
+    user_id?: string;
+    auth0_id?: string;
+    email?: string | null;
+    name?: string | null;
+    nickname?: string | null;
+    picture?: string;
+    updated_at?: string;
+    token?: string | null;
+    account_type?: string | null;
+    org_id?: string | null;
+    phone?: string | null;
+    role?: string | null;
+    status?: string | null;
+    created_at?: string | null;
+    last_login?: string | null;
+    last_activity?: string | null;
+    [key: string]: unknown;
+
+    constructor(user: UserProfile, additionalFields: Partial<MatrixUserProfile> = {}) {
+        this.user_id = user.sub;
+        this.auth0_id = user.sub;
+        this.email = user.email;
+        this.name = user.name;
+        this.nickname = user.nickname;
+        this.picture = user.picture;
+        this.updated_at = user.updated_at;
+        this.token = additionalFields.token;
+        this.account_type = additionalFields.account_type;
+        this.org_id = user.org_id;
+        this.phone = additionalFields.phone;
+        this.role = additionalFields.role;
+        this.status = additionalFields.status;
+        this.created_at = additionalFields.created_at ?? new Date().toISOString();
+        this.last_login = additionalFields.last_login;
+        this.last_activity = additionalFields.last_activity;
+    }
+
+    updateDetails(details: Partial<MatrixUserProfile>) {
+        Object.assign(this, details);
+        this.updated_at = new Date().toISOString();
     }
 }
 
+// UserManager class to manage MatrixUser instances
 export class UserManager {
     private static instance: UserManager | null = null;
-    supabaseService: UsersDb = new UsersDb();
-    userConnection: UserConnection = new UserConnection();
-    users: User[] = [];
-    activeUser: User | null = null;
-    static ActiveUser: RecoilState<User | null> = atom<User | null>({
+    supabaseService?: UsersDb;
+    userConnection?: UserConnection;
+
+    users: MatrixUser[] = [];
+    activeUser: MatrixUser | null = null;
+
+    static ActiveUserAtom: RecoilState<MatrixUser | null> = atom<MatrixUser | null>({
         key: 'ActiveUser',
         default: null,
     });
@@ -66,32 +111,54 @@ export class UserManager {
     private isProcessing: boolean = false;
     private requestQueue: (() => Promise<void>)[] = [];
 
-    private constructor() {}
+    private constructor(supabaseService: UsersDb, userConnection: UserConnection) {
+        this.supabaseService = supabaseService;
+        this.userConnection = userConnection;
+    }
 
     public static getInstance(): UserManager {
-        if (!UserManager.instance) {
-            UserManager.instance = new UserManager();
-        }
         return UserManager.instance;
     }
 
-    private async fetchUserById(userId: string): Promise<User | null> {
+    public initializeActiveUser() {
+        const { user, error, isLoading } = useUser();
+        if (isLoading) {
+            console.log('Loading user data...');
+            return;
+        }
+        if (error) {
+            console.log('Error loading user:', error);
+            return;
+        }
+        if (user) {
+            this.activeUser = new MatrixUser(user);
+        }
+    }
+
+    public updateActiveUserDetails(details: Partial<MatrixUserProfile>) {
+        if (this.activeUser) {
+            this.activeUser.updateDetails(details);
+        }
+    }
+
+    private async fetchUserById(userId: string): Promise<MatrixUser | null> {
         try {
             const user = await this.supabaseService.getUserById(userId);
             if (user) {
-                return new User(
-                    user.id,
-                    user.token,
-                    user.accountType,
-                    user.firstName,
-                    user.lastName,
-                    user.role,
-                    user.status,
-                    user.organizationId,
-                    user.email,
-                    user.phone,
-                    user.lastLogin,
-                    user.lastActivity
+                return new MatrixUser(
+                    user,
+                    {
+                        token: user.token,
+                        account_type: user.account_type,
+                        org_id: user.org_id,
+                        email: user.email,
+                        phone: user.phone,
+                        role: user.role,
+                        status: user.status,
+                        created_at: user.created_at,
+                        last_login: user.last_login,
+                        last_activity: user.last_activity
+                    }
                 );
             } else {
                 console.log('User not found in the database.');
@@ -101,83 +168,5 @@ export class UserManager {
             console.log('Error fetching user by id:', error);
             return null;
         }
-    }
-
-    private async handleUserRequest(userId?: string): Promise<User> {
-        let user: User | null = null;
-
-        if (userId) {
-            user = await this.fetchUserById(userId);
-        }
-
-        if (!user) {
-            const hardcodedUserId = 'a048d457-c058-481b-a9a1-7d821b6435d5';
-            user = await this.fetchUserById(hardcodedUserId);
-        }
-
-        if (user) {
-            this.users = [...this.users, user]; // Create a new array with the new user to ensure mutability
-            if (!this.activeUser) {
-                this.activeUser = user;
-            }
-            return user;
-        } else {
-            throw new Error('Unable to fetch user or hardcoded user.');
-        }
-    }
-
-    private enqueueRequest(fn: () => Promise<void>): void {
-        this.requestQueue.push(fn);
-        if (!this.isProcessing) {
-            this.processQueue();
-        }
-    }
-
-    private async processQueue(): Promise<void> {
-        if (this.requestQueue.length > 0) {
-            this.isProcessing = true;
-            const fn = this.requestQueue.shift();
-            if (fn) {
-                await fn();
-            }
-            this.isProcessing = false;
-            this.processQueue();
-        }
-    }
-
-    public async getActiveUser(): Promise<User | null> {
-        return new Promise((resolve, reject) => {
-            this.enqueueRequest(async () => {
-                try {
-                    if (!this.activeUser) {
-                        await this.handleUserRequest();
-                    }
-                    resolve(this.activeUser);
-                } catch (error) {
-                    reject(error);
-                }
-            });
-        });
-    }
-
-    public async getActiveUserId(): Promise<string | null> {
-        const activeUser = await this.getActiveUser();
-        return activeUser ? activeUser.id : null;
-    }
-
-    public async getActiveUserToken(): Promise<string | null> {
-        const activeUser = await this.getActiveUser();
-        return activeUser ? activeUser.token : null;
-    }
-
-    public async getAllUsers(): Promise<User[]> {
-        if (this.users.length === 0) {
-            await this.handleUserRequest();
-        }
-        return this.users;
-    }
-
-    public async loadUserById(userId: string): Promise<User> {
-        return this.handleUserRequest(userId);
     }
 }

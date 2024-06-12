@@ -1,8 +1,7 @@
+/*
 import React, { Suspense } from 'react';
 import { Badge, Button, Radio, RadioGroup, Space, Textarea } from "@mantine/core";
 import Loading from "@/app/dashboard/loading";
-import { useChatManager } from '../chats/hooks/useChatDbAtoms';
-import ChatMessage from "@/app/samples/new-db/ChatMessage";
 
 const ChatPage: React.FC = () => {
     const {
@@ -76,3 +75,4 @@ const ChatPage: React.FC = () => {
 };
 
 export default ChatPage;
+*/

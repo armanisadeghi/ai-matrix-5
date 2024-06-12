@@ -5,8 +5,8 @@ import AmeMenu from './AmeMenu';
 import useColorUtils from '@/utils/colorUtils';
 import AmeActionTextInput from '@/ui/input/AmeActionTextInput';
 import { useRecoilState, useRecoilValue } from "recoil";
-import { activeUserAtom } from "@/context/atoms/userAtoms";
 import { activeChatIdAtom, activeChatMessagesArrayAtom } from "@/state/aiAtoms/chatAtoms";
+import { activeUserAtom } from "@/state/userAtoms";
 
 interface AmeHoverMenuChatProps {
     initialValue: string;
@@ -47,6 +47,10 @@ const AmeHoverMenuChat: React.FC<AmeHoverMenuChatProps> = (
     const backgroundColor = getDefaultBackgroundColor();
     const hoverBackgroundColor = getHoverBackgroundColor();
     const textColor = getModerateTextColor();
+    const [activeUser, setActiveUser] = useRecoilState(activeUserAtom);
+    const [currentChatId, setCurrentChatId] = useRecoilState(activeChatIdAtom);
+    const [messages, setMessages] = useRecoilState(activeChatMessagesArrayAtom);
+    const [menuOpened, setMenuOpened] = useState(false);
 
     const showConversationDetails = (chatId: string) => {
         console.log(`${chatId} - Conversation details`);
@@ -55,20 +59,16 @@ const AmeHoverMenuChat: React.FC<AmeHoverMenuChatProps> = (
         }
     };
 
-    const [currentChatId, setCurrentChatId] = useRecoilState(activeChatIdAtom);
-    const activeUser = useRecoilValue(activeUserAtom);
-    const [messages, setMessages] = useRecoilState(activeChatMessagesArrayAtom);
-
-    const [menuOpened, setMenuOpened] = useState(false);
-
     const handlePaperClick = () => {
         if (activeUser) {
             setCurrentChatId(keyProp);
+/*
             fetch(`/api/chats?user_id=${activeUser.id}&chat_id=${keyProp}`)
                 .then(res => res.json())
                 .then(data => {
                     setMessages(data);
                 });
+*/
         }
     };
 

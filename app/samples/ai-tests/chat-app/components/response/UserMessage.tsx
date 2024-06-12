@@ -1,5 +1,3 @@
-// chat-app/nice-working/response/UserMessage.tsx
-
 import React, { useState } from 'react';
 import { Paper, Textarea, Button, ActionIcon } from '@mantine/core';
 import { IconEdit } from '@tabler/icons-react';

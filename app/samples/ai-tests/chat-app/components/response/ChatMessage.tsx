@@ -1,9 +1,7 @@
-// chat-app/nice-working/response/ChatMessage.tsx
-
 import { Group, Space } from '@mantine/core';
-import UserMessage from '@/app/samples/ai-tests/chat/input/UserMessage';
 import AssistantMessage from '@/app/samples/ai-tests/response/AssistantMessage';
 import { eRoleType, iMessage } from "@/app/samples/ai-tests/chat-app/types/types";
+import UserMessage from "@/app/samples/ai-tests/chat-app/components/response/UserMessage";
 
 interface ChatMessageProps {
     chatMsg: iMessage;
@@ -20,14 +18,19 @@ export const ChatMessage = (
         streamText
     }: ChatMessageProps) => {
 
+    const isLatestMessage = idx === msgHistory.length - 1;
+    const displayContent = isLatestMessage && streamText.length > 0 ? streamText : chatMsg.content;
+
     return (
         <Group>
             {chatMsg.role === eRoleType.USER ? (
                 <UserMessage
-                    content={idx === msgHistory.length - 1 && streamText.length > 0 ? streamText : chatMsg.content}/>
+                    message={{ id: idx.toString(), content: displayContent }}
+                />
             ) : (
                 <AssistantMessage
-                    content={idx === msgHistory.length - 1 && streamText.length > 0 ? streamText : chatMsg.content}/>
+                    content={displayContent}
+                />
             )}
             <Space my={16}/>
         </Group>

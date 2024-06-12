@@ -1,0 +1,34 @@
+/* AiChat.module.css */
+
+
+.container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.grid {
+    flex: 1;
+}
+
+.sideColumn {
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0%;
+    padding: 0;
+}
+
+.mainColumn {
+    display: flex;
+    flex-direction: column;
+    height: 106vh;
+    max-width: 800px;
+    padding: 0;
+    margin: 0 auto;
+}
+
+@media (max-width: 600px) {
+    .mainColumn {
+        padding: 0 10px;
+    }
+}

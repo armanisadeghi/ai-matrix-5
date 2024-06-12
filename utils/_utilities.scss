@@ -1,0 +1,24 @@
+// Central function to convert px to rem
+@function rem($px) {
+    $base: 16px; // Kevin, please make sure this setting is correct.
+    @return $px / $base * 1rem;
+}
+
+// Example mixin for dark and light modes - Let's make sure this is right and do it for as many things as possible.
+@mixin dark {
+    display: none;
+}
+
+@mixin light {
+    display: block;
+}
+
+@function light-dark($light, $dark) {
+    @return if(lightness($light) > lightness($dark), $light, $dark);
+}
+
+$mantine-breakpoint-xs: 36em;
+$mantine-breakpoint-sm: 48em;
+$mantine-breakpoint-md: 62em;
+$mantine-breakpoint-lg: 75em;
+$mantine-breakpoint-xl: 88em;

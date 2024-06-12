@@ -7,15 +7,14 @@ import {
     activeChatIdAtom,
     activeChatMessagesArrayAtom,
     detailsForAllChatsAtom,
-    systemMessagesAtom,
     chatTitlesAndIdsAtom,
-    allChatsAtom
+    allChatsAtom, systemMessagesAtom
 } from "@/state/aiAtoms/chatAtoms";
-import { activeUserAtom } from "@/context/atoms/userAtoms";
 
 
 // @ts-ignore
 import { ChatManager } from '@/services/Chat';
+import { activeUserAtom } from "@/state/userAtoms";
 
 interface TestingUIProps {
     currentChatId: string | null;
