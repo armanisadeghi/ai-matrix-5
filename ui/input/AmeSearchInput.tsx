@@ -30,7 +30,7 @@ const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       size="sm"
       leftSection={<SearchIcon />}
       w={w}
-      value={internalValue} 
+      value={internalValue}
       onChange={handleChange} 
       onFocus={() => {}} 
       styles={{ section: { pointerEvents: "none" } }}
