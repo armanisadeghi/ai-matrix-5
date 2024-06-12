@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { activeChatIdAtom, activeChatMessagesArrayAtom, allowSubmitMessageState,systemMessageAtom
+import { activeChatIdAtom, activeChatMessagesArrayAtom, allowSubmitMessageState,systemMessagesAtom
 } from "@/state/aiAtoms/chatAtoms";
 import { MatrixMessage } from '@/types/chat';
 import { v4 as uuidv4 } from "uuid";
@@ -8,7 +8,7 @@ import { useChatDbAtoms } from '@/app/samples/chats/hooks/useChatDbAtoms';
 
 export const useHandleSubmitMessage = (textareaRef: React.RefObject<HTMLTextAreaElement>) => {
     const [currentChatId, setCurrentChatId] = useRecoilState(activeChatIdAtom);
-    const [systemMessage] = useRecoilState(systemMessageAtom);
+    const [systemMessage] = useRecoilState(systemMessagesAtom);
     const [activeChatMessagesArray, setActiveChatMessagesArray] = useRecoilState(activeChatMessagesArrayAtom);
     const [allowSubmitMessage, setAllowSubmitMessage] = useRecoilState(allowSubmitMessageState);
     const [streamTrigger, setStreamTrigger] = useState(false);

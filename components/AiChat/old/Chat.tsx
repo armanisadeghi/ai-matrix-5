@@ -1,13 +1,13 @@
+/*
 "use client";
 
 import { useState, useEffect } from "react";
 import ResponseSection from "@/app/samples/ai-tests/response/ResponseSection";
-import ChatFormInput from "@/app/samples/ai-tests/chat/input/ChatFormInput";
 import { useChat } from "@/context/chatContext";
-import { eRoleType, iMessage } from "@/utils/types";
 import { Container, Paper, Space } from '@mantine/core';
 import { useSocketManager } from '@/lib/socket';
 import ChatSettings from '@/components/AiChat/UserInput/settings/ChatSettings';
+import { eRoleType, iMessage } from "@/app/samples/ai-tests/chat-app/types/types";
 
 export interface SettingsProps {
     aiPreferencesMain: string;
@@ -113,7 +113,7 @@ function ChatForm() {
 
 export default ChatForm;
 
-/*
+/!*
     return (
         <Container style={{ display: 'flex', flexDirection: 'column', height: '90vh' }}>
             <ResponseSection msgHistory={msgHistory} streamText={streamText} />
@@ -134,4 +134,5 @@ export default ChatForm;
         </Container>
     );
 }
- */
+ *!/
+*/

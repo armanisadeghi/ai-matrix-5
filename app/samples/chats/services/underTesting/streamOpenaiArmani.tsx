@@ -1,4 +1,4 @@
-import { MessageEntry, Role } from '@/types/chat';
+import { MatrixMessage, MessageEntry, Role } from '@/types/chat';
 import { OpenAiStream } from "@/app/api/openai/route";
 import { useRecoilState } from "recoil";
 import { activeChatMessagesArrayAtom, assistantTextStreamAtom } from "@/state/aiAtoms/chatAtoms";
@@ -25,7 +25,11 @@ const StreamOpenaiArmani = () => {
                 setAssistantTextStream(assistantMessage);
             });
 
-            const fullResponse: MessageEntry = { text: assistantMessage, role: 'assistant' as Role };
+            const fullResponse: MatrixMessage = {
+                index: activeChatMessagesArray.length, // Calculate the next available index
+                role: 'assistant' as Role,
+                text: assistantMessage,
+            };
 
             const updatedArray = [...activeChatMessagesArray, fullResponse];
             setActiveChatMessagesArray(updatedArray);

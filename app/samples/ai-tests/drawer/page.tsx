@@ -33,11 +33,6 @@ const Page: React.FC = () => {
                         <AmeChatHistoryEntry keyProp={'test'} initialValue='sample item 2' />
                         <AmeChatHistoryEntry keyProp={'test'} initialValue='sample item 3' />
                         <AmeChatHistoryEntry keyProp={'test'} initialValue='What is the capital of the United States?' />
-                        <AmeMenu>
-                            <AmeMenu.Target>
-                                <BsThreeDotsVertical size={16} />
-                            </AmeMenu.Target>
-                        </AmeMenu>
                     </Stack>
                 }
                 size='xs'

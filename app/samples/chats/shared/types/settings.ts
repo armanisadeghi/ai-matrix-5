@@ -1,8 +1,9 @@
 // /types/settings.ts
-import { AI_PREFERENCES_MAIN, AI_PREFERENCES_SECOND } from '../../../org/config/aiRequestOptions';
 
 
 // QuickChatSettings
+import { AI_PREFERENCES_MAIN, AI_PREFERENCES_SECOND } from "@/app/samples/chats/shared/config/aiRequestOptions";
+
 export type AiPreferencesMainType = typeof AI_PREFERENCES_MAIN[number];
 export type AiPreferencesSecondType = typeof AI_PREFERENCES_SECOND[number];
 export type MakeSmallTalkType = boolean; // DEFAULT: false

@@ -1,6 +1,6 @@
 import { Paper, Text, Space, Container } from '@mantine/core';
 import { ChatMessage } from './ChatMessage';
-import { iMessage } from "../types/types";
+import { iMessage } from "@/app/samples/ai-tests/chat-app/types/types";
 
 interface ResponseSectionProps {
     msgHistory: iMessage[];

@@ -4,16 +4,16 @@ import { atom, atomFamily, selectorFamily, useRecoilCallback, useRecoilState, us
 import { syncEffect } from 'recoil-sync';
 import { array, object, string, number } from '@recoiljs/refine';
 import supabase from "@/utils/supabase/client";
-import { activeUserAtom } from "@/context/atoms/userAtoms";
 
 import { ChatMessages, ChatSummary, MatrixMessage, Role } from '@/types/chat';
 import Chat from "@/services/Chat";
+import { activeUserAtom } from "@/state/userAtoms";
 
 
 export const chatSummariesSelector = selector({
     key: 'chatSummariesSelector',
     get: async ({ get }) => {
-        const userId = get(activeUserAtom)?.id;
+        const userId = get(activeUserAtom)?.sub;
         if (!userId) throw new Error('User not found');
 
         const { data, error } = await supabase
@@ -106,7 +106,7 @@ export const userTextInputAtom = atom<string>({
     default: '',
 });
 
-export const systemMessageAtom = atom<{ index: number, text: string, role: Role }>({
+export const systemMessagesAtom = atom<{ index: number, text: string, role: Role }>({
     key: 'systemMessagesAtom',
     default: {
         index: 0,
@@ -257,13 +257,13 @@ const transformedMessagesState = selector<MatrixMessage[]>({
                 }));
 
             case 'anthropic':
-                // Remove entries with role 'system' and update systemMessageAtom
+                // Remove entries with role 'system' and update systemMessagesAtom
                 const filteredMessages = messages.filter(message => message.role !== 'system');
                 const systemMessages = messages.filter(message => message.role === 'system').map(message => ({
                     role: message.role,
                     content: message.text
                 }));
-                // set(systemMessageAtom, systemMessages); // Assuming `set` is part of a Recoil selectorFamily or other suitable structure
+                // set(systemMessagesAtom, systemMessages); // Assuming `set` is part of a Recoil selectorFamily or other suitable structure
                 return filteredMessages.map(message => ({
                     role: message.role,
                     content: message.text

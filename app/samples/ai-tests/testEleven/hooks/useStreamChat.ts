@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { activeChatMessagesArrayAtom, systemMessageAtom, assistantTextStreamAtom, userTextInputAtom } from '@/state/aiAtoms/chatAtoms';
+import { activeChatMessagesArrayAtom, systemMessagesAtom, assistantTextStreamAtom, userTextInputAtom } from '@/state/aiAtoms/chatAtoms';
 import { OpenAiStream } from "@/app/api/openai/route";
 import { MatrixMessage, ChatMessagesArray } from '@/types/chat';
 
@@ -10,7 +10,7 @@ const useStreamChat = () => {
     const [activeChatMessagesArray, setActiveChatMessagesArray] = useRecoilState<ChatMessagesArray>(activeChatMessagesArrayAtom);
     const [assistantTextStream, setAssistantTextStream] = useRecoilState(assistantTextStreamAtom);
     const [userTextInput, setUserTextInput] = useRecoilState(userTextInputAtom);
-    const systemMessage = useRecoilState(systemMessageAtom);
+    const systemMessage = useRecoilState(systemMessagesAtom);
     const [input, setInput] = useState('');
     const messagesRef = useRef<ChatMessagesArray>(activeChatMessagesArray);
     const [streamingAssistantMessage, setStreamingAssistantMessage] = useState('');

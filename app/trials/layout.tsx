@@ -3,44 +3,14 @@
 
 import React, { useEffect } from 'react';
 import { ReactNode } from 'react';
-import { RecoilRoot, useRecoilState, useSetRecoilState } from 'recoil';
-import { UserManager } from '@/services/Users';
-import { activeUserAtom } from "@/context/atoms/userAtoms";
+import { RecoilRoot } from 'recoil';
 import { DynamicSocketProvider } from "@/context/AiContext/socketContext";
 
-type Props = {
+type LayoutProps = {
     children: ReactNode;
 };
 
-const LayoutContent: React.FC = () => {
-    const [activeUser, setActiveUser] = useRecoilState(UserManager.ActiveUser);
-    const setActiveUserAtom = useSetRecoilState(activeUserAtom);
-
-    useEffect(() => {
-        const fetchActiveUser = async () => {
-            const userManager = UserManager.getInstance();
-            const user = await userManager.getActiveUser();
-            if (user) {
-                setActiveUser(user);
-                setActiveUserAtom(user);
-            }
-        };
-
-        fetchActiveUser();
-    }, [setActiveUser, setActiveUserAtom]);
-
-    if (!activeUser) {
-        return <div>Loading...</div>;
-    }
-
-    return (
-        <>
-        </>
-    );
-};
-
-function Layout({children}: Props) {
-    return (
+const Layout: React.FC<LayoutProps> = ({ children }) => (
         <RecoilRoot>
             <React.Suspense fallback={<div>Loading...</div>}>
                     <DynamicSocketProvider>
@@ -48,7 +18,6 @@ function Layout({children}: Props) {
                     </DynamicSocketProvider>
             </React.Suspense>
         </RecoilRoot>
-    );
-}
+);
 
 export default Layout;

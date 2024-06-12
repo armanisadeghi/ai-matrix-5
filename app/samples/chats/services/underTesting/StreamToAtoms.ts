@@ -1,8 +1,7 @@
+/*
 import { useRecoilState } from 'recoil';
 import {
-    assistantMessageEntryAtom,
     assistantTextStreamAtom,
-    userMessageEntryAtom,
     userTextInputAtom,
     useChatMessages,
 } from "@/state/aiAtoms/chatAtoms";
@@ -13,10 +12,6 @@ export const submitChatRequest = (
     userTextInput?: string,
     userMessageEntry?: MessageEntry
 ): Promise<void> => {
-    const { addMessageWithRole, messages, addMessage } = useChatMessages();
-    const [assistantTextStream, setAssistantTextStream] = useRecoilState(assistantTextStreamAtom);
-    const [assistantMessageEntry, setAssistantMessageEntry] = useRecoilState(assistantMessageEntryAtom);
-    console.log('app/samples/ai-tests/shared/services/StreamToAtoms.ts submitChatRequest')
 
     return new Promise(async (resolve, reject) => {
         try {
@@ -59,3 +54,4 @@ export const submitChatRequest = (
         }
     });
 };
+*/

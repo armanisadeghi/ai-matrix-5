@@ -27,10 +27,10 @@ export type ChannelType = typeof CHANNELS[number]; // DEFAULT: 'text', CHOICES: 
 // Metadata interface
 export interface Metadata {
     requestId: RequestIdType;
-    socketEvent: SocketEventType;
     eventTask: EventTaskType;
+    socketEvent: SocketEventType | null;
+    source: SourceType;
     index: IndexType;
     timestamp: TimestampType;
-    source: SourceType;
     channel: ChannelType;
 }

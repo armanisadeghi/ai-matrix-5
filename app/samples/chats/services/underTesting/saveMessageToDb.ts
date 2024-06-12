@@ -1,9 +1,9 @@
 import { useRecoilValue } from 'recoil';
-import { activeUserAtom } from "@/context/atoms/userAtoms";
 import { activeChatIdAtom } from "@/state/aiAtoms/chatAtoms";
+import { activeUserAtom } from "@/state/userAtoms";
 
 async function saveMessageToDb(newMessage: { role: string; text: string }) {
-    const user_id = useRecoilValue(activeUserAtom)?.id;
+    const user_id = useRecoilValue(activeUserAtom)?.sub;
     const chat_id = useRecoilValue(activeChatIdAtom);
 
     console.log('User ID:', user_id);

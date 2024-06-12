@@ -8,7 +8,6 @@ import { FormProvider } from '@/context/AiContext/FormContext';
 import { GlobalChatProvider } from '@/context/AiContext/GlobalChatContext';
 import { RequestMetadataProvider } from '@/context/AiContext/RequestMetadataContext';
 import { SettingsProvider } from '@/context/AiContext/SettingsContext';
-import { HistoryProvider } from '@/context/AiContext/HistoryContext';
 import { AiResponseProvider } from '@/context/AiContext/AiResponseContext';
 import { ResponseProvider } from '../../../../context/AiContext/ResponseContext'; // Duplicate to address later
 import ChatPage from './chatpage';
@@ -27,7 +26,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     return (
         <UserProvider>
             <ChatProvider>
-                <HistoryProvider>
                     <FormProvider>
                         <GlobalChatProvider>
                             <RequestMetadataProvider>
@@ -55,7 +53,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                             </RequestMetadataProvider>
                         </GlobalChatProvider>
                     </FormProvider>
-                </HistoryProvider>
             </ChatProvider>
         </UserProvider>
     );

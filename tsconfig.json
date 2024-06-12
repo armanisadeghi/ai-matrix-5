@@ -58,6 +58,7 @@
         ".next",
         "**/*.md",
         "**/*.mdx",
-        "org"
+        "org",
+        "armaniLocal"
     ]
 }

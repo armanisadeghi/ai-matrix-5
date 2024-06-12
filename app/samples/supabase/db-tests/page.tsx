@@ -1,3 +1,4 @@
+/*
 'use client';
 
 import React, { useState } from 'react';
@@ -12,7 +13,6 @@ const TestUserFetch = () => {
     const handleFetchUser = async () => {
         const usersDb = new UsersDb();
         try {
-            const user = await usersDb.getUserById('a048d457-c058-481b-a9a1-7d821b6435d5');
             if (user) {
                 setUserData(user);
             } else {
@@ -44,3 +44,4 @@ const TestUserFetch = () => {
 };
 
 export default TestUserFetch;
+*/

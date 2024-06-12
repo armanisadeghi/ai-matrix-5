@@ -1,4 +1,4 @@
-import { eRoleType, iChat } from "@/utils/types";
+
 import {
     createContext,
     ReactNode,
@@ -8,6 +8,7 @@ import {
 } from "react";
 // import axios from 'axios';
 import loadChatHistory from '../app/data/fake-data/fake-chat-history/fake-chat-history';
+import { iChat } from "@/app/samples/ai-tests/chat-app/types/types";
 
 const ChatContext = createContext<{
     chatHistory: iChat[];

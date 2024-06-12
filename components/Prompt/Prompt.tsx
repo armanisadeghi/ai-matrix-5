@@ -63,10 +63,10 @@ type Prompt = {
                         </Dropzone.Idle>
 
                         <div>
-                            <Text size="sm" inline align={'center'}>
+                            <Text size="sm" inline >
                                 Drag images here or click to select files
                             </Text>
-                            <Text size="xs" c="dimmed" inline mt={7} align={'center'}>
+                            <Text size="xs" c="dimmed" inline mt={7} >
                                 Attach as many files as you like, each file should not exceed 5mb
                             </Text>
                         </div>
