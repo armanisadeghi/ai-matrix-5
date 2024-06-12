@@ -1,43 +1,35 @@
-import React, { useState } from "react"; // Removed useRef
+import React, { useRef, useState } from "react";
 import { rem, TextInput, TextInputProps } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
 
-interface AmeSearchInputProps extends Partial<TextInputProps> {
-  w?: number | string;
-}
+interface AmeSearchInputProps extends Partial<TextInputProps> {}
 
 const SearchIcon = (): JSX.Element => {
-  return <IconSearch style={{ width: rem(16), height: rem(16) }} stroke={1.5} />;
+    return <IconSearch style={{ width: rem(16), height: rem(16) }} stroke={1.5} />;
 };
 
-const AmeSearchInput: React.FC<AmeSearchInputProps> = ({
-  w,
-  value, 
-  onChange, 
-  ...others
-}: AmeSearchInputProps) => {
-const [internalValue, setInternalValue] = useState<string>(String(value) || "search..."); 
+const AmeSearchInput: React.FC<AmeSearchInputProps> = ({ w, ...others }: AmeSearchInputProps) => {
+    const inputRef = useRef<HTMLInputElement>(null);
+    const [displayValue, setDisplayValue] = useState<string>("");
 
-const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = event.target.value;
-    setInternalValue(newValue); 
-    onChange?.(event); 
-};
+    const handleFocus = () => {
+        inputRef.current?.select();
+    };
 
-  return (
-    <TextInput
-      placeholder={"search"}
-      size="sm"
-      leftSection={<SearchIcon />}
-      w={w}
-      value={internalValue}
-      onChange={handleChange} 
-      onFocus={() => {}} 
-      styles={{ section: { pointerEvents: "none" } }}
-      aria-label={others.placeholder}
-      {...others}
-    />
-  );
+    return (
+        <TextInput
+            ref={inputRef}
+            placeholder={"search"}
+            size="sm"
+            leftSection={<SearchIcon />}
+            w={w}
+            value={displayValue}
+            onFocus={handleFocus}
+            styles={{ section: { pointerEvents: "none" } }}
+            aria-label={others.placeholder}
+            {...others}
+        />
+    );
 };
 
 export default AmeSearchInput;
