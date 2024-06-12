@@ -18,7 +18,6 @@ type Props = {
 
 function Layout({children}: Props) {
     return (
-
         <ErrorBoundary>
             <RecoilRoot>
                 <React.Suspense fallback={<Loading/>}>
