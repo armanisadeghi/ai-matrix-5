@@ -18,7 +18,7 @@ function Layout({ children }: Props) {
     return (
         <ErrorBoundary>
             <RecoilRoot>
-                <NavbarProvider initialState="icons">
+                <NavbarProvider initialState="full">
                     <SidebarProvider initialState="icons">
                         <HeaderProvider initialState="medium">
                             <FooterProvider initialState="hidden">
