@@ -50,7 +50,7 @@ export default MoveComponent;
 /*
 usage:
 import React from 'react';
-import MoveComponent from '../components/MoveComponent';
+import MoveComponent from '../nice-working/MoveComponent';
 
 const HomePage: React.FC = () => {
   return (

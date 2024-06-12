@@ -1,0 +1,25 @@
+{
+    "aiRequest": {
+        "metadata": {
+            "eventTask": "",
+            "socketEvent": "",
+            "index": ""
+        },
+        "user": {
+            "id": "",
+            "token": ""
+        },
+        "chatData": {
+            "chat_id": "",
+            "messages": [],
+            "formResponses": [],
+            "customInputs": []
+        },
+        "recipe": {},
+        "settings": {
+            "quickChatSettings": {},
+            "additionalSettings": {},
+            "brokerSettings": {}
+        }
+    }
+}

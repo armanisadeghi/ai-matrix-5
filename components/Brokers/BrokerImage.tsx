@@ -7,9 +7,10 @@ interface BrokerImageProps {
     h?: number | "auto";
     radius?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | string;
     fit?: "fill" | "contain" | "cover" | "none" | "scale-down";
+    onChange?: (value: File | null) => void;
 }
 
-export const BrokerImage = ({ src, alt, w, h, radius, fit }: BrokerImageProps) => {
+export const BrokerImage = ({ src, alt, w, h, radius, fit, onChange }: BrokerImageProps) => {
     return (
         <Image
             radius={radius}
@@ -18,6 +19,7 @@ export const BrokerImage = ({ src, alt, w, h, radius, fit }: BrokerImageProps) =
             fit={fit}
             src={src}
             alt={alt}
+            onChange={() => onChange}
         />
     );
 }

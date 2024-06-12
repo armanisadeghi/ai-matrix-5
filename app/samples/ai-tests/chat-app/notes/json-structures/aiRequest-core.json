@@ -1,0 +1,37 @@
+{
+    "aiRequest": {
+        "metadata": {
+            "eventTask": "",  // requestEventTaskAtom
+            "socketEvent": "",  / requestSocketEventAtom
+            "index": "",  // requestIndexAtom
+            "requestId": "",
+            "timestamp": "",
+            "source": "",
+            "channel": ""
+        },
+        "user": {
+            "id": "", // userIdAtom
+            "token": "" // userTokenAtom
+        },
+        "recipe": {},
+        "chatData": {
+            "chat_id": "", // chatIdAtom
+            "activeChatMessagesArray": [], // activeChatMessagesArrayAtom
+            "formResponses": [],  // formResponsesAtom
+            "customInputs": []  // customInputsAtom
+        }
+    },
+    "settings": {
+        "quickChatSettings": {}, // quickChatSettingsAtom
+        "aiModelSettings": {},
+        "controlSettings": {},
+        "pageSettings": {},
+        "userSettings": {},
+        "matrixSettings": {},
+        "clientSettings": {},
+        "agencySettings": {},
+        "variablesSettings": {},
+        "responseSettings": {},
+        "brokerSettings": {}
+    }
+}

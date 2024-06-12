@@ -1,4 +1,4 @@
-// components/RichTextEditor/RichTextEditorPage.tsx
+// nice-working/RichTextEditor/RichTextEditorPage.tsx
 
 'use client';
 

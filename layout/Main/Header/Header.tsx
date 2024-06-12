@@ -1,26 +1,23 @@
-import { ActionIcon, ActionIconProps, Avatar, Burger, Group, MantineSize, Menu } from "@mantine/core";
-import { IconBell, IconChevronDown, IconChevronUp, IconPalette, IconSearch, IconSettings2 } from "@tabler/icons-react";
-import { ColorSchemeToggle, Logo } from "@/components";
+import {ActionIcon, Avatar, Burger, Group, MantineSize, Menu} from "@mantine/core";
+import {IconBell, IconMenu, IconPalette, IconSearch, IconSettings2} from "@tabler/icons-react";
+import {ColorSchemeToggle, Logo} from "@/components";
 import Link from "next/link";
-import { PATH_USER } from "@/routes";
-import { useHeader } from "@/context/HeaderContext";
-import AmeNavButton from "@/ui/buttons/AmeNavButton";
+import {PATH_USER} from "@/routes";
+import {useHeader} from "@/context/HeaderContext";
 import AmeSearchInput from "@/ui/input/AmeSearchInput";
 import AmeActionIcon from "@/ui/buttons/AmeActionIcon";
-import { useNavbar } from "@/context/NavbarContext";
-
-const actionProps: ActionIconProps = {
-    variant: "light",
-};
+import {useNavbar} from "@/context/NavbarContext";
+import {useSidebar} from "@/context/SidebarContext";
 
 type Props = {
     state: "large" | "medium" | "compact";
     tabletMatch?: boolean;
 };
 
-export function Header({ state, tabletMatch }: Props) {
-    const { toggleOpened, opened, toggleNavbar, navbarState } = useNavbar();
-    const { headerState, handleCollapse, handleExpand } = useHeader();
+export function Header({tabletMatch}: Props) {
+    const {toggleOpened, opened, toggleNavbar, navbarState} = useNavbar();
+    const {toggleAside, asideState} = useSidebar();
+    const {headerState} = useHeader();
 
     const componentSize: MantineSize = headerState === "large" ? "md" : "sm";
 
@@ -33,52 +30,36 @@ export function Header({ state, tabletMatch }: Props) {
     };
 
     return (
-        <Group h="100%" px="md" align="center" justify="space-between" style={{ flexWrap: "nowrap" }}>
+        <Group h="100%" px="md" align="center" justify="space-between" style={{flexWrap: "nowrap"}}>
             <Group>
-                <Burger opened={opened} onClick={toggleOpened} hiddenFrom="sm" size="sm" />
-                <Burger opened={navbarState === "full"} onClick={handleNavToggle} visibleFrom="sm" size="sm" />
-                <Logo />
-                <Group visibleFrom="sm">
-                    {(state === "medium" || state === "compact") && (
-                        <Group justify="flex-end" gap="xs">
-                            <AmeActionIcon title="shrink header" onClick={handleCollapse} {...actionProps}>
-                                <IconChevronUp size={18} />
-                            </AmeActionIcon>
-                            <AmeActionIcon title="expand header" onClick={handleExpand} {...actionProps}>
-                                <IconChevronDown size={18} />
-                            </AmeActionIcon>
-                        </Group>
-                    )}
-
-                    {state === "large" && (
-                        <Group justify="flex-end" gap="xs">
-                            <AmeActionIcon title="shrink header" onClick={handleCollapse} {...actionProps}>
-                                <IconChevronUp size={18} />
-                            </AmeActionIcon>
-                        </Group>
-                    )}
-                </Group>
+                <Burger opened={opened} onClick={toggleOpened} hiddenFrom="sm" size="sm"/>
+                <Burger opened={navbarState === "full"} onClick={handleNavToggle} visibleFrom="sm" size="sm"/>
+                <Logo/>
             </Group>
-            <Group visibleFrom="md" style={{ flexGrow: 1, justifyContent: "center" }}>
-                <AmeNavButton asIcon navigateTo="back" />
-                <AmeNavButton asIcon navigateTo="next" />
+            <Group visibleFrom="md" style={{flexGrow: 1, justifyContent: "center"}}>
                 <AmeSearchInput
                     size={componentSize}
                     radius="md"
                     placeholder="Search anything..."
-                    leftSection={<IconSearch size={14} />}
-                    style={{ flex: "1 1 auto", minWidth: "60px", maxWidth: tabletMatch ? "350px" : "500px" }}
+                    leftSection={<IconSearch size={14}/>}
+                    style={{flex: "1 1 auto", minWidth: "60px", maxWidth: tabletMatch ? "350px" : "500px"}}
                     visibleFrom="sm"
                 />
             </Group>
             <Group>
                 <AmeActionIcon hiddenFrom="md" size={componentSize} title="search">
-                    <IconSearch size={18} />
+                    <IconSearch size={18}/>
                 </AmeActionIcon>
-                <ColorSchemeToggle size={componentSize} />
+                <ColorSchemeToggle size={componentSize}/>
                 <AmeActionIcon title="notifications" size={componentSize}>
-                    <IconBell size={18} />
+                    <IconBell size={18}/>
                 </AmeActionIcon>
+                    <AmeActionIcon title="toggle sidebar" size={componentSize} onClick={() => {
+                        if (asideState === "hidden") toggleAside("full")
+                        else toggleAside("hidden")
+                    }}>
+                        <IconMenu size={18}/>
+                    </AmeActionIcon>
                 <Menu width={200} shadow="md">
                     <Menu.Target>
                         <ActionIcon title="user menu" size={componentSize} variant="transparent">
@@ -93,14 +74,14 @@ export function Header({ state, tabletMatch }: Props) {
                         <Menu.Item
                             component={Link}
                             href={PATH_USER.tabs("personal")}
-                            leftSection={<IconSettings2 size={16} />}
+                            leftSection={<IconSettings2 size={16}/>}
                         >
                             Settings
                         </Menu.Item>
                         <Menu.Item
                             component={Link}
                             href={PATH_USER.tabs("appearance")}
-                            leftSection={<IconPalette size={16} />}
+                            leftSection={<IconPalette size={16}/>}
                         >
                             Appearance
                         </Menu.Item>

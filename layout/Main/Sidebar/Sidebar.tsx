@@ -1,8 +1,11 @@
 "use client";
-import { ActionIconProps, AppShell, Box, Group, Stack, Title } from "@mantine/core";
-import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
+import { ActionIcon, ActionIconProps, AppShell, Box, Group, Stack } from "@mantine/core";
+import { IconArrowBarRight, IconArrowBarToLeft, IconArrowBarToRight } from "@tabler/icons-react";
 import { useSidebar } from "@/context/SidebarContext";
 import AmeActionIcon from "@/ui/buttons/AmeActionIcon";
+import { useRecoilState } from "recoil";
+import { useEffect } from "react";
+import { sidebarWidthDirectAtom } from "@/context/atoms/layoutAtoms";
 
 const actionProps: ActionIconProps = {
     variant: "light",
@@ -10,42 +13,63 @@ const actionProps: ActionIconProps = {
 
 interface SidebarProps {
     state: "full" | "compact" | "icons" | "hidden";
+    title?: string;
 }
 
-export const Sidebar = ({ state }: SidebarProps) => {
-    const { handleExpand, handleCollapse } = useSidebar();
+export const Sidebar = ({ state, title }: SidebarProps) => {
+    const { handleExpand, handleCollapse, sidebarContent } = useSidebar();
+    const [sidebarWidth, setSidebarWidth] = useRecoilState(sidebarWidthDirectAtom);
+
+    useEffect(() => {
+        switch (state) {
+            case "full":
+                setSidebarWidth(200);
+                break;
+            case "compact":
+                setSidebarWidth(150);
+                break;
+            case "icons":
+                setSidebarWidth(70);
+                break;
+            case "hidden":
+                setSidebarWidth(0);
+                break;
+        }
+    }, [state, setSidebarWidth]);
 
     return (
-        <Box component="aside" p="sm">
+        <Box component="aside" p="0">
             <AppShell.Section>
                 {state === "compact" && (
-                    <Group justify="flex-start" gap="xs">
+                    <Group justify="flex-start" gap="xs" style={{padding: '4px'}}>
                         <AmeActionIcon title="expand sidebar" onClick={handleExpand} {...actionProps}>
-                            <IconChevronLeft size={18} />
+                            <IconArrowBarToLeft size={18}/>
                         </AmeActionIcon>
                         <AmeActionIcon title="shrink sidebar" onClick={handleCollapse} {...actionProps}>
-                            <IconChevronRight size={18} />
+                            <IconArrowBarToRight size={18}/>
                         </AmeActionIcon>
                     </Group>
                 )}
 
                 {state === "full" && (
-                    <Group justify="flex-start" gap="xs">
+                    <Group justify="flex-start" gap="xs" style={{padding: '4px'}}>
                         <AmeActionIcon title="shrink sidebar" onClick={handleCollapse} {...actionProps}>
-                            <IconChevronRight size={18} />
+                            <IconArrowBarRight size={18}/>
                         </AmeActionIcon>
                     </Group>
                 )}
                 {state === "icons" && (
-                    <Group justify="center" gap="xs">
+                    <Group justify="center" gap="xs" style={{padding: '4px'}}>
                         <AmeActionIcon title="shrink sidebar" onClick={handleCollapse} {...actionProps}>
-                            <IconChevronRight size={18} />
+                            <IconArrowBarRight size={18}/>
                         </AmeActionIcon>
                     </Group>
                 )}
-
-                <Stack mt="md" gap="xs" align="stretch">
-                    <Title>Aside</Title>
+                <div style={{marginLeft: '24px'}}>
+                    {title && <h3>{title}</h3>}
+                </div>
+                <Stack mt="0" gap="xs" align="stretch">
+                    {sidebarContent}
                 </Stack>
             </AppShell.Section>
         </Box>

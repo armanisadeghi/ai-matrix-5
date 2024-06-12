@@ -1,5 +1,4 @@
 // app/sample/page.tsx
-'use client';
 
 import React from 'react';
 
@@ -8,3 +7,4 @@ const SampleAppPage = () => {
 };
 
 export default SampleAppPage;
+

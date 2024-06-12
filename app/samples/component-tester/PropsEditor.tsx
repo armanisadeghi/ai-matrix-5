@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Textarea, Title } from '@mantine/core';
-import AmeJsonInput from '../json-sample/AmeJsonInput';
+import AmeJsonInput from '@/ui/json/AmeJsonInput';;
 
 interface PropsEditorProps {
     props: { [key: string]: any };
