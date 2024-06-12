@@ -1,12 +1,14 @@
 "use client";
 import { createBrokerManager } from '@/services/brokerService';
-import BrokerList from '../matrix-engine/custom-brokers/BrokerList';
+import BrokerList from './BrokerList';
 import { useEffect, useState } from 'react';
-import { Burger, Container, Grid, Group, Paper } from '@mantine/core';
+import { Burger, Button, Grid, Paper } from '@mantine/core';
 import LeftPanel from './LeftPanel';
+import Link from 'next/link';
+import { IconArrowLeft, IconPlus } from '@tabler/icons-react';
 
 const BrokersPage: React.FC = (): JSX.Element => {
-    const [opened, setOpened] = useState(false);
+    const [opened, setOpened] = useState(true);
 
     const brokerManager = createBrokerManager();
 
@@ -23,13 +25,20 @@ const BrokersPage: React.FC = (): JSX.Element => {
 
     return (
         <Grid >
-            <Grid.Col span={2} style={{ display: opened ? 'none' : 'block' }}>
-                <Burger />
+            <Grid.Col span={2} >
+                <Burger style={{ display: opened ? 'none' : 'block' }} />
             </Grid.Col>
             <Grid.Col span={10}>
-                Filters
+                <Link href="/dashboard/brokers/add">
+                    <Button
+                        variant="light"
+                        leftSection={<IconPlus size={14} />}
+                    >
+                        Add Broker
+                    </Button>
+                </Link>
             </Grid.Col>
-            <Grid.Col span={2} h="full" style={{ borderRight: '1px solid gray', overflowY: "hidden" }}>
+            <Grid.Col span={2}>
                 <Paper>
                     <LeftPanel />
                 </Paper>

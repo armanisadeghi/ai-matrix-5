@@ -2,16 +2,16 @@
 
 import { Broker } from '@/types/broker';
 import { Button, Container, SimpleGrid, Space } from '@mantine/core';
-import BrokerComponent from './BrokerComponent';
+import BrokerComponent from '../BrokerComponent';
 import { useRecoilValue } from 'recoil';
 import { createBrokerManager } from '@/services/brokerService';
-import { currentBrokerAtom } from '../../../../context/atoms/brokerAtoms';
 import { useState } from 'react';
+import { brokerAtom } from '@/context/atoms/brokerAtoms';
 
 
 export const BrokerForm = () => {
     const [editedBroker, setEditedBroker] = useState({} as Broker);
-    const currentBroker = useRecoilValue(currentBrokerAtom);
+    const currentBroker = useRecoilValue(brokerAtom(editedBroker.id));
     const brokerManager = createBrokerManager();
     const handleSave = () => {
         brokerManager.updateBroker(editedBroker);
@@ -20,10 +20,10 @@ export const BrokerForm = () => {
     return (
         <Container>
             <SimpleGrid>
-                {/* {currentBroker && currentBroker.component && <BrokerComponent
+                {currentBroker && currentBroker.component && <BrokerComponent
                     currentComponent={currentBroker.component}
                     type={currentBroker.component.type}
-                    handleDefaultValueChange={(value) => setEditedBroker({ ...currentBroker, component: { ...currentBroker.component, defaultValue: value } })} />} */}
+                    handleDefaultValueChange={(value: any) => setEditedBroker({ ...currentBroker, component: { ...currentBroker.component, defaultValue: value } })} />}
             </SimpleGrid>
             <Space h="md" />
             <Button variant="primary" onClick={handleSave}>Save Broker</Button>

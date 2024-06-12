@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { Broker } from "@/types/broker";
-import { brokersAtom, currentBrokerAtom } from 'context/atoms/brokerAtoms';
+import { brokersAtom, categoryAtom, brokerAtom } from 'context/atoms/brokerAtoms';
 import { useSetRecoilState } from 'recoil';
 import { uuid } from 'uuidv4';
 
@@ -9,7 +9,8 @@ const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,
 
 export function createBrokerManager() {
     const setBrokersAtom = useSetRecoilState(brokersAtom);
-    const setCurrentBrokerAtom = useSetRecoilState(currentBrokerAtom);
+    const setCategoriesAtom = useSetRecoilState(categoryAtom);
+    const setBrokerAtom = (id: string) => useSetRecoilState(brokerAtom(id));
 
     async function fetchBrokers(): Promise<Broker[]> {
         const { data, error } = await supabase
@@ -25,10 +26,19 @@ export function createBrokerManager() {
         return data.map((broker) => ({ ...broker, dataType: broker.data_type, defaultValue: broker.component.default_value }));
     }
 
-    async function setCurrentBroker(broker: Broker | undefined) {
-        setCurrentBrokerAtom(broker);
-        return broker;
-    };
+    async function fetchCategories(): Promise<string[]> {
+        const { data, error } = await supabase
+            .from('category')
+            .select('*');
+
+        if (error) {
+            console.error('Error fetching categories:', error);
+            return [];
+        }
+        setCategoriesAtom(data.map((category) => category.name));
+
+        return data.map((category) => category.name);
+    }
 
     async function createBroker(broker: Broker) {
         const brokerId = uuid();
@@ -51,8 +61,20 @@ export function createBrokerManager() {
             return broker;
         }
         setBrokersAtom((prevBrokers) => [...prevBrokers, { ...broker, id: brokerId }]);
-        // setCurrentBrokerAtom(data);
-        // return data;
+        return data;
+    }
+
+    async function getBrokerById(id: string): Promise<Broker | null> {
+        const { data, error } = await supabase
+            .from('broker')
+            .select('*')
+            .eq('id', id);
+        if (error) {
+            console.error('Error fetching broker:', error);
+            return null;
+        }
+        setBrokerAtom(data[0].id)(data[0]);
+        return data[0];
     }
 
     async function updateBroker(broker: Broker) {
@@ -79,8 +101,7 @@ export function createBrokerManager() {
                 prevBroker.id === broker.id ? { ...prevBroker, ...broker } : prevBroker
             )
         );
-        // setCurrentBrokerAtom(data);
-        // return data;
+        return data;
     }
 
     async function deleteBroker(brokerId: string): Promise<void> {
@@ -93,5 +114,5 @@ export function createBrokerManager() {
             prevBrokers.filter((prevBroker) => prevBroker.id !== brokerId)
         );
     }
-    return { fetchBrokers, createBroker, updateBroker, deleteBroker, setCurrentBroker };
+    return { fetchBrokers, createBroker, updateBroker, deleteBroker, fetchCategories, getBrokerById };
 }

@@ -117,60 +117,56 @@ export const Navbar = ({ state }: NavbarProps) => {
             </NavLink>
           </React.Fragment>
         ))}
-      </NavLink>
-    </>
-  ))
-}
-      </AppShell.Section >
+      </AppShell.Section>
 
-  <AppShell.Section>
-    <Group justify="center" gap="md">
-      {state !== "icons" ? (
-        <>
-          <ActionIcon variant="transparent" size="sm">
-            <IconSettings />
-          </ActionIcon>
-          <ActionIcon variant="transparent" size="sm">
-            <IconMessage />
-          </ActionIcon>
-          <ActionIcon variant="transparent" size="sm">
-            <IconHelp />
-          </ActionIcon>
-          <ActionIcon variant="transparent" size="sm">
-            <IconFile />
-          </ActionIcon>
-          <ActionIcon variant="transparent" size="sm">
-            <IconShield />
-          </ActionIcon>
-        </>
-      ) : (
-        <Menu>
-          <Menu.Target>
-            <ActionIcon>
-              <IconDots />
-            </ActionIcon>
-          </Menu.Target>
-          <Menu.Dropdown>
-            <Menu.Item>
-              <IconSettings />
-            </Menu.Item>
-            <Menu.Item>
-              <IconMessage />
-            </Menu.Item>
-            <Menu.Item>
-              <IconHelp />
-            </Menu.Item>
-            <Menu.Item>
-              <IconFile />
-            </Menu.Item>
-            <Menu.Item>
-              <IconShield />
-            </Menu.Item>
-          </Menu.Dropdown>
-        </Menu>
-      )}
-    </Group>
-  </AppShell.Section>
+      <AppShell.Section>
+        <Group justify="center" gap="md">
+          {state !== "icons" ? (
+            <>
+              <ActionIcon variant="transparent" size="sm">
+                <IconSettings />
+              </ActionIcon>
+              <ActionIcon variant="transparent" size="sm">
+                <IconMessage />
+              </ActionIcon>
+              <ActionIcon variant="transparent" size="sm">
+                <IconHelp />
+              </ActionIcon>
+              <ActionIcon variant="transparent" size="sm">
+                <IconFile />
+              </ActionIcon>
+              <ActionIcon variant="transparent" size="sm">
+                <IconShield />
+              </ActionIcon>
+            </>
+          ) : (
+            <Menu>
+              <Menu.Target>
+                <ActionIcon>
+                  <IconDots />
+                </ActionIcon>
+              </Menu.Target>
+              <Menu.Dropdown>
+                <Menu.Item>
+                  <IconSettings />
+                </Menu.Item>
+                <Menu.Item>
+                  <IconMessage />
+                </Menu.Item>
+                <Menu.Item>
+                  <IconHelp />
+                </Menu.Item>
+                <Menu.Item>
+                  <IconFile />
+                </Menu.Item>
+                <Menu.Item>
+                  <IconShield />
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
+          )}
+        </Group>
+      </AppShell.Section>
     </>
   );
 };

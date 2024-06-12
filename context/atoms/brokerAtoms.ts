@@ -6,13 +6,20 @@ export const brokersAtom = atom<Broker[]>({
     default: [],
 });
 
-export const currentBrokerAtom = atom<Broker | undefined>({
-    key: 'currentBrokerAtom',
+export const brokerAtom = (id: string) => atom<Broker>({
+    key: `brokerAtom-${id}`,
     default: {
         id: '',
         name: '',
         description: '',
+        officialName: '',
+        defaultValue: '',
         dataType: '',
         component: {} as Component,
     },
+});
+
+export const categoryAtom = atom<string[]>({
+    key: 'categoryAtom',
+    default: [],
 });
