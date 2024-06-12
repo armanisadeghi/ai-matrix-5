@@ -5,7 +5,7 @@ import { useDisclosure, useHeadroom } from '@mantine/hooks';
 import { ReactNode } from 'react';
 import Link from 'next/link';
 import { Logo } from '@/components';
-
+import { useAuth0 } from '@auth0/auth0-react';
 
 type Props = { children: ReactNode };
 
@@ -13,6 +13,7 @@ export function GuestLayout(props: Props) {
   const { children } = props;
   const [opened, { toggle }] = useDisclosure();
   const pinned = useHeadroom({ fixedAt: 120 });
+  const { isAuthenticated, user } = useAuth0();
 
   return (
     <AppShell
@@ -29,11 +30,17 @@ export function GuestLayout(props: Props) {
             <Button variant="subtle">Features</Button>
             <Button variant="subtle">Testimonials</Button>
             <Button variant="subtle">Pricing</Button>
-            <Button variant="subtle" component={Link} href="/login">Sign In</Button>
+            {
+              isAuthenticated ? (
+                <Button variant="subtle" component={Link} href="/logout">{user?.name}</Button>
+              ) : (
+                <Button variant="subtle" component={Link} href="/login">Sign In</Button>
+              )
+            }
           </Group>
         </Group>
       </AppShell.Header>
       <AppShell.Main>{children}</AppShell.Main>
-    </AppShell>
+    </AppShell >
   );
 }

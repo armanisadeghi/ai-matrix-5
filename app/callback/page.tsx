@@ -4,18 +4,15 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 const Callback = () => {
-    const { handleRedirectCallback } = useAuth0();
-    const router = useRouter();
+    const { isLoading, error } = useAuth0();
 
-    useEffect(() => {
-        const handleCallback = async () => {
-            await handleRedirectCallback();
-            router.push('/');
-        };
-        handleCallback();
-    }, [handleRedirectCallback, router]);
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
 
-    return <div>Loading...</div>;
+    if (error) {
+        return <div>Oops... {error.message}</div>;
+    }
 };
 
 export default Callback;
