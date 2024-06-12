@@ -1,6 +1,6 @@
 import { atom, selector } from 'recoil';
 
-import { SOCKET_EVENTS, EVENT_TASKS, SOURCES, CHANNELS } from '@/app/samples/chats/shared/config/aiRequestOptions';
+import { SOCKET_EVENTS, EVENT_TASKS, SOURCES, CHANNELS } from '@/utils/config/aiRequestOptions';
 import {
     ChannelType,
     EventTaskType,

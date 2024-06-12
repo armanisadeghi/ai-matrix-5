@@ -1,3 +1,4 @@
+/*
 'use client';
 
 import { activeUserAtom } from "@/state/userAtoms";
@@ -33,3 +34,4 @@ const ChatPage = ({ params }: { params: { chatId: string } }) => {
 };
 
 export default ChatPage;
+*/

@@ -1,3 +1,4 @@
+/*
 
 import {
     createContext,
@@ -22,7 +23,7 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
     const [chatHistory, setChatHistory] = useState<iChat[]>([]);
 
     // Uncomment below to switch to real API data fetching
-    /*
+    /!*
     useEffect(() => {
         const handledata = async () => {
             const result = await axios.get('https://aimatrix-api.vercel.app/api/aichat', {
@@ -41,7 +42,7 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
         };
         handledata();
     }, []);
-    */
+    *!/
 
     return (
         <ChatContext.Provider
@@ -62,3 +63,4 @@ export const useChat = () => {
     }
     return context;
 };
+*/

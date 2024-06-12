@@ -1,8 +1,8 @@
 import { useRecoilState, useRecoilValue } from "recoil";
 import { requestEventTaskAtom, requestSocketEventAtom } from "@/state/aiAtoms/metadataAtoms";
 import { activeChatMessagesArrayAtom } from "@/state/aiAtoms/chatAtoms";
-import { useDynamicSocketHandler } from "@/app/samples/chats/services/dynamicSocketHandler";
-import { EVENT_TASKS, SOCKET_EVENTS } from "@/app/samples/chats/shared/config/aiRequestOptions";
+import { useDynamicSocketHandler } from "@/services/chat-services/dynamicSocketHandler";
+import { EVENT_TASKS, SOCKET_EVENTS } from "@/utils/config/aiRequestOptions";
 import apiHandlers from "./aiCallRouter";
 import { MessageEntry, Role } from "@/types";
 import { OpenAiStream } from "@/app/api/openai/route";

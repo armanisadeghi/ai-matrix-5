@@ -12,22 +12,28 @@ import { activeUserAtom } from "@/state/userAtoms";
 const ChatLayout = ({children}: { children: React.ReactNode }) => {
     const isSmallScreen = useMediaQuery("(max-width: 600px)");
     const [activeUser, setActiveUser] = useRecoilState(activeUserAtom);
-    const { setSidebarContent, toggleAside } = useSidebar();
+    console.log("ChatLayout activeUser:", activeUser);
 
-    const memoizedSetSidebarContent = useCallback(setSidebarContent, []);
-    const memoizedToggleAside = useCallback(toggleAside, []);
 
-    useEffect(() => {
-        if (activeUser) {
-            memoizedSetSidebarContent(<ChatSidebar />);
-            memoizedToggleAside("full");
-        } else {
-        }
+    /*
+ const { setSidebarContent, toggleAside } = useSidebar();
 
-        return () => {
-            memoizedSetSidebarContent(null);
-        };
-    }, [activeUser, memoizedSetSidebarContent, memoizedToggleAside]);
+ const memoizedSetSidebarContent = useCallback(setSidebarContent, []);
+ const memoizedToggleAside = useCallback(toggleAside, []);
+
+
+ useEffect(() => {
+     if (activeUser) {
+         memoizedSetSidebarContent(<ChatSidebar />);
+         memoizedToggleAside("full");
+     } else {
+     }
+
+     return () => {
+         memoizedSetSidebarContent(null);
+     };
+ }, [activeUser, memoizedSetSidebarContent, memoizedToggleAside]);
+ */
 
     return (
         <UserProvider>

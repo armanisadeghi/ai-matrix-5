@@ -62,11 +62,13 @@ const AmeHoverMenuChat: React.FC<AmeHoverMenuChatProps> = (
     const handlePaperClick = () => {
         if (activeUser) {
             setCurrentChatId(keyProp);
+/*
             fetch(`/api/chats?user_id=${activeUser.id}&chat_id=${keyProp}`)
                 .then(res => res.json())
                 .then(data => {
                     setMessages(data);
                 });
+*/
         }
     };
 

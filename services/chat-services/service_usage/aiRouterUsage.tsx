@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRecoilState } from 'recoil';
 import { requestEventTaskAtom, requestSocketEventAtom } from "@/state/aiAtoms/metadataAtoms";
-import { useRequestManager } from '@/app/samples/chats/services/underTesting/RequestManager';
+import { useRequestManager } from '@/services/chat-services/underTesting/RequestManager';
 import { MessageEntry } from '@/types/chat';
 
 const YourComponent = () => {

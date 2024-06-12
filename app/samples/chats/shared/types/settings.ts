@@ -2,7 +2,7 @@
 
 
 // QuickChatSettings
-import { AI_PREFERENCES_MAIN, AI_PREFERENCES_SECOND } from "@/app/samples/chats/shared/config/aiRequestOptions";
+import { AI_PREFERENCES_MAIN, AI_PREFERENCES_SECOND } from "@/utils/config/aiRequestOptions";
 
 export type AiPreferencesMainType = typeof AI_PREFERENCES_MAIN[number];
 export type AiPreferencesSecondType = typeof AI_PREFERENCES_SECOND[number];

@@ -2,7 +2,7 @@
 'use client';
 import React from 'react';
 import DynamicTextarea from '@/components/AiChat/UserInput/DynamicTextarea';
-import useDynamicLayout from './hooks/useDynamicChatLayout';
+import useDynamicLayout from '@/services/hooks/useDynamicChatLayout';
 import ResponseArea from "@/components/AiChat/Response/ResponseArea";
 
 const ChatsPage = () => {

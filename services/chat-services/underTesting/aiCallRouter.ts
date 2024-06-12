@@ -2,9 +2,9 @@
 'use server';
 
 import { atom, useRecoilValue } from 'recoil';
-import { SOCKET_EVENTS, EVENT_TASKS } from '@/app/samples/chats/shared/config/aiRequestOptions';
-import { useDynamicSocketHandler } from '@/app/samples/chats/services/dynamicSocketHandler';
-import { submitChatRequest } from '@/app/samples/chats/services/underTesting/SteamOpenAi';
+import { SOCKET_EVENTS, EVENT_TASKS } from '@/utils/config/aiRequestOptions';
+import { useDynamicSocketHandler } from '@/services/chat-services/dynamicSocketHandler';
+import { submitChatRequest } from '@/services/chat-services/underTesting/SteamOpenAi';
 import { MessageEntry } from '@/types/chat';
 import { requestEventTaskAtom, requestSocketEventAtom } from "@/state/aiAtoms/metadataAtoms";
 

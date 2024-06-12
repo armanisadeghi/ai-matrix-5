@@ -4,7 +4,7 @@ import { activeChatIdAtom, activeChatMessagesArrayAtom, allowSubmitMessageState,
 } from "@/state/aiAtoms/chatAtoms";
 import { MatrixMessage } from '@/types/chat';
 import { v4 as uuidv4 } from "uuid";
-import { useChatDbAtoms } from '@/app/samples/chats/hooks/useChatDbAtoms';
+import { useChatDbAtoms } from '@/services/hooks/useChatDbAtoms';
 
 export const useHandleSubmitMessage = (textareaRef: React.RefObject<HTMLTextAreaElement>) => {
     const [currentChatId, setCurrentChatId] = useRecoilState(activeChatIdAtom);
@@ -13,7 +13,7 @@ export const useHandleSubmitMessage = (textareaRef: React.RefObject<HTMLTextArea
     const [allowSubmitMessage, setAllowSubmitMessage] = useRecoilState(allowSubmitMessageState);
     const [streamTrigger, setStreamTrigger] = useState(false);
 
-    const { addNewChatToDatabase, addUserMessageToDb, handleCreateChatLocal } = useChatDbAtoms();
+    const { addNewChatToDatabase, addUserMessageToDb, pushUpdatedArrayToDb, handleCreateChatLocal } = useChatDbAtoms();
 
     const handleSubmitMessage = async () => {
         setAllowSubmitMessage(false);
@@ -37,9 +37,11 @@ export const useHandleSubmitMessage = (textareaRef: React.RefObject<HTMLTextArea
                 // Step 3A: Display the new user message in the response area
                 // TODO: Logic missing here (Armani needs to add it here)
 
+                // a lot of this code was changed to make the build pass
+                // TODO: all of this needs to be fixed
+
                 try {
-                    //@ts-ignore
-                    const result = await saveUpdatedArrayToDb(updatedChatArray);
+                    const result = await pushUpdatedArrayToDb();
 
                     // await addUserMessageToDb(updatedChatArray, currentChatId);
 
@@ -52,8 +54,7 @@ export const useHandleSubmitMessage = (textareaRef: React.RefObject<HTMLTextArea
                 setActiveChatMessagesArray(newChatArray);
 
                 try {
-                    //@ts-ignore
-                    await addNewChatToDatabase(newChatArray);
+                    await addNewChatToDatabase();
                     const newChatId = uuidv4();
                     setCurrentChatId(newChatId);
                     setStreamTrigger(true);

@@ -1,3 +1,4 @@
+/*
 import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { activeChatMessagesArrayAtom } from "@/state/aiAtoms/chatAtoms";
@@ -61,3 +62,4 @@ const ChatDetail: React.FC<ChatDetailProps> = ({ user_id, chat_id }) => {
 };
 
 export default ChatDetail;
+*/

@@ -1,6 +1,6 @@
 // app/config/componentConfig.ts
 import dynamic from 'next/dynamic';
-import { exampleCode, cssCode, pythonCode } from '@/app/samples/code-highlight/data/exampleCode';
+import { exampleCode, cssCode, pythonCode } from '../code-highlight/data/exampleCode';
 
 export const componentMap: { [key: string]: React.ComponentType<any> } = {
     AIResponse: dynamic(() => import('@/app/samples/ai-tests/response/AIResponse')),

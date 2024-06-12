@@ -1,6 +1,6 @@
 // /types/chatData.ts
 
-import { ROLE_TYPES } from "@/app/samples/chats/shared/config/aiRequestOptions";
+import { ROLE_TYPES } from "@/utils/config/aiRequestOptions";
 
 export type RoleType = typeof ROLE_TYPES[number];
 

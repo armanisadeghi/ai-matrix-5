@@ -5,7 +5,7 @@ import CustomCollapse from "@/ui/collapse/CustomCollapse";
 import AmeSelect from "@/ui/select/AmeSelect";
 import AmeSlider from "@/ui/slider/AmeSlider";
 import AmePillsInput from "@/ui/pills/AmePillsInput";
-import { aiModels, apiEndpoints, apiProviders } from "../../../../samples/chats/shared/config/aiModels";
+import { aiModels, apiEndpoints, apiProviders } from "@/utils/config/aiModels";
 
 // TODO: Replace many of these with api call to get these values
 

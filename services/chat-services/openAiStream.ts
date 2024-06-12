@@ -3,7 +3,7 @@ import { MatrixMessage, MessageEntry, Role } from '@/types/chat';
 import { OpenAiStream } from "@/app/api/openai/route";
 import { useRecoilState } from "recoil";
 import { activeChatMessagesArrayAtom, assistantTextStreamAtom } from "@/state/aiAtoms/chatAtoms";
-import { useChatDbAtoms } from "@/app/samples/chats/hooks/useChatDbAtoms";
+import { useChatDbAtoms } from '@/services/hooks/useChatDbAtoms';
 
 interface StreamOpenaiProps {
     trigger: boolean;
