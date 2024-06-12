@@ -23,7 +23,7 @@ const Page: React.FC = () => {
     } = useTestPage();
 
     return (
-        <VerticalSplitter initialSizes={[20, 80]}>
+        <VerticalSplitter initialSizes={[20, 70]}>
             <div>
                 <Title order={5}>Test Components</Title>
                 <Space h="md" />

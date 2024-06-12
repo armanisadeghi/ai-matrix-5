@@ -1,6 +1,3 @@
-// app/samples/ai-tests/shared/hooks/useFileUpload.ts
-// OFFICIAL CHAT
-
 import { useSetRecoilState } from 'recoil';
 import { uploadedFilesAtom } from '@/state/aiAtoms/uploadAtoms';
 
@@ -15,7 +12,9 @@ interface UploadedFile {
 const useFileUpload = () => {
     const setUploadedFiles = useSetRecoilState(uploadedFilesAtom);
 
-    const handleFileUpload = (file: File) => {
+    const handleFileUpload = (file: File | null) => {
+        if (!file) return;
+
         const newFile: UploadedFile = {
             id: URL.createObjectURL(file),
             name: file.name,

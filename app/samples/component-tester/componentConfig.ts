@@ -1,6 +1,7 @@
 // app/config/componentConfig.ts
 import dynamic from 'next/dynamic';
 import { exampleCode, cssCode, pythonCode } from '../code-highlight/data/exampleCode';
+import { AtomName } from "@/state/aiAtoms/settingsAtoms";
 
 export const componentMap: { [key: string]: React.ComponentType<any> } = {
     AIResponse: dynamic(() => import('@/app/samples/ai-tests/response/AIResponse')),
@@ -27,6 +28,7 @@ export const componentMap: { [key: string]: React.ComponentType<any> } = {
     NotesCard: dynamic(() => import('@/components/NotesCard/NotesCard').then(mod => mod.NotesCard)),
     RichTextEditorPage: dynamic(() => import('@/components/RichTextEditor/RichTextEditorPage')),
     AmeJsonInput: dynamic(() => import('@/ui/json/AmeJsonInput')),
+    AmeTextAreaFancy: dynamic(() => import('@/ui/textarea/AmeTextAreaFancy')),
 };
 
 export const propDefinitions: { [key: string]: any } = {
@@ -319,6 +321,19 @@ export const propDefinitions: { [key: string]: any } = {
         value: '{"id":"e75e73f4-b4c2-40d6-bd09-89be22b76575","company_name":"Nolan, Gutkowski and Cremin","address_line":"Apt 666","city":"Reno","state":"Nevada","zip":"3133","country":"United States","primary_contact":"xmccoole0@noaa.gov"}',
         showButton: true,
         validateJson: true,
+    },
+    AmeTextAreaFancy: {
+        label: 'Text Area',
+        placeholder: 'Enter text here...',
+        atomNames: [
+            'submitOnEnter',
+            'makeSmallTalk',
+            'quickAnswer',
+            'improveQuestions',
+            'aiPreferencesMain',
+            'stopSequence',
+            'aiPreferencesSecond'
+        ],
     },
 };
 
