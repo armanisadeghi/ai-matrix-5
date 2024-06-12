@@ -2,7 +2,6 @@
 import React, { useState, ReactNode } from 'react';
 import { AppShell, ActionIcon } from '@mantine/core';
 import { GoSidebarCollapse } from 'react-icons/go';
-import { ChatProvider } from '@/context/AiContext/ChatContext';
 import { UserProvider } from '@/context/AiContext/UserContext';
 import { FormProvider } from '@/context/AiContext/FormContext';
 import { GlobalChatProvider } from '@/context/AiContext/GlobalChatContext';
@@ -25,7 +24,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
     return (
         <UserProvider>
-            <ChatProvider>
                     <FormProvider>
                         <GlobalChatProvider>
                             <RequestMetadataProvider>
@@ -53,7 +51,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                             </RequestMetadataProvider>
                         </GlobalChatProvider>
                     </FormProvider>
-            </ChatProvider>
         </UserProvider>
     );
 };

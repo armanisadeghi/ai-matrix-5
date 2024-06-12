@@ -1,14 +1,11 @@
 // steps/AIModelDetails.tsx
 import React from 'react';
 import AmeFieldset from "@/ui/fieldset/AmeFieldset";
-import { Textarea, TextInput } from "@mantine/core";
-import TagsInput from "@/ui/pills/TagsInput";
-import AmeCheckboxGroup from "@/ui/checkbox/AmeCheckboxGroup";
 import CustomCollapse from "@/ui/collapse/CustomCollapse";
 import AmeSelect from "@/ui/select/AmeSelect";
 import AmeSlider from "@/ui/slider/AmeSlider";
 import AmePillsInput from "@/ui/pills/AmePillsInput";
-import { aiModels, apiProviders, apiEndpoints } from "@/app/samples/chats/shared/config/aiModels";
+import { aiModels, apiEndpoints, apiProviders } from "../../../../samples/chats/shared/config/aiModels";
 
 // TODO: Replace many of these with api call to get these values
 

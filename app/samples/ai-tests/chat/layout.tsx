@@ -3,7 +3,6 @@
 "use client";
 import React, { ReactNode } from "react";
 import { MainLayout } from "@/layout";
-import { ChatProvider } from "@/context/chatContext";
 import { ResponseProvider } from "@/app/samples/ai-tests/response/ResponseContext";
 import { LayoutProvider } from "@/context/LayoutContext";
 import ErrorBoundary from "@/components/ErrorManagement/ErrorBoundry";
@@ -25,9 +24,7 @@ export default function ChatLayout({ children }: Props) {
                     <FooterProvider initialState="hidden">
                         <HeaderProvider initialState="medium">
                             <MainLayout>
-                                <ChatProvider>
                                     <ResponseProvider>{children}</ResponseProvider>
-                                </ChatProvider>
                             </MainLayout>
                         </HeaderProvider>
                     </FooterProvider>

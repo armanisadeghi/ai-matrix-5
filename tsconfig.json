@@ -33,9 +33,7 @@
         "allowSyntheticDefaultImports": true,
         "baseUrl": ".",
         "paths": {
-            "@/*": [
-                "./*"
-            ]
+            "@/*": ["./*"]
         },
         "plugins": [
             {
