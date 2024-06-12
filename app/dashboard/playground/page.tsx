@@ -6,8 +6,8 @@ import {
 } from '@tabler/icons-react'
 import {useState} from "react";
 import Prompt from "@/components/Prompt/Prompt";
-import ResponsePlayground from "@/components/ResponsePlayground/ResponsePlayground";
-import PlaygroundRunForm from "@/components/PlaygroundRunForm/PlaygroundRunForm";
+import ResponsePlayground from "@/components/Playground/ResponsePlayground";
+import PlaygroundRunForm from "@/components/Playground/PlaygroundRunForm";
 import VerticalSplitter from "@/ui/split/VerticalSplitter";
 import DynamicSplitter from "@/ui/split/DynamicSplitter";
 import HorizontalSplitter from "@/ui/split/HorizontalSplitter";
