@@ -4,8 +4,6 @@ import { useState } from 'react';
 import { Button, Stack } from '@mantine/core';
 import AmeDrawer from './AmeDrawer';
 import AmeChatHistoryEntry from "@/components/AiChat/Sidebar/AmeChatHistoryEntry";
-import AmeMenu from "@/components/AiChat/Sidebar/AmeMenu";
-import { BsThreeDotsVertical } from "react-icons/bs";
 
 const Page: React.FC = () => {
     const [drawerOpened, setDrawerOpened] = useState(true);
@@ -32,6 +30,7 @@ const Page: React.FC = () => {
                         <AmeChatHistoryEntry keyProp={'test'} initialValue='sample item 1' />
                         <AmeChatHistoryEntry keyProp={'test'} initialValue='sample item 2' />
                         <AmeChatHistoryEntry keyProp={'test'} initialValue='sample item 3' />
+                        <AmeChatHistoryEntry keyProp={'test'} initialValue='sample item 4' />
                         <AmeChatHistoryEntry keyProp={'test'} initialValue='What is the capital of the United States?' />
                     </Stack>
                 }
