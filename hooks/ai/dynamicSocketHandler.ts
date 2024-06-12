@@ -1,23 +1,35 @@
-// app/dashboard/intelligence/chat-app/utils/dynamicSocketHandler.ts
+// hooks/ai/dynamicSocketHandler.ts
 
 import { initializeSocket, emitEvent, waitForEvent, closeSocket } from '@/utils/socketio/socket';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { quickChatSettingsAtom } from "@/state/aiAtoms/settingsAtoms";
 import { requestEventTaskAtom, requestSocketEventAtom, requestIndexAtom } from '@/state/aiAtoms/metadataAtoms';
-import { activeChatIdAtom, activeChatMessagesArrayAtom, customInputsAtom, formResponsesAtom } from "@/state/aiAtoms/chatAtoms";
-import { activeUserIdAtom, activeUserTokenAtom } from "@/state/userAtoms";
+import { realTimeDataState, streamBufferState } from '@/state/socketAtoms';
+import { userIdSelector, userTokenSelector } from "@/state/userAtoms";
+import {
+    activeChatIdAtom,
+    activeChatMessagesArrayAtom,
+    customInputsAtom,
+    formResponsesAtom
+} from "@/state/aiAtoms/chatAtoms";
 
-export const useDynamicSocketHandler = (callback?: (data: any) => void, onStreamEnd?: (streamBuffer: string) => void) => {
+export const useDynamicSocketHandler = (callback?: (data: any) => void, onStreamEndCallback?: (streamBuffer: string) => void) => {
     const eventTask = useRecoilValue(requestEventTaskAtom);
     const socketEvent = useRecoilValue(requestSocketEventAtom);
-    const userId = useRecoilValue(activeUserIdAtom);
-    const userToken = useRecoilValue(activeUserTokenAtom);
+    const userId = useRecoilValue(userIdSelector);
+    const userToken = useRecoilValue(userTokenSelector);
+
+
+
     const chatId = useRecoilValue(activeChatIdAtom);
     const activeChatMessagesArray = useRecoilValue(activeChatMessagesArrayAtom);
     const formResponses = useRecoilValue(formResponsesAtom);
     const customInputs = useRecoilValue(customInputsAtom);
     const requestIndex = useRecoilValue(requestIndexAtom);
     const quickChatSettings = useRecoilValue(quickChatSettingsAtom);
+
+    const setRealTimeData = useSetRecoilState(realTimeDataState);
+    const setStreamBuffer = useSetRecoilState(streamBufferState);
 
     const handleDynamicElements = async () => {
         // Initialize the socket connection with token, which is a string
@@ -72,6 +84,9 @@ export const useDynamicSocketHandler = (callback?: (data: any) => void, onStream
             if (data && typeof data === 'object' && 'data' in data) {
                 streamBuffer += data.data;
 
+                // Update Recoil state with the current chunk of data
+                setRealTimeData((prevData) => [...prevData, data.data]);
+
                 // Call the callback with the current chunk of data
                 if (callback) {
                     callback(data.data);
@@ -79,9 +94,14 @@ export const useDynamicSocketHandler = (callback?: (data: any) => void, onStream
 
                 // Assuming 'isLastChunk' is a field that indicates the end of the stream
                 if (data.isLastChunk) {
-                    if (onStreamEnd) {
-                        onStreamEnd(streamBuffer);
+                    // Update Recoil state when the stream ends
+                    setStreamBuffer(streamBuffer);
+
+                    // Call the stream end callback
+                    if (onStreamEndCallback) {
+                        onStreamEndCallback(streamBuffer);
                     }
+
                     streamBuffer = ''; // Reset the buffer for the next stream
                 }
             }

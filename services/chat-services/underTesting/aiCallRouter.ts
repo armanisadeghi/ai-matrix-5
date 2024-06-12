@@ -1,13 +1,6 @@
 // app/samples/ai-tests/shared/services/aiCallRouter.ts
 'use server';
 
-import { atom, useRecoilValue } from 'recoil';
-import { SOCKET_EVENTS, EVENT_TASKS } from '@/utils/config/aiRequestOptions';
-import { useDynamicSocketHandler } from '@/services/chat-services/dynamicSocketHandler';
-import { submitChatRequest } from '@/services/chat-services/underTesting/SteamOpenAi';
-import { MessageEntry } from '@/types/chat';
-import { requestEventTaskAtom, requestSocketEventAtom } from "@/state/aiAtoms/metadataAtoms";
-
 
 
 // Example API handlers using native fetch

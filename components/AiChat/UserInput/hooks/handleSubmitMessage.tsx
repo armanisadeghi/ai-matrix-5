@@ -4,7 +4,8 @@ import { activeChatIdAtom, activeChatMessagesArrayAtom, allowSubmitMessageState,
 } from "@/state/aiAtoms/chatAtoms";
 import { MatrixMessage } from '@/types/chat';
 import { v4 as uuidv4 } from "uuid";
-import { useChatDbAtoms } from '@/services/hooks/useChatDbAtoms';
+import { useChatDbAtoms } from "@/hooks/ai/useChatDbAtoms";
+
 
 export const useHandleSubmitMessage = (textareaRef: React.RefObject<HTMLTextAreaElement>) => {
     const [currentChatId, setCurrentChatId] = useRecoilState(activeChatIdAtom);

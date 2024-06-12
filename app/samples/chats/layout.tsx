@@ -11,32 +11,8 @@ import { activeUserAtom } from "@/state/userAtoms";
 
 const ChatLayout = ({children}: { children: React.ReactNode }) => {
     const isSmallScreen = useMediaQuery("(max-width: 600px)");
-    const [activeUser, setActiveUser] = useRecoilState(activeUserAtom);
-    console.log("ChatLayout activeUser:", activeUser);
-
-
-    /*
- const { setSidebarContent, toggleAside } = useSidebar();
-
- const memoizedSetSidebarContent = useCallback(setSidebarContent, []);
- const memoizedToggleAside = useCallback(toggleAside, []);
-
-
- useEffect(() => {
-     if (activeUser) {
-         memoizedSetSidebarContent(<ChatSidebar />);
-         memoizedToggleAside("full");
-     } else {
-     }
-
-     return () => {
-         memoizedSetSidebarContent(null);
-     };
- }, [activeUser, memoizedSetSidebarContent, memoizedToggleAside]);
- */
 
     return (
-        <UserProvider>
             <Container fluid h={1200} bg="var(--mantine-color-dark-7)">
                 <Grid grow style={{ flex: 1 }} columns={12} gutter={0}>
                     {!isSmallScreen && (
@@ -56,7 +32,6 @@ const ChatLayout = ({children}: { children: React.ReactNode }) => {
                     )}
                 </Grid>
             </Container>
-        </UserProvider>
     );
 };
 

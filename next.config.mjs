@@ -1,4 +1,4 @@
-import bundleAnalyzer from '@next/bundle-analyzer';
+import withBundleAnalyzer from '@next/bundle-analyzer';
 import webpack from 'webpack';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -7,12 +7,12 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const withBundleAnalyzer = bundleAnalyzer({
+const withBundleAnalyzerConfig = withBundleAnalyzer({
     enabled: process.env.ANALYZE === 'true',
 });
 
 const nextConfig = {
-    reactStrictMode: false,
+    reactStrictMode: true,
     eslint: {
         ignoreDuringBuilds: true,
     },
@@ -36,4 +36,4 @@ const nextConfig = {
     }
 };
 
-export default withBundleAnalyzer(nextConfig);
+export default withBundleAnalyzerConfig(nextConfig);

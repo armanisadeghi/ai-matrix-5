@@ -1,11 +1,12 @@
 import { useRecoilState, useRecoilValue } from "recoil";
 import { requestEventTaskAtom, requestSocketEventAtom } from "@/state/aiAtoms/metadataAtoms";
 import { activeChatMessagesArrayAtom } from "@/state/aiAtoms/chatAtoms";
-import { useDynamicSocketHandler } from "@/services/chat-services/dynamicSocketHandler";
+
 import { EVENT_TASKS, SOCKET_EVENTS } from "@/utils/config/aiRequestOptions";
 import apiHandlers from "./aiCallRouter";
 import { MessageEntry, Role } from "@/types";
 import { OpenAiStream } from "@/app/api/openai/route";
+import { useDynamicSocketHandler } from "@/hooks/ai/dynamicSocketHandler";
 
 const openaiStreamRequest = (
     activeChatMessagesArray: MessageEntry[],

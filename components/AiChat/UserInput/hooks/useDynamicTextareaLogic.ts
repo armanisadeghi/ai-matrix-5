@@ -4,7 +4,7 @@ import { useMediaQuery } from '@mantine/hooks';
 import { useRecoilState } from 'recoil';
 import { activeChatMessagesArrayAtom, assistantTextStreamAtom, userTextInputAtom } from "@/state/aiAtoms/chatAtoms";
 import { MatrixMessage, MessageEntry } from '@/types/chat';
-import { useChatDbAtoms } from '@/services/hooks/useChatDbAtoms';
+import { useChatDbAtoms } from "@/hooks/ai/useChatDbAtoms";
 
 const useDynamicTextareaLogic = () => {
     const [userInput, setUserInput] = useState('');

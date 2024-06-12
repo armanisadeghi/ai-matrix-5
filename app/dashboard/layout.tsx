@@ -10,7 +10,6 @@ import { FooterProvider } from "@/context/FooterContext";
 import { NavbarProvider } from "@/context/NavbarContext";
 import { RecoilRoot } from "recoil";
 import { LayoutProvider } from "@/context/LayoutContext";
-import { DynamicSocketProvider } from "@/context/AiContext/socketContext";
 import Loading from "@/app/dashboard/loading";
 
 type Props = {
@@ -28,9 +27,7 @@ function Layout({children}: Props) {
                             <SidebarProvider initialAsideState="icons">
                                 <HeaderProvider initialState="medium">
                                     <FooterProvider initialState="hidden">
-                                        <DynamicSocketProvider>
-                                            <MainLayout>{children}</MainLayout>
-                                        </DynamicSocketProvider>
+                                        <MainLayout>{children}</MainLayout>
                                     </FooterProvider>
                                 </HeaderProvider>
                             </SidebarProvider>

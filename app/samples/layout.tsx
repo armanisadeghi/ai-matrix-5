@@ -8,7 +8,6 @@ import { MainLayout } from '@/layout';
 import { ReactNode } from 'react';
 import { RecoilRoot, useRecoilState } from 'recoil';
 import { activeUserAtom } from "@/state/userAtoms";
-import { DynamicSocketProvider } from "@/context/AiContext/socketContext";
 import { HeaderProvider } from "@/context/HeaderContext";
 import { FooterProvider } from "@/context/FooterContext";
 import ErrorBoundary from "@/components/ErrorManagement/ErrorBoundry";
@@ -55,12 +54,10 @@ function Layout({ children, preset }: Props) {
                                 <SidebarProvider initialAsideState="compact">
                                     <HeaderProvider initialState="medium">
                                         <FooterProvider initialState="hidden">
-                                            <DynamicSocketProvider>
                                                 <MainLayout>
                                                     <LayoutContent />
                                                     {children}
                                                 </MainLayout>
-                                            </DynamicSocketProvider>
                                         </FooterProvider>
                                     </HeaderProvider>
                                 </SidebarProvider>

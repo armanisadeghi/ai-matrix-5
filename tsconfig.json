@@ -5,7 +5,7 @@
             "jest",
             "@testing-library/jest-dom"
         ],
-        "target": "es2017",
+        "target": "esnext", // Use the latest ECMAScript target
         "lib": [
             "dom",
             "dom.iterable",
@@ -13,15 +13,15 @@
         ],
         "allowJs": true,
         "skipLibCheck": true,
-        "strict": false,
-        "noImplicitAny": false,
-        "strictNullChecks": false,
-        "strictFunctionTypes": false,
-        "strictBindCallApply": false,
-        "strictPropertyInitialization": false,
-        "noImplicitThis": false,
-        "alwaysStrict": false,
-        "forceConsistentCasingInFileNames": false,
+        "strict": true, // Enable strict mode for better type safety
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "strictFunctionTypes": true,
+        "strictBindCallApply": true,
+        "strictPropertyInitialization": true,
+        "noImplicitThis": true,
+        "alwaysStrict": true,
+        "forceConsistentCasingInFileNames": true,
         "noEmit": true,
         "esModuleInterop": true,
         "module": "esnext",
@@ -49,7 +49,12 @@
         "context/**/*.tsx",
         "components/**/*.tsx",
         "ui/**/*.tsx",
-        "app/**/*.tsx"
+        "app/**/*.tsx",
+        "state/**/*.ts",
+        "hooks/**/*.ts",
+        "utils/**/*.ts",
+        "types/**/*.ts",
+        "services/**/*.ts"
     ],
     "exclude": [
         "node_modules",

@@ -1,3 +1,5 @@
+@import '@/utils/_utilities';
+
 .inner {
     display: flex;
     justify-content: space-between;
@@ -6,42 +8,42 @@
 }
 
 .content {
-    max-width: 560px; /* Adjusted from rem(480px) */
+    max-width: rem(560px); // Use rem function
     margin-right: calc(var(--mantine-spacing-xl));
 
-    @media (max-width: $ mantine-breakpoint-md) {
+    @media (max-width: $mantine-breakpoint-md) {
         max-width: 100%;
         margin-right: 0;
     }
 }
 
 .title {
-    color: var(--mantine-color-dark-1); /* Adjusted from light-dark(var(--mantine-color-black), var(--mantine-color-white)) */
-    font-size: 44px; /* Adjusted from rem(48px) */
+    color: var(--mantine-color-dark-1); // Use direct variable
+    font-size: rem(44px); // Use rem function
     line-height: 1.2;
     font-weight: 700;
 
-    @media (max-width: $ mantine-breakpoint-xs) {
-        font-size: 28px; /* Adjusted from rem(28px) */
+    @media (max-width: $mantine-breakpoint-xs) {
+        font-size: rem(28px); // Use rem function
     }
 }
 
 .control {
-    @media (max-width: $ mantine-breakpoint-xs) {
+    @media (max-width: $mantine-breakpoint-xs) {
         flex: 1;
     }
 }
 
 .subtitle {
-    font-size: 18px;
+    font-size: rem(18px); // Use rem function
 }
 
 .image {
-    width: 400px;
-    height: 400px;
+    width: rem(400px); // Use rem function
+    height: rem(400px); // Use rem function
     object-fit: contain;
 
-    @media (max-width: $ mantine-breakpoint-md) {
+    @media (max-width: $mantine-breakpoint-md) {
         display: none;
     }
 }
@@ -51,6 +53,6 @@
     background-color: var(--mantine-primary-color-0);
     border: 1px solid var(--mantine-primary-color-4);
     color: var(--mantine-primary-color-8);
-    padding: 8px 12px; /* Adjusted from rem(8px) rem(12px) */
+    padding: rem(8px) rem(12px); // Use rem function
     border-radius: var(--mantine-radius-xl);
 }

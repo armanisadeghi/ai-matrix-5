@@ -3,7 +3,7 @@
 
 import React, { useEffect } from 'react';
 import { useAiResponse } from '@/context/AiContext/AiResponseContext';
-import { useDynamicSocketHandler } from "@/services/chat-services/dynamicSocketHandler";
+import { useDynamicSocketHandler } from "@/hooks/ai/dynamicSocketHandler";
 
 const ChatResponse: React.FC = () => {
     const { triggerResponse, setRespondData } = useAiResponse();

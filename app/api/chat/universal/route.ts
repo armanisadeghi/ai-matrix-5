@@ -1,3 +1,4 @@
+/*
 import { createOpenAI } from '@ai-sdk/openai';
 import { openai } from '@ai-sdk/openai';
 import { anthropic } from '@ai-sdk/anthropic';
@@ -6,6 +7,7 @@ import { vertex } from '@ai-sdk/google-vertex';
 import { mistral } from '@ai-sdk/mistral';
 import { ollama } from 'ollama-ai-provider';
 import { streamText } from 'ai';
+import { ChatMessagesArray, MatrixMessage } from '@/types/chat';
 
 // Create groq instance
 const groq = createOpenAI({
@@ -16,12 +18,18 @@ const groq = createOpenAI({
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
 
-const reformatMessages = (messages) => {
+const reformatMessages = (messages: ChatMessagesArray): MatrixMessage[] => {
     return messages.map((message) => ({
         role: message.role,
         content: message.text,
     }));
 };
+
+interface Options {
+    model: string;
+    [key: string]: any;
+}
+
 
 const reformatOptions = (options, provider) => {
     switch (provider) {
@@ -103,7 +111,7 @@ export async function POST(req) {
 
 
 
-/*
+/!*
 import { createOpenAI } from '@ai-sdk/openai';
 
 const perplexity = createOpenAI({
@@ -116,4 +124,5 @@ const fireworks = createOpenAI({
   baseURL: 'https://api.fireworks.ai/inference/v1',
 });
 
- */
+ *!/
+*/

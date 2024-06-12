@@ -12,25 +12,20 @@ import { useState } from 'react';
 import supabase from "@/utils/supabase/client";
 import { v4 as uuidv4 } from "uuid";
 import { MatrixMessage } from "@/types";
-import { activeUserAtom } from "@/state/userAtoms";
+import { userIdSelector } from "@/state/userAtoms";
 
 
 export const useChatDbAtoms = () => {
-    const [activeUser, setActiveUser] = useRecoilState(activeUserAtom);
+    const userId = useRecoilValue(userIdSelector)
     const [activeChatId, setSelectedChatId] = useRecoilState(activeChatIdAtom);
     const chatSummariesLoadable = useRecoilValueLoadable(chatSummariesSelector);
     const chatDetailsLoadable = useRecoilValueLoadable(chatDetailsSelector);
     const chatMessages = useRecoilValue(selectedChatMessagesSelector(activeChatId || ''));
     const fetchAndStoreChatDetails = useFetchAndStoreChatDetails();
-
     const [userTextInput, setUserTextInput] = useRecoilState(userTextInputAtom);
     const [activeChatMessagesArray, setActiveChatMessagesArray] = useRecoilState(activeChatMessagesArrayAtom);
-
     const [newMessage, setNewMessage] = useState('');
     const [newChatTitle, setNewChatTitle] = useState('');
-
-    const userId = activeUser?.id ?? '';
-    const firstName = activeUser?.firstName ?? '';
     const startingMessageArray = useRecoilValue(startingMessageArrayAtom);
 
     const handleChatSelect = async (chatId: string) => {
@@ -123,7 +118,6 @@ export const useChatDbAtoms = () => {
     };
 
     return {
-        activeUser,
         activeChatId,
         setSelectedChatId,
         chatSummariesLoadable,
@@ -135,8 +129,6 @@ export const useChatDbAtoms = () => {
         setNewMessage,
         newChatTitle,
         setNewChatTitle,
-        userId,
-        firstName,
         handleChatSelect,
         addNewChatToDatabase,
         handleCreateChatLocal,
