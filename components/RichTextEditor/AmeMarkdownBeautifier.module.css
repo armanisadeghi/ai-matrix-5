@@ -39,7 +39,7 @@
     align-items: center;
 }
 
-/* Link editor save button */
+/* Link editor save buttons */
 .mantine-RichTextEditor-linkEditorSave {
     margin-left: 8px;
     background-color: #007bff;
@@ -57,7 +57,7 @@
     border-radius: 4px;
 }
 
-/* Link editor external button */
+/* Link editor external buttons */
 .mantine-RichTextEditor-linkEditorExternalControl {
     margin-left: 8px;
     color: #007bff;

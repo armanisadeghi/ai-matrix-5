@@ -8,7 +8,6 @@ import { ReactNode } from "react";
 import { HeaderProvider } from "@/context/HeaderContext";
 import { FooterProvider } from "@/context/FooterContext";
 import { NavbarProvider } from "@/context/NavbarContext";
-import { RecoilRoot } from "recoil";
 
 type Props = {
     children: ReactNode;
@@ -17,17 +16,15 @@ type Props = {
 function Layout({ children }: Props) {
     return (
         <ErrorBoundary>
-            <RecoilRoot>
-                <NavbarProvider initialState="full">
-                    <SidebarProvider initialState="icons">
-                        <HeaderProvider initialState="medium">
-                            <FooterProvider initialState="hidden">
-                                <MainLayout>{children}</MainLayout>
-                            </FooterProvider>
-                        </HeaderProvider>
-                    </SidebarProvider>
-                </NavbarProvider>
-            </RecoilRoot>
+            <NavbarProvider initialState="icons">
+                <SidebarProvider initialState="icons">
+                    <HeaderProvider initialState="medium">
+                        <FooterProvider initialState="hidden">
+                            <MainLayout>{children}</MainLayout>
+                        </FooterProvider>
+                    </HeaderProvider>
+                </SidebarProvider>
+            </NavbarProvider>
         </ErrorBoundary>
     );
 }
