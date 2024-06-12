@@ -7,13 +7,11 @@ import {
     Menu,
     NavLink,
     ScrollArea,
-    Stack,
     useMantineTheme,
 } from "@mantine/core";
 import {
-    IconArrowBarLeft,
-    IconArrowBarToLeft,
-    IconArrowBarToRight,
+    IconChevronLeft,
+    IconChevronRight,
     IconDots,
     IconFile,
     IconHelp,
@@ -22,9 +20,10 @@ import {
     IconShield,
 } from "@tabler/icons-react";
 import { navItems } from "./navItems";
-import { useLayout } from "@/context/LayoutContext";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import AmeActionIcon from "@/ui/buttons/AmeActionIcon";
+import { useNavbar } from "@/context/NavbarContext";
 
 const actionProps: ActionIconProps = {
     variant: "light",
@@ -35,7 +34,7 @@ interface NavbarProps {
 }
 
 export const Navbar = ({ state }: NavbarProps) => {
-    const { handleNavbarExpand, handleNavbarCollapse } = useLayout();
+    const { handleNavbarExpand, handleNavbarCollapse } = useNavbar();
     const theme = useMantineTheme();
     const pathname = usePathname();
 
@@ -44,27 +43,27 @@ export const Navbar = ({ state }: NavbarProps) => {
             <AppShell.Section>
                 {state === "compact" && (
                     <Group justify="flex-end" gap="xs">
-                        <ActionIcon onClick={handleNavbarCollapse} {...actionProps}>
-                            <IconArrowBarToLeft size={18} />
-                        </ActionIcon>
-                        <ActionIcon onClick={handleNavbarExpand} {...actionProps}>
-                            <IconArrowBarToRight size={18} />
-                        </ActionIcon>
+                        <AmeActionIcon title="shrink navbar" onClick={handleNavbarCollapse} {...actionProps}>
+                            <IconChevronLeft size={18} />
+                        </AmeActionIcon>
+                        <AmeActionIcon title="expand navbar" onClick={handleNavbarExpand} {...actionProps}>
+                            <IconChevronRight size={18} />
+                        </AmeActionIcon>
                     </Group>
                 )}
 
                 {state === "full" && (
                     <Group justify="flex-end" gap="xs">
-                        <ActionIcon onClick={handleNavbarCollapse} {...actionProps}>
-                            <IconArrowBarLeft size={18} />
-                        </ActionIcon>
+                        <AmeActionIcon title="shrink navbar" onClick={handleNavbarCollapse} {...actionProps}>
+                            <IconChevronLeft size={18} />
+                        </AmeActionIcon>
                     </Group>
                 )}
                 {state === "icons" && (
                     <Group justify="center" gap="xs">
-                        <ActionIcon onClick={handleNavbarExpand} {...actionProps}>
-                            <IconArrowBarToRight size={18} />
-                        </ActionIcon>
+                        <AmeActionIcon title="shrink navbar" onClick={handleNavbarExpand} {...actionProps}>
+                            <IconChevronRight size={18} />
+                        </AmeActionIcon>
                     </Group>
                 )}
             </AppShell.Section>

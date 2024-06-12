@@ -1,64 +1,65 @@
-import {
-    ActionIcon,
-    ActionIconProps,
-    Avatar,
-    Burger,
-    Group,
-    MantineSize,
-    Menu,
-    TextInput,
-    Tooltip,
-} from "@mantine/core";
-import { IconArrowBarToDown, IconArrowBarToUp, IconBell, IconSearch, IconSettings2 } from "@tabler/icons-react";
+import { ActionIcon, ActionIconProps, Avatar, Burger, Group, MantineSize, Menu } from "@mantine/core";
+import { IconBell, IconChevronDown, IconChevronUp, IconPalette, IconSearch, IconSettings2 } from "@tabler/icons-react";
 import { ColorSchemeToggle, Logo } from "@/components";
 import Link from "next/link";
 import { PATH_USER } from "@/routes";
-import { useLayout } from "@/context/LayoutContext";
 import { useHeader } from "@/context/HeaderContext";
 import AmeNavButton from "@/ui/buttons/AmeNavButton";
 import AmeSearchInput from "@/ui/input/AmeSearchInput";
 import AmeActionIcon from "@/ui/buttons/AmeActionIcon";
+import { useNavbar } from "@/context/NavbarContext";
 
 const actionProps: ActionIconProps = {
     variant: "light",
 };
 
 type Props = {
-    state: "large" | "medium" | "hidden";
+    state: "large" | "medium" | "compact";
     tabletMatch?: boolean;
 };
 
 export function Header({ state, tabletMatch }: Props) {
-    const { toggleOpened, opened } = useLayout();
+    const { toggleOpened, opened, toggleNavbar, navbarState } = useNavbar();
     const { headerState, handleCollapse, handleExpand } = useHeader();
 
     const componentSize: MantineSize = headerState === "large" ? "md" : "sm";
+
+    const handleNavToggle = () => {
+        if (navbarState === "full") {
+            toggleNavbar("compact");
+        } else {
+            toggleNavbar("full");
+        }
+    };
 
     return (
         <Group h="100%" px="md" align="center" justify="space-between" style={{ flexWrap: "nowrap" }}>
             <Group>
                 <Burger opened={opened} onClick={toggleOpened} hiddenFrom="sm" size="sm" />
+                <Burger opened={navbarState === "full"} onClick={handleNavToggle} visibleFrom="sm" size="sm" />
                 <Logo />
-                {state === "medium" && (
-                    <Group justify="flex-end" gap="xs">
-                        <ActionIcon onClick={handleCollapse} {...actionProps}>
-                            <IconArrowBarToUp size={18} />
-                        </ActionIcon>
-                        <ActionIcon onClick={handleExpand} {...actionProps}>
-                            <IconArrowBarToDown size={18} />
-                        </ActionIcon>
-                    </Group>
-                )}
+                <Group visibleFrom="sm">
+                    {(state === "medium" || state === "compact") && (
+                        <Group justify="flex-end" gap="xs">
+                            <AmeActionIcon title="shrink header" onClick={handleCollapse} {...actionProps}>
+                                <IconChevronUp size={18} />
+                            </AmeActionIcon>
+                            <AmeActionIcon title="expand header" onClick={handleExpand} {...actionProps}>
+                                <IconChevronDown size={18} />
+                            </AmeActionIcon>
+                        </Group>
+                    )}
 
-                {state === "large" && (
-                    <Group justify="flex-end" gap="xs">
-                        <ActionIcon onClick={handleCollapse} {...actionProps}>
-                            <IconArrowBarToUp size={18} />
-                        </ActionIcon>
-                    </Group>
-                )}
+                    {state === "large" && (
+                        <Group justify="flex-end" gap="xs">
+                            <AmeActionIcon title="shrink header" onClick={handleCollapse} {...actionProps}>
+                                <IconChevronUp size={18} />
+                            </AmeActionIcon>
+                        </Group>
+                    )}
+                </Group>
             </Group>
-            <Group style={{ flexGrow: 1, justifyContent: "center" }}>
+            <Group visibleFrom="md" style={{ flexGrow: 1, justifyContent: "center" }}>
                 <AmeNavButton asIcon navigateTo="back" />
                 <AmeNavButton asIcon navigateTo="next" />
                 <AmeSearchInput
@@ -71,11 +72,11 @@ export function Header({ state, tabletMatch }: Props) {
                 />
             </Group>
             <Group>
-                <AmeActionIcon hiddenFrom="md" size={componentSize} title="Search">
+                <AmeActionIcon hiddenFrom="md" size={componentSize} title="search">
                     <IconSearch size={18} />
                 </AmeActionIcon>
-                <ColorSchemeToggle />
-                <AmeActionIcon title="Notifications" size={componentSize}>
+                <ColorSchemeToggle size={componentSize} />
+                <AmeActionIcon title="notifications" size={componentSize}>
                     <IconBell size={18} />
                 </AmeActionIcon>
                 <Menu width={200} shadow="md">
@@ -95,6 +96,13 @@ export function Header({ state, tabletMatch }: Props) {
                             leftSection={<IconSettings2 size={16} />}
                         >
                             Settings
+                        </Menu.Item>
+                        <Menu.Item
+                            component={Link}
+                            href={PATH_USER.tabs("appearance")}
+                            leftSection={<IconPalette size={16} />}
+                        >
+                            Appearance
                         </Menu.Item>
                     </Menu.Dropdown>
                 </Menu>

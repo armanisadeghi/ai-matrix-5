@@ -1,5 +1,5 @@
 // AiContext/SidebarContext.tsx
-import React, { createContext, ReactNode, useContext, useState } from "react";
+import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { useLocalStorage } from "@mantine/hooks";
 
 type NavState = "full" | "compact" | "icons" | "hidden";
@@ -42,6 +42,10 @@ export const FooterProvider = ({ children, initialState }: { children: ReactNode
         else if (footerConfig === "compact") toggleFooter("icons");
         else toggleFooter("hidden");
     };
+
+    useEffect(() => {
+        setFooterConfig(initialState ?? "hidden");
+    }, [initialState]);
 
     return (
         <FooterContext.Provider

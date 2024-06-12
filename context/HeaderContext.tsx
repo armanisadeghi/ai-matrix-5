@@ -1,8 +1,8 @@
 // AiContext/SidebarContext.tsx
-import React, { createContext, ReactNode, useContext, useState } from "react";
+import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { useLocalStorage } from "@mantine/hooks";
 
-type NavState = "large" | "medium" | "hidden";
+type NavState = "large" | "medium" | "compact";
 
 interface HeaderContextProps {
     headerState: NavState;
@@ -27,19 +27,23 @@ export const HeaderProvider = ({ children, initialState }: { children: ReactNode
 
     const handleToggle = () => {
         if (headerConfig === "large") toggleHeader("medium");
-        else if (headerConfig === "medium") toggleHeader("hidden");
+        else if (headerConfig === "medium") toggleHeader("compact");
         else toggleHeader("large");
     };
 
     const handleExpand = () => {
-        if (headerConfig === "hidden") toggleHeader("medium");
+        if (headerConfig === "compact") toggleHeader("medium");
         else if (headerConfig === "medium") toggleHeader("large");
     };
 
     const handleCollapse = () => {
         if (headerConfig === "large") toggleHeader("medium");
-        else toggleHeader("hidden");
+        else toggleHeader("compact");
     };
+
+    useEffect(() => {
+        setHeaderConfig(initialState ?? "medium");
+    }, [initialState]);
 
     return (
         <HeaderContext.Provider
