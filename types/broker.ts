@@ -6,6 +6,7 @@ export interface Broker {
     dataType: string;
     description?: string;
     component: Component;
+    [key: string]: any;
 }
 
 interface TableDataRow {

@@ -25,6 +25,7 @@ const LeftPanel: React.FC = () => {
                 <Grid.Col span={{ base: 12, lg: 12 }}>
                     <ScrollArea style={{ height: '50px' }}>
                         <SegmentedControl
+                            key={value}
                             orientation="horizontal"
                             fullWidth
                             value={value}
@@ -42,6 +43,7 @@ const LeftPanel: React.FC = () => {
                 <>
                     <Grid.Col span={{ base: 12, lg: 12 }}>
                         <SegmentedControl
+                            key={value}
                             orientation="vertical"
                             fullWidth
                             value={value}

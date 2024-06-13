@@ -24,7 +24,7 @@ export const BrokerEditForm = ({ id }: { id: string }) => {
     const brokers = useRecoilValue(brokersAtom);
     const brokerManager = createBrokerManager();
     const [currentData, setCurrentData] = useState<Broker>(
-        brokers.filter((broker) => broker.id === id)[0]
+        brokers.filter((broker) => broker.id === id)[0] as Broker
     );
 
     const componentOptions = Object.keys(ComponentType).map((key) => ({
