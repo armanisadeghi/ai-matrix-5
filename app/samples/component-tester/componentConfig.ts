@@ -2,6 +2,7 @@
 import dynamic from 'next/dynamic';
 import { exampleCode, cssCode, pythonCode } from '../code-highlight/data/exampleCode';
 import { AtomName } from "@/state/aiAtoms/settingsAtoms";
+import SimpleChatSettingsModal from "@/components/AiChat/UserInput/settings/SimpleChatSettingsModal";
 
 export const componentMap: { [key: string]: React.ComponentType<any> } = {
     AIResponse: dynamic(() => import('@/app/samples/ai-tests/response/AIResponse')),
@@ -29,6 +30,9 @@ export const componentMap: { [key: string]: React.ComponentType<any> } = {
     RichTextEditorPage: dynamic(() => import('@/components/RichTextEditor/RichTextEditorPage')),
     AmeJsonInput: dynamic(() => import('@/ui/json/AmeJsonInput')),
     AmeTextAreaFancy: dynamic(() => import('@/ui/textarea/AmeTextAreaFancy')),
+    AmeTextAreaFancyDynamic: dynamic(() => import('@/ui/textarea/AmeTextAreaFancyDynamic')),
+    SimpleChatSettingsModal: dynamic(() => import('@/components/AiChat/UserInput/settings/SimpleChatSettingsModal')),
+    AmeSettingsModal: dynamic(() => import('@/ui/modal/AmeSettingsModal')),
 };
 
 export const propDefinitions: { [key: string]: any } = {
@@ -325,7 +329,7 @@ export const propDefinitions: { [key: string]: any } = {
     AmeTextAreaFancy: {
         label: 'Text Area',
         placeholder: 'Enter text here...',
-        atomNames: [
+        settingAtomNames: [
             'submitOnEnter',
             'makeSmallTalk',
             'quickAnswer',
@@ -335,6 +339,33 @@ export const propDefinitions: { [key: string]: any } = {
             'aiPreferencesSecond'
         ],
     },
+    AmeTextAreaFancyDynamic: {
+        label: 'Text Area',
+        placeholder: 'Enter text here...',
+        settingAtomNames: [
+            'submitOnEnter',
+            'makeSmallTalk',
+            'quickAnswer',
+            'improveQuestions',
+            'aiPreferencesMain',
+            'stopSequence',
+            'aiPreferencesSecond'
+        ],
+    },
+    SimpleChatSettingsModal: {
+        opened: true,
+    },
+    AmeSettingsModal: {
+        opened: true,
+        atomNames: [
+            'submitOnEnter',
+            'improveQuestions',
+            'aiPreferencesMain',
+            'stopSequence',
+            'aiPreferencesSecond'
+        ],
+    },
+
 };
 
 

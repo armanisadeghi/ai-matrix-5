@@ -25,7 +25,9 @@ export const initializeSocket = (userToken: string) => {
     }
 };
 
-export const emitEvent = (eventName: string, data: any, callback?: (response: any) => void) => {
+export const emitEvent = (
+    eventName: "matrix_chat" | "playground_stream" | "run_recipe" | "validation" | "workflow" = "matrix_chat",
+    data: any, callback?: (response: any) => void) => {
     if (!socket) return;
     socket.emit(eventName, data, (response: any) => {
         if (callback) callback(response);

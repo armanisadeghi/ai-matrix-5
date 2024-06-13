@@ -1,19 +1,10 @@
-'use client';
-
 import { ReactNode } from "react";
 import { MainLayout } from "@/layout";
-import { NavbarProvider } from "@/context/NavbarContext";
 
 type Props = {
-    children: ReactNode;
+  children: ReactNode;
 };
 
-export default function AgencyLayout({children}: Props) {
-
-    return
-    <NavbarProvider>
-        <MainLayout>
-            {children}
-        </MainLayout>
-    </NavbarProvider>
+export default function AgencyLayout({ children }: Props) {
+  return <MainLayout>{children}</MainLayout>;
 }

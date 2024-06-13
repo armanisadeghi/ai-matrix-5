@@ -15,15 +15,16 @@ interface AmeTextAreaFancyProps {
     label?: string;
     placeholder?: string;
     className?: string;
-    atomNames?: AtomName[];
+    settingAtomNames?: AtomName[];
 }
 
 const AmeTextAreaFancy = forwardRef<HTMLDivElement, AmeTextAreaFancyProps>((
-    { label, placeholder, className, atomNames = [] }, ref) => {
+    { label, placeholder, className, settingAtomNames = [] }, ref) => {
 
     const { userInput, handleInputChange, handleSendMessage, textareaRef } = useDynamicTextareaLogic();
     const { collapsed, isFocused, handleToggle, handleBoxClick } = useDynamicTextArea(() => handleSendMessage(textareaRef));
     const handleKeyDown = useKeyDownHandler(() => handleSendMessage(textareaRef));
+
     const [settingsModalOpened, setSettingsModalOpened] = useState(false);
     const openSettingsModal = () => setSettingsModalOpened(true);
     const closeSettingsModal = () => setSettingsModalOpened(false);
@@ -42,14 +43,14 @@ const AmeTextAreaFancy = forwardRef<HTMLDivElement, AmeTextAreaFancyProps>((
                 </div>
                 <div>
                     <ActionIcon.Group>
-                        <AmeOverComponentIcon toolTip="Chat settings" onClick={openSettingsModal} className={styles['amefancy-action-icon']}>
+                        <AmeOverComponentIcon tooltip="Chat settings" onClick={openSettingsModal} className={styles['amefancy-action-icon']}>
                             <RiSettings2Line />
                         </AmeOverComponentIcon>
                         <AmeFileUploadOverComponent />
-                        <AmeOverComponentIcon toolTip="Clear all text" onClick={handleDelete} className={styles['amefancy-action-icon']}>
+                        <AmeOverComponentIcon tooltip="Clear all text" onClick={handleDelete} className={styles['amefancy-action-icon']}>
                             <RiDeleteBin3Line />
                         </AmeOverComponentIcon>
-                        <AmeOverComponentIcon toolTip="Expand or collapse without impacting the text content" onClick={handleToggle} className={styles['amefancy-action-icon']}>
+                        <AmeOverComponentIcon tooltip="Expand or collapse without impacting the text content" onClick={handleToggle} className={styles['amefancy-action-icon']}>
                             <FaExpandArrowsAlt />
                         </AmeOverComponentIcon>
                     </ActionIcon.Group>
@@ -71,7 +72,7 @@ const AmeTextAreaFancy = forwardRef<HTMLDivElement, AmeTextAreaFancyProps>((
             <AmeSettingsModal
                 opened={settingsModalOpened}
                 onClose={closeSettingsModal}
-                atomNames={atomNames}
+                atomNames={settingAtomNames}
             />
         </Box>
     );

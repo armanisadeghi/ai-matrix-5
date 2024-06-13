@@ -11,6 +11,13 @@ import {
     TimestampType,
     Metadata // Ensure Metadata is imported
 } from "@/app/samples/chats/shared/types/metadata";
+import {
+    aiModelAtom,
+    frequencyPenaltyAtom,
+    maxTokensAtom, stopSequenceAtom,
+    temperatureAtom,
+    topPAtom
+} from "@/state/aiAtoms/settingsAtoms";
 
 export const requestEventTaskAtom = atom<EventTaskType>({
     key: 'requestEventTaskAtom',
@@ -19,7 +26,7 @@ export const requestEventTaskAtom = atom<EventTaskType>({
 
 export const requestSocketEventAtom = atom<SocketEventType | null>({
     key: 'requestSocketEventAtom',
-    default: null
+    default: 'matrix_chat'
 });
 export const requestIndexAtom = atom<IndexType>({
     key: 'requestIndexAtom',
@@ -46,12 +53,10 @@ export const requestChannelAtom = atom<ChannelType>({
     default: CHANNELS[0]
 });
 
-// Derived atom for full `metadata`
-export const metadataAtom = atom<Metadata>({
-    key: 'metadataAtom',
-    default: selector<Metadata>({
-        key: 'metadataAtom/selector',
-        get: ({ get }) => ({
+export const allMetadataSelector = selector<Metadata>({
+    key: 'allMetadataSelector',
+    get: ({ get }) => {
+        return {
             requestId: get(requestRequestIdAtom),
             eventTask: get(requestEventTaskAtom),
             socketEvent: get(requestSocketEventAtom),
@@ -59,6 +64,6 @@ export const metadataAtom = atom<Metadata>({
             index: get(requestIndexAtom),
             timestamp: get(requestTimestampAtom),
             channel: get(requestChannelAtom),
-        })
-    })
+        };
+    }
 });
