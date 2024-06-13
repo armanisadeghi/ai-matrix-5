@@ -1,25 +1,26 @@
 import React, { forwardRef, useState } from 'react';
-import { Textarea, ActionIcon, Group, Box, FileButton } from '@mantine/core';
-import { MdPermMedia } from "react-icons/md";
+import { Textarea, ActionIcon, Group, Box } from '@mantine/core';
 import { RiDeleteBin3Line } from "react-icons/ri";
 import { FaExpandArrowsAlt } from "react-icons/fa";
+import { RiSettings2Line } from "react-icons/ri";
 import styles from './DynamicTextarea.module.css';
-import { useDynamicTextArea } from './useDynamicTextarea';
-import useDynamicTextareaLogic from './hooks/useDynamicTextareaLogic';
+import { useDynamicTextArea } from '../../../hooks/ui/useDynamicTextarea';
+import useDynamicTextareaLogic from '../../../hooks/ai/useDynamicTextareaLogic';
 import useKeyDownHandler from "@/utils/commonUtils/useKeyDownHandler";
 import ResponsiveSlider from '@/components/AiChat/UserInput/settings/MatrixSlider/ResponsiveSlider';
 import SimpleChatSettingsModal from "./settings/SimpleChatSettingsModal";
-import useFileUpload from "../../../hooks/ui/useFileUpload";
-import { RiSettings2Line } from "react-icons/ri";
 import StreamOpenai from "@/hooks/ai/openAiStream";
+import AmeOverComponentIcon from "@/ui/button/AmeOverComponentIcon";
+import { AmeFileUploadOverComponent } from "@/ui/button/AmeFileUploadOverComponent";
 
 interface DynamicTextareaProps {
     systemText: string;
     placeholderText: string;
+  className?: string;
 }
 
 const DynamicTextarea = forwardRef<HTMLDivElement, DynamicTextareaProps>((
-    { systemText, placeholderText }, ref) => {
+  { systemText, placeholderText, className }, ref) => {
     const {
         userInput,
         handleInputChange,
@@ -31,7 +32,6 @@ const DynamicTextarea = forwardRef<HTMLDivElement, DynamicTextareaProps>((
 
     const { collapsed, isFocused, handleToggle, handleBoxClick } = useDynamicTextArea(() => handleSendMessage(textareaRef));
     const handleKeyDown = useKeyDownHandler(() => handleSendMessage(textareaRef));
-    const handleFileUpload = useFileUpload();
     const [settingsModalOpened, setSettingsModalOpened] = useState(false);
     const openSettingsModal = () => setSettingsModalOpened(true);
     const closeSettingsModal = () => setSettingsModalOpened(false);
@@ -39,7 +39,7 @@ const DynamicTextarea = forwardRef<HTMLDivElement, DynamicTextareaProps>((
     const handleStreamComplete = () => setStreamTrigger(false);
 
     return (
-        <div ref={ref}>
+    <div ref={ref} className={className}>
             <Box className={`${styles.dynamicTextareaContainer} ${isFocused ? styles.focused : ''}`} onClick={handleBoxClick} tabIndex={-1}>
                 <Group justify='space-between' style={{ width: '100%', alignItems: 'center' }}>
                     <div style={{ fontSize: '0.7rem', fontWeight: 'normal', color: '#909090', userSelect: 'none' }}>
@@ -47,27 +47,16 @@ const DynamicTextarea = forwardRef<HTMLDivElement, DynamicTextareaProps>((
                     </div>
                     <div>
                         <ActionIcon.Group>
-                            <ActionIcon size="sm" variant="transparent" onClick={openSettingsModal} style={{ color: '#909090' }}>
+                            <AmeOverComponentIcon tooltip="Chat settings" onClick={openSettingsModal} >
                                 <RiSettings2Line />
-                            </ActionIcon>
-                            <FileButton onChange={handleFileUpload} accept="*/*">
-                                {(props) => (
-                                    <ActionIcon
-                                        size="sm"
-                                        variant="transparent"
-                                        {...props}
-                                        style={{ color: '#909090' }}
-                                    >
-                                        <MdPermMedia />
-                                    </ActionIcon>
-                                )}
-                            </FileButton>
-                            <ActionIcon size="sm" variant="transparent" onClick={handleDelete} style={{ color: '#909090' }}>
+                            </AmeOverComponentIcon>
+                            <AmeFileUploadOverComponent></AmeFileUploadOverComponent>
+                            <AmeOverComponentIcon tooltip="Clear all text" onClick={handleDelete} >
                                 <RiDeleteBin3Line />
-                            </ActionIcon>
-                            <ActionIcon size="sm" variant="transparent" onClick={handleToggle} style={{ color: '#909090' }}>
+                            </AmeOverComponentIcon>
+                            <AmeOverComponentIcon tooltip="Expand or collapse without impacting the text content" onClick={handleToggle}>
                                 <FaExpandArrowsAlt />
-                            </ActionIcon>
+                            </AmeOverComponentIcon>
                         </ActionIcon.Group>
                     </div>
                 </Group>
@@ -79,7 +68,7 @@ const DynamicTextarea = forwardRef<HTMLDivElement, DynamicTextareaProps>((
                     minRows={3}
                     maxRows={collapsed ? 2 : undefined}
                     placeholder={placeholderText}
-                    size="xs"
+                    size="sm"
                     variant="unstyled"
                     className={styles.textareaStyle}
                     onKeyDown={handleKeyDown}

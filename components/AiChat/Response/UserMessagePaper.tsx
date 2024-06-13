@@ -5,7 +5,7 @@ import { Grid, Paper, Text, ActionIcon } from "@mantine/core";
 import { LiaEditSolid } from "react-icons/lia";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import styles from "./chat.module.css";
+import styles from "./ResponseArea.module.css";
 import renderers from './markdown/renderers';
 import { GrFormEdit } from "react-icons/gr";
 

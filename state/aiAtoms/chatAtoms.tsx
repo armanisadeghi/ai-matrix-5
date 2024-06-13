@@ -1,22 +1,33 @@
 // app/samples/ai-tests/shared/aiAtoms/chatAtoms.tsx
 
-import { atom, atomFamily, selectorFamily, useRecoilCallback, useRecoilState, useSetRecoilState, selector, useRecoilValue } from 'recoil';
+import {
+    atom,
+    atomFamily,
+    selectorFamily,
+    useRecoilCallback,
+    useRecoilState,
+    selector,
+} from 'recoil';
 import { syncEffect } from 'recoil-sync';
-import { array, object, string, number } from '@recoiljs/refine';
+import { writableArray, writableObject, string, number } from '@recoiljs/refine';
+
 import supabase from "@/utils/supabase/client";
 
 import { ChatMessages, ChatSummary, MatrixMessage, Role } from '@/types/chat';
 import Chat from "@/services/Chat";
 import { activeUserAtom } from "@/state/userAtoms";
 
-
+// Selectors for fetching chat summaries and details from Supabase
 export const chatSummariesSelector = selector({
     key: 'chatSummariesSelector',
-    get: async ({ get }) => {
+    get: async ({get}) => {
         const userId = get(activeUserAtom)?.sub;
         if (!userId) throw new Error('User not found');
 
-        const { data, error } = await supabase
+        const {
+            data,
+            error
+        } = await supabase
             .from('chats')
             .select('chat_id, chat_title')
             .eq('user_id', userId);
@@ -32,11 +43,14 @@ export const chatSummariesSelector = selector({
 
 export const chatDetailsSelector = selector({
     key: 'chatDetailsSelector',
-    get: async ({ get }) => {
+    get: async ({get}) => {
         const chatId = get(activeChatIdAtom);
         if (!chatId) throw new Error('Chat not selected');
 
-        const { data, error } = await supabase
+        const {
+            data,
+            error
+        } = await supabase
             .from('chats')
             .select('*')
             .eq('chat_id', chatId)
@@ -56,21 +70,31 @@ export const chatDetailsSelector = selector({
     },
 });
 
+// Checker for ChatMessages using writableArray and writableObject
+const chatMessagesChecker = writableArray(
+    writableObject({
+        index: number(),
+        role: string(),
+        text: string(),
+    })
+);
+
 export const chatMessagesAtomFamily = atomFamily<ChatMessages, string>({
     key: 'chatMessages',
     default: [],
-    effects: (chatId) => [syncEffect({
-        itemKey: `chatMessages-${chatId}`,
-        refine: array(object({
-            index: number(),
-            role: string(),
-            text: string()
-        }))
-    })]
+    effects: (chatId) => [
+        syncEffect({
+            itemKey: `chatMessages-${chatId}`,
+            refine: chatMessagesChecker,
+        }),
+    ],
 });
 
 export const useFetchAndStoreChatDetails = () => {
-    return useRecoilCallback(({ snapshot, set }) => async (chatId: string) => {
+    return useRecoilCallback(({
+                                  snapshot,
+                                  set
+                              }) => async (chatId: string) => {
         const chatDetails = await snapshot.getPromise(chatDetailsSelector);
         set(chatMessagesAtomFamily(chatId), chatDetails.messagesArray);
         set(activeChatMessagesArrayAtom, chatDetails.messagesArray);
@@ -83,17 +107,14 @@ export const allowSubmitMessageState = atom({
     default: true,
 });
 
-
 export const activeChatIdAtom = atom<string | null>({
     key: 'activeChatId',
     default: null
 });
 
-
-
 export const selectedChatMessagesSelector = selectorFamily<ChatMessages, string>({
     key: 'selectedChatMessages',
-    get: (chatId) => ({ get }) => get(chatMessagesAtomFamily(chatId)),
+    get: (chatId) => ({get}) => get(chatMessagesAtomFamily(chatId)),
 });
 
 export const assistantTextStreamAtom = atom<string>({
@@ -106,7 +127,7 @@ export const userTextInputAtom = atom<string>({
     default: '',
 });
 
-export const systemMessagesAtom = atom<{ index: number, text: string, role: Role }>({
+export const systemMessagesAtom = atom<MatrixMessage>({
     key: 'systemMessagesAtom',
     default: {
         index: 0,
@@ -124,30 +145,27 @@ export const startingMessageArrayAtom = atom<MatrixMessage[]>({
     }],
 });
 
-
-
 export const activeChatMessagesArrayAtom = atom<MatrixMessage[]>({
     key: 'activeChatMessagesArrayAtom',
     default: [],
 });
 
-
-
-
-
+const chatSummaryChecker = writableArray(
+    writableObject({
+        chatId: string(),
+        chatTitle: string(),
+    })
+);
 
 export const chatSummaryAtom = atom<ChatSummary[]>({
     key: 'chatSummary',
     default: [],
-    effects: [syncEffect({
-        refine: array(object({
-            chatId: string(),
-            chatTitle: string()
-        }))
-    })]
+    effects: [
+        syncEffect({
+            refine: chatSummaryChecker,
+        }),
+    ],
 });
-
-
 
 export const userMessageAtom = atom<string>({
     key: 'userMessageAtom',
@@ -168,8 +186,8 @@ export const chatTitlesAndIdsAtom = atom<{ chatId: string, chatTitle: string }[]
 export const useChatMessages = () => {
     const [messages, setMessages] = useRecoilState(activeChatMessagesArrayAtom);
 
-    const addMessage = (MatrixMessage: MatrixMessage) => {
-        setMessages([...messages, MatrixMessage]);
+    const addMessage = (message: MatrixMessage) => {
+        setMessages([...messages, message]);
         console.log('useChatMessages messages', messages);
     };
 
@@ -207,13 +225,10 @@ export const useChatMessages = () => {
     };
 };
 
-
-
 export const messageFilterState = atom({
     key: 'messageFilterState',
     default: 'all',
 });
-
 
 export const filteredMessagesState = selector({
     key: 'FilteredMessages',
@@ -223,11 +238,11 @@ export const filteredMessagesState = selector({
 
         switch (filter) {
             case 'user':
-                messages.filter((message) => message.role === 'user');
+                return messages.filter((message) => message.role === 'user');
             case 'assistant':
-                messages.filter((message) => message.role === 'assistant');
+                return messages.filter((message) => message.role === 'assistant');
             case 'system':
-                messages.filter((message) => message.role === 'system');
+                return messages.filter((message) => message.role === 'system');
             default:
                 return messages;
         }
@@ -236,66 +251,35 @@ export const filteredMessagesState = selector({
 
 const transformedMessagesState = selector<MatrixMessage[]>({
     key: 'TransformedMessages',
-    // @ts-ignore //TODO Armani: Fix this
     get: ({get}) => {
         const messages: MatrixMessage[] = get(activeChatMessagesArrayAtom);
-        const filter = get(messageFilterState); // Assumes a filter state that dictates the transformation
+        const filter = get(messageFilterState);
 
         switch (filter) {
             case 'matrix':
-                // Directly map MatrixMessage to ChatMessage without changing values
-                return messages.map(message => ({
-                    role: message.role,
-                    content: message.text
-                }));
-
             case 'openai':
-                // Replace "text" key with "content"
+            case 'google':
+            case 'ollama':
+            case 'hugging tree':
                 return messages.map(message => ({
-                    role: message.role,
-                    content: message.text
+                    ...message,
+                    content: message.text // Replace "text" with "content" if needed
                 }));
 
             case 'anthropic':
-                // Remove entries with role 'system' and update systemMessagesAtom
                 const filteredMessages = messages.filter(message => message.role !== 'system');
                 const systemMessages = messages.filter(message => message.role === 'system').map(message => ({
-                    role: message.role,
+                    ...message,
                     content: message.text
                 }));
                 // set(systemMessagesAtom, systemMessages); // Assuming `set` is part of a Recoil selectorFamily or other suitable structure
                 return filteredMessages.map(message => ({
-                    role: message.role,
-                    content: message.text
-                }));
-
-            case 'google':
-                // Placeholder for future implementation
-                return messages.map(message => ({
-                    role: message.role,
-                    content: message.text
-                }));
-
-            case 'ollama':
-                // Placeholder for future implementation
-                return messages.map(message => ({
-                    role: message.role,
-                    content: message.text
-                }));
-
-            case 'hugging tree':
-                // Placeholder for future implementation
-                return messages.map(message => ({
-                    role: message.role,
+                    ...message,
                     content: message.text
                 }));
 
             default:
-                // If no filter matches, return unchanged messages
-                return messages.map(message => ({
-                    role: message.role,
-                    content: message.text
-                }));
+                return messages;
         }
     },
 });
@@ -308,7 +292,6 @@ export const assistantMatrixMessageAtom = atom<MatrixMessage>({
         role: 'assistant'
     },
 });
-
 
 export const userMatrixMessageAtom = atom<MatrixMessage>({
     key: 'userMatrixMessageAtom',
