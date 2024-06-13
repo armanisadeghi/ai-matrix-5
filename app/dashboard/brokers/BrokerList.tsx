@@ -5,10 +5,10 @@ import BrokerListItem from './BrokerListItem';
 import { Stack } from '@mantine/core';
 import { brokersAtom } from '@/context/atoms/brokerAtoms';
 import { useRecoilValue } from 'recoil';
+import { Broker } from '@/types/broker';
 
 
-const BrokerList = ({ user }: { user: boolean }) => {
-    const brokers = useRecoilValue(brokersAtom);
+const BrokerList = ({ user, brokers }: { user: boolean, brokers: Broker[] }) => {
 
     return (
         <Stack>

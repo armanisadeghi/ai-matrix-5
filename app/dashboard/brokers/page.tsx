@@ -2,27 +2,30 @@
 import { createBrokerManager } from '@/services/brokerService';
 import BrokerList from './BrokerList';
 import { useEffect, useState } from 'react';
-import { Burger, Button, Grid, Paper, Stack } from '@mantine/core';
+import { Burger, Button, Flex, Grid, Space, Stack } from '@mantine/core';
 import LeftPanel from './LeftPanel';
 import Link from 'next/link';
-import { IconArrowLeft, IconPlus } from '@tabler/icons-react';
-import { useMediaQuery } from '@mantine/hooks';
+import { IconPlus } from '@tabler/icons-react';
+import Search from './Search';
+import { Broker } from '@/types/broker';
 
 const BrokersPage: React.FC = (): JSX.Element => {
     const [opened, setOpened] = useState(true);
-
+    const [brokersList, setBrokersList] = useState<Broker[]>([]);
     const brokerManager = createBrokerManager();
 
+    const fetchData = async () => {
+        try {
+            const data = await brokerManager.fetchBrokers();
+            setBrokersList(data);
+        } catch (error) {
+            console.error('Error fetching brokers:', error);
+        }
+    };
+
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                await brokerManager.fetchBrokers();
-            } catch (error) {
-                console.error('Error fetching brokers:', error);
-            }
-        };
         fetchData();
-    }, [brokerManager]);
+    }, []);
 
     return (
         <Stack>
@@ -31,14 +34,17 @@ const BrokersPage: React.FC = (): JSX.Element => {
                     <Burger style={{ display: opened ? 'none' : 'block' }} />
                 </Grid.Col>
                 <Grid.Col span={10}>
-                    <Link href="/dashboard/brokers/add">
-                        <Button
-                            variant="light"
-                            leftSection={<IconPlus size={14} />}
-                        >
-                            Add Broker
-                        </Button>
-                    </Link>
+                    <Flex justify="flex-start" gap={"xs"}>
+                        <Link href="/dashboard/brokers/add">
+                            <Button
+                                variant="light"
+                                leftSection={<IconPlus size={14} />}
+                            >
+                                Add Broker
+                            </Button>
+                        </Link>
+                        <Search brokersList={brokersList} setBrokersList={setBrokersList} />
+                    </Flex>
                 </Grid.Col>
             </Grid>
             <Grid grow>
@@ -46,7 +52,7 @@ const BrokersPage: React.FC = (): JSX.Element => {
                     <LeftPanel />
                 </Grid.Col>
                 <Grid.Col span={10}>
-                    <BrokerList user={false} />
+                    <BrokerList user={false} brokers={brokersList} />
                 </Grid.Col>
             </Grid>
         </Stack>

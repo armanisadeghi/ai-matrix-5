@@ -26,7 +26,6 @@ export const BrokerEdit = ({ setCurrentData, currentData }: BrokerFormProps) => 
         setCurrentData(updatedBroker);
     };
 
-
     useEffect(() => {
         if (uploadedImage) {
             const url = URL.createObjectURL(uploadedImage);
@@ -66,6 +65,7 @@ export const BrokerEdit = ({ setCurrentData, currentData }: BrokerFormProps) => 
                         placeholder="Upload an image"
                         onChange={handleImageUpload}
                     />
+                    <Space h="sm" />
                 </Grid.Col>
             </Grid>
         </Fieldset>

@@ -36,21 +36,6 @@ const BrokerListItem = ({ broker, user }: BrokerListItemProps) => {
             <Group justify='space-between' align='flex-start'>
                 <Group align='center'>
                     <Title order={6}>{broker.name}</Title>
-                    {broker.component && <><Pill>{broker.component.type}</Pill>
-                        <Text size='xs' c={'gray.6'}>{`Default Value: 
-                                ${typeof broker.component.defaultValue === 'string' ||
-                                typeof broker.component.defaultValue === 'number' ||
-                                typeof broker.component.defaultValue === 'boolean' ? (
-                                broker.component.defaultValue.toString()
-                            ) : Array.isArray(broker.component.defaultValue) ? (
-                                broker.component.defaultValue.join(', ')
-                            ) : broker.component.defaultValue instanceof File ? (
-                                broker.name
-                            ) : (
-                                'No value'
-                            )}`}
-                        </Text></>}
-                    <Text size='xs' c={'gray.6'}>{broker.description}</Text>
                 </Group>
                 <Tooltip label="Edit default value">
                     {open ?
@@ -60,7 +45,7 @@ const BrokerListItem = ({ broker, user }: BrokerListItemProps) => {
                     }
                 </Tooltip>
             </Group>
-            <Collapse in={open} p={'xs'}>
+            <Collapse in={open} py={'xs'}>
                 <Flex justify='space-between' align='center'>
                     <Broker broker={broker} />
                     <Group>

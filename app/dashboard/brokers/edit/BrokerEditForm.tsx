@@ -49,7 +49,6 @@ export const BrokerEditForm = ({ id }: { id: string }) => {
                 color: 'red',
             })
         }
-
     };
 
     return (

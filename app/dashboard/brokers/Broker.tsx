@@ -5,7 +5,7 @@ import { Group } from '@mantine/core';
 const Broker = ({ broker }: { broker: BrokerType }) => {
     return (
         <>{broker &&
-            <Group p='xs'>
+            <Group w={'60%'}>
                 <BrokerComponent currentComponent={broker.component} type={broker.component.type} />
             </Group>
         }</>

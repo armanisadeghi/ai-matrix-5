@@ -23,7 +23,7 @@ export const BrokerSlider = ({ defaultValue, color, description, onChange, label
             <Flex justify="space-between" mt={10} w="100%" gap={10}>
                 <Text size="xs">{min}</Text>
                 <Slider
-                    style={{ width: '100%' }}
+                    w={"100%"}
                     min={min}
                     max={max}
                     size={size}
