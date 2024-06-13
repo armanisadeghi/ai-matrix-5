@@ -12,7 +12,7 @@ export default function Index() {
         <AmeTextAreaFancy
             label= 'Text Area'
             placeholder= 'Enter text here...'
-            atomNames= {['submitOnEnter', 'makeSmallTalk', 'quickAnswer', 'improveQuestions', 'aiPreferencesMain', 'stopSequence', 'aiPreferencesSecond']}
+            settingAtomNames= {['submitOnEnter', 'makeSmallTalk', 'quickAnswer', 'improveQuestions', 'aiPreferencesMain', 'stopSequence', 'aiPreferencesSecond']}
 
                 >
         </AmeTextAreaFancy>

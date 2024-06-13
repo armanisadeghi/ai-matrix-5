@@ -8,5 +8,5 @@ type Props = {
 };
 
 export default function AccountsLayout({ children }: Props) {
-    return <SidebarProvider initialAsideState="icons">{children}</SidebarProvider>;
+    return <SidebarProvider initialState="icons">{children}</SidebarProvider>;
 }

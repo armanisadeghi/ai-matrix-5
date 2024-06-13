@@ -1,13 +1,33 @@
 // app/dashboard/intelligence/aiChat/layout.tsx
 "use client";
 
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import { Container, Grid } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import styles from './AiChat.module.css'; // Import the CSS module
+import styles from './AiChat.module.css';
+import { useRecoilState } from "recoil";
+import { activeUserAtom } from "@/state/userAtoms";
+import { useSidebar } from "@/context/SidebarContext";
+import ChatSidebar from "@/components/AiChat/Sidebar/ChatList";
 
 const ChatLayout = ({ children }: { children: React.ReactNode }) => {
     const isSmallScreen = useMediaQuery("(max-width: 600px)");
+    const [activeUser, setActiveUser] = useRecoilState(activeUserAtom);
+    const { setSidebarContent, toggleAside } = useSidebar();
+    const memoizedSetSidebarContent = useCallback(setSidebarContent, []);
+    const memoizedToggleAside = useCallback(toggleAside, []);
+
+    useEffect(() => {
+        if (activeUser) {
+            memoizedSetSidebarContent(<ChatSidebar />);
+            memoizedToggleAside("full");
+        } else {
+        }
+
+        return () => {
+            memoizedSetSidebarContent(null);
+        };
+    }, [activeUser, memoizedSetSidebarContent, memoizedToggleAside]);
 
     return (
         <Container fluid className={styles.container}>
