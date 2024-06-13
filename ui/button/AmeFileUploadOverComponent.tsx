@@ -12,7 +12,7 @@ const AmeFileUploadOverComponent = () => {
         <FileButton onChange={handleFileUpload} accept="*/*">
             {(props) => (
                 <AmeOverComponentIcon
-                    toolTip="Upload file..."
+                    tooltip="Upload file..."
                     {...props}
                     style={{ outline: 'none' }}
                 >

@@ -23,7 +23,7 @@ export function ColorSchemeToggle({ size = "md" }: ColorSchemeToggleProps) {
             onClick={() => setColorScheme(computedColorScheme === "light" ? "dark" : "light")}
             aria-label="Toggle color scheme"
             size={size}
-            toolTip={`Switch to ${computedColorScheme === "light" ? "dark" : "light"} mode`}
+            tooltip={`Switch to ${computedColorScheme === "light" ? "dark" : "light"} mode`}
         >
             <IconSun className={cx(classes.icon, classes.light)} />
             <IconMoon className={cx(classes.icon, classes.dark)} />

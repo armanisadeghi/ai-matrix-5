@@ -47,14 +47,14 @@ const DynamicTextarea = forwardRef<HTMLDivElement, DynamicTextareaProps>((
                     </div>
                     <div>
                         <ActionIcon.Group>
-                            <AmeOverComponentIcon toolTip="Chat settings" onClick={openSettingsModal} >
+                            <AmeOverComponentIcon tooltip="Chat settings" onClick={openSettingsModal} >
                                 <RiSettings2Line />
                             </AmeOverComponentIcon>
                             <AmeFileUploadOverComponent></AmeFileUploadOverComponent>
-                            <AmeOverComponentIcon toolTip="Clear all text" onClick={handleDelete} >
+                            <AmeOverComponentIcon tooltip="Clear all text" onClick={handleDelete} >
                                 <RiDeleteBin3Line />
                             </AmeOverComponentIcon>
-                            <AmeOverComponentIcon toolTip="Expand or collapse without impacting the text content" onClick={handleToggle}>
+                            <AmeOverComponentIcon tooltip="Expand or collapse without impacting the text content" onClick={handleToggle}>
                                 <FaExpandArrowsAlt />
                             </AmeOverComponentIcon>
                         </ActionIcon.Group>

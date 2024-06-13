@@ -1,13 +1,13 @@
-// app/dashboard/intelligence/aiChat/page.tsx
-
 'use client';
 import React from 'react';
-import DynamicTextarea from '@/components/AiChat/UserInput/DynamicTextarea';
 import useDynamicLayout from '@/hooks/ai/useDynamicChatLayout';
 import ResponseArea from "@/components/AiChat/Response/ResponseArea";
 import responseStyles from '@/components/AiChat/Response/ResponseArea.module.css';
 import textareaStyles from '@/components/AiChat/UserInput/DynamicTextarea.module.css';
 import containerStyles from './AiChat.module.css';
+import AmeTextAreaFancyDynamic from "@/ui/textarea/AmeTextAreaFancyDynamic";
+import ResponsiveSlider from "@/components/AiChat/UserInput/settings/MatrixSlider/ResponsiveSlider";
+import { simpleChatSettingsList } from "@/state/aiAtoms/settingsAtoms";
 
 const ChatsPage = () => {
     const { bottomPadding, containerHeight, textareaContainerRef } = useDynamicLayout();
@@ -15,12 +15,15 @@ const ChatsPage = () => {
     return (
         <div className={containerStyles.container} style={{ height: containerHeight }}>
             <ResponseArea className={responseStyles.container} bottomPadding={bottomPadding} />
-            <DynamicTextarea
-                className={textareaStyles.dynamicTextareaOuterContainer}
-                systemText="Let's get started..."
-                placeholderText="Enter your request or question here..."
+            <AmeTextAreaFancyDynamic
+                className={textareaStyles.dynamicTextareaContainer}
+                label="Let's get started..."
+                placeholder="Enter your request or question here..."
                 ref={textareaContainerRef}
+                modalType="default"
+                settingAtomNames={simpleChatSettingsList}
             />
+            <ResponsiveSlider />
         </div>
     );
 };
