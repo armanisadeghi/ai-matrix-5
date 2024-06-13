@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { brokersAtom } from '@/context/atoms/brokerAtoms';
 import { useRecoilValue } from 'recoil';
 import { createBrokerManager } from '@/services/brokerService';
-import { BrokerEdit } from './BrokerEdit';
+import { BrokerEdit } from '../add/BrokerEdit';
 import { Notifications } from "@mantine/notifications";
 
 const initialValues = {
@@ -20,32 +20,31 @@ const initialValues = {
     description: "",
 }
 
-export const BrokerCreateForm = () => {
+export const BrokerEditForm = ({ id }: { id: string }) => {
     const brokers = useRecoilValue(brokersAtom);
     const brokerManager = createBrokerManager();
-    const [currentData, setCurrentData] = useState<Broker>({
-        ...initialValues,
-    } as Broker);
+    const [currentData, setCurrentData] = useState<Broker>(
+        brokers.filter((broker) => broker.id === id)[0]
+    );
 
     const componentOptions = Object.keys(ComponentType).map((key) => ({
         value: key,
         label: key,
     })) as { value: string; label: string }[];
 
-    const handleAddBroker = () => {
+    const handleEditBroker = () => {
         try {
-            brokerManager.createBroker({ ...currentData, dataType: typeof currentData.component.defaultValue, officialName: currentData.name.toUpperCase().replace(/\s/g, '_') });
-            setCurrentData(initialValues);
+            brokerManager.updateBroker({ ...currentData, dataType: typeof currentData.component.defaultValue, officialName: currentData.name.toUpperCase().replace(/\s/g, '_') });
             Notifications.show({
-                title: 'Broker created',
-                message: 'Broker created successfully',
+                title: 'Broker updated',
+                message: 'Broker updated successfully',
                 autoClose: true,
                 color: 'teal',
             })
         } catch (error) {
             Notifications.show({
-                title: 'Broker creation failed',
-                message: 'Broker creation failed',
+                title: 'Broker update failed',
+                message: 'Broker update failed',
                 autoClose: true,
                 color: 'red',
             })
@@ -62,11 +61,6 @@ export const BrokerCreateForm = () => {
                         onChange={value => setCurrentData({ ...currentData, name: value.target.value })}
                         value={currentData.name}
                         placeholder='Enter a name'
-                        error={
-                            brokers.some((broker) => broker.name === currentData.name)
-                                ? 'Name already exists. Please choose a different name.'
-                                : null
-                        }
                     />
                     <Space h="sm" />
                     <TextInput label="Description" value={currentData.description}
@@ -88,11 +82,8 @@ export const BrokerCreateForm = () => {
                 <BrokerEdit currentData={currentData} setCurrentData={setCurrentData} />
                 <Space h="sm" />
                 <Button
-                    onClick={handleAddBroker}
-                    disabled={
-                        brokers.some((broker) => broker.name === currentData.name) ||
-                        currentData.name.trim() === ''
-                    }>Save Broker</Button>
+                    onClick={handleEditBroker}
+                >Save Broker</Button>
             </Grid.Col>
 
         </Grid>

@@ -1,11 +1,13 @@
 "use client";
 import React, { useState } from 'react';
-import { Pill, ActionIcon, Group, Title, Card, Text, Collapse } from '@mantine/core';
-import { IconTrash, IconChevronDown, IconChevronUp } from '@tabler/icons-react';
+import { Pill, ActionIcon, Group, Title, Card, Text, Collapse, Flex } from '@mantine/core';
+import { IconTrash, IconChevronDown, IconChevronUp, IconEdit } from '@tabler/icons-react';
 import { Broker as BrokerType } from '@/types/broker';
 import Broker from "./Broker"
 import { createBrokerManager } from '@/services/brokerService';
-
+import { Notifications } from '@mantine/notifications';
+import { Tooltip } from '@mantine/core';
+import { useRouter } from 'next/navigation'
 interface BrokerListItemProps {
     broker: BrokerType;
     user: boolean
@@ -14,14 +16,18 @@ interface BrokerListItemProps {
 const BrokerListItem = ({ broker, user }: BrokerListItemProps) => {
     const [open, setOpen] = useState(false);
     const brokerManager = createBrokerManager();
+    const router = useRouter()
 
     const handleDelete = async () => {
         await brokerManager.deleteBroker(broker.id);
+        Notifications.show({
+            title: 'Broker Deleted',
+            message: `${broker.name} has been deleted.`,
+        })
     };
 
     const handleEdit = (e: any) => {
-        e.stopPropagation()
-        setOpen((prev) => !prev)
+        router.push(`/dashboard/brokers/edit/${broker.id}`)
     }
     return (
         <Card radius="md" withBorder p="xs" w="100%" onMouseEnter={(e) => (e.currentTarget.style.border = '1px solid gray')}
@@ -46,16 +52,30 @@ const BrokerListItem = ({ broker, user }: BrokerListItemProps) => {
                         </Text></>}
                     <Text size='xs' c={'gray.6'}>{broker.description}</Text>
                 </Group>
-                {open ? <IconChevronUp size={14} color="gray" onClick={() => setOpen((prev) => !prev)} cursor={'pointer'} /> : <IconChevronDown onClick={() => setOpen((prev) => !prev)} size={14} color="gray" cursor={'pointer'} />}
+                <Tooltip label="Edit default value">
+                    {open ?
+                        <IconChevronUp size={14} color="gray" onClick={() => setOpen((prev) => !prev)} cursor={'pointer'} />
+                        :
+                        <IconChevronDown onClick={() => setOpen((prev) => !prev)} size={14} color="gray" cursor={'pointer'} />
+                    }
+                </Tooltip>
             </Group>
-            <Collapse in={open}>
-                <Group py={10}>
+            <Collapse in={open} p={'xs'}>
+                <Flex justify='space-between' align='center'>
                     <Broker broker={broker} />
-                </Group>
-                <Group right={10}>
-                    <ActionIcon onClick={handleDelete} >
-                        <IconTrash size={14} />
-                    </ActionIcon></Group>
+                    <Group>
+                        <Tooltip label="Edit broker">
+                            <ActionIcon onClick={handleEdit} >
+                                <IconEdit size={14} />
+                            </ActionIcon>
+                        </Tooltip>
+                        <Tooltip label="Delete broker">
+                            <ActionIcon onClick={handleDelete} >
+                                <IconTrash size={14} />
+                            </ActionIcon>
+                        </Tooltip>
+                    </Group>
+                </Flex>
             </Collapse>
         </Card >
     );
