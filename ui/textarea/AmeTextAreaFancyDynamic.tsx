@@ -18,10 +18,7 @@ interface AmeTextAreaFancyProps {
     customModal?: React.ReactNode;
     fileUploadEnabled?: boolean;
     onSubmit?: (text: string) => void;
-    additionalDiv?: React.ReactNode;
 }
-
-// Just added the new optional div for settings, primarily for the slider, but not tested yet.
 
 const AmeTextAreaFancy = forwardRef<HTMLDivElement, AmeTextAreaFancyProps>((
     {
@@ -32,8 +29,7 @@ const AmeTextAreaFancy = forwardRef<HTMLDivElement, AmeTextAreaFancyProps>((
         modalType = 'default',
         customModal,
         fileUploadEnabled = true,
-        onSubmit,
-        additionalDiv
+        onSubmit
     }, ref) => {
 
     const [userInput, setUserInput] = useState('');
@@ -102,8 +98,8 @@ const AmeTextAreaFancy = forwardRef<HTMLDivElement, AmeTextAreaFancyProps>((
             onClick={handleBoxClick}
             tabIndex={-1}
         >
-            <Group justify='space-between' className={styles['amefancy-group']}>
-                <div className={styles['amefancy-label']}>
+            <Group justify='space-between' style={{ width: '100%', alignItems: 'center' }}>
+                <div style={{ fontSize: '0.7rem', fontWeight: 'normal', color: '#909090', userSelect: 'none' }}>
                     {label}
                 </div>
                 <div>
@@ -136,9 +132,6 @@ const AmeTextAreaFancy = forwardRef<HTMLDivElement, AmeTextAreaFancyProps>((
                 className={styles['amefancy-textarea']}
                 onKeyDown={handleKeyDown}
             />
-
-            {additionalDiv}
-
             {modalType === 'default' && (
                 <AmeSettingsModal
                     opened={settingsModalOpened}
