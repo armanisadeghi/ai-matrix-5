@@ -135,11 +135,9 @@ export function MainLayout({ children }: Props) {
                 <AppShell.Header>
                     <Header state={headerState} tabletMatch={tabletMatch} />
                 </AppShell.Header>
-                {navbarState !== "hidden" && (
-                    <AppShell.Navbar p="xs" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-                        <Navbar state={mobileMatch ? "hidden" : navbarState} />
-                    </AppShell.Navbar>
-                )}
+                <AppShell.Navbar px="xs">
+                    <Navbar state={mobileMatch ? "hidden" : navbarState} />
+                </AppShell.Navbar>
                 <AppShell.Main>
                     <Box>{children}</Box>
                     {/*toggle nav*/}
