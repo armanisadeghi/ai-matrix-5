@@ -1,10 +1,6 @@
 "use client";
 
-import {
-    useComputedColorScheme,
-    useMantineColorScheme,
-    MantineSize,
-} from "@mantine/core";
+import { useComputedColorScheme, useMantineColorScheme, MantineSize } from "@mantine/core";
 import { IconMoon, IconSun } from "@tabler/icons-react";
 import cx from "clsx";
 import classes from "./ColorSchemeToggle.module.scss";
@@ -23,7 +19,7 @@ export function ColorSchemeToggle({ size = "md" }: ColorSchemeToggleProps) {
             onClick={() => setColorScheme(computedColorScheme === "light" ? "dark" : "light")}
             aria-label="Toggle color scheme"
             size={size}
-            toolTip={`Switch to ${computedColorScheme === "light" ? "dark" : "light"} mode`}
+            title={`Switch to ${computedColorScheme === "light" ? "dark" : "light"} mode`}
         >
             <IconSun className={cx(classes.icon, classes.light)} />
             <IconMoon className={cx(classes.icon, classes.dark)} />
