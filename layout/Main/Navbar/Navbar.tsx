@@ -32,7 +32,7 @@ export const Navbar = ({ state }: NavbarProps) => {
 
     return (
         <>
-            <AppShell.Section pt="xs">
+            <AppShell.Section pt="xs" px="xs">
                 {state === "compact" && (
                     <Group justify="flex-end" gap="xs">
                         <AmeActionIcon title="shrink navbar" onClick={handleNavbarCollapse} {...actionProps}>
@@ -49,6 +49,9 @@ export const Navbar = ({ state }: NavbarProps) => {
                         <AmeActionIcon title="shrink navbar" onClick={handleNavbarCollapse} {...actionProps}>
                             <IconChevronLeft size={18} />
                         </AmeActionIcon>
+                        <AmeActionIcon title="expand navbar" onClick={handleNavbarExpand} {...actionProps}>
+                            <IconChevronRight size={18} />
+                        </AmeActionIcon>
                     </Group>
                 )}
                 {state === "icons" && (
@@ -60,7 +63,7 @@ export const Navbar = ({ state }: NavbarProps) => {
                 )}
             </AppShell.Section>
 
-            <AppShell.Section grow component={ScrollArea} my="md">
+            <AppShell.Section grow component={ScrollArea} my="md" px="xs">
                 {navItems.map((item) => (
                     <NavLink
                         key={generateKey(item.label)}
@@ -109,7 +112,7 @@ export const Navbar = ({ state }: NavbarProps) => {
                 ))}
             </AppShell.Section>
 
-            <AppShell.Section pb="xs">
+            <AppShell.Section pb="xs" px="xs">
                 <Flex justify="center" gap="xs">
                     {state !== "icons" ? (
                         <>

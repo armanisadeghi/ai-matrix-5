@@ -1,70 +1,66 @@
 // AiContext/NavbarContext.tsx
 import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
-import { useLocalStorage } from "@mantine/hooks";
-
-type NavState = "full" | "compact" | "icons" | "hidden";
+import { useRecoilState } from "recoil";
+import { NavbarAtomState, navbarState } from "./atoms";
 
 interface NavbarContextProps {
     opened: boolean;
     toggleOpened: () => void;
-    navbarState: NavState;
+    navbarState: NavbarAtomState;
     handleNavbarToggle: () => void;
     handleNavbarExpand: () => void;
     handleNavbarCollapse: () => void;
     handleIconMouseover: () => void;
     handleEndIconMouseover: () => void;
     iconMouseOver: boolean;
-    toggleNavbar: (value: NavState) => void;
+    toggleNavbar: (value: NavbarAtomState) => void;
 }
 
 const NavbarContext = createContext<NavbarContextProps | undefined>(undefined);
 
-export const NavbarProvider = ({ children, initialState }: { children: ReactNode; initialState?: NavState }) => {
+export const NavbarProvider = ({ children, initialState }: { children: ReactNode; initialState?: NavbarAtomState }) => {
     const [opened, setOpened] = useState(false);
     const [iconMouseOver, setIconMouseOver] = useState(false);
-    const [navConfig, setNavConfig] = useLocalStorage<NavState>({
-        key: "ai-matrix-navbar",
-        defaultValue: initialState,
-    });
+    const [navState, setNavState] = useRecoilState(navbarState);
 
     const toggleOpened = () => setOpened(!opened);
 
-    const toggleNav = (state: NavState) => setNavConfig(state);
+    const toggleNav = (state: NavbarAtomState) => setNavState(state);
 
     const handleToggle = () => {
-        if (navConfig === "full") toggleNav("compact");
-        else if (navConfig === "compact") toggleNav("icons");
-        else if (navConfig === "icons") toggleNav("hidden");
+        if (navState === "full") toggleNav("compact");
+        else if (navState === "compact") toggleNav("icons");
+        else if (navState === "icons") toggleNav("hidden");
         else toggleNav("full");
     };
 
     const handleExpand = () => {
-        if (navConfig === "icons") toggleNav("compact");
-        else if (navConfig === "compact") toggleNav("full");
+        if (navState === "icons") toggleNav("compact");
+        else if (navState === "compact") toggleNav("full");
     };
 
     const handleCollapse = () => {
-        if (navConfig === "full") toggleNav("compact");
-        else if (navConfig === "compact") toggleNav("icons");
-        else if (navConfig === "icons") toggleNav("hidden");
+        if (navState === "full") toggleNav("compact");
+        else if (navState === "compact") toggleNav("icons");
+        else if (navState === "icons") toggleNav("hidden");
     };
 
     const handleIconMouseover = () => {
         if (!iconMouseOver) {
             setIconMouseOver(true);
-            setNavConfig("compact");
+            setNavState("compact");
         }
     };
 
     const handleEndIconMouseover = () => {
         if (iconMouseOver) {
             setIconMouseOver(false);
-            setNavConfig("icons");
+            setNavState("icons");
         }
     };
 
     useEffect(() => {
-        setNavConfig(initialState ?? "compact");
+        setNavState(initialState ?? "compact");
     }, [initialState]);
 
     return (
@@ -72,7 +68,7 @@ export const NavbarProvider = ({ children, initialState }: { children: ReactNode
             value={{
                 opened,
                 toggleOpened,
-                navbarState: navConfig,
+                navbarState: navState,
                 handleNavbarToggle: handleToggle,
                 handleNavbarExpand: handleExpand,
                 handleNavbarCollapse: handleCollapse,

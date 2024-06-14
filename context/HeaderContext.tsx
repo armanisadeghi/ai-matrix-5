@@ -1,12 +1,11 @@
 // AiContext/SidebarContext.tsx
 import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
-import { useLocalStorage } from "@mantine/hooks";
-
-type NavState = "large" | "medium" | "compact";
+import { useRecoilState } from "recoil";
+import { HeaderAtomState, headerState } from "./atoms";
 
 interface HeaderContextProps {
-    headerState: NavState;
-    toggleHeader: (value: NavState) => void;
+    headerState: HeaderAtomState;
+    toggleHeader: (value: HeaderAtomState) => void;
     setContent: (content: ReactNode) => void;
     content: ReactNode;
     handleToggle: () => void;
@@ -16,39 +15,36 @@ interface HeaderContextProps {
 
 const HeaderContext = createContext<HeaderContextProps | undefined>(undefined);
 
-export const HeaderProvider = ({ children, initialState }: { children: ReactNode; initialState?: NavState }) => {
+export const HeaderProvider = ({ children, initialState }: { children: ReactNode; initialState?: HeaderAtomState }) => {
     const [content, setContent] = useState<ReactNode>(null);
-    const [headerConfig, setHeaderConfig] = useLocalStorage<NavState>({
-        key: "ai-matrix-header",
-        defaultValue: initialState,
-    });
+    const [headState, setHeadState] = useRecoilState(headerState);
 
-    const toggleHeader = (state: NavState) => setHeaderConfig(state);
+    const toggleHeader = (state: HeaderAtomState) => setHeadState(state);
 
     const handleToggle = () => {
-        if (headerConfig === "large") toggleHeader("medium");
-        else if (headerConfig === "medium") toggleHeader("compact");
+        if (headState === "large") toggleHeader("medium");
+        else if (headState === "medium") toggleHeader("compact");
         else toggleHeader("large");
     };
 
     const handleExpand = () => {
-        if (headerConfig === "compact") toggleHeader("medium");
-        else if (headerConfig === "medium") toggleHeader("large");
+        if (headState === "compact") toggleHeader("medium");
+        else if (headState === "medium") toggleHeader("large");
     };
 
     const handleCollapse = () => {
-        if (headerConfig === "large") toggleHeader("medium");
+        if (headState === "large") toggleHeader("medium");
         else toggleHeader("compact");
     };
 
     useEffect(() => {
-        setHeaderConfig(initialState ?? "medium");
+        setHeadState(initialState ?? "medium");
     }, [initialState]);
 
     return (
         <HeaderContext.Provider
             value={{
-                headerState: headerConfig,
+                headerState: headState,
                 toggleHeader,
                 setContent,
                 content,

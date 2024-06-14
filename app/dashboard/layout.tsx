@@ -16,11 +16,11 @@ type Props = {
     children: ReactNode;
 };
 
-function Layout({children}: Props) {
+function Layout({ children }: Props) {
     return (
         <ErrorBoundary>
             <RecoilRoot>
-                <React.Suspense fallback={<Loading/>}>
+                <React.Suspense fallback={<Loading />}>
                     <LayoutProvider initialNavbarState="icons">
                         <NavbarProvider initialState="icons">
                             <SidebarProvider initialAsideState="icons">
@@ -35,9 +35,7 @@ function Layout({children}: Props) {
                 </React.Suspense>
             </RecoilRoot>
         </ErrorBoundary>
-
     );
 }
 
 export default Layout;
-
