@@ -1,12 +1,11 @@
 // AiContext/SidebarContext.tsx
 import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
-import { useLocalStorage } from "@mantine/hooks";
-
-type NavState = "full" | "compact" | "icons" | "hidden";
+import { useRecoilState } from "recoil";
+import { FooterAtomState, footerState } from "@/context/atoms";
 
 interface FooterContextProps {
-    footerState: NavState;
-    toggleFooter: (value: NavState) => void;
+    footerState: FooterAtomState;
+    toggleFooter: (value: FooterAtomState) => void;
     setSidebarContent: (content: ReactNode) => void;
     sidebarContent: ReactNode;
     handleToggle: () => void;
@@ -16,41 +15,38 @@ interface FooterContextProps {
 
 const FooterContext = createContext<FooterContextProps | undefined>(undefined);
 
-export const FooterProvider = ({ children, initialState }: { children: ReactNode; initialState?: NavState }) => {
+export const FooterProvider = ({ children, initialState }: { children: ReactNode; initialState?: FooterAtomState }) => {
     const [sidebarContent, setSidebarContent] = useState<ReactNode>(null);
-    const [footerConfig, setFooterConfig] = useLocalStorage<NavState>({
-        key: "ai-matrix-footer",
-        defaultValue: initialState,
-    });
+    const [footState, setFootState] = useRecoilState(footerState);
 
-    const toggleFooter = (state: NavState) => setFooterConfig(state);
+    const toggleFooter = (state: FooterAtomState) => setFootState(state);
 
     const handleToggle = () => {
-        if (footerConfig === "full") toggleFooter("compact");
-        else if (footerConfig === "compact") toggleFooter("icons");
-        else if (footerConfig === "icons") toggleFooter("hidden");
+        if (footState === "full") toggleFooter("compact");
+        else if (footState === "compact") toggleFooter("icons");
+        else if (footState === "icons") toggleFooter("hidden");
         else toggleFooter("full");
     };
 
     const handleExpand = () => {
-        if (footerConfig === "icons") toggleFooter("compact");
-        else if (footerConfig === "compact") toggleFooter("full");
+        if (footState === "icons") toggleFooter("compact");
+        else if (footState === "compact") toggleFooter("full");
     };
 
     const handleCollapse = () => {
-        if (footerConfig === "full") toggleFooter("compact");
-        else if (footerConfig === "compact") toggleFooter("icons");
+        if (footState === "full") toggleFooter("compact");
+        else if (footState === "compact") toggleFooter("icons");
         else toggleFooter("hidden");
     };
 
     useEffect(() => {
-        setFooterConfig(initialState ?? "hidden");
+        setFootState(initialState ?? "hidden");
     }, [initialState]);
 
     return (
         <FooterContext.Provider
             value={{
-                footerState: footerConfig,
+                footerState: footState,
                 toggleFooter,
                 setSidebarContent,
                 sidebarContent,

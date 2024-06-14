@@ -1,18 +1,15 @@
 "use client";
 
-import { AppShell, Box, useMantineTheme } from "@mantine/core";
+import { AppShell } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { ReactNode, useState } from "react";
 import { Navbar } from "./Navbar";
 import { Header } from "./Header";
 import { Sidebar } from "./Sidebar";
 import { useSidebar } from "@/context/SidebarContext";
-import { IconChevronLeft, IconChevronRight, IconChevronUp } from "@tabler/icons-react";
 import { useFooter } from "@/context/FooterContext";
 import { Footer } from "@/layout/Main/Footer";
 import { useHeader } from "@/context/HeaderContext";
-import AmeActionIcon from "@/ui/buttons/AmeActionIcon";
-import AmeAffix from "@/ui/affix/AmeAffix";
 import { useNavbar } from "@/context/NavbarContext";
 
 type Props = {
@@ -135,23 +132,11 @@ export function MainLayout({ children }: Props) {
                 <AppShell.Header>
                     <Header state={headerState} tabletMatch={tabletMatch} />
                 </AppShell.Header>
-                {navbarState !== "hidden" && (
-                    <AppShell.Navbar p="xs" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-                        <Navbar state={mobileMatch ? "hidden" : navbarState} />
-                    </AppShell.Navbar>
-                )}
+                <AppShell.Navbar onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+                    {navbarState !== "hidden" && <Navbar state={mobileMatch ? "hidden" : navbarState} />}
+                </AppShell.Navbar>
                 <AppShell.Main>
-                    <Box>{children}</Box>
-                    {/*toggle nav*/}
-                    <AmeAffix
-                        transition="slide-right"
-                        position={{ top: "50%", left: 0 }}
-                        mounted={navbarState === "hidden"}
-                    >
-                        <AmeActionIcon title="open nav" onClick={() => toggleNavbar("full")}>
-                            <IconChevronRight />
-                        </AmeActionIcon>
-                    </AmeAffix>
+                    <>{children}</>
                 </AppShell.Main>
                 <AppShell.Aside>
                     <Sidebar state={asideState} />
