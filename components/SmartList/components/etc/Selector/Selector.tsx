@@ -6,11 +6,11 @@ import {useListProvider} from "@/components/SmartList/SmartList";
 import CollapseBtn from "@/components/SmartList/components/etc/Collapsebtn";
 import {Checkbox, Radio} from "@mantine/core";
 
-function getAllChildrenIds(item, ids) {
+function getAllChildrenIds(item:any, ids:any) {
     if (!item.children || item.children.length === 0) {
         return ids;
     } else {
-        item.children.forEach(child => {
+        item.children.forEach((child: any) => {
             ids.push(child);
             getAllChildrenIds(child, ids);
         });
@@ -18,12 +18,12 @@ function getAllChildrenIds(item, ids) {
     }
 }
 
-export default function Selector({item, isOpen, onClick, type}) {
+export default function Selector({item, isOpen, onClick, type}: {item: any, isOpen: boolean, onClick?: any, type: any} ) {
     const {selectedValue, setSelectedValue}:any = useListProvider();
     const [trigger, setTrigger] = useState(false)
     const {options}:any = useListProvider();
 
-    const isSelected = selectedValue?.length > 0 && selectedValue.some((i) => i.id == item.id);
+    const isSelected = selectedValue?.length > 0 && selectedValue.some((i: any) => i.id == item.id);
 
 
     const handleSelect = () => {
@@ -33,7 +33,7 @@ export default function Selector({item, isOpen, onClick, type}) {
         } else {
             if (options.select === 'checkbox') {
                 if (isSelected) {
-                    const findItem = selectedValue.filter(i => i !== item)
+                    const findItem = selectedValue.filter((i: any) => i !== item)
                     setSelectedValue(findItem);
 
                 } else {
@@ -43,7 +43,7 @@ export default function Selector({item, isOpen, onClick, type}) {
             else if (options.select === 'checkbox-hierarchical') {
                 if (isSelected) {
                     const allIdsToRemove = getAllChildrenIds(item, [item]);
-                    const findItem = selectedValue.filter(id => !allIdsToRemove.includes(id))
+                    const findItem = selectedValue.filter((id: any) => !allIdsToRemove.includes(id))
                     setSelectedValue(findItem);
 
                 } else {
