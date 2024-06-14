@@ -6,7 +6,7 @@ const Broker = ({ broker }: { broker: BrokerType }) => {
     return (
         <>{broker &&
             <Group w={'60%'}>
-                <BrokerComponent currentComponent={broker.component} type={broker.component.type} />
+                <BrokerComponent currentComponent={broker.component} type={broker.component.type} handleDefaultValueChange={() => { }} />
             </Group>
         }</>
     )

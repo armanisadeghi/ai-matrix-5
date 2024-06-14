@@ -28,6 +28,7 @@ export const BrokerEditForm = ({ id }: { id: string }) => {
     );
 
     const componentOptions = Object.keys(ComponentType).map((key) => ({
+        key: key,
         value: key,
         label: key,
     })) as { value: string; label: string }[];

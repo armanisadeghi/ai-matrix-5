@@ -1,3 +1,4 @@
+
 export interface Broker {
     id: string;
     name: string;
@@ -51,6 +52,15 @@ export interface Component {
     fit?: "fill" | "contain" | "cover" | "none" | "scale-down";
     marks?: { value: number; label: string }[],
     isMarks?: boolean
+    minRows?: number
+    maxRows?: number
+    position?: "top" | "bottom" | "left" | "right"
+    withArrow?: boolean
+    withAsterisk?: boolean
+    resize?: any
+    autosize?: any
+    submitOnEnter?: boolean
+    expandable?: boolean
 }
 
 export enum ComponentType {

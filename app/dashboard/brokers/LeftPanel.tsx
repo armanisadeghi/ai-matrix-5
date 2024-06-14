@@ -4,6 +4,7 @@ import { createBrokerManager } from '@/services/brokerService';
 import { useRecoilValue } from 'recoil';
 import { categoryAtom } from '@/context/atoms/brokerAtoms';
 import { useMediaQuery } from '@mantine/hooks';
+import { uuid } from 'uuidv4';
 
 const LeftPanel: React.FC = () => {
     const categories = useRecoilValue(categoryAtom);
@@ -32,6 +33,7 @@ const LeftPanel: React.FC = () => {
                             onChange={setValue}
                             data={
                                 [...categories, 'All'].map((category) => ({
+                                    key: uuid(),
                                     label: category,
                                     value: category
                                 }))
@@ -50,6 +52,7 @@ const LeftPanel: React.FC = () => {
                             onChange={setValue}
                             data={
                                 [...categories, 'All'].map((category) => ({
+                                    key: uuid(),
                                     label: category,
                                     value: category
                                 }))

@@ -1,53 +1,54 @@
-import React, { useEffect } from 'react';
-import { Checkbox, CheckboxGroup, Fieldset, FileInput, Group, JsonInput, Radio, RadioGroup, Select, Slider, Space, Switch, SwitchGroup, TextInput, Textarea, Image } from '@mantine/core';
-import { BrokerCheckBoxGroup } from '@/components/Brokers/BrokerCheckBoxGroup';
-import { BrokerImage } from '@/components/Brokers/BrokerImage';
-import { useForm } from '@mantine/form';
+import React from 'react';
+import { Checkbox, FileInput, Group, JsonInput, Select, Switch, TextInput, Textarea, Tooltip, Image } from '@mantine/core';
 import { Component } from '@/types/broker';
 import { BrokerSlider } from "@/components/Brokers/BrokerSlider";
 import BrokerRadioGroup from '@/components/Brokers/BrokerRadioGroup';
+import NextImage from 'next/image';
+import image from 'next/image';
 
 interface BrokerComponentProps {
     currentComponent: Component;
     type?: string;
-    handleDefaultValueChange?: Function;
+    handleDefaultValueChange: Function;
 }
 
 const BrokerComponent: React.FC<BrokerComponentProps> = ({ type, currentComponent, handleDefaultValueChange }) => {
-    const { description, tableData, src, alt, radius, h, w, fit, options, groupOptions, label, placeholder, defaultValue, displayOrder, validation, dependencies, required, size, color, exampleInputs, group, min, max, step, value, onChange, marks } = currentComponent;
-
-    const currentData = useForm({
-        mode: 'uncontrolled',
-        initialValues: currentComponent
-    });
-
+    const { description, tooltip, withAsterisk, maxRows, resize, autosize, withArrow, position, maxLength, minRows, tableData, src, alt, radius, h, w, fit, options, groupOptions, label, placeholder, defaultValue, displayOrder, validation, dependencies, required, size, color, exampleInputs, group, min, max, step, value, onChange, marks } = currentComponent;
 
     if (type) {
         switch (type) {
             case "Input":
-                return <TextInput
-                    label={label}
+                return <Tooltip label={tooltip || "Input"} withArrow={withArrow} position={position}><TextInput
+                    withAsterisk={withAsterisk}
+                    error={validation}
+                    label={label || "Text"}
                     description={description}
                     placeholder={placeholder}
-                    required={required}
                     size={size}
                     color={color}
                     defaultValue={defaultValue as string}
-                    key={currentData.key('label')}
-                    onChange={value => handleDefaultValueChange ? handleDefaultValueChange(value.target.value) : currentData.setFieldValue('value', value.target.value)} />;
+                    onChange={value => handleDefaultValueChange(value.target.value)} /></Tooltip>;
             case "Textarea":
-                return <Textarea
-                    label={label}
+                return <Tooltip label={tooltip || "Textarea"} withArrow={withArrow} position={position}><Textarea
+                    withAsterisk={required}
+                    error={validation}
+                    label={label || "Text"}
                     placeholder={placeholder}
+                    maxLength={maxLength}
+                    minRows={minRows}
+                    description={description}
+                    maxRows={maxRows}
+                    resize={resize === true ? "both" : "none"}
+                    autosize={autosize}
                     required={required}
                     size={size}
                     color={color}
                     defaultValue={defaultValue as string}
-                    onChange={value => handleDefaultValueChange ? handleDefaultValueChange(value.target.value) : currentData.setFieldValue('value', value.target.value)} />;
+                    onChange={value => handleDefaultValueChange(value.target.value)} /></Tooltip>;
             case "Slider":
-                return <BrokerSlider
+                return <Tooltip label={tooltip || "Slider"} withArrow={withArrow} position={position}><BrokerSlider
                     defaultValue={defaultValue as number}
-                    label={label}
+                    label={label || "Slider"}
                     description={description}
                     min={min}
                     max={max}
@@ -55,102 +56,136 @@ const BrokerComponent: React.FC<BrokerComponentProps> = ({ type, currentComponen
                     size={size}
                     marks={marks}
                     color={color}
-                    onChange={value => handleDefaultValueChange ? handleDefaultValueChange(value) : currentData.setFieldValue('value', value)} />;
+                    onChange={value => handleDefaultValueChange(value)} /></Tooltip>;
             case "YesNo":
-                return <BrokerRadioGroup
-                    defaultValue={defaultValue as string}
-                    onChange={(value: any) => handleDefaultValueChange ? handleDefaultValueChange(value) : currentData.setFieldValue('value', value)}
-                    required={required}
-                    value={value as string}
-                    description={description}
-                    label={label}
-                    placeholder={placeholder}
-                    size={size}
-                    color={color} >
-                </BrokerRadioGroup>
+                return <Tooltip label={tooltip || "Yes/No"} withArrow={withArrow} position={position}>
+                    <BrokerRadioGroup
+                        defaultValue={defaultValue as string}
+                        onChange={(value: any) => handleDefaultValueChange(value)}
+                        required={required}
+                        value={value as string}
+                        description={description}
+                        label={label || "Yes/No"}
+                        placeholder={placeholder}
+                        size={size}
+                        color={color} >
+                    </BrokerRadioGroup>
+                </Tooltip>
             case "Checkbox":
-                return <Checkbox
-                    label={label}
-                    defaultValue={defaultValue as string}
-                    required={required}
-                    size={size}
-                    color={color}
-                    onChange={value => handleDefaultValueChange ? handleDefaultValueChange(value.target.checked) : currentData.setFieldValue('value', value.target.checked)} />;
+                return <Tooltip label={tooltip || "Checkbox"} withArrow={withArrow} position={position}>
+                    <Checkbox
+                        label={label || "Checkbox"}
+                        description={description}
+                        defaultValue={defaultValue as string}
+                        size={size}
+                        color={color}
+                        onChange={value => handleDefaultValueChange(value.target.checked)} />
+                </Tooltip>;
             case "CheckboxGroup":
-                return <>{options && <BrokerCheckBoxGroup
-                    defaultValue={defaultValue as string[]}
-                    label={label}
-                    options={options.map(option => ({ value: option, label: option }))}
-                    required={required}
-                    onChange={(value) => handleDefaultValueChange ? handleDefaultValueChange(value) : currentData.setFieldValue('value', value)}
-                />}</>
+                return <Tooltip label={tooltip || "Checkbox Group"} withArrow={withArrow} position={position}>
+                    <Checkbox.Group
+                        defaultValue={defaultValue as string[]}
+                        label={label || "Checkbox Group"}
+                        description={description}
+                        required={required}
+                        onChange={(value) => handleDefaultValueChange(value)}>
+                        <Group p="xs">
+                            {options && options.map(option => <Checkbox key={option} value={option} label={option} />)}
+                        </Group>
+                    </Checkbox.Group></Tooltip>
             case "Switch":
-                return <Switch
-                    defaultValue={defaultValue as string}
-                    label={label} value={value as string} required={required} size={size} color={color} />;
+                return <Tooltip label={tooltip || "Switch"} withArrow={withArrow} position={position}>
+                    <Switch
+                        defaultValue={defaultValue as string}
+                        label={label || "Switch"} value={value as string} required={required} size={size} color={color} />
+                </Tooltip>;
             case "SwitchGroup":
-                return <SwitchGroup
-                    label={label}
-                    defaultValue={defaultValue as string[]}
-                    required={required}
-                    size={size}
-                    color={color}
-                    onChange={(value) => handleDefaultValueChange ? handleDefaultValueChange(value) : currentData.setFieldValue('value', value)}>
-                    <Switch value="red" label="Red" mt={"md"} />
-                    <Switch value="blue" label="Blue" mt={"md"} />
-                    <Switch value="yellow" label="Yellow" mt={"md"} />
-                </SwitchGroup>;
+                return <Tooltip label={tooltip || "Switch Group"} withArrow={withArrow} position={position}>
+                    <Switch.Group
+                        defaultValue={defaultValue as string[]}
+                        label={label || "Switch Group"}
+                        description={description}
+                        required={required}
+                        color={color}
+                        size={size}
+                        onChange={(value) => handleDefaultValueChange(value)}
+                    >
+                        <Group mt="xs">
+                            {options && options.map(option => <Switch key={option} value={option} label={option} />)}
+                        </Group>
+                    </Switch.Group>
+                </Tooltip>
             case "Select":
-                return <Select
-                    defaultValue={defaultValue as string}
-                    label={label} data={options} required={required} size={size} color={color} onChange={(value) => handleDefaultValueChange ? handleDefaultValueChange(value as string) : currentData.setFieldValue('value', value as string)} />;
+                return <Tooltip label={tooltip || "Select"} withArrow={withArrow} position={position}>
+                    <Select
+                        defaultValue={defaultValue as string}
+                        label={label || "Select"} data={options} required={required} size={size} color={color} onChange={(value) => handleDefaultValueChange(value as string)} />
+                </Tooltip>;
             case "Json":
-                return <JsonInput
-                    label={label || "Json"}
-                    placeholder="Textarea will autosize to fit the content"
-                    validationError="Invalid JSON"
-                    formatOnBlur
-                    autosize
-                    minRows={4}
-                    required={required}
-                    defaultValue={defaultValue as string}
-                    onChange={(value) => handleDefaultValueChange ? handleDefaultValueChange(value) : currentData.setFieldValue('value', value)}
-                />
+                return <Tooltip label={tooltip || "Json"} withArrow={withArrow} position={position}>
+                    <JsonInput
+                        label={label || "Json"}
+                        placeholder="Textarea will autosize to fit the content"
+                        validationError="Invalid JSON"
+                        formatOnBlur
+                        autosize
+                        resize={resize === "true" ? "both" : "none"}
+                        minRows={minRows}
+                        maxRows={maxRows}
+                        required={required}
+                        defaultValue={defaultValue as string}
+                        onChange={(value) => handleDefaultValueChange(value)}
+                    /></Tooltip>
             case "SelectWithOther":
-                return <Select
-                    label={label || "Select"}
-                    data={options}
-                    required={required}
-                    size={size}
-                    color={color}
-                    defaultValue={defaultValue as string}
-                    onChange={(value) => handleDefaultValueChange ? handleDefaultValueChange(value as string) : currentData.setFieldValue('value', value as string)}
-                />
+                return <Tooltip label={tooltip || "Select"} withArrow={withArrow} position={position}>
+                    <Select
+                        label={label || "Select"}
+                        data={options}
+                        required={required}
+                        size={size}
+                        color={color}
+                        defaultValue={defaultValue as string}
+                        onChange={(value) => handleDefaultValueChange(value as string)}
+                    />
+                </Tooltip>
             case "AttachmentsVideo":
-                return <div>Video</div>
+                return <Tooltip label={tooltip || "Upload Video"} withArrow={withArrow} position={position}>
+                    <FileInput label={label} description={description} placeholder={placeholder} required={required} size={size} color={color} onChange={(value: File | null) => handleDefaultValueChange(value as File)} />
+
+                </Tooltip>
             case "AttachmentsAudio":
-                return <div>Audio</div>
+                return <Tooltip label={tooltip || "Upload Audio"} withArrow={withArrow} position={position}>
+                    <FileInput label={label} description={description} placeholder={placeholder} required={required} size={size} color={color} onChange={(value: File | null) => handleDefaultValueChange(value as File)} />
+
+                </Tooltip>
             case "AttachmentsFile":
-                return <FileInput
-                    label={label}
-                    description={description}
-                    placeholder={placeholder}
-                    required={required}
-                    size={size}
-                    color={color}
-                    onChange={(value: File | null) => handleDefaultValueChange ? handleDefaultValueChange(value as File) : currentData.setFieldValue('value', value as File)}
-                />
+                return <Tooltip label={tooltip || "Upload File"} withArrow={withArrow} position={position}>
+                    <FileInput
+                        label={label}
+                        description={description}
+                        placeholder={placeholder}
+                        required={required}
+                        size={size}
+                        color={color}
+                        onChange={(value: File | null) => handleDefaultValueChange(value as File)}
+                    /></Tooltip>
             case "AttachmentsURL":
-                return <div>URL</div>
+                return <Tooltip label={tooltip || "Upload URL"} withArrow={withArrow} position={position}>
+                    <TextInput label={label} placeholder={placeholder} required={required} size={size} color={color} onChange={(value) => handleDefaultValueChange(value)} />
+
+                </Tooltip>
             case "Image":
-                return <BrokerImage
-                    src={src}
-                    alt={alt}
-                    h={200}
-                    w="auto"
-                    fit="contain"
-                    radius={radius}
-                    onChange={(value: File | null) => handleDefaultValueChange ? handleDefaultValueChange(value as File) : currentData.setFieldValue('value', value as File)} />
+                return <Tooltip label={tooltip || "Upload Image"} withArrow={withArrow} position={position}>
+                    <Image
+                        src={src}
+                        alt={alt || "Upload Image"}
+                        h={h}
+                        w={w}
+                        fit={fit}
+                        radius={radius}
+                        component={NextImage}
+                    />
+                </Tooltip>
             default:
                 return null;
         }

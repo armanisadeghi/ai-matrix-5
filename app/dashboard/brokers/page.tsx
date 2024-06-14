@@ -45,7 +45,7 @@ const BrokersPage: React.FC = (): JSX.Element => {
                     </Link>
                         <Search brokersList={brokersList} setFilteredBrokers={setFilteredBrokers} />
                     </Group>
-                    <BrokerList user={false} brokers={filteredBrokers} />
+                    <BrokerList brokers={filteredBrokers} />
                 </Stack>
             ]}
             expandToMin={false} />

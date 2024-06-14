@@ -7,7 +7,7 @@ interface AmeSliderProps {
     min?: number;
     max?: number;
     step?: number;
-    value?: number;
+    value?: number | string;
     onChange?: (value: number) => void;
 }
 
@@ -42,7 +42,7 @@ const AmeSlider: React.FC<AmeSliderProps> = (
     };
 
     return (
-        <Box maw={400} mx="auto" style={{marginBottom: 18}}>
+        <Box maw={400} mx="auto" style={{ marginBottom: 18 }}>
             <Group justify="space-between">
                 <Text size="sm" title={tooltip}>{name}</Text>
                 <Input
@@ -90,7 +90,7 @@ const AmeSlider: React.FC<AmeSliderProps> = (
                         label: max.toString()
                     }
                 ]}
-                style={{margin: 5}}
+                style={{ margin: 5 }}
             />
         </Box>
     );

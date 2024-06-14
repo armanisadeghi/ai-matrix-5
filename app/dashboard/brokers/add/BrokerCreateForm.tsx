@@ -28,13 +28,15 @@ export const BrokerCreateForm = () => {
     } as Broker);
 
     const componentOptions = Object.keys(ComponentType).map((key) => ({
+        key: key,
         value: key,
         label: key,
     })) as { value: string; label: string }[];
 
     const handleAddBroker = () => {
+        const dataType = currentData.component.defaultValue ? typeof currentData.component.defaultValue : typeof currentData.component.type.valueOf() as string;
         try {
-            brokerManager.createBroker({ ...currentData, dataType: typeof currentData.component.defaultValue, officialName: currentData.name.toUpperCase().replace(/\s/g, '_') });
+            brokerManager.createBroker({ ...currentData, dataType: dataType, officialName: currentData.name.toUpperCase().replace(/\s/g, '_') });
             setCurrentData(initialValues);
             Notifications.show({
                 title: 'Broker created',
@@ -59,7 +61,7 @@ export const BrokerCreateForm = () => {
                 <Fieldset legend="Add properties">
                     <TextInput
                         label="Name"
-                        onChange={value => setCurrentData({ ...currentData, name: value.target.value })}
+                        onChange={value => setCurrentData({ ...currentData, name: value.target.value, component: { ...currentData.component, label: value.target.value } })}
                         value={currentData.name}
                         placeholder='Enter a name'
                         error={
@@ -70,17 +72,14 @@ export const BrokerCreateForm = () => {
                     />
                     <Space h="sm" />
                     <TextInput label="Description" value={currentData.description}
-                        onChange={value => setCurrentData({ ...currentData, description: value.target.value })} placeholder='Enter a description' />
+                        onChange={value => setCurrentData({ ...currentData, description: value.target.value, component: { ...currentData.component, description: value.target.value } })} placeholder='Enter a description' />
                     <Space h="sm" />
                     <Select label="Type" description="Choose the type of component" placeholder="Choose the type of component" data={componentOptions} value={currentData.component.type}
                         onChange={value => setCurrentData({ ...currentData, component: { ...currentData.component, type: value as string } })} />
                 </Fieldset>
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 6 }}>
-                <Fieldset legend="Custom Broker" radius="md">
-                    <Text>{currentData.name}</Text>
-                    <Text size='xs' c={'gray.6'}>{currentData.description}</Text>
-                    <Space h="sm" />
+                <Fieldset legend="Preview" radius="md">
                     <BrokerComponent currentComponent={currentData.component} type={currentData.component.type} handleDefaultValueChange={(value: any) => setCurrentData({ ...currentData, component: { ...currentData.component, defaultValue: value } })} />
                 </Fieldset>
             </Grid.Col>
