@@ -1,8 +1,6 @@
-// hooks/ai/dynamicSocketHandler.ts
-
 import { initializeSocket, emitEvent, waitForEvent, closeSocket } from '@/utils/socketio/socket';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { quickChatSettingsAtom } from "@/state/aiAtoms/settingsAtoms";
+import { quickChatSettingsState } from "@/state/aiAtoms/settingsAtoms";
 import { requestEventTaskAtom, requestSocketEventAtom, requestIndexAtom } from '@/state/aiAtoms/metadataAtoms';
 import { realTimeDataState, streamBufferState } from '@/state/socketAtoms';
 import { userIdSelector, userTokenSelector } from "@/state/userAtoms";
@@ -13,21 +11,20 @@ import {
     formResponsesAtom
 } from "@/state/aiAtoms/chatAtoms";
 
+type SocketEventType = "matrix_chat" | "playground_stream" | "run_recipe" | "validation" | "workflow" | null;
+
 export const useDynamicSocketHandler = (callback?: (data: any) => void, onStreamEndCallback?: (streamBuffer: string) => void) => {
     const eventTask = useRecoilValue(requestEventTaskAtom);
-    const socketEvent = useRecoilValue(requestSocketEventAtom);
+    const socketEvent = useRecoilValue<SocketEventType>(requestSocketEventAtom);
     const userId = useRecoilValue(userIdSelector);
     const userToken = useRecoilValue(userTokenSelector);
-
-
 
     const chatId = useRecoilValue(activeChatIdAtom);
     const activeChatMessagesArray = useRecoilValue(activeChatMessagesArrayAtom);
     const formResponses = useRecoilValue(formResponsesAtom);
     const customInputs = useRecoilValue(customInputsAtom);
     const requestIndex = useRecoilValue(requestIndexAtom);
-    const quickChatSettings = useRecoilValue(quickChatSettingsAtom);
-
+    const quickChatSettings = useRecoilValue(quickChatSettingsState);
     const setRealTimeData = useSetRecoilState(realTimeDataState);
     const setStreamBuffer = useSetRecoilState(streamBufferState);
 
@@ -74,8 +71,12 @@ export const useDynamicSocketHandler = (callback?: (data: any) => void, onStream
             }
         };
 
-        // Emit the event with the request object
-        emitEvent(socketEvent, requestObject);
+        if (socketEvent) {
+            // Emit the event with the request object if socketEvent is valid
+            emitEvent(socketEvent, requestObject);
+        } else {
+            console.error('Invalid socket event:', socketEvent);
+        }
 
         let streamBuffer = '';
 

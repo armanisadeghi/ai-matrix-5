@@ -1,4 +1,3 @@
-// AmeSettingsModal.tsx
 import React from 'react';
 import { useRecoilState } from 'recoil';
 import { Modal, Select, TextInput, ScrollArea } from '@mantine/core';
@@ -9,12 +8,16 @@ import { settingsAtoms, AtomName } from '@/state/aiAtoms/settingsAtoms';
 
 interface AmeSettingsModalProps {
     opened: boolean;
-    onClose: () => void;
+    onClose?: () => void;
+    onSubmit?: () => void;
     atomNames: AtomName[];
 }
 
-const AmeSettingsModal: React.FC<AmeSettingsModalProps> = ({ opened, onClose, atomNames }) => {
+const AmeSettingsModal: React.FC<AmeSettingsModalProps> = ({ opened, onClose = () => {}, onSubmit, atomNames }) => {
     const handleSubmit = () => {
+        if (onSubmit) {
+            onSubmit();
+        }
         onClose();
     };
 
@@ -76,7 +79,7 @@ const AmeSettingsModal: React.FC<AmeSettingsModalProps> = ({ opened, onClose, at
     return (
         <Modal
             opened={opened}
-            onClose={onClose}
+            onClose={onClose} // Ensure this is passed correctly
             title="Customize your experience"
             centered
             size="md"

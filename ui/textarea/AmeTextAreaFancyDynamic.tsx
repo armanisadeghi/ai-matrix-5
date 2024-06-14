@@ -1,107 +1,155 @@
-import React, { forwardRef, useState } from 'react';
-import { Textarea, ActionIcon, Group, Box } from '@mantine/core';
+import React, { forwardRef, useState, useEffect, useRef } from 'react';
+import { Textarea, ActionIcon, Group, Box, Modal } from '@mantine/core';
 import { RiDeleteBin3Line, RiSettings2Line } from "react-icons/ri";
 import { FaExpandArrowsAlt } from "react-icons/fa";
 import AmeOverComponentIcon from "@/ui/button/AmeOverComponentIcon";
 import { AmeFileUploadOverComponent } from "@/ui/button/AmeFileUploadOverComponent";
-
-const boxStyles = {
-    border: '1px solid rgba(128, 128, 128, 0.62)',
-    borderRadius: '12px',
-    padding: '8px',
-    cursor: 'text',
-    overflow: 'hidden',
-    transition: 'box-shadow 0.3s ease, border-color 0.3s ease',
-};
-
-const focusedStyles = {
-    border: '2px solid rgba(128, 128, 128, 0.62)',
-    boxShadow: '0 0 12px rgba(232, 229, 229, 0.2)',
-};
-
-const hoverStyles = {
-    boxShadow: '0 0 12px rgba(205, 202, 202, 0.2)',
-};
-
-const textareaStyles = {
-    fontFamily: "'Google Sans', 'Helvetica Neue', sans-serif",
-};
+import styles from './FancyText.module.css';
+import useKeyDownHandler from "@/utils/commonUtils/useKeyDownHandler";
+import AmeSettingsModal from '@/ui/modal/AmeSettingsModal';
+import { AtomName } from "@/state/aiAtoms/settingsAtoms";
 
 interface AmeTextAreaFancyProps {
-    systemText: string;
-    placeholderText: string;
-    isFocused: boolean;
-    handleBoxClick: () => void;
-    handleInputChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
-    handleSendMessage: () => void;
-    handleKeyDown: (event: React.KeyboardEvent<HTMLTextAreaElement>) => void;
-    handleDelete: () => void;
-    handleToggle: () => void;
-    textareaRef: React.RefObject<HTMLTextAreaElement>;
-    userInput: string;
-    collapsed: boolean;
-    openSettingsModal: () => void;
+    label?: string;
+    placeholder?: string;
+    className?: string;
+    settingAtomNames?: AtomName[];
+    modalType?: 'none' | 'custom' | 'default';
+    customModal?: React.ReactNode;
+    fileUploadEnabled?: boolean;
+    onSubmit?: (text: string) => void;
 }
 
-const AmeTextAreaFancy = forwardRef<HTMLDivElement, AmeTextAreaFancyProps>(({
-                                                                                systemText,
-                                                                                placeholderText,
-                                                                                isFocused,
-                                                                                handleBoxClick,
-                                                                                handleInputChange,
-                                                                                handleSendMessage,
-                                                                                handleKeyDown,
-                                                                                handleDelete,
-                                                                                handleToggle,
-                                                                                textareaRef,
-                                                                                userInput,
-                                                                                collapsed,
-                                                                                openSettingsModal,
-                                                                            }, ref) => (
-    <Box
-        className={`${isFocused ? 'focused' : ''}`}
-        onClick={handleBoxClick}
-        tabIndex={-1}
-        style={{
-            ...boxStyles,
-            ...(isFocused ? focusedStyles : {}),
-            ':hover': hoverStyles,
-        }}
-    >
-        <Group justify='space-between' style={{ width: '100%', alignItems: 'center' }}>
-            <div style={{ fontSize: '0.7rem', fontWeight: 'normal', color: '#909090', userSelect: 'none' }}>
-                {systemText}
-            </div>
-            <div>
-                <ActionIcon.Group>
-                    <AmeOverComponentIcon toolTip="Chat settings" onClick={openSettingsModal}>
-                        <RiSettings2Line />
-                    </AmeOverComponentIcon>
-                    <AmeFileUploadOverComponent />
-                    <AmeOverComponentIcon toolTip="Clear all text" onClick={handleDelete}>
-                        <RiDeleteBin3Line />
-                    </AmeOverComponentIcon>
-                    <AmeOverComponentIcon toolTip="Expand or collapse without impacting the text content" onClick={handleToggle}>
-                        <FaExpandArrowsAlt />
-                    </AmeOverComponentIcon>
-                </ActionIcon.Group>
-            </div>
-        </Group>
-        <Textarea
-            ref={textareaRef}
-            value={userInput}
-            onChange={handleInputChange}
-            autosize
-            minRows={3}
-            maxRows={collapsed ? 2 : undefined}
-            placeholder={placeholderText}
-            size="sm"
-            variant="unstyled"
-            style={textareaStyles}
-            onKeyDown={handleKeyDown}
-        />
-    </Box>
-));
+const AmeTextAreaFancy = forwardRef<HTMLDivElement, AmeTextAreaFancyProps>((
+    {
+        label,
+        placeholder,
+        className,
+        settingAtomNames = [],
+        modalType = 'default',
+        customModal,
+        fileUploadEnabled = true,
+        onSubmit
+    }, ref) => {
+
+    const [userInput, setUserInput] = useState('');
+    const [settingsModalOpened, setSettingsModalOpened] = useState(false);
+    const [defaultModalOpened, setDefaultModalOpened] = useState(false);
+    const [collapsed, setCollapsed] = useState(false);
+    const [isFocused, setIsFocused] = useState(false);
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+    useEffect(() => {
+        document.body.style.overflow = 'hidden';
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, []);
+
+    const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setUserInput(event.target.value);
+    };
+
+    const handleSubmitMessage = () => {
+        const text = textareaRef.current?.value || '';
+        if (onSubmit) {
+            onSubmit(text);
+        } else {
+            setDefaultModalOpened(true);
+        }
+    };
+
+    const handleKeyDown = useKeyDownHandler(() => handleSubmitMessage());
+
+    const handleToggle = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.stopPropagation();
+        setCollapsed(!collapsed);
+    };
+
+    const handleBoxClick = () => {
+        if (collapsed) {
+            setCollapsed(false);
+        }
+        textareaRef.current?.focus();
+    };
+
+    const handleFocus = () => setIsFocused(true);
+    const handleBlur = () => setIsFocused(false);
+
+    useEffect(() => {
+        const textArea = textareaRef.current;
+        textArea?.addEventListener('focus', handleFocus);
+        textArea?.addEventListener('blur', handleBlur);
+
+        return () => {
+            textArea?.removeEventListener('focus', handleFocus);
+            textArea?.removeEventListener('blur', handleBlur);
+        };
+    }, []);
+
+    const openSettingsModal = () => setSettingsModalOpened(true);
+    const closeSettingsModal = () => setSettingsModalOpened(false);
+    const handleDelete = () => setUserInput('');
+
+    return (
+        <Box
+            ref={ref}
+            className={`${className || ''} ${styles['amefancy-container']} ${isFocused ? styles['amefancy-focused'] : ''}`}
+            onClick={handleBoxClick}
+            tabIndex={-1}
+        >
+            <Group justify='space-between' style={{ width: '100%', alignItems: 'center' }}>
+                <div style={{ fontSize: '0.7rem', fontWeight: 'normal', color: '#909090', userSelect: 'none' }}>
+                    {label}
+                </div>
+                <div>
+                    <ActionIcon.Group>
+                        {modalType !== 'none' && (
+                            <AmeOverComponentIcon tooltip="Chat settings" onClick={openSettingsModal} className={styles['amefancy-action-icon']}>
+                                <RiSettings2Line />
+                            </AmeOverComponentIcon>
+                        )}
+                        {fileUploadEnabled && <AmeFileUploadOverComponent />}
+                        <AmeOverComponentIcon tooltip="Clear all text" onClick={handleDelete} className={styles['amefancy-action-icon']}>
+                            <RiDeleteBin3Line />
+                        </AmeOverComponentIcon>
+                        <AmeOverComponentIcon tooltip="Expand or collapse without impacting the text content" onClick={handleToggle} className={styles['amefancy-action-icon']}>
+                            <FaExpandArrowsAlt />
+                        </AmeOverComponentIcon>
+                    </ActionIcon.Group>
+                </div>
+            </Group>
+            <Textarea
+                ref={textareaRef}
+                value={userInput}
+                onChange={handleInputChange}
+                autosize
+                minRows={3}
+                maxRows={collapsed ? 2 : undefined}
+                placeholder={placeholder}
+                size="sm"
+                variant="unstyled"
+                className={styles['amefancy-textarea']}
+                onKeyDown={handleKeyDown}
+            />
+            {modalType === 'default' && (
+                <AmeSettingsModal
+                    opened={settingsModalOpened}
+                    onClose={closeSettingsModal}
+                    atomNames={settingAtomNames}
+                />
+            )}
+            {modalType === 'custom' && customModal}
+            <Modal
+                opened={defaultModalOpened}
+                onClose={() => setDefaultModalOpened(false)}
+                title="Text Submitted"
+            >
+                {textareaRef.current?.value}
+            </Modal>
+        </Box>
+    );
+});
 
 AmeTextAreaFancy.displayName = 'AmeTextAreaFancy';
 
