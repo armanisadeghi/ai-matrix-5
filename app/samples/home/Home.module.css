@@ -1,0 +1,20 @@
+/* Base CSS */
+:root {
+    --mantine-color-black: #000000;
+    --mantine-color-white: #ffffff;
+    --mantine-breakpoint-md: 768px;
+}
+
+/* Dark Page Styles */
+.title {
+    color: #ffffff; /* Assuming a dark page uses white text */
+    font-size: 100px;
+    font-weight: 900;
+    letter-spacing: -2px;
+}
+
+@media (max-width: 768px) {
+    .title {
+        font-size: 50px;
+    }
+}

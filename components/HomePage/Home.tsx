@@ -1,11 +1,8 @@
-// matrix-apps/page.tsx
-"use client";
+import { Title, Text, Anchor, Container, Group, Button, Image } from '@mantine/core';
+import classes from './Home.module.css';
 
-import React from "react";
-import { Text, Title } from "@mantine/core";
-import classes from "@/components/HomePage/Home.module.css";
 
-const SampleHomePage = () => {
+export function HomePage() {
     return (
         <>
             <Title className={classes.title} ta="center" mt={100}>
@@ -20,7 +17,6 @@ const SampleHomePage = () => {
             </Text>
 
         </>
-  );
-};
+    );
+}
 
-export default SampleHomePage;
