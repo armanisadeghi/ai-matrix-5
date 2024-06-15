@@ -37,7 +37,7 @@ const ChatSidebar = () => {
     return (
         <>
             <div style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: '10px' }}>
-                <AmeActionIcon title="New Chat" onClick={handleNewChat}>
+                <AmeActionIcon tooltip="New Chat" onClick={handleNewChat}>
                     <BsFillPatchPlusFill size={18}/>
                 </AmeActionIcon>
             </div>

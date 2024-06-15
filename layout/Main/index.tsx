@@ -22,8 +22,8 @@ type Props = {
 
 export function MainLayout({ children }: Props) {
     const { opened, navbarState, handleIconMouseover, handleEndIconMouseover, toggleNavbar } = useNavbar();
-    const { asideState, toggleAside } = useSidebar();
-    const { footerState, toggleFooter } = useFooter();
+    const { asideState } = useSidebar();
+    const { footerState } = useFooter();
     const { headerState } = useHeader();
     const [hovered, setHovered] = useState(false);
     const tabletMatch = useMediaQuery("(min-width: 768px)");
@@ -148,28 +148,8 @@ export function MainLayout({ children }: Props) {
                         position={{ top: "50%", left: 0 }}
                         mounted={navbarState === "hidden"}
                     >
-                        <AmeActionIcon title="open nav" onClick={() => toggleNavbar("full")}>
+                        <AmeActionIcon tooltip="open nav" onClick={() => toggleNavbar("full")}>
                             <IconChevronRight />
-                        </AmeActionIcon>
-                    </AmeAffix>
-                    {/*toggle footer*/}
-                    <AmeAffix
-                        transition="slide-up"
-                        position={{ bottom: 0, left: "5%" }}
-                        mounted={footerState === "hidden"}
-                    >
-                        <AmeActionIcon title="open footer" onClick={() => toggleFooter("full")}>
-                            <IconChevronUp />
-                        </AmeActionIcon>
-                    </AmeAffix>
-                    {/*toggle aside*/}
-                    <AmeAffix
-                        transition="slide-left"
-                        position={{ top: "50%", right: 0 }}
-                        mounted={asideState === "hidden"}
-                    >
-                        <AmeActionIcon title="open sidebar" onClick={() => toggleAside("full")} visibleFrom="md">
-                            <IconChevronLeft />
                         </AmeActionIcon>
                     </AmeAffix>
                 </AppShell.Main>

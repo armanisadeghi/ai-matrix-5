@@ -1,30 +1,31 @@
-import { ActionIcon, ActionIconProps, Avatar, Burger, Group, MantineSize, Menu } from "@mantine/core";
-import { IconBell, IconChevronDown, IconChevronUp, IconPalette, IconSearch, IconSettings2 } from "@tabler/icons-react";
+import {ActionIcon, Avatar, Burger, Group, MantineSize, Menu} from "@mantine/core";
+import { IconBell, IconMenu, IconPalette, IconSearch, IconSettings2 } from "@tabler/icons-react";
 import { FaRegUser } from "react-icons/fa6";
 import { ColorSchemeToggle, Logo } from "@/components";
 import Link from "next/link";
 import { PATH_USER } from "@/routes";
 import { useHeader } from "@/context/HeaderContext";
-import AmeNavButton from "@/ui/buttons/AmeNavButton";
 import AmeSearchInput from "@/ui/input/AmeSearchInput";
 import AmeActionIcon from "@/ui/buttons/AmeActionIcon";
 import { useNavbar } from "@/context/NavbarContext";
+import {useSidebar} from "@/context/SidebarContext";
+
+
 import { useRecoilState } from "recoil";
 import { activeUserAtom } from "@/state/userAtoms";
 import { useEffect } from "react";
-
-const actionProps: ActionIconProps = {
-    variant: "light",
-};
 
 type Props = {
     state: "large" | "medium" | "compact";
     tabletMatch?: boolean;
 };
 
-export function Header({ state, tabletMatch }: Props) {
+export function Header({tabletMatch}: Props) {
     const { toggleOpened, opened, toggleNavbar, navbarState } = useNavbar();
-    const { headerState, handleCollapse, handleExpand } = useHeader();
+    const {toggleAside, asideState} = useSidebar();
+    const {headerState} = useHeader();
+
+
     const [activeUser, setActiveUser] = useRecoilState(activeUserAtom);
     const userPictureLink = activeUser.picture;
 
@@ -46,30 +47,8 @@ export function Header({ state, tabletMatch }: Props) {
                 <Burger opened={opened} onClick={toggleOpened} hiddenFrom="sm" size="sm" />
                 <Burger opened={navbarState === "full"} onClick={handleNavToggle} visibleFrom="sm" size="sm" />
                 <Logo />
-                <Group visibleFrom="sm">
-                    {(state === "medium" || state === "compact") && (
-                        <Group justify="flex-end" gap="xs">
-                            <AmeActionIcon title="shrink header" onClick={handleCollapse} {...actionProps}>
-                                <IconChevronUp size={18} />
-                            </AmeActionIcon>
-                            <AmeActionIcon title="expand header" onClick={handleExpand} {...actionProps}>
-                                <IconChevronDown size={18} />
-                            </AmeActionIcon>
-                        </Group>
-                    )}
-
-                    {state === "large" && (
-                        <Group justify="flex-end" gap="xs">
-                            <AmeActionIcon title="shrink header" onClick={handleCollapse} {...actionProps}>
-                                <IconChevronUp size={18} />
-                            </AmeActionIcon>
-                        </Group>
-                    )}
-                </Group>
             </Group>
             <Group visibleFrom="md" style={{ flexGrow: 1, justifyContent: "center" }}>
-                <AmeNavButton asIcon navigateTo="back" />
-                <AmeNavButton asIcon navigateTo="next" />
                 <AmeSearchInput
                     size={componentSize}
                     radius="md"
@@ -80,13 +59,19 @@ export function Header({ state, tabletMatch }: Props) {
                 />
             </Group>
             <Group>
-                <AmeActionIcon hiddenFrom="md" size={componentSize} title="search">
+                <AmeActionIcon hiddenFrom="md" size={componentSize} tooltip="search">
                     <IconSearch size={18} />
                 </AmeActionIcon>
                 <ColorSchemeToggle size={componentSize} />
-                <AmeActionIcon title="notifications" size={componentSize}>
+                <AmeActionIcon tooltip="notifications" size={componentSize}>
                     <IconBell size={18} />
                 </AmeActionIcon>
+                    <AmeActionIcon tooltip="toggle sidebar" size={componentSize} onClick={() => {
+                        if (asideState === "hidden") toggleAside("full")
+                        else toggleAside("hidden")
+                    }}>
+                        <IconMenu size={18}/>
+                    </AmeActionIcon>
                 <Menu width={200} shadow="md">
                     <Menu.Target>
                         <ActionIcon title="user menu" size={componentSize} variant="transparent">

@@ -42,10 +42,10 @@ export const Sidebar = ({ state, title }: SidebarProps) => {
             <AppShell.Section>
                 {state === "compact" && (
                     <Group justify="flex-start" gap="xs" style={{padding: '4px'}}>
-                        <AmeActionIcon title="expand sidebar" onClick={handleExpand} {...actionProps}>
+                        <AmeActionIcon tooltip="expand sidebar" onClick={handleExpand} {...actionProps}>
                             <IconArrowBarToLeft size={18}/>
                         </AmeActionIcon>
-                        <AmeActionIcon title="shrink sidebar" onClick={handleCollapse} {...actionProps}>
+                        <AmeActionIcon tooltip="shrink sidebar" onClick={handleCollapse} {...actionProps}>
                             <IconArrowBarToRight size={18}/>
                         </AmeActionIcon>
                     </Group>
@@ -53,14 +53,14 @@ export const Sidebar = ({ state, title }: SidebarProps) => {
 
                 {state === "full" && (
                     <Group justify="flex-start" gap="xs" style={{padding: '4px'}}>
-                        <AmeActionIcon title="shrink sidebar" onClick={handleCollapse} {...actionProps}>
+                        <AmeActionIcon tooltip="shrink sidebar" onClick={handleCollapse} {...actionProps}>
                             <IconArrowBarRight size={18}/>
                         </AmeActionIcon>
                     </Group>
                 )}
                 {state === "icons" && (
                     <Group justify="center" gap="xs" style={{padding: '4px'}}>
-                        <AmeActionIcon title="shrink sidebar" onClick={handleCollapse} {...actionProps}>
+                        <AmeActionIcon tooltip="shrink sidebar" onClick={handleCollapse} {...actionProps}>
                             <IconArrowBarRight size={18}/>
                         </AmeActionIcon>
                     </Group>
