@@ -22,27 +22,33 @@ type Props = {
 };
 
 const LayoutContent: React.FC = () => {
+    console.log('LayoutContent');
     const {user, error, isLoading} = useUser();
-    console.log(user);
+    console.log('user', user);
     const [activeUser, setActiveUser] = useRecoilState(activeUserAtom);
 
-    React.useEffect(() => {
-        if (isLoading) return;
-        if (error) {
-            console.error('Error loading user:', error);
-            return;
-        }
+    if (isLoading) {
+        return (
+            <div className="page-layout">
+                <Loading />
+            </div>
+        );
+    }
+    if (user) {
+        console.log(user);
 
-        if (user) {
-            setActiveUser(user);
-            const matrixUser = new MatrixUser(user);
-            console.log(matrixUser);
-        }
-    }, [user, error, isLoading, setActiveUser, activeUser]);
+        setActiveUser(user);
+        const matrixUser = new MatrixUser(user);
+        console.log(matrixUser);
+    }
+    if (error) {
+        console.error('Error loading user:', error);
+        return;
+    }
 
-    if (isLoading) return <Loading/>;
-    return null;
-};
+}
+
+
 
 function Layout({children, preset}: Props) {
     return (

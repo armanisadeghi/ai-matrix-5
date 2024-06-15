@@ -2,9 +2,9 @@
 
 import { Box, Button, Flex, Group, TextInput, Title } from "@mantine/core";
 import { IconPlus, IconTableExport } from "@tabler/icons-react";
-import clients from "../../data/clients.json";
 import { ClientsTable } from "@/components";
 import Link from "next/link";
+import clients from "../../../../data/clients.json";
 
 const ClientsPage = () => {
   return (

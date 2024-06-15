@@ -16,6 +16,7 @@ const ChatLayout = ({ children }: { children: React.ReactNode }) => {
     const { setSidebarContent, toggleAside } = useSidebar();
     const memoizedSetSidebarContent = useCallback(setSidebarContent, []);
     const memoizedToggleAside = useCallback(toggleAside, []);
+    console.log("activeUser", activeUser);
 
     useEffect(() => {
         if (activeUser) {

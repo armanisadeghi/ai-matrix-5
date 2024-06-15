@@ -2,7 +2,7 @@
 
 import { Box, Grid, Title } from "@mantine/core";
 import { ClientsForm, NotesCard } from "@/components";
-import notes from "../../../../data/notes.json";
+import notes from "../../../../../../data/notes.json";
 
 const ViewClientsPage = ({ params }: { params: { id: string } }) => {
   return (

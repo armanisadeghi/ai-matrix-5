@@ -4,7 +4,6 @@ import { Notifications } from "@mantine/notifications";
 import { Inter } from "next/font/google";
 import { theme } from "@/theme";
 import { UserProvider } from "@auth0/nextjs-auth0/client"
-import { RecoilRoot } from 'recoil';
 
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";

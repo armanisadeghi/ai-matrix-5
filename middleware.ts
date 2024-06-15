@@ -1,20 +1,39 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { getSession } from '@auth0/nextjs-auth0/edge';
+import { MatrixUser } from "@/services/Users";
 
-// This function can be marked `async` if using `await` inside
-export function middleware(request: NextRequest) {
-    if (request.nextUrl.pathname.startsWith('/samples/sample-login')) {
-        return NextResponse.rewrite(new URL('/api/auth/login', request.url))
+export default async function middleware(request: NextRequest) {
+    const { pathname } = request.nextUrl;
+    const paths = ['/samples', '/dashboard', '/matrix-engine'];
+
+    if (paths.some(path => pathname.startsWith(path))) {
+        console.log('request.nextUrl.pathname', pathname);
+        console.log('request.url', request.url);
+
+        const res = NextResponse.next();
+        const session = await getSession(request, res);
+
+        if (session) {
+            const user: any = session.user;
+            console.log('user', user);
+            res.cookies.set('hl', user?.language);
+            if (user) {
+                console.log(user);
+                const matrixUser = new MatrixUser(user);
+                console.log(matrixUser);
+            }
+
+            return res;
+        } else {
+            // Redirect to Auth0 login and set returnTo query param to the original URL
+            return NextResponse.redirect(new URL(`/api/auth/login?returnTo=${encodeURIComponent(request.url)}`, request.url));
+        }
     }
 
-    if (request.nextUrl.pathname.startsWith('/dashboard/sample-login')) {
-        return NextResponse.rewrite(new URL('/api/auth/login', request.url))
-    }
-
-    if (request.nextUrl.pathname.startsWith('/matrix-engine')) {
-        return NextResponse.rewrite(new URL('/api/auth/login', request.url))
-    }
+    return NextResponse.next();
 }
+
 
 // See "Matching Paths" below to learn more
 export const config = {
