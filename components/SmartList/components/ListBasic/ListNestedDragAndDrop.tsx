@@ -15,7 +15,7 @@ import {
     verticalListSortingStrategy
 } from "@dnd-kit/sortable";
 import {useEffect, useState} from "react";
-// @ts-ignore
+
 import Point from "./Point/Point.tsx";
 
 export default function ListNestedDragAndDrop({arr} : any) {
@@ -58,11 +58,11 @@ export default function ListNestedDragAndDrop({arr} : any) {
         const {active, over} = event;
         if (active.id === over.id) return;
 
-        // @ts-ignore
+
         setItems(item => {
             const originPos = getItemPost(active.id)
             const newPos = getItemPost(over.id)
-            // @ts-ignore
+
             return arrayMove(items, originPos, newPos)
         })
 
@@ -71,7 +71,7 @@ export default function ListNestedDragAndDrop({arr} : any) {
 
 
     if (items !== null) {
-        // @ts-ignore
+
         return (
 
             <div className={'pl-4'}>

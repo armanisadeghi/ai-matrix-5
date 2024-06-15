@@ -26,10 +26,10 @@ function AmeNavButton({ navigateTo, asIcon }: AmeNavButtonProps) {
         // todo: will look for alternatives instead of using experimental navigation api
         let canNav = true;
         if (navigateTo == "back") {
-            // @ts-ignore
+
             canNav = navigation.canGoBack;
         } else {
-            // @ts-ignore
+
             canNav = navigation.canGoForward;
         }
 

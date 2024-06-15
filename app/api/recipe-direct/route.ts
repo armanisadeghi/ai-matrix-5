@@ -2,7 +2,7 @@
 import openai from '../openai/openaiClient';
 
 
-// @ts-ignore
+
 const response = await openai.chat.completions.create({
     model: "gpt-4o",
     messages: [
