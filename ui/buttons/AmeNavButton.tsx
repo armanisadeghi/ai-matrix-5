@@ -64,7 +64,7 @@ function AmeNavButton({ navigateTo, asIcon }: AmeNavButtonProps) {
     }
 
     return asIcon ? (
-        <AmeActionIcon title={text} onClick={handleNavigate} {...actionIconProps}>
+        <AmeActionIcon tooltip={text} onClick={handleNavigate} {...actionIconProps}>
             {icon}
         </AmeActionIcon>
     ) : (

@@ -16,8 +16,3 @@ export * from "./PaymentForm";
 export * from "./UserBillingForm";
 export * from "./ColorSelectionForm";
 export * from "./TableSelectionForm";
-
-/* Commented out by Armani because it was causing strange things to happen.
-export * from "./AiChat";
-*/
-
