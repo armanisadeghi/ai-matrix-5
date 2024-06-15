@@ -20,7 +20,7 @@ const BrokerTest = () => {
     return (
         <Container w='100%'>
             <Paper p="sm">
-                <Link href="/dashboard/matrix-engine/custom-brokers/example">
+                <Link href="/dashboard/brokers/add">
                     <Button
                         variant="light"
                         leftSection={<IconArrowLeft size={14} />}

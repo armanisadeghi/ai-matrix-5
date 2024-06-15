@@ -140,3 +140,5 @@ dist
 */junk/*
 
 app/api/openai/armani.txt
+
+*storybook.log

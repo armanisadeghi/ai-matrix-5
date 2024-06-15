@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
-import { Slider, Box, Text, Group, Input } from '@mantine/core';
+import { Slider, Box, Text, Group, Input, Tooltip } from '@mantine/core';
 
-interface AmeSliderProps {
+export interface AmeSliderProps {
     name: string;
     tooltip?: string;
     min?: number;
@@ -9,6 +9,10 @@ interface AmeSliderProps {
     step?: number;
     value?: number;
     onChange?: (value: number) => void;
+    customLabels?: string[];
+    showNumber?: boolean;
+    size?: 'sm' | 'xs';
+    color?: 'blue' | 'gray' | 'red';
 }
 
 const AmeSlider: React.FC<AmeSliderProps> = (
@@ -17,7 +21,11 @@ const AmeSlider: React.FC<AmeSliderProps> = (
         tooltip = '',
         min = 0,
         max = 10,
-        step = 1
+        step = 1,
+        customLabels,
+        showNumber = true,
+        size = 'sm',
+        color = 'blue'
     }) => {
     const [value, setValue] = useState<number>((min + max) / 2);
     const [inputValue, setInputValue] = useState<string>(`${(min + max) / 2}`);
@@ -41,58 +49,62 @@ const AmeSlider: React.FC<AmeSliderProps> = (
         inputRef.current?.select();
     };
 
+    const generateMarks = () => {
+        const defaultLabels = [
+            min.toString(),
+            ((min + max) / 4).toString(),
+            ((min + max) / 2).toString(),
+            ((min + max) * 0.75).toString(),
+            max.toString()
+        ];
+
+        const labels = customLabels || defaultLabels;
+
+        return [
+            { value: min, label: labels[0] !== '' ? labels[0] : undefined },
+            { value: (min + max) / 4, label: labels[1] !== '' ? labels[1] : undefined },
+            { value: (min + max) / 2, label: labels[2] !== '' ? labels[2] : undefined },
+            { value: (min + max) * 0.75, label: labels[3] !== '' ? labels[3] : undefined },
+            { value: max, label: labels[4] !== '' ? labels[4] : undefined }
+        ].filter(mark => mark.label !== undefined);
+    };
+
     return (
-        <Box maw={400} mx="auto" style={{marginBottom: 18}}>
-            <Group justify="space-between">
-                <Text size="sm" title={tooltip}>{name}</Text>
-                <Input
-                    ref={inputRef}
-                    value={inputValue}
-                    onChange={handleInputChange}
-                    onFocus={handleInputFocus}
-                    variant="filled"
-                    size="xs"
-                    radius="lg"
-                    style={{
-                        textAlign: 'center',
-                        width: 60
-                    }}
-                    tabIndex={-1}
+        <Tooltip label={tooltip} position="top" withArrow>
+            <Box maw={400} mx="auto" style={{ marginBottom: 18 }}>
+                <Group justify="space-between">
+                    <Text size="sm">{name}</Text>
+                    {showNumber && (
+                        <Input
+                            ref={inputRef}
+                            value={inputValue}
+                            onChange={handleInputChange}
+                            onFocus={handleInputFocus}
+                            variant="filled"
+                            size="xs"
+                            radius="lg"
+                            style={{
+                                textAlign: 'center',
+                                width: 60
+                            }}
+                            tabIndex={-1}
+                        />
+                    )}
+                </Group>
+                <Slider
+                    color={color}
+                    radius="md"
+                    value={value}
+                    onChange={handleSliderChange}
+                    min={min}
+                    max={max}
+                    step={step}
+                    size={size}
+                    marks={generateMarks()}
+                    style={{ margin: 5 }}
                 />
-            </Group>
-            <Slider
-                color="blue"
-                radius="md"
-                value={value}
-                onChange={handleSliderChange}
-                min={min}
-                max={max}
-                step={step}
-                marks={[
-                    {
-                        value: min,
-                        label: min.toString()
-                    },
-                    {
-                        value: (min + max) / 4,
-                        label: ((min + max) / 4).toString()
-                    },
-                    {
-                        value: (min + max) / 2,
-                        label: ((min + max) / 2).toString()
-                    },
-                    {
-                        value: (min + max) * .75,
-                        label: ((min + max) * .75).toString()
-                    },
-                    {
-                        value: max,
-                        label: max.toString()
-                    }
-                ]}
-                style={{margin: 5}}
-            />
-        </Box>
+            </Box>
+        </Tooltip>
     );
 };
 

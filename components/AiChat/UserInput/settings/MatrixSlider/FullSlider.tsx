@@ -1,6 +1,9 @@
 import React from 'react';
 import { Slider, Grid } from '@mantine/core';
 
+// This isn't needed anymore because the new one is much better and fully reusable and integrated with atoms!
+
+
 const FullSlider = () => {
     return (
         <div style={{ height: '1px', marginTop: '10px', alignItems: 'center' }}>

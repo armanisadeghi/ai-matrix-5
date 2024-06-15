@@ -33,7 +33,7 @@ export const guestUserProfile: UserProfile = {
     org_id: null,
     given_name: 'Guest',
     family_name: 'User',
-    sid: null,
+    sid: undefined,
 };
 
 // MatrixUserProfile extending UserProfile with additional custom fields
@@ -51,12 +51,12 @@ export interface MatrixUserProfile extends UserProfile {
 
 // MatrixUser class implementing MatrixUserProfile with internal naming conventions
 export class MatrixUser implements MatrixUserProfile {
-    user_id?: string;
-    auth0_id?: string;
+    user_id?: string | null;
+    auth0_id?: string | null;
     email?: string | null;
     name?: string | null;
     nickname?: string | null;
-    picture?: string;
+    picture?: string | null;
     updated_at?: string;
     token?: string | null;
     account_type?: string | null;
@@ -76,7 +76,7 @@ export class MatrixUser implements MatrixUserProfile {
         this.name = user.name;
         this.nickname = user.nickname;
         this.picture = user.picture;
-        this.updated_at = user.updated_at;
+        this.updated_at = user.updated_at ?? new Date().toISOString();
         this.token = additionalFields.token;
         this.account_type = additionalFields.account_type;
         this.org_id = user.org_id;
@@ -97,7 +97,7 @@ export class MatrixUser implements MatrixUserProfile {
 // UserManager class to manage MatrixUser instances
 export class UserManager {
     private static instance: UserManager | null = null;
-    supabaseService?: UsersDb;
+    supabaseService: UsersDb;
     userConnection?: UserConnection;
 
     users: MatrixUser[] = [];
@@ -116,8 +116,14 @@ export class UserManager {
         this.userConnection = userConnection;
     }
 
-    public static getInstance(): UserManager {
-        return UserManager.instance;
+    public static getInstance(supabaseService?: UsersDb, userConnection?: UserConnection): UserManager {
+        if (!UserManager.instance) {
+            if (!supabaseService || !userConnection) {
+                throw new Error('SupabaseService and UserConnection are required for initialization');
+            }
+            UserManager.instance = new UserManager(supabaseService, userConnection);
+        }
+        return UserManager.instance!;
     }
 
     public initializeActiveUser() {
@@ -143,6 +149,9 @@ export class UserManager {
 
     private async fetchUserById(userId: string): Promise<MatrixUser | null> {
         try {
+            if (!this.supabaseService) {
+                throw new Error('SupabaseService is not initialized');
+            }
             const user = await this.supabaseService.getUserById(userId);
             if (user) {
                 return new MatrixUser(

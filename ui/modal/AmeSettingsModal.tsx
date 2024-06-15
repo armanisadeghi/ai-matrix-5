@@ -5,6 +5,7 @@ import AmeFieldset from '@/ui/fieldset/AmeFieldset';
 import AmeCheckbox from '@/ui/checkbox/AmeCheckbox';
 import AmeSlider from '@/ui/slider/AmeSlider';
 import { settingsAtoms, AtomName } from '@/state/aiAtoms/settingsAtoms';
+import AmeResponsiveSlider from "@/ui/slider/AmeResponsiveSlider";
 
 interface AmeSettingsModalProps {
     opened: boolean;
@@ -69,6 +70,14 @@ const AmeSettingsModal: React.FC<AmeSettingsModalProps> = ({ opened, onClose = (
                     step={sliderOptions.step}
                     value={numberValue}
                     onChange={(val: number) => setNumberValue(val)}
+                />
+            );
+        }
+
+        if (settingAtom.componentType === 'SliderPreset') {
+            return (
+                <AmeResponsiveSlider
+                    setting={settingAtom}
                 />
             );
         }

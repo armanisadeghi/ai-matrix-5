@@ -1,4 +1,50 @@
 import { ReactNode } from 'react';
+import { RecoilState } from "recoil";
+import { string } from "@recoiljs/refine";
+
+
+
+interface CheckboxSettingAtom {
+    atom: RecoilState<boolean>;
+    label: string;
+    componentType: 'Checkbox';
+    options?: any;
+}
+
+interface SelectSettingAtom {
+    atom: RecoilState<string>;
+    label: string;
+    componentType: 'Select';
+    options: { value: string; label: string }[];
+}
+
+interface InputSettingAtom {
+    atom: RecoilState<string>;
+    label: string;
+    componentType: 'Input';
+    options?: any;
+}
+
+interface SliderSettingAtom {
+    atom: RecoilState<number>;
+    label: string;
+    componentType: 'Slider';
+    options: { min: number; max: number; step: number };
+}
+
+interface SliderPresetSettingAtom {
+    atom: RecoilState<number>;
+    label: string;
+    componentType: 'SliderPreset';
+    options: { value: number; label: string }[];
+}
+
+
+export type SettingAtom = CheckboxSettingAtom | SelectSettingAtom | InputSettingAtom | SliderSettingAtom | SliderPresetSettingAtom;
+
+export type { CheckboxSettingAtom, SelectSettingAtom, InputSettingAtom, SliderSettingAtom, SliderPresetSettingAtom };
+
+
 
 // Chat Settings
 export interface ChatSettings {

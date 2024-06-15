@@ -24,13 +24,16 @@ const BrokerRadioGroup = ({ required, value, onChange, error, description, label
             description={description}
             required={required}
             onChange={onChange}
+            color={color}
         >
             <Group mt="xs">
                 <Radio
                     size={size}
+                    color={color}
                     value="yes" label="Yes" />
                 <Radio
                     size={size}
+                    color={color}
                     value="no" label="No" />
             </Group>
         </Radio.Group>

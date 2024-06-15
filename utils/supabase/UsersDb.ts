@@ -1,4 +1,5 @@
-import supabase from "./client";
+// UsersDb class to interact with the Supabase database
+import supabase from './client';
 import { MatrixUser } from '@/services/Users';
 
 
@@ -7,7 +8,7 @@ export class UsersDb {
         const { data, error } = await supabase
             .from('user')
             .select('*')
-            .eq('"id"', userId)
+            .eq('id', userId)
             .single();  // Ensures that exactly one row is expected
 
         if (error) {
@@ -23,7 +24,7 @@ export class UsersDb {
         return data as MatrixUser;
     }
 
-    /*
+
     async createUser(user: MatrixUser): Promise<void> {
         const { error } = await supabase
             .from('user')
@@ -33,7 +34,7 @@ export class UsersDb {
             console.error('Error creating user:', error);
         }
     }
-    */
+
 
     async updateUser(userId: string, updatedData: Partial<MatrixUser>): Promise<void> {
         const { error } = await supabase
