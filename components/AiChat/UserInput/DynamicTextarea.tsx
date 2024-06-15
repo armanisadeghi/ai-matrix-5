@@ -19,6 +19,10 @@ interface DynamicTextareaProps {
   className?: string;
 }
 
+
+// TODO - Replace slider with this one: AmeResponsiveSlider (After testing to make sure there are no styling issues)
+
+
 const DynamicTextarea = forwardRef<HTMLDivElement, DynamicTextareaProps>((
   { systemText, placeholderText, className }, ref) => {
     const {

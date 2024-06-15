@@ -7,7 +7,7 @@ import { activeChatMessagesArrayAtom, assistantTextStreamAtom } from "@/state/ai
 import { MessageEntry } from '@/types/chat';
 import styles from './ResponseArea.module.css';
 
-interface ResponseAreaProps {
+export interface ResponseAreaProps {
     bottomPadding: number;
     className?: string;
 }

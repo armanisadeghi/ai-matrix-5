@@ -9,7 +9,6 @@ interface AssistantMessageProps {
 }
 
 const AssistantMessage: React.FC<AssistantMessageProps> = ({ text }) => {
-
     if (!text) {
         return null;
     }
@@ -21,12 +20,9 @@ const AssistantMessage: React.FC<AssistantMessageProps> = ({ text }) => {
             </Grid.Col>
 
             <Grid.Col span={10} style={{ display: 'flex', alignItems: 'center' }}>
-
                 <Text className={styles.responseTextArea} style={{ marginLeft: '10px' }}>
-                    <MarkdownRenderer content={text || 'Loading...'} />
+                    <MarkdownRenderer content={text} />
                 </Text>
-
-
             </Grid.Col>
         </Grid>
     );

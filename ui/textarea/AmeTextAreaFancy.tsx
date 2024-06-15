@@ -37,8 +37,8 @@ const AmeTextAreaFancy = forwardRef<HTMLDivElement, AmeTextAreaFancyProps>((
             onClick={handleBoxClick}
             tabIndex={-1}
         >
-            <Group justify='space-between' style={{ width: '100%', alignItems: 'center' }}>
-                <div style={{ fontSize: '0.7rem', fontWeight: 'normal', color: '#909090', userSelect: 'none' }}>
+            <Group justify='space-between' className={styles['amefancy-group']}>
+                <div className={styles['amefancy-label']}>
                     {label}
                 </div>
                 <div>
