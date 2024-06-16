@@ -7,7 +7,7 @@ import {useListProvider} from "../../SmartList.tsx";
 export default function ListNested({arr}: any) {
     const {options}: any = useListProvider();
 
-    const [items, setItems] = useState(null)
+    const [items, setItems] = useState<any[] | null>(null)
 
 
     useEffect(() => {
@@ -20,7 +20,7 @@ export default function ListNested({arr}: any) {
 
             return (
                 <>
-                    {items.map((item: any) => (
+                    {items.map((item) => (
                         <Point key={item.id} item={item}/>
                     ))}
 
@@ -30,7 +30,7 @@ export default function ListNested({arr}: any) {
 
             return (
                 <div className={`pl-4`}>
-                    {items.map((item: any) => (
+                    {items.map((item) => (
                         <Point key={item.id} item={item}/>
                     ))}
 

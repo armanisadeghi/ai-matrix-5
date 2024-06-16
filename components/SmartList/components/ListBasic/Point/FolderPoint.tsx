@@ -9,18 +9,15 @@ import DropIndicator from "../../etc/DropIndicator/DropIndicator";
 import {Text, useMantineColorScheme} from "@mantine/core";
 
 
-
-
-
-export default function FolderPoint({item}) {
+export default function FolderPoint({item}: { item: any }) {
     const [isOpen, setIsOpen] = useState(false)
-    const {selectedValue, setSelectedValue}:any = useListProvider();
+    const {selectedValue, setSelectedValue}: any = useListProvider();
     const {options}: any = useListProvider();
     const {isOver, isDragging, attributes, listeners, setNodeRef, transform, transition,} = useSortable({id: item.id});
 
-    const { colorScheme, setColorScheme } = useMantineColorScheme();
+    const {colorScheme, setColorScheme} = useMantineColorScheme();
 
-    const getBackgroundColor = (isHovered) => {
+    const getBackgroundColor = (isHovered: boolean) => {
         if (item.disabled) return 'transparent';
         if (isHovered) {
             return colorScheme === 'dark' ? '#333' : '#f5f5f5';
@@ -36,7 +33,7 @@ export default function FolderPoint({item}) {
     } : undefined;
 
 
-    function nestedType(arr) {
+    function nestedType(arr: any[]) {
         if (options['dnd'] === true) {
             return <ListNestedDragAndDrop arr={arr}/>
         } else {
@@ -47,7 +44,7 @@ export default function FolderPoint({item}) {
 
     return (
         <>
-            <DropIndicator isOver={isOver} />
+            <DropIndicator isOver={isOver}/>
             <li
                 style={{
                     ...style,
@@ -75,9 +72,14 @@ export default function FolderPoint({item}) {
                         width: '100%',
                     }}
                 >
-                    <Selector item={item} isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} type={'folder'} />
+                    <Selector item={item} isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} type={'folder'}/>
                     {options.counter && (
-                        <Text size={'sm'} style={{ marginLeft: 'auto', width: 'fit-content', display: 'block', margin: '0 0 0 auto' }}>
+                        <Text size={'sm'} style={{
+                            marginLeft: 'auto',
+                            width: 'fit-content',
+                            display: 'block',
+                            margin: '0 0 0 auto'
+                        }}>
                             {item.children?.length}
                         </Text>
                     )}

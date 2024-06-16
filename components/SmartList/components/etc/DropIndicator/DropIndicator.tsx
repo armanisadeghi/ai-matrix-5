@@ -1,4 +1,4 @@
-const DropIndicator = ({isOver}) => (
+const DropIndicator = ({isOver} : {isOver: any}) => (
     <div style={{
         height: '2px',
         background: isOver ? 'lightgray' : 'transparent',

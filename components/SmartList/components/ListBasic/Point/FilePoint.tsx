@@ -11,13 +11,13 @@ import {useMantineColorScheme} from "@mantine/core";
 
 
 
-export default function FilePoint({item}) {
+export default function FilePoint({item} : {item: any}) {
     const {options, selectedValue}:any = useListProvider();
     const {isOver, isDragging, attributes, listeners, setNodeRef, transform, transition,} = useSortable({id: item.id});
 
     const { colorScheme, setColorScheme } = useMantineColorScheme();
 
-    const getBackgroundColor = (isHovered) => {
+    const getBackgroundColor = (isHovered : boolean | null) => {
         if (item.disabled) return 'transparent';
         if (isHovered) {
             return colorScheme === 'dark' ? '#333' : '#f5f5f5';

@@ -6,7 +6,7 @@ import {useListProvider} from "@/components/SmartList/SmartList";
 import CollapseBtn from "@/components/SmartList/components/etc/Collapsebtn";
 import {Checkbox, Radio} from "@mantine/core";
 
-function getAllChildrenIds(item:any, ids:any) {
+function getAllChildrenIds(item: any, ids: any) {
     if (!item.children || item.children.length === 0) {
         return ids;
     } else {
@@ -18,10 +18,15 @@ function getAllChildrenIds(item:any, ids:any) {
     }
 }
 
-export default function Selector({item, isOpen, onClick, type}: {item: any, isOpen: boolean, onClick?: any, type: any} ) {
-    const {selectedValue, setSelectedValue}:any = useListProvider();
+export default function Selector({item, isOpen, onClick, type}: {
+    item: any,
+    isOpen: boolean | null,
+    onClick?: any,
+    type: any
+}) {
+    const {selectedValue, setSelectedValue}: any = useListProvider();
     const [trigger, setTrigger] = useState(false)
-    const {options}:any = useListProvider();
+    const {options}: any = useListProvider();
 
     const isSelected = selectedValue?.length > 0 && selectedValue.some((i: any) => i.id == item.id);
 
@@ -39,8 +44,7 @@ export default function Selector({item, isOpen, onClick, type}: {item: any, isOp
                 } else {
                     setSelectedValue([...selectedValue, item]);
                 }
-            }
-            else if (options.select === 'checkbox-hierarchical') {
+            } else if (options.select === 'checkbox-hierarchical') {
                 if (isSelected) {
                     const allIdsToRemove = getAllChildrenIds(item, [item]);
                     const findItem = selectedValue.filter((id: any) => !allIdsToRemove.includes(id))
@@ -50,8 +54,7 @@ export default function Selector({item, isOpen, onClick, type}: {item: any, isOp
                     const allIds = getAllChildrenIds(item, [item]);
                     setSelectedValue([...selectedValue, ...allIds]);
                 }
-            }
-            else {
+            } else {
                 setSelectedValue([item]);
             }
 
@@ -75,7 +78,7 @@ export default function Selector({item, isOpen, onClick, type}: {item: any, isOp
         else onClick()
     }
 
-    if(type === 'folder') {
+    if (type === 'folder') {
         if (options.select === 'checkbox') {
             return (
                 <>
@@ -117,7 +120,7 @@ export default function Selector({item, isOpen, onClick, type}: {item: any, isOp
                         gap: 8
                     }}>
                         <CollapseBtn onCollapse={isOpen} onClick={handleCollapse}/>
-                        <Radio checked={isSelected} onChange={handleSelect} />
+                        <Radio checked={isSelected} onChange={handleSelect}/>
                         <FolderIco isOpen={isOpen}/>
                     </div>
                     <Text item={item} isSelected={isSelected} onClick={handleSelect}/>
@@ -140,12 +143,11 @@ export default function Selector({item, isOpen, onClick, type}: {item: any, isOp
             )
 
         }
-    }
-    else if(type === 'file') {
+    } else if (type === 'file') {
         if (options.select === 'checkbox' || options.select === 'checkbox-hierarchical') {
             return (
                 <>
-                    <Checkbox onChange={handleSelect} disabled={item['disabled']} checked={isSelected} />
+                    <Checkbox onChange={handleSelect} disabled={item['disabled']} checked={isSelected}/>
                     <IconFile/>
                     <Text item={item} isSelected={isSelected} onClick={null}/>
                 </>
@@ -154,7 +156,7 @@ export default function Selector({item, isOpen, onClick, type}: {item: any, isOp
         } else if (options.select === 'radio') {
             return (
                 <>
-                    <Radio checked={isSelected} onChange={handleSelect} />
+                    <Radio checked={isSelected} onChange={handleSelect}/>
                     <IconFile/>
                     <Text item={item} isSelected={isSelected} onClick={null}/>
                 </>

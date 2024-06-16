@@ -20,7 +20,8 @@ import Point from "./Point/Point.tsx";
 
 export default function ListNestedDragAndDrop({arr} : any) {
 
-    const [items, setItems] = useState(null)
+    const [items, setItems] = useState<any[]>([]);
+
 
     useEffect(() => {
         setItems(arr)
@@ -29,7 +30,7 @@ export default function ListNestedDragAndDrop({arr} : any) {
     const [activeId, setActiveId] = useState(null);
 
 
-    const getItemPost = (id : any) => arr.findIndex((item : any) => item.id === id)
+    const getItemPost = (id: any) => arr.findIndex((item: any) => item.id === id)
 
 
     const sensors = useSensors(
@@ -54,7 +55,7 @@ export default function ListNestedDragAndDrop({arr} : any) {
     }
 
 
-    function handleDragEnd(event : any) {
+    function handleDragEnd(event: any) {
         const {active, over} = event;
         if (active.id === over.id) return;
 
@@ -70,7 +71,7 @@ export default function ListNestedDragAndDrop({arr} : any) {
     }
 
 
-    if (items !== null) {
+    if (items !== null && items.length > 0) {
         // @ts-ignore
         return (
 
@@ -80,7 +81,7 @@ export default function ListNestedDragAndDrop({arr} : any) {
                             collisionDetection={closestCenter}
                             measuring={measuring}>
                     <SortableContext items={items} strategy={verticalListSortingStrategy}>
-                        {items.map((item : any) => (
+                        {items.map((item: any) => (
                             <Point key={item.id} item={item}/>
                         ))}
                     </SortableContext>

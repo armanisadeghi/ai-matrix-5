@@ -1,6 +1,6 @@
 import {IconChevronDown, IconChevronRight} from '@tabler/icons-react';
 
-const CollapseBtn = ({onCollapse, onClick}) => {
+const CollapseBtn = ({onCollapse, onClick} : {onCollapse: any, onClick: any}) => {
     return (
         <div
             onClick={onClick}
