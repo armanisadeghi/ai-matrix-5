@@ -93,9 +93,6 @@ export const BrokerEdit = ({ setCurrentData, currentData }: BrokerFormProps) => 
                     <NumberInput size="xs" placeholder="Max rows" label="Max Rows" onChange={(e) => handleChange("maxRows", e)} />
                     <Space h="sm" />
 
-                    <TextInput size="xs" label="Dependencies" description="Separate dependencies with commas" placeholder="Dependencies" onChange={(e) => handleChange("dependencies", e.target.value)} />
-                    <Space h="sm" />
-
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, md: 4 }}>
                     <Switch size="xs" label="Marks" onChange={() => setIsMarks(!isMarks)} />
@@ -129,7 +126,7 @@ export const BrokerEdit = ({ setCurrentData, currentData }: BrokerFormProps) => 
                     <Space h="sm" />
                     <TextInput size="xs" label="Display Order" placeholder="Display Order" onChange={(e) => handleChange("displayOrder", e.target.value)} />
                     <Space h="sm" />
-
+                    <TextInput size="xs" label="Dependencies" description="Separate dependencies with commas" placeholder="Dependencies" onChange={(e) => handleChange("dependencies", e.target.value)} />
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, md: 4 }}>
                     <FileInput

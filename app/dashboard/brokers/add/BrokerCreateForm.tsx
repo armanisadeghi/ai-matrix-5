@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Fieldset, Space, TextInput, Text, Grid, Select } from '@mantine/core';
+import { Button, Fieldset, Space, TextInput, Text, Grid, Select, Combobox } from '@mantine/core';
 import BrokerComponent from '../BrokerComponent';
 import { Component, ComponentType, Broker } from '@/types/broker';
 import { useState } from 'react';
@@ -15,7 +15,7 @@ const initialValues = {
     name: '',
     officialName: '',
     defaultValue: "",
-    dataType: "",
+    dataType: "str",
     component: {} as Component,
     description: "",
 }
@@ -33,11 +33,20 @@ export const BrokerCreateForm = () => {
         label: key,
     })) as { value: string; label: string }[];
 
+    const dataTypeOptions = [
+        { value: 'str', label: 'Text', tooltip: 'Simple words, sentences and paragraphs of any type of text (Very Flexible).' },
+        { value: 'int', label: 'Whole Number', tooltip: 'Numbers without decimals, like 1, 2, 3.' },
+        { value: 'float', label: 'Number with decimals', tooltip: 'Numbers with fractions, like 1.5, 2.75.' },
+        { value: 'bool', label: 'Yes/No', tooltip: 'A simple choice between Yes or No.' },
+        { value: 'json', label: 'Dictionary/JSON', tooltip: 'Structured data with keys and values, like an address book where each contact has a name, address, and phone number.' },
+        { value: 'list', label: 'Comma Separated List or Array', tooltip: 'A collection of items, like a shopping list separated by commas.' },
+        { value: 'url', label: 'URL Link', tooltip: 'A web address, like https://example.com.' },
+    ];
+
     const handleAddBroker = () => {
-        const dataType = currentData.component.defaultValue ? typeof currentData.component.defaultValue : typeof currentData.component.type.valueOf() as string;
         try {
-            brokerManager.createBroker({ ...currentData, dataType: dataType, officialName: currentData.name.toUpperCase().replace(/\s/g, '_') });
-            setCurrentData(initialValues);
+            brokerManager.createBroker({ ...currentData, name: currentData.name.toUpperCase(), description: currentData.description, dataType: currentData.dataType, officialName: currentData.name.toUpperCase().replace(/\s/g, '_') });
+            setCurrentData(initialValues as Broker);
             Notifications.show({
                 title: 'Broker created',
                 message: 'Broker created successfully',
@@ -55,6 +64,10 @@ export const BrokerCreateForm = () => {
 
     };
 
+    const handleDataTypeChange = (value: string) => {
+        setCurrentData({ ...currentData, dataType: value as Broker['dataType'], component: { ...currentData.component, type: value } })
+    }
+
     return (
         <Grid>
             <Grid.Col span={{ base: 12, md: 6 }}>
@@ -71,6 +84,7 @@ export const BrokerCreateForm = () => {
                         }
                     />
                     <Space h="sm" />
+                    <Select label="Data type" data={dataTypeOptions} value={currentData.dataType} onChange={() => handleDataTypeChange} />
                     <TextInput label="Description" value={currentData.description}
                         onChange={value => setCurrentData({ ...currentData, description: value.target.value, component: { ...currentData.component, description: value.target.value } })} placeholder='Enter a description' />
                     <Space h="sm" />

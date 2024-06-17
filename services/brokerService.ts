@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import { Broker } from "@/types/broker";
+import { Broker, dataType } from "@/types/broker";
 import { brokersAtom, categoryAtom, brokerAtom } from 'context/atoms/brokerAtoms';
 import { useSetRecoilState } from 'recoil';
 import { uuid } from 'uuidv4';
@@ -22,8 +22,15 @@ export function createBrokerManager() {
             return [];
         }
 
-        setBrokersAtom(data.map((broker) => ({ ...broker, dataType: broker.data_type, defaultValue: broker.component.default_value })));
-        return data.map((broker) => ({ ...broker, dataType: broker.data_type, defaultValue: broker.component.default_value }));
+        const brokers = data.map((broker) => ({
+            ...broker,
+            name: broker.name || broker.component.label,
+            dataType: dataType[broker.data_type],
+            description: broker.description || broker.component.description,
+        }));
+
+        setBrokersAtom(brokers);
+        return brokers;
     }
 
     async function fetchCategories(): Promise<string[]> {

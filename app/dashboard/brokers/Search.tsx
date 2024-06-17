@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { TextInput } from '@mantine/core';
 import { Broker } from '@/types/broker';
+import { IconSearch } from '@tabler/icons-react';
 
 const SearchComponent = ({ brokersList, setFilteredBrokers }: { brokersList: Broker[], setFilteredBrokers: React.Dispatch<React.SetStateAction<Broker[]>> }) => {
     const [value, setValue] = useState('');
@@ -16,7 +17,8 @@ const SearchComponent = ({ brokersList, setFilteredBrokers }: { brokersList: Bro
 
     return (
         <TextInput
-            w={'50%'}
+            w={'100%'}
+            leftSection={<IconSearch size={14} />}
             placeholder="Search for name..."
             value={value}
             onChange={handleSearchChange}

@@ -1,69 +1,68 @@
-import React, { useEffect, useState } from 'react';
-import { Group, Container, Text, Badge, Burger, Paper, Stack, List, SegmentedControl, Flex, Grid, ScrollArea } from '@mantine/core';
-import { createBrokerManager } from '@/services/brokerService';
-import { useRecoilValue } from 'recoil';
-import { categoryAtom } from '@/context/atoms/brokerAtoms';
-import { useMediaQuery } from '@mantine/hooks';
+import React, { useState } from 'react';
+import { SegmentedControl, Grid, Text } from '@mantine/core';
 import { uuid } from 'uuidv4';
+import { Broker } from '@/types/broker';
 
-const LeftPanel: React.FC = () => {
-    const categories = useRecoilValue(categoryAtom);
-    const [value, setValue] = useState('All');
-    const isMobile = useMediaQuery('(max-width: 767px)');
+interface LeftPanelProps {
+    brokers: Broker[];
+    setFilteredBrokers: React.Dispatch<React.SetStateAction<Broker[]>>;
+}
 
-    const brokerManager = createBrokerManager();
+const LeftPanel: React.FC<LeftPanelProps> = ({ brokers, setFilteredBrokers }: LeftPanelProps) => {
+    const categories = [...new Set(brokers.map((broker: any) => broker.category))].filter((category: any) => category).sort();
+    const dataTypes = [...new Set(brokers.map((broker: any) => broker.dataType))].filter((dataType: any) => dataType).sort();
+    const [categoryValue, setCategoryValue] = useState('All');
+    const [dataTypeValue, setDataTypeValue] = useState('All');
 
-    useEffect(() => {
-        const fetchCategory = async () => {
-            await brokerManager.fetchCategories();
-        };
-        fetchCategory();
-    }, []);
+    const handleCategoryChange = (selectedCategory: string) => {
+        setFilteredBrokers(selectedCategory === 'All' ? brokers : brokers.filter((broker: any) => broker.category === selectedCategory));
+        setCategoryValue(selectedCategory);
+    };
+
+    const handleDataTypeChange = (selectedDataType: string) => {
+        setFilteredBrokers(selectedDataType === 'All' ? brokers : brokers.filter((broker: any) => broker.dataType === selectedDataType));
+        setDataTypeValue(selectedDataType);
+    };
 
     return (
         <Grid>
-            {isMobile ? (
-                <Grid.Col span={{ base: 12, lg: 12 }}>
-                    <ScrollArea style={{ height: '50px' }}>
-                        <SegmentedControl
-                            key={value}
-                            orientation="horizontal"
-                            fullWidth
-                            value={value}
-                            onChange={setValue}
-                            data={
-                                [...categories, 'All'].map((category) => ({
-                                    key: uuid(),
-                                    label: category,
-                                    value: category
-                                }))
-                            }
-                        />
-                    </ScrollArea>
-                </Grid.Col>
-            ) : (
-                <>
-                    <Grid.Col span={{ base: 12, lg: 12 }}>
-                        <SegmentedControl
-                            key={value}
-                            orientation="vertical"
-                            fullWidth
-                            value={value}
-                            onChange={setValue}
-                            data={
-                                [...categories, 'All'].map((category) => ({
-                                    key: uuid(),
-                                    label: category,
-                                    value: category
-                                }))
-                            }
-                        />
-                    </Grid.Col>
+            <Grid.Col span={{ base: 12, lg: 12 }}>
+                <Text size='sm'>Filter by category</Text>
+                <SegmentedControl
 
-                </>
-            )}
+                    key={categoryValue}
+                    orientation="vertical"
+                    fullWidth
+                    value={categoryValue}
+                    onChange={handleCategoryChange}
+                    data={
+                        [...categories, 'All'].map((category) => ({
+                            key: uuid(),
+                            label: category,
+                            value: category
+                        }))
+                    }
+                />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, lg: 12 }}>
+                <Text size='sm'>Filter by Data Type</Text>
+                <SegmentedControl
+                    key={dataTypeValue}
+                    orientation="vertical"
+                    fullWidth
+                    value={dataTypeValue}
+                    onChange={handleDataTypeChange}
+                    data={
+                        [...dataTypes, 'All'].map((dataType) => ({
+                            key: uuid(),
+                            label: dataType,
+                            value: dataType
+                        }))
+                    }
+                />
+            </Grid.Col>
         </Grid>
-    )
+    );
 };
 
 export default LeftPanel;

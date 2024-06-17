@@ -4,11 +4,22 @@ export interface Broker {
     name: string;
     defaultValue?: string | number | boolean | string[] | number[] | File;
     officialName: string;
-    dataType: string;
+    dataType: "str" | "int" | "float" | "bool" | "dict" | "list" | "url";
     description?: string;
     component: Component;
+    category: string;
     [key: string]: any;
 }
+
+export const dataType: { [key: string]: string } = {
+    'str': 'Text',
+    'int': 'Number without decimals',
+    'float': 'Number with decimals',
+    'bool': 'Yes/No',
+    'dict': 'Dictionary/JSON',
+    'list': 'List or Array',
+    'url': 'URL Link',
+};
 
 interface TableDataRow {
     [key: string]: any;
