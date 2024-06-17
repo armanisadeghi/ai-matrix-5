@@ -17,7 +17,11 @@ export function UserMenu({ componentSize }: UserMenuProps) {
     const userPictureLink = user?.picture;
 
     if (isLoading) {
-        return <div>Loading...</div>; // or a skeleton loader
+        return (
+            <ActionIcon title="user menu" size={componentSize} variant="transparent" style={{ visibility: 'hidden' }}>
+
+            </ActionIcon>
+        );
     }
 
     return (

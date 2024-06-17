@@ -1,0 +1,5 @@
+#left-sidebar,
+#right-sidebar {
+    width: var(--sidebar-width, 0px);
+    transition: width 300ms ease-out; /* Default transition */
+}

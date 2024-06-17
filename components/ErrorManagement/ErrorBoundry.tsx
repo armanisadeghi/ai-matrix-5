@@ -1,4 +1,4 @@
-// nice-working/ErrorManagement/ErrorBoundry.tsx
+// nice-working/ErrorManagement/ErrorBoundary.tsx
 import React, { Component, ErrorInfo, ReactNode } from "react";
 import { Code, Container, Group, Spoiler, ThemeIcon } from "@mantine/core";
 import { IconBug } from "@tabler/icons-react";

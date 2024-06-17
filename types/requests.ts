@@ -1,6 +1,6 @@
 // types/requests.ts
 
-import { UserProfile } from "@/services/Users";
+import { MatrixUser } from "@/types/user";
 
 export type RequestType = 'webSocketText' | 'webSocketData' | 'socketIO' | 'dbTask' | 'restAPI' | 'other' | undefined;
 
@@ -19,7 +19,7 @@ export interface Metadata {
     taskSpecs?: TaskSpecs;
     timestamp?: string;
     source?: string;
-    user?: UserProfile | {};
+    user?: MatrixUser | {};
     [key: string]: any; // Allow for additional properties
 }
 

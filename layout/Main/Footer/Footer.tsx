@@ -1,47 +1,31 @@
 "use client";
+
 import { ActionIcon, ActionIconProps, AppShell, Box, Group, Stack, Title } from "@mantine/core";
-import { IconArrowBarToDown, IconArrowBarToUp, IconChevronDown, IconChevronUp } from "@tabler/icons-react";
-import { useFooter } from "@/context/FooterContext";
+import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
+import { useRecoilState } from "recoil";
+import { footerAtom } from "@/state/layoutAtoms";
+import useToggleSizes from "@/hooks/layout/useToggleSizes";
 
 const actionProps: ActionIconProps = {
     variant: "light",
 };
 
-interface FooterProps {
-    state: "full" | "compact" | "icons" | "hidden";
-}
+export const Footer = () => {
+    const [footerHeight] = useRecoilState(footerAtom);
+    const { toggleSize } = useToggleSizes();
 
-export const Footer = ({ state }: FooterProps) => {
-    const { handleExpand, handleCollapse } = useFooter();
+    const handleToggle = () => {
+        toggleSize('footer');
+    };
 
     return (
         <Box p="xs">
             <AppShell.Section>
-                {state === "compact" && (
-                    <Group justify="flex-end" gap="xs">
-                        <ActionIcon onClick={handleExpand} {...actionProps}>
-                            <IconChevronUp size={18} />
-                        </ActionIcon>
-                        <ActionIcon onClick={handleCollapse} {...actionProps}>
-                            <IconChevronDown size={18} />
-                        </ActionIcon>
-                    </Group>
-                )}
-
-                {state === "full" && (
-                    <Group justify="flex-end" gap="xs">
-                        <ActionIcon onClick={handleCollapse} {...actionProps}>
-                            <IconChevronDown size={18} />
-                        </ActionIcon>
-                    </Group>
-                )}
-                {state === "icons" && (
-                    <Group justify="center" gap="xs">
-                        <ActionIcon onClick={handleCollapse} {...actionProps}>
-                            <IconChevronDown size={18} />
-                        </ActionIcon>
-                    </Group>
-                )}
+                <Group justify="flex-end" gap="xs">
+                    <ActionIcon onClick={handleToggle} {...actionProps}>
+                        {footerHeight === 0 ? <IconChevronUp size={18} /> : <IconChevronDown size={18} />}
+                    </ActionIcon>
+                </Group>
             </AppShell.Section>
 
             <AppShell.Section>

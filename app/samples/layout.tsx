@@ -1,21 +1,19 @@
 // app/samples/layout.tsx
 'use client'
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { LayoutProvider } from '@/context/LayoutContext';
 import { SidebarProvider } from '@/context/SidebarContext';
 import { MainLayout } from '@/layout';
 import { ReactNode } from 'react';
 import { RecoilRoot, useRecoilState } from 'recoil';
 import { activeUserAtom } from "@/state/userAtoms";
-import { HeaderProvider } from "@/context/HeaderContext";
-import { FooterProvider } from "@/context/FooterContext";
 import ErrorBoundary from "@/components/ErrorManagement/ErrorBoundry";
 import { PresetType } from "@/context/atoms/layoutAtoms";
-import { NavbarProvider } from "@/context/NavbarContext";
 import Loading from "@/app/dashboard/loading";
 import { UserProvider, useUser } from "@auth0/nextjs-auth0/client";
-import { MatrixUser } from "@/services/Users";
+import { useCompleteUserProfile } from "@/hooks/users/useMatrixUser";
+import { presetTypeAtom } from "@/state/layoutAtoms";
 
 type Props = {
     children: ReactNode;
@@ -23,47 +21,49 @@ type Props = {
 };
 
 const LayoutContent: React.FC = () => {
-    const { user, error, isLoading } = useUser();
+    const {user, error, isLoading} = useUser();
     const [activeUser, setActiveUser] = useRecoilState(activeUserAtom);
+    const [presetType, setPresetType] = useRecoilState(presetTypeAtom);
 
-    React.useEffect(() => {
-        if (isLoading) return;
-        if (error) {
-            console.error('Error loading user:', error);
-            return;
-        }
+    useEffect(() => {
+        setPresetType('dashboard');
 
         if (user) {
-            setActiveUser(user);
-            const matrixUser = new MatrixUser(user);
+            setActiveUser(user as any);
+            console.log('LayoutContent has set active user atom', activeUser);
         }
-    }, [user, error, isLoading, setActiveUser, activeUser]);
+    }, [user]);
+    useCompleteUserProfile();
 
-    if (isLoading) return <Loading />;
+    if (isLoading) {
+        return (
+            <div className="page-layout">
+                <Loading/>
+            </div>
+        );
+    }
+
+    if (error) {
+        console.error('Error loading user:', error);
+        return;
+    }
+
     return null;
 };
 
-function Layout({ children, preset }: Props) {
+function Layout({children, preset}: Props) {
     return (
         <UserProvider>
             <ErrorBoundary>
                 <RecoilRoot>
-                    <React.Suspense fallback={<Loading />}>
-                        <LayoutProvider initialNavbarState="icons">
-                            <NavbarProvider initialState="icons">
-                                <SidebarProvider initialAsideState="compact">
-                                    <HeaderProvider initialState="medium">
-                                        <FooterProvider initialState="hidden">
-                                                <MainLayout>
-                                                    <LayoutContent />
-                                                    {children}
-                                                </MainLayout>
-                                        </FooterProvider>
-                                    </HeaderProvider>
-                                </SidebarProvider>
-                            </NavbarProvider>
-                        </LayoutProvider>
-                    </React.Suspense>
+                    <LayoutProvider>
+                        <SidebarProvider>
+                            <MainLayout>
+                                <LayoutContent/>
+                                {children}
+                            </MainLayout>
+                        </SidebarProvider>
+                    </LayoutProvider>
                 </RecoilRoot>
             </ErrorBoundary>
         </UserProvider>

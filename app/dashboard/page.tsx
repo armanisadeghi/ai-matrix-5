@@ -1,7 +1,7 @@
 // app/dashboard/page.tsx
 
 function Page() {
-  return <>Home</>;
+  return <></>;
 }
 
 export default Page;

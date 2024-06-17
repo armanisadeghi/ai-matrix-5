@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { getSession } from '@auth0/nextjs-auth0/edge';
-import { MatrixUser } from "@/services/Users";
 
 export default async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
@@ -18,19 +17,12 @@ export default async function middleware(request: NextRequest) {
             const user: any = session.user;
             console.log('user', user);
             res.cookies.set('hl', user?.language);
-            if (user) {
-                console.log(user);
-                const matrixUser = new MatrixUser(user);
-                console.log(matrixUser);
-            }
-
             return res;
         } else {
             // Redirect to Auth0 login and set returnTo query param to the original URL
             return NextResponse.redirect(new URL(`/api/auth/login?returnTo=${encodeURIComponent(request.url)}`, request.url));
         }
     }
-
     return NextResponse.next();
 }
 

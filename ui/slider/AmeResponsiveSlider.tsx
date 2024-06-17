@@ -14,9 +14,10 @@ interface AmeResponsiveSliderProps {
     setting?: SliderPresetSettingAtom;
     customAtom?: RecoilState<number>;
     customMarks?: Mark[];
+    onChangeCallback?: (value: number) => void;
 }
 
-const AmeResponsiveSlider: React.FC<AmeResponsiveSliderProps> = ({ setting = matrixLevelSetting, customAtom, customMarks }) => {
+const AmeResponsiveSlider: React.FC<AmeResponsiveSliderProps> = ({ setting = matrixLevelSetting, customAtom, customMarks, onChangeCallback }) => {
     const [value, setValue] = useRecoilState(customAtom || setting.atom);
     const marks = customMarks || setting.options;
     const [showLimitedMarks, setShowLimitedMarks] = useState(false);
@@ -54,6 +55,13 @@ const AmeResponsiveSlider: React.FC<AmeResponsiveSliderProps> = ({ setting = mat
         return marks;
     };
 
+    const handleSliderChange = (val: number) => {
+        setValue(val);
+        if (onChangeCallback) {
+            onChangeCallback(val);
+        }
+    };
+
     const min = Math.min(...marks.map(mark => mark.value));
     const max = Math.max(...marks.map(mark => mark.value));
 
@@ -62,7 +70,7 @@ const AmeResponsiveSlider: React.FC<AmeResponsiveSliderProps> = ({ setting = mat
         min: min,
         max: max,
         value: value,
-        onChange: setValue,
+        onChange: handleSliderChange,
         marks: getDynamicMarks(),
         size: 'sm',
     };

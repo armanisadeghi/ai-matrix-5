@@ -8,9 +8,9 @@ import {
     chatSummariesSelector, activeChatIdAtom, selectedChatMessagesSelector, useFetchAndStoreChatDetails
 } from "@/state/aiAtoms/chatAtoms";
 import AmeActionIcon from "@/ui/button/AmeActionIcon";
-import { BsFillPatchPlusFill } from "react-icons/bs";
 import { ChatSummary } from "@/types";
 import { activeUserAtom } from "@/state/userAtoms";
+import { IoCreateOutline } from "react-icons/io5";
 
 const ChatSidebar = () => {
     const [chats, setChats] = useRecoilState(ChatSidebarListAtom);
@@ -20,7 +20,7 @@ const ChatSidebar = () => {
     const chatDetailsLoadable = useRecoilValueLoadable(chatDetailsSelector);
     const [activeChatId, setSelectedChatId] = useRecoilState(activeChatIdAtom);
     const chatMessages = useRecoilValue(selectedChatMessagesSelector(activeChatId || ''));
-    const userId = activeUser?.id ?? '';
+    const userId = activeUser?.matrix_id ?? '';
     const fetchAndStoreChatDetails = useFetchAndStoreChatDetails();
 
     const handleChatSelect = async (chatId: string) => {
@@ -37,8 +37,8 @@ const ChatSidebar = () => {
     return (
         <>
             <div style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: '10px' }}>
-                <AmeActionIcon tooltip="New Chat" onClick={handleNewChat}>
-                    <BsFillPatchPlusFill size={18}/>
+                <AmeActionIcon title="New Chat" onClick={handleNewChat}>
+                    <IoCreateOutline size={18}/>
                 </AmeActionIcon>
             </div>
 

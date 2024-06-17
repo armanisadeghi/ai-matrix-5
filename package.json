@@ -12,7 +12,7 @@
         "storybook:build": "storybook build",
         "build:clean": "rm -rf .next && next build",
         "clean": "rm -rf .next node_modules",
-    "build-storybook": "storybook build"
+        "build-storybook": "storybook build"
     },
     "dependencies": {
         "@ai-sdk/anthropic": "^0.0.19",
@@ -79,6 +79,7 @@
         "install": "^0.13.0",
         "lowlight": "^3.1.0",
         "mantine-datatable": "^7.10.1",
+        "mantine-react-table": "2.0.0-beta.5",
         "mongodb": "^6.7.0",
         "next": "^14.2.4",
         "ollama-ai-provider": "^0.7.0",
@@ -103,16 +104,16 @@
     },
     "devDependencies": {
         "@babel/core": "^7.24.7",
-    "@chromatic-com/storybook": "^1.5.0",
+        "@chromatic-com/storybook": "^1.5.0",
         "@storybook/addon-essentials": "^8.1.6",
-    "@storybook/addon-interactions": "^8.1.9",
-    "@storybook/addon-links": "^8.1.9",
-    "@storybook/addon-onboarding": "^8.1.9",
+        "@storybook/addon-interactions": "^8.1.9",
+        "@storybook/addon-links": "^8.1.9",
+        "@storybook/addon-onboarding": "^8.1.9",
         "@storybook/addon-styling-webpack": "^1.0.0",
         "@storybook/blocks": "^8.1.6",
         "@storybook/nextjs": "^8.1.6",
-    "@storybook/react": "^8.1.7",
-    "@storybook/test": "^8.1.9",
+        "@storybook/react": "^8.1.9",
+        "@storybook/test": "^8.1.9",
         "@testing-library/dom": "^10.1.0",
         "@testing-library/jest-dom": "^6.4.6",
         "@testing-library/react": "^16.0.0",
@@ -125,7 +126,7 @@
         "postcss": "^8.4.38",
         "postcss-preset-mantine": "^1.15.0",
         "postcss-simple-vars": "^7.0.1",
-    "storybook": "^8.1.9",
+        "storybook": "^8.1.9",
         "storybook-dark-mode": "^4.0.1",
         "typescript": "^5.4.5"
     },

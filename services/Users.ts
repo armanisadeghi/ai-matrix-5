@@ -1,28 +1,28 @@
+/*
 // services/Users.ts
-'use client';
 
-import { atom, RecoilState } from 'recoil';
-import { useUser } from "@auth0/nextjs-auth0/client";
-import { UserConnection } from './UserConnection';
 import { UsersDb } from '@/utils/supabase/UsersDb';
 
-// Auth0 UserProfile interface with additional fields
-export interface UserProfile {
-    email?: string | null;
-    email_verified?: boolean | null;
-    name?: string | null;
-    nickname?: string | null;
-    picture?: string | null;
-    sub?: string | null;
-    updated_at?: string | null;
-    org_id?: string | null;
+export interface AuthProfile {
     given_name?: string;
     family_name?: string;
+    nickname?: string | null;
+    name?: string | null;
+    picture?: string | null;
+    updated_at?: string | null;
+    sub?: string | null;
     sid?: string;
+    email?: string | null;
+    email_verified?: boolean | null;
+    org_id?: string | null;
+    phone?: string | null;
+    phone_verified?: boolean | null;
     [key: string]: unknown;
 }
 
-export const guestUserProfile: UserProfile = {
+export const guestUserProfile: AuthProfile = {
+    given_name: 'Guest',
+    family_name: 'User',
     email: null,
     email_verified: null,
     name: 'Guest User',
@@ -31,151 +31,159 @@ export const guestUserProfile: UserProfile = {
     sub: null,
     updated_at: null,
     org_id: null,
-    given_name: 'Guest',
-    family_name: 'User',
     sid: undefined,
+    phone: null,
+    phone_verified: null,
 };
 
-// MatrixUserProfile extending UserProfile with additional custom fields
-export interface MatrixUserProfile extends UserProfile {
-    token?: string | null;
+// MatrixProfile extending AuthProfile with additional custom fields
+export interface MatrixProfile extends AuthProfile {
+    matrix_id?: string | null;
+    auth0_id?: string | null;
+    auth0_sub?: string | null;
+    full_name?: string | null;
+    preferred_picture?: string | null;
     account_type?: string | null;
-    org_id?: string | null;
-    phone?: string | null;
-    role?: string | null;
-    status?: string | null;
+    account_status?: string | null;
     created_at?: string | null;
     last_login?: string | null;
     last_activity?: string | null;
+    role?: string | null;
 }
 
-// MatrixUser class implementing MatrixUserProfile with internal naming conventions
-export class MatrixUser implements MatrixUserProfile {
-    user_id?: string | null;
+// MatrixUser class implementing MatrixProfile with internal naming conventions
+export class MatrixUser implements MatrixProfile {
+    matrix_id?: string | null;
     auth0_id?: string | null;
+    auth0_sub?: string | null;
+    first_name?: string | null;
+    last_name?: string | null;
     email?: string | null;
-    name?: string | null;
+    email_verified?: boolean | null;
+    full_name?: string | null;
     nickname?: string | null;
     picture?: string | null;
+    preferred_picture?: string | null;
     updated_at?: string;
-    token?: string | null;
     account_type?: string | null;
+    account_status?: string | null;
     org_id?: string | null;
     phone?: string | null;
+    phone_verified?: boolean | null;
     role?: string | null;
-    status?: string | null;
     created_at?: string | null;
     last_login?: string | null;
     last_activity?: string | null;
     [key: string]: unknown;
 
-    constructor(user: UserProfile, additionalFields: Partial<MatrixUserProfile> = {}) {
-        this.user_id = user.sub;
+    constructor(user: AuthProfile, additionalFields: Partial<MatrixProfile> = {}) {
+        this.matrix_id = additionalFields.matrix_id ?? null;
         this.auth0_id = user.sub;
+        this.auth0_sub = user.sub;
+        this.first_name = user.given_name;
+        this.last_name = user.family_name;
         this.email = user.email;
-        this.name = user.name;
+        this.email_verified = user.email_verified;
+        this.full_name = user.name;
         this.nickname = user.nickname;
         this.picture = user.picture;
+        this.preferred_picture = additionalFields.preferred_picture ?? null;
         this.updated_at = user.updated_at ?? new Date().toISOString();
-        this.token = additionalFields.token;
-        this.account_type = additionalFields.account_type;
+        this.account_type = additionalFields.account_type ?? null;
+        this.account_status = additionalFields.account_status ?? null;
         this.org_id = user.org_id;
-        this.phone = additionalFields.phone;
-        this.role = additionalFields.role;
-        this.status = additionalFields.status;
+        this.phone = user.phone;
+        this.phone_verified = user.phone_verified;
+        this.role = additionalFields.role ?? null;
         this.created_at = additionalFields.created_at ?? new Date().toISOString();
-        this.last_login = additionalFields.last_login;
-        this.last_activity = additionalFields.last_activity;
+        this.last_login = additionalFields.last_login ?? null;
+        this.last_activity = additionalFields.last_activity ?? null;
     }
 
-    updateDetails(details: Partial<MatrixUserProfile>) {
+    updateDetails(details: Partial<MatrixProfile>) {
         Object.assign(this, details);
         this.updated_at = new Date().toISOString();
     }
 }
 
-// UserManager class to manage MatrixUser instances
+
+
+
+
+
+
+
+
+
 export class UserManager {
     private static instance: UserManager | null = null;
-    supabaseService: UsersDb;
-    userConnection?: UserConnection;
+    private supabaseService: UsersDb;
+    private activeUser: MatrixUser | null = null;
 
-    users: MatrixUser[] = [];
-    activeUser: MatrixUser | null = null;
-
-    static ActiveUserAtom: RecoilState<MatrixUser | null> = atom<MatrixUser | null>({
-        key: 'ActiveUser',
-        default: null,
-    });
-
-    private isProcessing: boolean = false;
-    private requestQueue: (() => Promise<void>)[] = [];
-
-    private constructor(supabaseService: UsersDb, userConnection: UserConnection) {
+    private constructor(supabaseService: UsersDb) {
         this.supabaseService = supabaseService;
-        this.userConnection = userConnection;
     }
 
-    public static getInstance(supabaseService?: UsersDb, userConnection?: UserConnection): UserManager {
+    public static getInstance(): UserManager {
         if (!UserManager.instance) {
-            if (!supabaseService || !userConnection) {
-                throw new Error('SupabaseService and UserConnection are required for initialization');
-            }
-            UserManager.instance = new UserManager(supabaseService, userConnection);
+            const supabaseService = new UsersDb();
+            UserManager.instance = new UserManager(supabaseService);
         }
-        return UserManager.instance!;
+        return UserManager.instance;
     }
 
-    public initializeActiveUser() {
-        const { user, error, isLoading } = useUser();
-        if (isLoading) {
-            console.log('Loading user data...');
-            return;
-        }
-        if (error) {
-            console.log('Error loading user:', error);
-            return;
-        }
-        if (user) {
-            this.activeUser = new MatrixUser(user);
+    public static async initialize(authUser: AuthProfile): Promise<MatrixUser> {
+        const userManager = UserManager.getInstance();
+
+
+
+
+
+
+        return await userManager.processUserLogin(authUser);
+    }
+
+    private async processUserLogin(authUser: AuthProfile): Promise<MatrixUser> {
+        const matrixUser = new MatrixUser(authUser);
+
+        // Use upsert to ensure user is created or updated
+        await this.upsertUserInSupabase(matrixUser);
+
+        // Fetch the full user details after upsert to get the non-Auth0 fields
+        const fullUser = await this.fetchUserByAuth0Id(matrixUser.auth0_id!);
+        if (fullUser) {
+            this.activeUser = fullUser;
+            return fullUser;
+        } else {
+            throw new Error('User was upserted but could not be fetched afterward.');
         }
     }
 
-    public updateActiveUserDetails(details: Partial<MatrixUserProfile>) {
-        if (this.activeUser) {
-            this.activeUser.updateDetails(details);
-        }
+    public getActiveUser(): MatrixUser | null {
+        return this.activeUser;
     }
 
-    private async fetchUserById(userId: string): Promise<MatrixUser | null> {
+    private async fetchUserByAuth0Id(auth0Id: string): Promise<MatrixUser | null> {
         try {
-            if (!this.supabaseService) {
-                throw new Error('SupabaseService is not initialized');
-            }
-            const user = await this.supabaseService.getUserById(userId);
+            const user = await this.supabaseService.getUserByAuth0Id(auth0Id);
             if (user) {
-                return new MatrixUser(
-                    user,
-                    {
-                        token: user.token,
-                        account_type: user.account_type,
-                        org_id: user.org_id,
-                        email: user.email,
-                        phone: user.phone,
-                        role: user.role,
-                        status: user.status,
-                        created_at: user.created_at,
-                        last_login: user.last_login,
-                        last_activity: user.last_activity
-                    }
-                );
+                return new MatrixUser(user);
             } else {
                 console.log('User not found in the database.');
                 return null;
             }
         } catch (error) {
-            console.log('Error fetching user by id:', error);
+            console.log('Error fetching user by auth0_id:', error);
             return null;
         }
     }
+
+    private async upsertUserInSupabase(matrixUser: MatrixUser): Promise<void> {
+        try {
+            await this.supabaseService.upsertUser(matrixUser);
+        } catch (error) {
+            console.error('Error upserting user in Supabase:', error);
+        }
+    }
 }
+*/

@@ -9,11 +9,15 @@ import { IconPlus } from '@tabler/icons-react';
 import Search from './Search';
 import { Broker } from '@/types/broker';
 import VerticalSplitter from '@/ui/split/VerticalSplitter';
+import { useRecoilState } from "recoil";
+import { overrideFlagAtom, presetTypeAtom } from "@/state/layoutAtoms";
 
 const BrokersPage: React.FC = (): JSX.Element => {
     const [brokersList, setBrokersList] = useState<Broker[]>([]);
     const [filteredBrokers, setFilteredBrokers] = useState<Broker[]>([]);
     const brokerManager = createBrokerManager();
+    const [presetType, setPresetType] = useRecoilState(presetTypeAtom);
+    const [overrideFlag, setOverrideFlag] = useRecoilState(overrideFlagAtom);
 
     const fetchData = async () => {
         try {
@@ -26,29 +30,33 @@ const BrokersPage: React.FC = (): JSX.Element => {
     };
 
     useEffect(() => {
+        setOverrideFlag(true);
+        setPresetType('iconsNoAside');
+
         fetchData();
     }, []);
 
     return (
         <VerticalSplitter
-            initialSizes={[30, 70]}
+            initialSizes={[12, 88]}
             children={[
-                <LeftPanel />,
+                <LeftPanel/>,
                 <Stack>
-                    <Group><Link href="/dashboard/brokers/add">
-                        <Button
-                            variant="light"
-                            leftSection={<IconPlus size={14} />}
-                        >
-                            Add Broker
-                        </Button>
-                    </Link>
-                        <Search brokersList={brokersList} setFilteredBrokers={setFilteredBrokers} />
+                    <Group>
+                        <Search brokersList={brokersList} setFilteredBrokers={setFilteredBrokers}/>
+                        <Link href="/dashboard/brokers/add">
+                            <Button
+                                variant="light"
+                                leftSection={<IconPlus size={14}/>}
+                            >
+                                Add Broker
+                            </Button>
+                        </Link>
                     </Group>
-                    <BrokerList brokers={filteredBrokers} />
+                    <BrokerList brokers={filteredBrokers}/>
                 </Stack>
             ]}
-            expandToMin={false} />
+            expandToMin={false}/>
     )
 }
 

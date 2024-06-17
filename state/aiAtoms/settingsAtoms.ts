@@ -236,5 +236,20 @@ export const aiModelSettingsState = selector({
     }
 });
 
+
+export const combinedSettingsState = selector({
+    key: 'combinedSettingsState',
+    get: ({ get }) => {
+        const quickChatSettings = get(quickChatSettingsState);
+        const aiModelSettings = get(aiModelSettingsState);
+        return {
+            quickChatSettings,
+            aiModelSettings,
+        };
+    },
+});
+
+
+
 export const simpleChatSettingsList = ['submitOnEnter', 'makeSmallTalk', 'quickAnswer', 'improveQuestions', 'aiPreferencesMain', 'stopSequence', 'aiPreferencesSecond', 'matrixLevel'] as AtomName[]
 export const aiModelSettingsList = ['aiModel', 'temperature', 'maxTokens', 'topP', 'frequencyPenalty', 'stopSequence'] as AtomName[]

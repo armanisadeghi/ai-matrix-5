@@ -1,57 +1,32 @@
-// CenterContent.tsx
 'use client';
 
-import React, { useRef, ReactNode, useEffect, useCallback } from 'react';
+import React, { useRef, useEffect, useCallback } from 'react';
 import { useRecoilState } from 'recoil';
 import { autoscrollStateAtom } from './layoutAtoms';
+import CenterContent from './CenterContent';
 import styles from './CenterContent.module.css';
-import { ScrollArea } from '@mantine/core';
 import AmeTextWithSlider, { AmeTextWithSliderProps } from '@/ui/textarea/AmeTextWithSlider';
 import textareaStyles from '@/components/AiChat/UserInput/DynamicTextarea.module.css';
 import { simpleChatSettingsList } from '@/state/aiAtoms/settingsAtoms';
 import ResponseArea, { ResponseAreaProps } from '@/components/AiChat/Response/ResponseArea';
 import useDynamicLayout from '@/hooks/ai/useDynamicChatLayout';
 
-interface CenterContentProps {
-    autoscroll?: boolean;
-    fade?: boolean;
-    children?: ReactNode;
-    bottomSectionContent?: ReactNode;
-    ameTextWithSliderProps?: Partial<AmeTextWithSliderProps>;
-    responseAreaProps?: Partial<ResponseAreaProps>;
-}
-
-const defaultProps: CenterContentProps = {
-    autoscroll: true,
-    fade: true,
-};
-
-const CenterContent: React.FC<CenterContentProps> = (props) => {
-    const {
-        autoscroll,
-        children,
-        bottomSectionContent,
-        ameTextWithSliderProps,
-        responseAreaProps,
-    } = { ...defaultProps, ...props };
-
+const Page: React.FC = () => {
     const [isAutoscroll, setIsAutoscroll] = useRecoilState(autoscrollStateAtom);
     const contentRef = useRef<HTMLDivElement>(null);
     const { bottomPadding, textareaContainerRef } = useDynamicLayout();
 
-    // Handle autoscroll
     useEffect(() => {
-        if (autoscroll && isAutoscroll && contentRef.current) {
+        if (isAutoscroll && contentRef.current) {
             contentRef.current.scrollTop = contentRef.current.scrollHeight;
         }
-    }, [isAutoscroll, autoscroll, children]);
+    }, [isAutoscroll]);
 
-    // Handle content scroll interaction
     const handleScroll = useCallback(() => {
-        if (autoscroll && isAutoscroll) {
+        if (isAutoscroll) {
             setIsAutoscroll(false);
         }
-    }, [autoscroll, isAutoscroll, setIsAutoscroll]);
+    }, [isAutoscroll, setIsAutoscroll]);
 
     useEffect(() => {
         const contentElement = contentRef.current;
@@ -63,32 +38,32 @@ const CenterContent: React.FC<CenterContentProps> = (props) => {
         }
     }, [handleScroll]);
 
+    const responseAreaProps: Partial<ResponseAreaProps> = {}; // Define as necessary
+    const ameTextWithSliderProps: Partial<AmeTextWithSliderProps> = {}; // Define as necessary
+
     return (
-        <div className={styles.container}>
-            <div className={styles.leftGapColumn}></div>
-            <div className={styles.centerColumn}>
-                <ScrollArea h={250} scrollbarSize={4} scrollHideDelay={100} className={styles.mainContent}>
-                    <div ref={contentRef}>
-                        <ResponseArea bottomPadding={bottomPadding} {...responseAreaProps} />
-                    </div>
-                </ScrollArea>
-                <div className={styles.bottomSection}>
-                    <div>
-                        <AmeTextWithSlider
-                            className={textareaStyles.dynamicTextareaContainer}
-                            label="Let's get started..."
-                            placeholder="Enter your request or question here..."
-                            ref={textareaContainerRef}
-                            modalType="default"
-                            settingAtomNames={simpleChatSettingsList}
-                            {...ameTextWithSliderProps}
-                        />
-                    </div>
+        <CenterContent
+            textareaContainerRef={textareaContainerRef}
+            ameTextWithSliderProps={ameTextWithSliderProps}
+            simpleChatSettingsList={simpleChatSettingsList}
+            mainContent={
+                <div ref={contentRef}>
+                    <ResponseArea bottomPadding={bottomPadding} {...responseAreaProps} />
                 </div>
-            </div>
-            <div className={styles.rightGapColumn}></div>
-        </div>
+            }
+            bottomContent={
+                <AmeTextWithSlider
+                    className={textareaStyles.dynamicTextareaContainer}
+                    label="Let's get started..."
+                    placeholder="Enter your request or question here..."
+                    ref={textareaContainerRef}
+                    modalType="default"
+                    settingAtomNames={simpleChatSettingsList}
+                    {...ameTextWithSliderProps}
+                />
+            }
+        />
     );
 };
 
-export default CenterContent;
+export default Page;
