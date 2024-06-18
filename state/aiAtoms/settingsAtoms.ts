@@ -2,36 +2,34 @@
 import { atom, selector, RecoilState } from 'recoil';
 import { AIModel } from "@/utils/config/aiModels";
 import { string } from "@recoiljs/refine";
+import {
+    SettingAtom,
+    CheckboxSettingAtom,
+    SelectSettingAtom,
+    InputSettingAtom,
+    SliderSettingAtom,
+    SliderPresetSettingAtom
+} from '@/types/settings';
 
-interface CheckboxSettingAtom {
-    atom: RecoilState<boolean>;
-    label: string;
-    componentType: 'Checkbox';
-    options?: any;
-}
+export const matrixLevelAtom = atom<number>({
+    key: 'matrixLevelAtom',
+    default: 0,
+});
 
-interface SelectSettingAtom {
-    atom: RecoilState<string>;
-    label: string;
-    componentType: 'Select';
-    options: { value: string; label: string }[];
-}
+export const matrixLevelSetting: SliderPresetSettingAtom = {
+    atom: matrixLevelAtom,
+    label: 'Matrix Level',
+    componentType: 'SliderPreset',
+    options: [
+        { value: 0, label: 'Matrix AI' },
+        { value: 2, label: 'GPT-4o' },
+        { value: 4, label: 'Conductor' },
+        { value: 6, label: 'Lattice' },
+        { value: 8, label: 'Cluster' },
+        { value: 10, label: 'Hypercluster' },
+    ],
+};
 
-interface InputSettingAtom {
-    atom: RecoilState<string>;
-    label: string;
-    componentType: 'Input';
-    options?: any;
-}
-
-interface SliderSettingAtom {
-    atom: RecoilState<number>;
-    label: string;
-    componentType: 'Slider';
-    options: { min: number; max: number; step: number };
-}
-
-type SettingAtom = CheckboxSettingAtom | SelectSettingAtom | InputSettingAtom | SliderSettingAtom;
 
 export const submitOnEnterAtom = atom<boolean>({
     key: 'submitOnEnterAtom',
@@ -185,6 +183,7 @@ export const stopSequenceSetting: InputSettingAtom = {
 
 export const settingsAtoms = {
     submitOnEnter: submitOnEnterSetting,
+    matrixLevel: matrixLevelSetting,
     aiPreferencesMain: aiPreferencesMainSetting,
     aiPreferencesSecond: aiPreferencesSecondSetting,
     makeSmallTalk: makeSmallTalkSetting,
@@ -212,6 +211,7 @@ export const quickChatSettingsState = selector({
             makeSmallTalk: get(makeSmallTalkAtom),
             quickAnswer: get(quickAnswerAtom),
             improveQuestions: get(improveQuestionsAtom),
+            matrixLevel: get(matrixLevelAtom),
             aiModel: get(aiModelAtom),
             temperature: get(temperatureAtom),
             maxTokens: get(maxTokensAtom),
@@ -236,5 +236,20 @@ export const aiModelSettingsState = selector({
     }
 });
 
-export const simpleChatSettingsList = ['submitOnEnter', 'makeSmallTalk', 'quickAnswer', 'improveQuestions', 'aiPreferencesMain', 'stopSequence', 'aiPreferencesSecond'] as AtomName[]
+
+export const combinedSettingsState = selector({
+    key: 'combinedSettingsState',
+    get: ({ get }) => {
+        const quickChatSettings = get(quickChatSettingsState);
+        const aiModelSettings = get(aiModelSettingsState);
+        return {
+            quickChatSettings,
+            aiModelSettings,
+        };
+    },
+});
+
+
+
+export const simpleChatSettingsList = ['submitOnEnter', 'makeSmallTalk', 'quickAnswer', 'improveQuestions', 'aiPreferencesMain', 'stopSequence', 'aiPreferencesSecond', 'matrixLevel'] as AtomName[]
 export const aiModelSettingsList = ['aiModel', 'temperature', 'maxTokens', 'topP', 'frequencyPenalty', 'stopSequence'] as AtomName[]

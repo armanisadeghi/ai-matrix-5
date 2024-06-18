@@ -11,6 +11,8 @@ import { Broker } from '@/types/broker';
 import VerticalSplitter from '@/ui/split/VerticalSplitter';
 import BrokerTable from '@/components/Brokers/BrokerTable';
 import { useMediaQuery } from '@mantine/hooks';
+import { useRecoilState } from "recoil";
+import { overrideFlagAtom, presetTypeAtom } from "@/state/layoutAtoms";
 
 const BrokersPage: React.FC = (): JSX.Element => {
     const [brokersList, setBrokersList] = useState<Broker[]>([]);
@@ -19,6 +21,8 @@ const BrokersPage: React.FC = (): JSX.Element => {
 
     const isTablet = useMediaQuery('(max-width: 768px)');
     const isMobile = useMediaQuery('(max-width: 480px)');
+    const [presetType, setPresetType] = useRecoilState(presetTypeAtom);
+    const [overrideFlag, setOverrideFlag] = useRecoilState(overrideFlagAtom);
 
     const fetchData = async () => {
         try {
@@ -31,6 +35,9 @@ const BrokersPage: React.FC = (): JSX.Element => {
     };
 
     useEffect(() => {
+        setOverrideFlag(true);
+        setPresetType('iconsNoAside');
+
         fetchData();
     }, []);
 

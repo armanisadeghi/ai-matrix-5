@@ -5,7 +5,7 @@
 // recoil/aiAtoms/userAtoms.ts
 
 import { atom, selector } from 'recoil';
-import { User, UserManager } from '@/services/Users';
+import { User, UserManager } from '@/types/user';
 
 const userManagerPromise = UserManager.getInstance();
 

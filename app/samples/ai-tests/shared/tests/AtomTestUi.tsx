@@ -12,7 +12,7 @@ import {
 } from "@/state/aiAtoms/chatAtoms";
 
 
-// @ts-ignore
+
 import { ChatManager } from '@/services/Chat';
 import { activeUserAtom } from "@/state/userAtoms";
 

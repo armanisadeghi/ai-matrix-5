@@ -1,16 +1,31 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { getSession } from '@auth0/nextjs-auth0/edge';
 
-// This function can be marked `async` if using `await` inside
-export function middleware(request: NextRequest) {
-    if (request.nextUrl.pathname.startsWith('/samples/sample-login')) {
-        return NextResponse.rewrite(new URL('/api/auth/login', request.url))
-    }
+export default async function middleware(request: NextRequest) {
+    const { pathname } = request.nextUrl;
+    const paths = ['/samples', '/dashboard', '/matrix-engine'];
 
-    if (request.nextUrl.pathname.startsWith('/dashboard/sample-login')) {
-        return NextResponse.rewrite(new URL('/api/auth/login', request.url))
+    if (paths.some(path => pathname.startsWith(path))) {
+        console.log('request.nextUrl.pathname', pathname);
+        console.log('request.url', request.url);
+
+        const res = NextResponse.next();
+        const session = await getSession(request, res);
+
+        if (session) {
+            const user: any = session.user;
+            console.log('user', user);
+            res.cookies.set('hl', user?.language);
+            return res;
+        } else {
+            // Redirect to Auth0 login and set returnTo query param to the original URL
+            return NextResponse.redirect(new URL(`/api/auth/login?returnTo=${encodeURIComponent(request.url)}`, request.url));
+        }
     }
+    return NextResponse.next();
 }
+
 
 // See "Matching Paths" below to learn more
 export const config = {
@@ -44,4 +59,4 @@ export const config = {
             missing: [{ type: 'header', key: 'x-missing', value: 'prefetch' }],
         },
     ],
-}
+};

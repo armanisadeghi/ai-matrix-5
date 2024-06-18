@@ -12,11 +12,11 @@ import { useState } from 'react';
 import supabase from "@/utils/supabase/client";
 import { v4 as uuidv4 } from "uuid";
 import { MatrixMessage } from "@/types";
-import { userIdSelector } from "@/state/userAtoms";
+import { activeUserAtom } from "@/state/userAtoms";
 
 
 export const useChatDbAtoms = () => {
-    const userId = useRecoilValue(userIdSelector)
+    const activeUser = useRecoilValue(activeUserAtom)
     const [activeChatId, setSelectedChatId] = useRecoilState(activeChatIdAtom);
     const chatSummariesLoadable = useRecoilValueLoadable(chatSummariesSelector);
     const chatDetailsLoadable = useRecoilValueLoadable(chatDetailsSelector);
@@ -60,7 +60,7 @@ export const useChatDbAtoms = () => {
             .from('chats')
             .insert({
                 chat_id: newChatId,
-                user_id: userId,
+                user_id: activeUser.matrix_id,
                 chat_title: title,
                 created_at: new Date(),
                 last_edited: new Date(),

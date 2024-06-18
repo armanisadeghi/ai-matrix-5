@@ -8,10 +8,17 @@ export function GuestHero() {
     <Container>
       <div className={classes.inner}>
         <div className={classes.content}>
+
+
           <Group gap="xs" mb="lg" className={classes.highlight}>
+
             <IconBrain />
             <Text fw={500}>AI MATRIX ENGINE</Text>
           </Group>
+
+
+
+
           <Title mb="lg" className={classes.title}>
             The Only No-Code <br />
             Artificial Intelligence Business Automation Framework.

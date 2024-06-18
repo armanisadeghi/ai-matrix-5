@@ -1,120 +1,140 @@
-import { ActionIcon, ActionIconProps, Avatar, Burger, Group, MantineSize, Menu } from "@mantine/core";
-import { IconBell, IconChevronDown, IconChevronUp, IconPalette, IconSearch, IconSettings2 } from "@tabler/icons-react";
-import { FaRegUser } from "react-icons/fa6";
+"use client";
+
+import React, { useState, useEffect, useRef } from "react";
+import { Group, MantineSize } from "@mantine/core";
+import { IconBell, IconMenu, IconSearch } from "@tabler/icons-react";
 import { ColorSchemeToggle, Logo } from "@/components";
-import Link from "next/link";
-import { PATH_USER } from "@/routes";
-import { useHeader } from "@/context/HeaderContext";
-import AmeNavButton from "@/ui/buttons/AmeNavButton";
 import AmeSearchInput from "@/ui/input/AmeSearchInput";
 import AmeActionIcon from "@/ui/buttons/AmeActionIcon";
-import { useNavbar } from "@/context/NavbarContext";
-import { useRecoilState } from "recoil";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { activeUserAtom } from "@/state/userAtoms";
-import { useEffect } from "react";
-
-const actionProps: ActionIconProps = {
-    variant: "light",
-};
+import { headerAtom, showLeftSidebarToggle, showRightSidebarToggle } from "@/state/layoutAtoms";
+import useToggleSizes from "@/hooks/layout/useToggleSizes";
+import { UserMenu } from "@/components/User/UserMenu";
+import { IoApps } from "react-icons/io5";
 
 type Props = {
-    state: "large" | "medium" | "compact";
     tabletMatch?: boolean;
 };
 
-export function Header({ state, tabletMatch }: Props) {
-    const { toggleOpened, opened, toggleNavbar, navbarState } = useNavbar();
-    const { headerState, handleCollapse, handleExpand } = useHeader();
+// TODO: Kevin... The styling for the header needs some work. It's definitely my fault.
+// I don't have time to fix it, but I want to make sure you don't make the search bar any bigger
+// I also want to make sure you don't mess up the icon styles (They need to be transparent)
+// But for the tabletMatch, proper spacing, making sure they don't wrap, etc, please do what you need.
+// Lastly, if you need to, we can make the logo slightly smaller as well.
+// I also noticed the search icon doesn't work, but I wonder if maybe I messed it up. Not sure.
+
+
+export function Header({ tabletMatch }: Props) {
+    const { user } = useUser();
     const [activeUser, setActiveUser] = useRecoilState(activeUserAtom);
-    const userPictureLink = activeUser.picture;
+    const headerHeight = useRecoilValue(headerAtom);
+    const showLeftSidebar = useRecoilValue(showLeftSidebarToggle);
+    const showRightSidebar = useRecoilValue(showRightSidebarToggle);
+    const { toggleSize } = useToggleSizes();
+    const [isSearchHidden, setIsSearchHidden] = useState(true);
+    const [logoSize, setLogoSize] = useState(200); // Initial logo size
+    const headerRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {}, [activeUser]);
-
-    const componentSize: MantineSize = headerState === "large" ? "md" : "sm";
-
-    const handleNavToggle = () => {
-        if (navbarState === "full") {
-            toggleNavbar("compact");
-        } else {
-            toggleNavbar("full");
+    useEffect(() => {
+        if (user && !activeUser) {
+            setActiveUser(user as any);
         }
-    };
+    }, [user, activeUser, setActiveUser]);
+
+    useEffect(() => {
+        const handleResize = () => {
+            if (headerRef.current) {
+                const headerWidth = headerRef.current.offsetWidth;
+                const hasEnoughSpace = headerWidth >= 700;
+                setIsSearchHidden(!hasEnoughSpace);
+                if (hasEnoughSpace) {
+                    setLogoSize(200);
+                } else {
+                    setLogoSize(100);
+                }
+            }
+        };
+
+        window.addEventListener("resize", handleResize);
+        handleResize();
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
+
+    const componentSize: MantineSize = headerHeight > 100 ? "md" : "sm";
 
     return (
-        <Group h="100%" px="md" align="center" justify="space-between" style={{ flexWrap: "nowrap" }}>
-            <Group>
-                <Burger opened={opened} onClick={toggleOpened} hiddenFrom="sm" size="sm" />
-                <Burger opened={navbarState === "full"} onClick={handleNavToggle} visibleFrom="sm" size="sm" />
-                <Logo />
-                <Group visibleFrom="sm">
-                    {(state === "medium" || state === "compact") && (
-                        <Group justify="flex-end" gap="xs">
-                            <AmeActionIcon title="shrink header" onClick={handleCollapse} {...actionProps}>
-                                <IconChevronUp size={18} />
-                            </AmeActionIcon>
-                            <AmeActionIcon title="expand header" onClick={handleExpand} {...actionProps}>
-                                <IconChevronDown size={18} />
-                            </AmeActionIcon>
-                        </Group>
-                    )}
+        <Group
+            ref={headerRef}
+            h="100%"
+            px="md"
+            align="center"
+            justify="space-between"
+            style={{ flexWrap: "nowrap", overflow: "hidden" }}
+        >
+            <Group style={{ flex: 1, justifyContent: "flex-start", flexShrink: 0 }}>
+                {showLeftSidebar && (
+                <AmeActionIcon
+                    variant="transparent"
+                    tooltip="toggle sidebar"
+                    size={componentSize}
+                    onClick={() => toggleSize('leftSidebar')}
+                >
+                    <IconMenu size={18} />
+                </AmeActionIcon>
+                )}
 
-                    {state === "large" && (
-                        <Group justify="flex-end" gap="xs">
-                            <AmeActionIcon title="shrink header" onClick={handleCollapse} {...actionProps}>
-                                <IconChevronUp size={18} />
-                            </AmeActionIcon>
-                        </Group>
-                    )}
-                </Group>
+                <div style={{ width: logoSize, flexShrink: 0 }}>
+                    <Logo />
+                </div>
             </Group>
-            <Group visibleFrom="md" style={{ flexGrow: 1, justifyContent: "center" }}>
-                <AmeNavButton asIcon navigateTo="back" />
-                <AmeNavButton asIcon navigateTo="next" />
+
+            {/* Center Section */}
+            <Group
+                style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    display: isSearchHidden ? "none" : "flex",
+                    minWidth: 0, // Ensure the search section can shrink
+                }}
+            >
                 <AmeSearchInput
                     size={componentSize}
                     radius="md"
                     placeholder="Search anything..."
                     leftSection={<IconSearch size={14} />}
-                    style={{ flex: "1 1 auto", minWidth: "60px", maxWidth: tabletMatch ? "350px" : "500px" }}
-                    visibleFrom="sm"
+                    style={{ flex: "1 1 auto", minWidth: "40px", maxWidth: "450px" }}
                 />
             </Group>
-            <Group>
-                <AmeActionIcon hiddenFrom="md" size={componentSize} title="search">
+
+            {/* Right Section */}
+            <Group style={{ flex: 1, justifyContent: "flex-end", flexShrink: 0 }}>
+                <AmeActionIcon variant="transparent" hiddenFrom="md" size={componentSize} tooltip="search">
                     <IconSearch size={18} />
                 </AmeActionIcon>
                 <ColorSchemeToggle size={componentSize} />
-                <AmeActionIcon title="notifications" size={componentSize}>
+                <AmeActionIcon variant="transparent" tooltip="notifications" size={componentSize}>
                     <IconBell size={18} />
                 </AmeActionIcon>
-                <Menu width={200} shadow="md">
-                    <Menu.Target>
-                        <ActionIcon title="user menu" size={componentSize} variant="transparent">
-                            {userPictureLink ? (
-                                <Avatar src={userPictureLink} radius='xs' size={componentSize}/>
-                            ) : (
-                                <FaRegUser size={componentSize === 'md' ? 24 : 18} />
-                            )}
-                        </ActionIcon>
-                    </Menu.Target>
 
-                    <Menu.Dropdown>
-                        <Menu.Item
-                            component={Link}
-                            href={PATH_USER.tabs("personal")}
-                            leftSection={<IconSettings2 size={16} />}
-                        >
-                            Settings
-                        </Menu.Item>
-                        <Menu.Item
-                            component={Link}
-                            href={PATH_USER.tabs("appearance")}
-                            leftSection={<IconPalette size={16} />}
-                        >
-                            Appearance
-                        </Menu.Item>
-                    </Menu.Dropdown>
-                </Menu>
+                {showRightSidebar && (
+                <AmeActionIcon
+                    variant="transparent"
+                    tooltip="toggle sidebar"
+                    size={componentSize}
+                    onClick={() => toggleSize('rightSidebar')}
+                >
+                    <IconMenu size={18} />
+                </AmeActionIcon>
+                )}
+
+                <AmeActionIcon variant="transparent" tooltip="apps" size={componentSize}>
+                    <IoApps size={18} />
+                </AmeActionIcon>
+                <UserMenu componentSize={componentSize} />
             </Group>
         </Group>
     );

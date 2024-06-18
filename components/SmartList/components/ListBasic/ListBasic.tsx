@@ -1,9 +1,9 @@
-// @ts-ignore
+
 import Point from "./Point/Point.tsx";
-// @ts-ignore
+
 import {useListProvider} from "../../SmartList.tsx";
 import {useEffect, useState} from "react";
-// @ts-ignore
+
 import DragAndDropWrapper from "../DragAndDropWrapper/DragAndDropWrapper.tsx";
 import TableList from "@/components/SmartList/components/TableList/TableList";
 
@@ -108,7 +108,7 @@ const ListBasic = ({disable, selectAll } : any) => {
 
     useEffect(() => {
         if (options['localStorage'] === true) {
-            // @ts-ignore
+
             const items = JSON.parse(localStorage.getItem('list'));
             if (items && items.length !== 0) {
                 setSelectedValue(items)
@@ -118,7 +118,7 @@ const ListBasic = ({disable, selectAll } : any) => {
 
     useEffect(() => {
 
-        // @ts-ignore
+
         const localStorageList = JSON.parse(localStorage.getItem('list'));
 
         if (options['localStorage'] === true && localStorageList === null) {

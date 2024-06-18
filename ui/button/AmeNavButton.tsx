@@ -1,4 +1,8 @@
+/*
 // use this for back and forward navigation
+// Commented out for now so we don't get errors during build process
+// Also, I'm not sure this is a all that valuable.
+
 
 import { useRouter } from "next/navigation";
 import AmeActionIcon from "@/ui/button/AmeActionIcon";
@@ -8,7 +12,7 @@ import { ActionIconProps, ButtonProps } from "@mantine/core";
 
 interface AmeNavButtonProps {
     navigateTo: "back" | "next";
-    asIcon?: boolean; // prefer icon button or full button
+    asIcon?: boolean;
 }
 
 function AmeNavButton({ navigateTo, asIcon }: AmeNavButtonProps) {
@@ -26,10 +30,10 @@ function AmeNavButton({ navigateTo, asIcon }: AmeNavButtonProps) {
         // todo: will look for alternatives instead of using experimental navigation api
         let canNav = true;
         if (navigateTo == "back") {
-            // @ts-ignore
+
             canNav = navigation.canGoBack;
         } else {
-            // @ts-ignore
+
             canNav = navigation.canGoForward;
         }
 
@@ -54,7 +58,7 @@ function AmeNavButton({ navigateTo, asIcon }: AmeNavButtonProps) {
     }
 
     return asIcon ? (
-        <AmeActionIcon title={text} onClick={handleNavigate} {...actionIconProps}>
+        <AmeActionIcon tooltip={text} onClick={handleNavigate} {...actionIconProps}>
             {icon}
         </AmeActionIcon>
     ) : (
@@ -65,3 +69,4 @@ function AmeNavButton({ navigateTo, asIcon }: AmeNavButtonProps) {
 }
 
 export default AmeNavButton;
+*/

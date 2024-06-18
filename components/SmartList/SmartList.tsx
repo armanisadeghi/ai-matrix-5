@@ -1,5 +1,5 @@
 import {createContext, useContext, useEffect, useState} from 'react';
-// @ts-ignore
+
 import ListBasic from "./components/ListBasic/ListBasic.tsx";
 
 const MyContext = createContext({});

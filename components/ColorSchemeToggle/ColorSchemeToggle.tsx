@@ -21,6 +21,7 @@ export function ColorSchemeToggle({ size = "md" }: ColorSchemeToggleProps) {
     return (
         <AmeActionIcon
             onClick={() => setColorScheme(computedColorScheme === "light" ? "dark" : "light")}
+            variant="transparent"
             aria-label="Toggle color scheme"
             size={size}
             tooltip={`Switch to ${computedColorScheme === "light" ? "dark" : "light"} mode`}

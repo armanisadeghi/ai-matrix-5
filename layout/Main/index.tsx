@@ -1,185 +1,94 @@
 "use client";
 
-import { AppShell, Box, useMantineTheme } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
-import { ReactNode, useState } from "react";
+import { AppShell, Box } from "@mantine/core";
+import { ReactNode, useEffect } from "react";
 import { Navbar } from "./Navbar";
 import { Header } from "./Header";
 import { Sidebar } from "./Sidebar";
-import { useSidebar } from "@/context/SidebarContext";
-import { IconChevronLeft, IconChevronRight, IconChevronUp } from "@tabler/icons-react";
-import { useFooter } from "@/context/FooterContext";
 import { Footer } from "@/layout/Main/Footer";
-import { useHeader } from "@/context/HeaderContext";
-import AmeActionIcon from "@/ui/buttons/AmeActionIcon";
-import AmeAffix from "@/ui/affix/AmeAffix";
-import { useNavbar } from "@/context/NavbarContext";
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+    rightSidebarAtom,
+    leftSidebarAtom,
+    footerAtom,
+    headerAtom,
+    deviceTypeAtom,
+} from "@/state/layoutAtoms";
+import useLayoutPresets from "@/hooks/layout/useLayoutPresets";
+import { useMediaQuery } from "@mantine/hooks";
+import { PresetType } from "@/types/layout";
 
 type Props = {
     children: ReactNode;
-    initialNavbarState?: "full" | "compact" | "icons" | "hidden";
 };
 
 export function MainLayout({ children }: Props) {
-    const { opened, navbarState, handleIconMouseover, handleEndIconMouseover, toggleNavbar } = useNavbar();
-    const { asideState, toggleAside } = useSidebar();
-    const { footerState, toggleFooter } = useFooter();
-    const { headerState } = useHeader();
-    const [hovered, setHovered] = useState(false);
-    const tabletMatch = useMediaQuery("(min-width: 768px)");
+    const rightSideBarWidth = useRecoilValue(rightSidebarAtom);
+    const leftSideBarWidth = useRecoilValue(leftSidebarAtom);
+    const footerHeight = useRecoilValue(footerAtom);
+    const headerHeight = useRecoilValue(headerAtom);
+    const [deviceType, setDeviceType] = useRecoilState(deviceTypeAtom);
+
     const mobileMatch = useMediaQuery("(max-width: 768px)");
+    const tabletMatch = useMediaQuery("(min-width: 769px) and (max-width: 1024px)");
+    const desktopMatch = useMediaQuery("(min-width: 1025px)");
 
-    const getNavbarWidth = () => {
-        if (!tabletMatch) return "100%";
-        switch (navbarState) {
-            case "full":
-                return 250;
-            case "compact":
-                return 200;
-            case "icons":
-                return 70;
-            default:
-                return 0;
+    useEffect(() => {
+        if (mobileMatch) {
+            setDeviceType('mobile');
+        } else if (tabletMatch) {
+            setDeviceType('tablet');
+        } else if (desktopMatch) {
+            setDeviceType('desktop');
         }
-    };
+    }, [mobileMatch, tabletMatch, desktopMatch, setDeviceType]);
 
-    const getAsideWidth = () => {
-        if (!tabletMatch) return "100%";
-        switch (asideState) {
-            case "full":
-                return 200;
-            case "compact":
-                return 150;
-            case "icons":
-                return 70;
-            default:
-                return 0;
-        }
-    };
-
-    const getFooterHeight = () => {
-        if (!tabletMatch) return 0;
-        switch (footerState) {
-            case "full":
-                return 200;
-            case "compact":
-                return 150;
-            case "icons":
-                return 70;
-            default:
-                return 0;
-        }
-    };
-
-    const getHeaderHeight = () => {
-        if (!tabletMatch) return 70;
-        switch (headerState) {
-            case "large":
-                return 80;
-            case "medium":
-                return 70;
-            default:
-                return 60;
-        }
-    };
-
-    const navbarWidth = getNavbarWidth();
-    const asideWidth = getAsideWidth();
-    const footerHeight = getFooterHeight();
-    const headerHeight = getHeaderHeight();
-
-    const handleMouseEnter = () => {
-        if (navbarState === "icons") {
-            setHovered(true);
-            handleIconMouseover();
-        }
-    };
-
-    const handleMouseLeave = () => {
-        if (navbarState === "compact") {
-            setHovered(false);
-            handleEndIconMouseover();
-        }
-    };
+    useLayoutPresets();
 
     return (
-        <>
-            <AppShell
-                layout="default"
-                header={{
-                    height: headerHeight,
-                }}
-                navbar={{
-                    width: navbarWidth,
-                    breakpoint: "sm",
-                    collapsed: { mobile: !opened },
-                }}
-                aside={{
-                    width: asideWidth,
-                    breakpoint: "md",
-                    collapsed: {
-                        desktop: false,
-                        mobile: true,
-                    },
-                }}
-                footer={{
-                    height: footerHeight,
-                }}
-                padding={{
-                    base: "xs",
-                    sm: "sm",
-                    lg: "md",
-                    xl: "lg",
-                }}
-            >
-                <AppShell.Header>
-                    <Header state={headerState} tabletMatch={tabletMatch} />
-                </AppShell.Header>
-                {navbarState !== "hidden" && (
-                    <AppShell.Navbar p="xs" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-                        <Navbar state={mobileMatch ? "hidden" : navbarState} />
-                    </AppShell.Navbar>
-                )}
-                <AppShell.Main>
-                    <Box>{children}</Box>
-                    {/*toggle nav*/}
-                    <AmeAffix
-                        transition="slide-right"
-                        position={{ top: "50%", left: 0 }}
-                        mounted={navbarState === "hidden"}
-                    >
-                        <AmeActionIcon title="open nav" onClick={() => toggleNavbar("full")}>
-                            <IconChevronRight />
-                        </AmeActionIcon>
-                    </AmeAffix>
-                    {/*toggle footer*/}
-                    <AmeAffix
-                        transition="slide-up"
-                        position={{ bottom: 0, left: "5%" }}
-                        mounted={footerState === "hidden"}
-                    >
-                        <AmeActionIcon title="open footer" onClick={() => toggleFooter("full")}>
-                            <IconChevronUp />
-                        </AmeActionIcon>
-                    </AmeAffix>
-                    {/*toggle aside*/}
-                    <AmeAffix
-                        transition="slide-left"
-                        position={{ top: "50%", right: 0 }}
-                        mounted={asideState === "hidden"}
-                    >
-                        <AmeActionIcon title="open sidebar" onClick={() => toggleAside("full")} visibleFrom="md">
-                            <IconChevronLeft />
-                        </AmeActionIcon>
-                    </AmeAffix>
-                </AppShell.Main>
+        <AppShell
+            layout="default"
+            header={{
+                height: headerHeight,
+            }}
+            navbar={{
+                width: leftSideBarWidth,
+                breakpoint: "sm",
+                collapsed: { mobile: leftSideBarWidth === 0 },
+            }}
+            aside={{
+                width: rightSideBarWidth,
+                breakpoint: "md",
+                collapsed: {
+                    desktop: false,
+                    mobile: true,
+                },
+            }}
+            footer={{
+                height: footerHeight,
+            }}
+        >
+            <AppShell.Header>
+                <Header />
+            </AppShell.Header>
+            {leftSideBarWidth !== 0 && (
+                <AppShell.Navbar pt="xs" pb="xs" pl={0} pr={0}>
+                    <Navbar />
+                </AppShell.Navbar>
+            )}
+            <AppShell.Main>
+                <Box>{children}</Box>
+            </AppShell.Main>
+            {rightSideBarWidth !== 0 && (
                 <AppShell.Aside>
-                    <Sidebar state={asideState} />
+                    <Sidebar />
                 </AppShell.Aside>
+            )}
+            {footerHeight !== 0 && (
                 <AppShell.Footer>
-                    <Footer state={footerState} />
+                    <Footer />
                 </AppShell.Footer>
-            </AppShell>
-        </>
+            )}
+        </AppShell>
     );
 }

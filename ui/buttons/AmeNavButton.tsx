@@ -26,17 +26,17 @@ function AmeNavButton({ navigateTo, asIcon }: AmeNavButtonProps) {
         let canNav = true;
         if (typeof window !== "undefined") {
             // todo: will look for alternatives instead of using experimental navigation api supported in chrome and edge
-            // @ts-ignore
+
             let isChromium = window.chrome;
 
             if (isChromium) {
-                // @ts-ignore
+
                 if (typeof navigation !== undefined) {
                     if (navigateTo == "back") {
-                        // @ts-ignore
+
                         canNav = navigation.canGoBack;
                     } else {
-                        // @ts-ignore
+
                         canNav = navigation.canGoForward;
                     }
                 }
@@ -64,7 +64,7 @@ function AmeNavButton({ navigateTo, asIcon }: AmeNavButtonProps) {
     }
 
     return asIcon ? (
-        <AmeActionIcon title={text} onClick={handleNavigate} {...actionIconProps}>
+        <AmeActionIcon tooltip={text} onClick={handleNavigate} {...actionIconProps}>
             {icon}
         </AmeActionIcon>
     ) : (

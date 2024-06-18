@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Slider, Box, Grid } from '@mantine/core';
 
+// This isn't needed anymore because the new one is much better and fully reusable and integrated with atoms!
+
+
 const CompactSlider = () => {
     const [value, setValue] = useState(0);
 
@@ -24,7 +27,30 @@ const CompactSlider = () => {
     };
 
     return (
-        <div style={{ height: '1px', marginTop: '10px', alignItems: 'center' }}>
+            <Grid>
+                <Grid.Col span={1}></Grid.Col>
+                <Grid.Col span={10}>
+                    <Slider
+                        color="gray"
+                        size="xs"
+                        min={0}
+                        max={10}
+                        value={value}
+                        onChange={setValue}
+                        marks={getDynamicMark(value)}
+                    />
+                </Grid.Col>
+                <Grid.Col span={1}></Grid.Col>
+            </Grid>
+    );
+};
+
+export default CompactSlider;
+
+
+/*
+    return (
+        <div style={{ marginTop: '10px', alignItems: 'center' }}>
             <Grid>
                 <Grid.Col span={1}></Grid.Col>
                 <Grid.Col span={10}>
@@ -44,4 +70,4 @@ const CompactSlider = () => {
     );
 };
 
-export default CompactSlider;
+ */

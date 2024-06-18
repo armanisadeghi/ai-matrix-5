@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
-// @ts-ignore
+
 import Point from "./Point/Point.tsx";
-// @ts-ignore
+
 import {useListProvider} from "../../SmartList.tsx";
 
 export default function ListNested({arr}: any) {

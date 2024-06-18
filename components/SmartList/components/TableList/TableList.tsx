@@ -99,7 +99,7 @@ function Row({element}: any) {
     )
 }
 
-// @ts-ignore
+
 const Rows = ({data}: any) => {
 
 

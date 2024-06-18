@@ -14,7 +14,8 @@ async function Page() {
     // redirect('/login')
   }
 
-  return <>Home</>;
-}
+  function Page() {
+    return <></>;
+  }
 
-export default Page;
+  export default Page;

@@ -1,0 +1,71 @@
+{
+    "levelOne": {
+        "request": {
+            "channel": "webSocketText | webSocketData | socketIO | dbTask | restAPI | other",
+            "metadata": {},
+            "data": {},
+            "settings": {}
+        }
+    },
+    "levelTwo": {
+        "request": {
+            "channel": "webSocketText | webSocketData | socketIO | dbTask | restAPI | other",
+            "metadata": {
+                "requestId": "",
+                "event": "",
+                "task": "",
+                "index": "",
+                "taskSpecs": {},
+                "timestamp": "",
+                "source": "",
+                "user": {}
+            },
+            "data": {},
+            "settings": {}
+        }
+    },
+    "levelThree": {
+        "request": {
+            "channel": "webSocketText | webSocketData | socketIO | dbTask | restAPI | other",
+            "metadata": {
+                "requestId": "",
+                "event": "",
+                "task": "",
+                "index": "",
+                "taskSpecs": {},
+                "timestamp": "",
+                "source": "",
+                "user": {
+                    "id": "",
+                    "token": ""
+                }
+            },
+            "data": {},
+            "settings": {}
+        }
+    },
+    "levelFour": {
+        "request": {
+            "channel": "webSocketText | webSocketData | socketIO | dbTask | restAPI | other",
+            "metadata": {
+                "requestId": "",
+                "event": "",
+                "task": "",
+                "index": "",
+                "taskSpecs": {
+                    "class": "",
+                    "module": "",
+                    "function": ""
+                },
+                "timestamp": "",
+                "source": "",
+                "user": {
+                    "id": "",
+                    "token": ""
+                }
+            },
+            "data": {},
+            "settings": {}
+        }
+    }
+}

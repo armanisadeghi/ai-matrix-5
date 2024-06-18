@@ -1,9 +1,8 @@
 // UserMessagePaper.tsx
-
 import React from 'react';
 import { Grid, Paper, Text, ActionIcon } from "@mantine/core";
 import { LiaEditSolid } from "react-icons/lia";
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown, { Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import styles from "./ResponseArea.module.css";
 import renderers from './markdown/renderers';
@@ -15,14 +14,10 @@ const UserMessagePaper: React.FC<{ text: string }> = ({ text }) => {
             <Grid>
                 <Grid.Col span={1}></Grid.Col>
                 <Grid.Col span="auto">
-
                     <Text className={styles.userMessage}>
-                        <ReactMarkdown className={styles.markdown} remarkPlugins={[remarkGfm]} components={renderers}>
+                        <ReactMarkdown className={styles.markdown} remarkPlugins={[remarkGfm]} components={renderers as Components}>
                             {text}
                         </ReactMarkdown>
-
-
-
                         <ActionIcon
                             className={styles.actionIcon}
                             variant="transparent"

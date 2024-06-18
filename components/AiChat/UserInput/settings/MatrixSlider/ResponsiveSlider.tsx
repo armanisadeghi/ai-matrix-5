@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import FullSlider from './FullSlider';
 import CompactSlider from './CompactSlider';
 
+// This isn't needed anymore because the new one is much better and fully reusable and integrated with atoms!
+
 const ResponsiveSlider = () => {
     const [isSmallScreen, setIsSmallScreen] = useState(false);
 
@@ -11,7 +13,7 @@ const ResponsiveSlider = () => {
         };
 
         window.addEventListener('resize', handleResize);
-        handleResize(); // Call once to set initial state
+        handleResize();
 
         return () => {
             window.removeEventListener('resize', handleResize);
