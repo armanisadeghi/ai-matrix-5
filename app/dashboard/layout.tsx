@@ -1,6 +1,6 @@
 "use client";
 
-import ErrorBoundary from "@/components/ErrorManagement/ErrorBoundry";
+import ErrorBoundary from "@/components/ErrorManagement/ErrorBoundary";
 import { MainLayout } from "@/layout";
 import React, { ReactNode, useEffect } from "react";
 import { RecoilRoot, useRecoilState } from "recoil";

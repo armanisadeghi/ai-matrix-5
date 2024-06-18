@@ -1,7 +1,8 @@
 // state/layoutAtoms.ts
-import { atom } from 'recoil';
+import { atom, selector, selectorFamily, waitForAll } from 'recoil';
 import { PresetMethod, DeviceType } from '@/types/layout';
 import { CustomPresets } from "@/hooks/layout/layoutPresets";
+
 
 // Atoms holding the size directly
 export const rightSidebarAtom = atom<number>({
@@ -93,3 +94,49 @@ export const overrideFlagAtom = atom<boolean>({
     key: 'overrideFlagAtom',
     default: false,
 });
+
+export const windowWidthState = atom<number | null>({
+    key: "windowWidthState",
+    default: null,
+});
+
+export const windowHeightState = atom<number | null>({
+    key: "windowHeightState",
+    default: null,
+});
+
+
+
+export const availableWidthSelector = selector<number>({
+    key: 'availableWidthSelector',
+    get: ({ get }) => {
+        const { leftSidebarWidth, rightSidebarWidth, windowWidth } = get(waitForAll({
+                leftSidebarWidth: leftSidebarAtom,
+                rightSidebarWidth: rightSidebarAtom,
+                windowWidth: windowWidthState,
+            }));
+
+        const availableWidth = windowWidth - leftSidebarWidth - rightSidebarWidth;
+        console.log('Available Width:', availableWidth);
+        return availableWidth;
+    },
+});
+
+
+export const availableHeightSelector = selector<number>({
+    key: "availableHeightSelector",
+    get: ({ get }) => {
+        const { headerHeight, footerHeight, windowHeight } = get(waitForAll({
+                headerHeight: headerAtom,
+                footerHeight: footerAtom,
+                windowHeight: windowHeightState,
+            }));
+
+        const availableHeight = windowHeight - (headerHeight ?? 0) - (footerHeight ?? 0);
+        console.log("Available Height:", availableHeight);
+
+        return availableHeight;
+    },
+});
+
+

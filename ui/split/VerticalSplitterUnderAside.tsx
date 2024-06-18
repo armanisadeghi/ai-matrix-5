@@ -64,7 +64,7 @@ const VerticalSplitter: React.FC<VerticalSplitterProps> = ({ children, initialSi
             direction="horizontal"
             cursor="col-resize"
             onDragEnd={newSizes => setSizes(newSizes)}
-            style={{ display: 'flex', height: 'calc(100vh - 10px)', width: availableWidth }}
+            style={{ display: 'flex', width: availableWidth }}
             gutter={(index, direction) => {
                 const gutter = document.createElement('div');
                 gutter.style.cssText = `height: 100%; background-color: transparent; width: 30px; cursor: col-resize; position: relative;`;

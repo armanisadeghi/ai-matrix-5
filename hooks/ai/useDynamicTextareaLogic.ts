@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from 'react';
-import { useMediaQuery } from '@mantine/hooks';
 import { useRecoilState } from 'recoil';
 import { activeChatMessagesArrayAtom, userTextInputAtom } from "@/state/aiAtoms/chatAtoms";
 import { MatrixMessage, MessageEntry } from '@/types/chat';
@@ -8,7 +7,6 @@ import { useChatDbAtoms } from "@/hooks/ai/useChatDbAtoms";
 const useDynamicTextareaLogic = () => {
     const [userInput, setUserInput] = useState('');
     const textareaRef = useRef<HTMLTextAreaElement>(null);
-    const isSmallScreen = useMediaQuery('(max-width: 600px)');
     const [userTextInput, setUserTextInput] = useRecoilState(userTextInputAtom);
     const [activeChatMessagesArray, setActiveChatMessagesArray] = useRecoilState(activeChatMessagesArrayAtom);
     const [streamTrigger, setStreamTrigger] = useState(false);
@@ -54,7 +52,6 @@ const useDynamicTextareaLogic = () => {
         handleInputChange,
         handleSendMessage,
         textareaRef,
-        isSmallScreen,
         streamTrigger,
         setStreamTrigger,
     };

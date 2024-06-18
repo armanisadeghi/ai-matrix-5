@@ -1,7 +1,7 @@
 // app/dashboard/layout.tsx
 "use client";
 
-import ErrorBoundary from "@/components/ErrorManagement/ErrorBoundry";
+import ErrorBoundary from "@/components/ErrorManagement/ErrorBoundary";
 import { ReactNode } from "react";
 
 type Props = {

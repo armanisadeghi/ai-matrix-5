@@ -18,8 +18,8 @@ export type ChatTitle= string;
 export type LastEdited= string;
 export type Metadata = Record<string, any>;
 
-export type Role = string;
 export type MessageIndex= number;
+export type Role = string;
 export type MessageText= string;
 
 export interface MatrixMessage {
@@ -45,6 +45,9 @@ export type ChatSummary = {
     chatId: string;
     chatTitle: string;
 };
+
+
+
 
 export type ChatMessages = MatrixMessage[];
 

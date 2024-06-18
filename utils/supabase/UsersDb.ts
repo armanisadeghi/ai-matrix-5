@@ -4,7 +4,7 @@ import { Database } from '@/types/supabase';
 import { v4 as uuidv4 } from 'uuid';
 
 export type MatrixUser = Database['public']['Tables']['user']['Row'];
-export type MatrixUserInsert = Database['public']['Tables']['matrix_user']['Insert'];
+export type MatrixUserInsert = Database['public']['Tables']['user']['Insert'];
 
 export class UsersDb {
     static async getMatrixUserWithAuth(matrixUser: MatrixUserInsert): Promise<MatrixUser | null> {
@@ -26,7 +26,7 @@ export class UsersDb {
 
                 return data ? data[0] as MatrixUser : null;
             } else {
-                matrixUser.user_id = uuidv4();
+                matrixUser.matrix_id = uuidv4();
                 const newUser = await this.createUser(matrixUser);
                 if (newUser) {
                     return newUser;
@@ -90,7 +90,7 @@ export class UsersDb {
 
     static async createUser(matrixUser: MatrixUserInsert): Promise<MatrixUser | null> {
         try {
-            matrixUser.user_id = uuidv4();
+            matrixUser.matrix_id = uuidv4();
             const { data, error } = await supabase
                 .from('user')
                 .insert([matrixUser])

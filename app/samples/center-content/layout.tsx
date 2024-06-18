@@ -19,7 +19,6 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
     const [presetType, setPresetType] = useRecoilState(presetTypeAtom);
-    const isSmallScreen = useMediaQuery("(max-width: 600px)");
     const [activeUser, setActiveUser] = useRecoilState(activeUserAtom);
     const [overrideFlag, setOverrideFlag] = useRecoilState(overrideFlagAtom);
     const { setSidebarContent } = useSidebar();
@@ -42,7 +41,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
     return (
         <SidebarProvider>
-            <MainLayout presetType="dashboard">
+            <MainLayout>
                 <main>{children}</main>
             </MainLayout>
         </SidebarProvider>
