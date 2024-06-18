@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { ActionIcon, Box, Group } from '@mantine/core';
+import { ActionIcon, Box, Group, Tooltip } from '@mantine/core';
 import { IconEdit, IconEye, IconTrash } from '@tabler/icons-react';
-import { DataTable, DataTableSortStatus, useDataTableColumns } from 'mantine-datatable';
+import { DataTable, DataTableColumn, DataTableSortStatus, useDataTableColumns } from 'mantine-datatable';
 import { Broker } from '@/types/broker';
 import { createBrokerManager } from '@/services/brokerService';
 import { Notifications } from '@mantine/notifications';
@@ -28,44 +28,37 @@ const BrokerTable = ({ brokers, setFilteredBrokers }: { brokers: Broker[], setFi
         })
     };
 
+    const columns: DataTableColumn<Broker>[] = [
+        { accessor: 'name', title: 'Broker Name', sortable: true, resizable: true },
+        { accessor: 'dataType', title: 'Data Type', width: 160, sortable: true, resizable: true },
+        { accessor: 'component.type', title: 'Component', width: 160, sortable: true, resizable: true },
+        { accessor: 'category', title: 'Category', width: 160, sortable: true, resizable: true },
+        { accessor: 'description', title: 'Description', resizable: true },
+        { accessor: 'component.defaultValue', title: 'Default Value', width: 160, resizable: true },
+        {
+            accessor: 'actions',
+            title: 'Action',
+            textAlign: 'left',
+            render: (broker: Broker) => (
+                <Group wrap="nowrap">
+                    <Tooltip label="Edit broker">
+                        <ActionIcon onClick={() => handleEdit(broker)}>
+                            <IconEdit size={14} />
+                        </ActionIcon>
+                    </Tooltip>
+                    <Tooltip label="Delete broker">
+                        <ActionIcon onClick={() => handleDelete(broker)}>
+                            <IconTrash size={14} />
+                        </ActionIcon>
+                    </Tooltip>
+                </Group>
+            ),
+        },
+    ];
+
     const handleEdit = (broker: any) => {
-        router.push(`/dashboard/brokers/edit/${broker.id}`)
+        router.push(`brokers/edit/${broker.id}`)
     }
-    const { effectiveColumns, resetColumnsWidth } = useDataTableColumns<Broker>({
-        key,
-        columns: [
-            { accessor: 'name', width: '40%', sortable: true, resizable: true },
-            { accessor: 'description', width: '60%', resizable: true },
-            { accessor: 'dataType', width: 160, sortable: true, resizable: true },
-            { accessor: 'defaultValue', width: 160, resizable: true, render: ({ value: value }) => value ? value : 'N/A' },
-            { accessor: 'category', width: 160, sortable: true, resizable: true },
-            {
-                accessor: 'actions',
-                title: <Box mr={6}>Actions</Box>,
-                textAlign: 'right',
-                render: (broker: Broker) => (
-                    <Group gap={4} justify="right" wrap="nowrap">
-                        <ActionIcon
-                            size="sm"
-                            variant="subtle"
-                            color="gray"
-                            onClick={() => handleEdit(broker)}
-                        >
-                            <IconEdit size={16} />
-                        </ActionIcon>
-                        <ActionIcon
-                            size="sm"
-                            variant="subtle"
-                            color="gray"
-                            onClick={() => handleDelete(broker)}
-                        >
-                            <IconTrash size={16} />
-                        </ActionIcon>
-                    </Group>
-                ),
-            },
-        ]
-    });
 
     const handleSortChange = (newSortStatus: DataTableSortStatus<Broker>) => {
         setSortStatus(newSortStatus);
@@ -73,18 +66,16 @@ const BrokerTable = ({ brokers, setFilteredBrokers }: { brokers: Broker[], setFi
 
     return (
         <DataTable
-            striped
+            striped={true}
             totalRecords={brokers.length}
             minHeight={400}
             maxHeight={1000}
-            withTableBorder
-            withColumnBorders
             highlightOnHover
             page={page}
             onPageChange={setPage}
             recordsPerPage={PAGE_SIZE}
             records={brokers}
-            columns={effectiveColumns}
+            columns={columns}
             sortStatus={sortStatus}
             onSortStatusChange={handleSortChange}
             storeColumnsKey={key}

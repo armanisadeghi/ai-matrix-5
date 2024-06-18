@@ -81,46 +81,43 @@ export const Navbar = () => {
               ))}
           </NavLink>
         ))}
-      </NavLink>
-    </React.Fragment >
-        ))}
-      </AppShell.Section >
+      </AppShell.Section>
 
-  <AppShell.Section
-    style={{
-      display: 'flex',
-      flexDirection: leftSideBarWidth < 100 ? 'column' : 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: '4px'
-    }}
-  >
-    <Group
-      gap="4px"
-      style={{
-        flexDirection: leftSideBarWidth < 100 ? 'column' : 'row',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}
-    >
-      <ActionIcon variant="transparent" size="sm">
-        <IconSettings />
-      </ActionIcon>
-      <ActionIcon variant="transparent" size="sm">
-        <IconMessage />
-      </ActionIcon>
-      <ActionIcon variant="transparent" size="sm">
-        <IconHelp />
-      </ActionIcon>
-      <ActionIcon variant="transparent" size="sm">
-        <IconFile />
-      </ActionIcon>
-      <ActionIcon variant="transparent" size="sm">
-        <IconShield />
-      </ActionIcon>
-    </Group>
-    <Box mt="xl"></Box>
-  </AppShell.Section>
-        </>
-    );
+      <AppShell.Section
+        style={{
+          display: 'flex',
+          flexDirection: leftSideBarWidth < 100 ? 'column' : 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '4px'
+        }}
+      >
+        <Group
+          gap="4px"
+          style={{
+            flexDirection: leftSideBarWidth < 100 ? 'column' : 'row',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          <ActionIcon variant="transparent" size="sm">
+            <IconSettings />
+          </ActionIcon>
+          <ActionIcon variant="transparent" size="sm">
+            <IconMessage />
+          </ActionIcon>
+          <ActionIcon variant="transparent" size="sm">
+            <IconHelp />
+          </ActionIcon>
+          <ActionIcon variant="transparent" size="sm">
+            <IconFile />
+          </ActionIcon>
+          <ActionIcon variant="transparent" size="sm">
+            <IconShield />
+          </ActionIcon>
+        </Group>
+        <Box mt="xl"></Box>
+      </AppShell.Section>
+    </>
+  );
 };

@@ -27,7 +27,7 @@ const BrokerListItem = ({ broker, user }: BrokerListItemProps) => {
     };
 
     const handleEdit = (e: any) => {
-        router.push(`/dashboard/brokers/edit/${broker.id}`)
+        router.push(`brokers/edit/${broker.id}`)
     }
     return (
         <Card radius="md" withBorder p="xs" w="100%" onMouseEnter={(e) => (e.currentTarget.style.border = '1px solid gray')}

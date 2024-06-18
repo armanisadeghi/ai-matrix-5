@@ -35,7 +35,7 @@ const BrokerList = ({ brokers }: { brokers: Broker[] }) => {
     };
 
     const handleEdit = (broker: Broker) => {
-        router.push(`/dashboard/brokers/edit/${broker.id}`)
+        router.push(`brokers/edit/${broker.id}`)
     }
 
     const isTextTruncated = (element: HTMLElement) => {

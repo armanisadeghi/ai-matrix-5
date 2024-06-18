@@ -9,7 +9,7 @@ const EditBrokerPage = ({ params }: { params: { id: string } }) => {
     return (
         <Stack>
             <Center>
-                <Link href="/dashboard/brokers">
+                <Link href="brokers">
                     <Button
                         variant="light"
                         leftSection={<IconArrowLeft size={14} />}
@@ -18,7 +18,7 @@ const EditBrokerPage = ({ params }: { params: { id: string } }) => {
                     </Button>
                 </Link>
                 <Space w="md" />
-                <Link href="/dashboard/brokers/broker-test">
+                <Link href="broker-test">
                     <Button
                         variant="light"
                         rightSection={<IconArrowRight size={14} />}

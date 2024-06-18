@@ -8,7 +8,7 @@ const AddBrokerPage: React.FC = () => {
     return (
         <Stack>
             <Center>
-                <Link href="/dashboard/brokers">
+                <Link href="/dashboard/matrix-engine/brokers" scroll={false}>
                     <Button
                         variant="light"
                         leftSection={<IconArrowLeft size={14} />}
@@ -17,7 +17,7 @@ const AddBrokerPage: React.FC = () => {
                     </Button>
                 </Link>
                 <Space w="md" />
-                <Link href="/dashboard/brokers/broker-test">
+                <Link href="broker-test">
                     <Button
                         variant="light"
                         rightSection={<IconArrowRight size={14} />}

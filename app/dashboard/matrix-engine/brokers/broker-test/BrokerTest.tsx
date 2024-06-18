@@ -20,7 +20,7 @@ const BrokerTest = () => {
     return (
         <Container w='100%'>
             <Paper p="sm">
-                <Link href="/dashboard/brokers/add">
+                <Link href="add">
                     <Button
                         variant="light"
                         leftSection={<IconArrowLeft size={14} />}

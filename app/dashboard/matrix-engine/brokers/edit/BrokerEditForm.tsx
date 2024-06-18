@@ -35,7 +35,7 @@ export const BrokerEditForm = ({ id }: { id: string }) => {
 
     const handleEditBroker = () => {
         try {
-            brokerManager.updateBroker({ ...currentData, dataType: typeof currentData.component.defaultValue, officialName: currentData.name.toUpperCase().replace(/\s/g, '_') });
+            brokerManager.updateBroker({ ...currentData, dataType: currentData.dataType, officialName: currentData.name.toUpperCase().replace(/\s/g, '_') });
             Notifications.show({
                 title: 'Broker updated',
                 message: 'Broker updated successfully',

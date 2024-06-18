@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { Fieldset, Space, Switch, TextInput, Group, FileInput, Grid, NumberInput, ColorInput, Flex, ColorPicker } from '@mantine/core';
 import { Broker } from '@/types/broker';
 import AmeSlider from '@/ui/slider/AmeSlider';
-import AmeNumericInput from '@/ui/input/AmeNumericInput';
 
 interface BrokerFormProps {
     currentData: Broker;

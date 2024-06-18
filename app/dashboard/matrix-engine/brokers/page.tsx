@@ -51,7 +51,7 @@ const BrokersPage: React.FC = (): JSX.Element => {
             children={[
                 !isTablet && !isMobile && <LeftPanel brokers={brokersList} setFilteredBrokers={setFilteredBrokers} />,
                 <Stack>
-                    <Flex gap="md"><Link href="/dashboard/brokers/add">
+                    <Flex gap="md"><Link href="brokers/add">
                         <Button
                             variant="light"
                             leftSection={<IconPlus size={14} />}
