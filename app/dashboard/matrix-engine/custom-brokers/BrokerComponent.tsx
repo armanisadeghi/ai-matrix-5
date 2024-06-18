@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Checkbox, CheckboxGroup, Fieldset, FileInput, Group, JsonInput, Radio, RadioGroup, Select, Slider, Space, Switch, SwitchGroup, TextInput, Textarea, Image } from '@mantine/core';
-import { BrokerCheckBoxGroup } from '@/components/Brokers/BrokerCheckBoxGroup';
+// FIXME: missing component
+// import { BrokerCheckBoxGroup } from '@/components/Brokers/BrokerCheckBoxGroup';
 import { BrokerImage } from '@/components/Brokers/BrokerImage';
 import { useForm } from '@mantine/form';
 import { Component } from '@/types/broker';
@@ -77,7 +78,9 @@ const BrokerComponent: React.FC<BrokerComponentProps> = ({ type, currentComponen
                     color={color}
                     onChange={value => handleDefaultValueChange ? handleDefaultValueChange(value.target.checked) : currentData.setFieldValue('value', value.target.checked)} />;
             case "CheckboxGroup":
-                return <>{options && <BrokerCheckBoxGroup
+                // FIXME: missing component
+                // Replaced BrokerCheckbox to Checkbox
+                return <>{options && <Checkbox
                     defaultValue={defaultValue as string[]}
                     label={label}
                     options={options.map(option => ({ value: option, label: option }))}

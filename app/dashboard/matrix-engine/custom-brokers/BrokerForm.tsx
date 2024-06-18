@@ -5,7 +5,8 @@ import { Button, Container, Flex, SimpleGrid, Space } from '@mantine/core';
 import BrokerComponent from './BrokerComponent';
 import { useRecoilValue } from 'recoil';
 import { createBrokerManager } from '@/services/brokerService';
-import { currentBrokerAtom } from '../../../../context/atoms/brokerAtoms';
+// FIXME: missing broker atom
+import { currentBrokerAtom } from '@/context/atoms';
 
 
 export const BrokerForm = () => {
