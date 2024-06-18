@@ -113,7 +113,6 @@ export interface CustomPresets {
 
 export const getLayoutPresets = (typeOrPreset: PresetType, customValues?: CustomPresets) => {
     let layoutType: LayoutPreset;
-    console.log('typeOrPreset', typeOrPreset);
 
         if (Object.keys(moduleToLayoutType).includes(typeOrPreset as ModulePreset)) {
         layoutType = moduleToLayoutType[typeOrPreset as ModulePreset];

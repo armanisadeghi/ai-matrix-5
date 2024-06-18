@@ -1,47 +1,45 @@
-// app/samples/ai-tests/shared/aiAtoms/chatAtoms.tsx
-
-import {
-    atom,
-    atomFamily,
-    selectorFamily,
-    useRecoilCallback,
-    useRecoilState,
-    selector,
-} from 'recoil';
+// state/aiAtoms/chatAtoms.tsx
+import { atom, atomFamily, selector, selectorFamily, useRecoilCallback, useRecoilState } from 'recoil';
+import { writableArray, writableObject, number, string } from '@recoiljs/refine';
 import { syncEffect } from 'recoil-sync';
-import { writableArray, writableObject, string, number } from '@recoiljs/refine';
-
 import supabase from "@/utils/supabase/client";
-
 import { ChatMessages, ChatSummary, MatrixMessage, Role } from '@/types/chat';
-import Chat from "@/services/Chat";
 import { activeUserAtom } from "@/state/userAtoms";
+import { Database, Json } from "@/types/supabase";
+export type Chats = Database['public']['Tables']['chats']['Row'];
+export type ChatInsert = Database['public']['Tables']['chats']['Insert'];
+export type ChatUpdate = Database['public']['Tables']['chats']['Update'];
+export type user = Database['public']['Tables']['user']['Row'];
 
-// Selectors for fetching chat summaries and details from Supabase
-export const chatSummariesSelector = selector({
-    key: 'chatSummariesSelector',
-    get: async ({get}) => {
-        const userId = get(activeUserAtom)?.sub;
-        if (!userId) throw new Error('User not found');
 
-        const {
-            data,
-            error
-        } = await supabase
-            .from('chats')
-            .select('chat_id, chat_title')
-            .eq('user_id', userId);
 
-        if (error) throw error;
 
-        return data.map(chat => ({
-            chatId: chat.chat_id,
-            chatTitle: chat.chat_title
-        }));
-    },
+export const userTextInputAtom = atom<string>({
+    key: 'userTextInputAtom',
+    default: '',
 });
 
-export const chatDetailsSelector = selector({
+
+export const activeChatMessagesArrayAtom = atom<MatrixMessage[]>({
+    key: 'activeChatMessagesArrayAtom',
+    default: [],
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Selector for fetching detailed chat information from Supabase
+export const chatDetailsSelector = selector<Chats>({
     key: 'chatDetailsSelector',
     get: async ({get}) => {
         const chatId = get(activeChatIdAtom);
@@ -90,17 +88,32 @@ export const chatMessagesAtomFamily = atomFamily<ChatMessages, string>({
     ],
 });
 
+
+
+// Utility to fetch and store chat details
 export const useFetchAndStoreChatDetails = () => {
     return useRecoilCallback(({
                                   snapshot,
                                   set
                               }) => async (chatId: string) => {
         const chatDetails = await snapshot.getPromise(chatDetailsSelector);
-        set(chatMessagesAtomFamily(chatId), chatDetails.messagesArray);
-        set(activeChatMessagesArrayAtom, chatDetails.messagesArray);
+        set(chatMessagesAtomFamily(chatId), chatDetails.messages_array);
+        set(activeChatMessagesArrayAtom, chatDetails.messages_array);
         return chatDetails;
     });
 };
+
+export const selectedChatMessagesSelector = selectorFamily<ChatMessages, string>({
+    key: 'selectedChatMessages',
+    get: (chatId) => ({get}) => get(chatMessagesAtomFamily(chatId)),
+});
+
+
+
+
+
+
+
 
 export const allowSubmitMessageState = atom({
     key: 'allowSubmitMessageState',
@@ -112,18 +125,12 @@ export const activeChatIdAtom = atom<string | null>({
     default: null
 });
 
-export const selectedChatMessagesSelector = selectorFamily<ChatMessages, string>({
-    key: 'selectedChatMessages',
-    get: (chatId) => ({get}) => get(chatMessagesAtomFamily(chatId)),
-});
+
+
+
 
 export const assistantTextStreamAtom = atom<string>({
     key: 'assistantTextStreamAtom',
-    default: '',
-});
-
-export const userTextInputAtom = atom<string>({
-    key: 'userTextInputAtom',
     default: '',
 });
 
@@ -143,11 +150,6 @@ export const startingMessageArrayAtom = atom<MatrixMessage[]>({
         text: 'You are a helpful assistant.',
         role: 'system'
     }],
-});
-
-export const activeChatMessagesArrayAtom = atom<MatrixMessage[]>({
-    key: 'activeChatMessagesArrayAtom',
-    default: [],
 });
 
 const chatSummaryChecker = writableArray(
@@ -181,6 +183,10 @@ export const chatTitlesAndIdsAtom = atom<{ chatId: string, chatTitle: string }[]
     key: 'chatTitlesAndIdsAtom',
     default: [],
 });
+
+
+
+
 
 // Utility Functions
 export const useChatMessages = () => {

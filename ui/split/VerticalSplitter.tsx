@@ -35,7 +35,7 @@ const VerticalSplitter: React.FC<VerticalSplitterProps> = ({ children, initialSi
             direction="horizontal"
             cursor="col-resize"
             onDragEnd={newSizes => setSizes(newSizes)}
-            style={{ display: 'flex', height: 'calc(100vh - 10px)' }}
+            style={{ display: 'flex', height: 'calc(95vh)' }}
             gutter={(index, direction) => {
                 const gutter = document.createElement('div');
                 gutter.style.cssText = `height: 100%; background-color: transparent; width: 30px; cursor: col-resize; position: relative;`;
@@ -45,12 +45,8 @@ const VerticalSplitter: React.FC<VerticalSplitterProps> = ({ children, initialSi
                 gutter.appendChild(innerGutter);
                 gutters.current[index] = gutter;
 
-                gutter.addEventListener('mouseenter', () => {
-                    gutter.style.cursor = 'col-resize';
-                });
-                gutter.addEventListener('mouseleave', () => {
-                    gutter.style.cursor = 'default';
-                });
+                gutter.addEventListener('mouseenter', () => { gutter.style.cursor = 'col-resize'; }, { passive: true });
+                gutter.addEventListener('mouseleave', () => { gutter.style.cursor = 'default'; }, { passive: true });
 
                 return gutter;
             }}

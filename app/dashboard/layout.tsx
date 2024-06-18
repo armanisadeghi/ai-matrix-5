@@ -1,6 +1,6 @@
 "use client";
 
-import ErrorBoundary from "@/components/ErrorManagement/ErrorBoundry";
+import ErrorBoundary from "@/components/ErrorManagement/ErrorBoundary";
 import { MainLayout } from "@/layout";
 import React, { ReactNode, useEffect } from "react";
 import { RecoilRoot, useRecoilState } from "recoil";
@@ -51,13 +51,13 @@ function Layout({children, preset}: Props) {
         <UserProvider>
             <ErrorBoundary>
                 <RecoilRoot>
-                        <LayoutProvider>
-                            <SidebarProvider>
-                                <MainLayout>
-                                    {children}
-                                </MainLayout>
-                            </SidebarProvider>
-                        </LayoutProvider>
+                    <LayoutProvider>
+                        <SidebarProvider>
+                            <MainLayout>
+                                {children}
+                            </MainLayout>
+                        </SidebarProvider>
+                    </LayoutProvider>
                 </RecoilRoot>
             </ErrorBoundary>
         </UserProvider>

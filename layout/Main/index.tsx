@@ -6,13 +6,13 @@ import { Navbar } from "./Navbar";
 import { Header } from "./Header";
 import { Sidebar } from "./Sidebar";
 import { Footer } from "@/layout/Main/Footer";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
     rightSidebarAtom,
     leftSidebarAtom,
     footerAtom,
     headerAtom,
-    deviceTypeAtom,
+    deviceTypeAtom, windowHeightState, windowWidthState,
 } from "@/state/layoutAtoms";
 import useLayoutPresets from "@/hooks/layout/useLayoutPresets";
 import { useMediaQuery } from "@mantine/hooks";
@@ -32,6 +32,14 @@ export function MainLayout({ children }: Props) {
     const mobileMatch = useMediaQuery("(max-width: 768px)");
     const tabletMatch = useMediaQuery("(min-width: 769px) and (max-width: 1024px)");
     const desktopMatch = useMediaQuery("(min-width: 1025px)");
+
+    const [windowWidth, setWindowWidth] = useRecoilState(windowWidthState);
+    const [windowHeight, setWindowHeight] = useRecoilState(windowHeightState);
+
+    useEffect(() => {
+        setWindowWidth(window.innerWidth);
+        setWindowHeight(window.innerHeight);
+    }, [setWindowWidth, setWindowHeight]);
 
     useEffect(() => {
         if (mobileMatch) {
