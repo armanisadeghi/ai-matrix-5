@@ -23,3 +23,9 @@ export const categoryAtom = atom<string[]>({
     key: 'categoryAtom',
     default: [],
 });
+
+// TODO: Missing atom added a placeholder: Kelvin
+export const currentBrokerAtom = atom<string[]>({
+    key: 'currentBrokerAtom',
+    default: [],
+});
