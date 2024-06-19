@@ -10,16 +10,6 @@ import { createBrokerManager } from '@/services/brokerService';
 import { BrokerEdit } from '../add/BrokerEdit';
 import { Notifications } from "@mantine/notifications";
 
-const initialValues = {
-    id: '',
-    name: '',
-    officialName: '',
-    defaultValue: "",
-    dataType: "",
-    component: {} as Component,
-    description: "",
-}
-
 export const BrokerEditForm = ({ id }: { id: string }) => {
     const brokers = useRecoilValue(brokersAtom);
     const brokerManager = createBrokerManager();
@@ -71,10 +61,7 @@ export const BrokerEditForm = ({ id }: { id: string }) => {
                 </Fieldset>
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 6 }}>
-                <Fieldset legend="Custom Broker" radius="md">
-                    <Text>{currentData.name}</Text>
-                    <Text size='xs' c={'gray.6'}>{currentData.description}</Text>
-                    <Space h="sm" />
+                <Fieldset legend="Preview" radius="md">
                     <BrokerComponent currentComponent={currentData.component} type={currentData.component.type} handleDefaultValueChange={(value: any) => setCurrentData({ ...currentData, component: { ...currentData.component, defaultValue: value } })} />
                 </Fieldset>
             </Grid.Col>
