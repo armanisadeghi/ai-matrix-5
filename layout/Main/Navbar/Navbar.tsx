@@ -1,22 +1,14 @@
 "use client";
 
-import {
-    ActionIcon,
-    AppShell,
-    Avatar, Box,
-    Group,
-    NavLink,
-    ScrollArea,
-    UnstyledButton,
-    useMantineTheme
-} from "@mantine/core";
-import { IconSettings, IconMessage, IconHelp, IconFile, IconShield } from "@tabler/icons-react";
+import { AppShell, Box, Group, NavLink, ScrollArea, useMantineTheme } from "@mantine/core";
+import { IconFile, IconHelp, IconMessage, IconSettings, IconShield } from "@tabler/icons-react";
 import { navItems } from "./navItems";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useRecoilValue } from "recoil";
 import { leftSidebarAtom } from "@/state/layoutAtoms";
-
+import { AmeIconWrapper } from "@/ui/icons";
+import AmeActionIcon from "@/ui/buttons/AmeActionIcon";
 
 // Kevin, I wrote these comments and then fixed most of it, but there are some minor tweaks remaining,
 // I still don't like that we don't see more of the manu words in compact mode. I think I had it where we could see the full name, but I can't remember.
@@ -31,6 +23,8 @@ export const Navbar = () => {
     const pathname = usePathname();
     const leftSideBarWidth = useRecoilValue(leftSidebarAtom);
 
+    const iconSize = leftSideBarWidth <= 100 ? 24 : 16;
+
     return (
         <>
             <AppShell.Section grow component={ScrollArea} my="xs">
@@ -40,10 +34,12 @@ export const Navbar = () => {
                         label={
                             <Group
                                 style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
-                                gap="xs"
+                                gap={0}
                                 justify="center"
                             >
-                                <item.icon size={20} />
+                                <AmeIconWrapper>
+                                    <item.icon size={iconSize} />
+                                </AmeIconWrapper>
                                 {leftSideBarWidth >= 100 && (
                                     <span
                                         style={{
@@ -58,7 +54,7 @@ export const Navbar = () => {
                                 )}
                             </Group>
                         }
-                        childrenOffset={28}
+                        childrenOffset={24}
                         defaultOpened={item.initiallyOpened}
                         mb="xs"
                         style={{ borderRadius: theme.radius.sm }}
@@ -70,7 +66,7 @@ export const Navbar = () => {
                                     label={link.label}
                                     component={Link}
                                     href={link.link}
-                                    mt={linkIndex === 0 ? 4 : 0}
+                                    mt={linkIndex === 0 ? 0 : 0}
                                     style={{
                                         borderRadius: theme.radius.sm,
                                         backgroundColor: link.link === pathname ? theme.colors.gray[3] : "inherit",
@@ -85,38 +81,28 @@ export const Navbar = () => {
 
             <AppShell.Section
                 style={{
-                    display: 'flex',
-                    flexDirection: leftSideBarWidth < 100 ? 'column' : 'row',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '4px'
+                    display: "flex",
+                    flexDirection: leftSideBarWidth < 100 ? "column" : "row",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: leftSideBarWidth < 80 ? 12 : leftSideBarWidth > 50 && leftSideBarWidth <= 150 ? 4 : 8,
                 }}
             >
-                <Group
-                    gap="4px"
-                    style={{
-                        flexDirection: leftSideBarWidth < 100 ? 'column' : 'row',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}
-                >
-                    <ActionIcon variant="transparent" size="sm">
-                        <IconSettings />
-                    </ActionIcon>
-                    <ActionIcon variant="transparent" size="sm">
-                        <IconMessage />
-                    </ActionIcon>
-                    <ActionIcon variant="transparent" size="sm">
-                        <IconHelp />
-                    </ActionIcon>
-                    <ActionIcon variant="transparent" size="sm">
-                        <IconFile />
-                    </ActionIcon>
-                    <ActionIcon variant="transparent" size="sm">
-                        <IconShield />
-                    </ActionIcon>
-                </Group>
-                <Box mt="xl"></Box>
+                <AmeActionIcon variant="transparent" size="sm" tooltip="Settings">
+                    <IconSettings size={iconSize} />
+                </AmeActionIcon>
+                <AmeActionIcon variant="transparent" size="sm" tooltip="Message">
+                    <IconMessage size={iconSize} />
+                </AmeActionIcon>
+                <AmeActionIcon variant="transparent" size="sm" tooltip="Help">
+                    <IconHelp size={iconSize} />
+                </AmeActionIcon>
+                <AmeActionIcon variant="transparent" size="sm" tooltip="Files">
+                    <IconFile size={iconSize} />
+                </AmeActionIcon>
+                <AmeActionIcon variant="transparent" size="sm" tooltip="Privacy">
+                    <IconShield size={iconSize} />
+                </AmeActionIcon>
             </AppShell.Section>
         </>
     );

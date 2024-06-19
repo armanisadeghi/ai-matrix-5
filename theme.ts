@@ -2,11 +2,25 @@
 
 "use client";
 
-import { ActionIcon, Button, createTheme } from "@mantine/core";
+import { ActionIcon, Button, createTheme, MantineColorsTuple } from "@mantine/core";
+
+const myColor: MantineColorsTuple = [
+    "#eef3ff",
+    "#dce4f5",
+    "#b9c7e2",
+    "#94a8d0",
+    "#748dc1",
+    "#5f7cb8",
+    "#5474b4",
+    "#44639f",
+    "#39588f",
+    "#2d4b81",
+];
 
 export const theme = createTheme({
-    primaryColor: "blue",
-    primaryShade: 8,
+    colors: { "pale-blue": myColor },
+    primaryColor: "pale-blue",
+    primaryShade: 6,
     defaultRadius: "md",
     fontFamily: "Inter, sans-serif",
     headings: {
