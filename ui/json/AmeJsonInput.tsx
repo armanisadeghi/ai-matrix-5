@@ -1,55 +1,58 @@
 // ui/json/AmeJsonInput.tsx
-'use client';
+'use client'
 
-import React, { useState, useEffect } from 'react';
-import { JsonInput, JsonInputProps, Button, Space } from '@mantine/core';
+import React, { useState, useEffect } from 'react'
+import { JsonInput, JsonInputProps, Button, Space } from '@mantine/core'
 
-interface AmeJsonInputProps extends Omit<JsonInputProps, 'size' | 'radius' | 'label' | 'placeholder' | 'value' | 'onChange' | 'error'> {
-    enabled?: boolean;
-    errorMessage?: string;
-    label: string;
-    value: any;
-    onChange?: (value: string) => void;
-    showButton?: boolean;
-    validateJson?: boolean;
+interface AmeJsonInputProps
+    extends Omit<
+        JsonInputProps,
+        'size' | 'radius' | 'label' | 'placeholder' | 'value' | 'onChange' | 'error'
+    > {
+    enabled?: boolean
+    errorMessage?: string
+    label: string
+    value: any
+    onChange?: (value: string) => void
+    showButton?: boolean
+    validateJson?: boolean
 }
 
-const AmeJsonInput: React.FC<AmeJsonInputProps> = (
-    {
-        enabled = true,
-        errorMessage,
-        label,
-        value,
-        onChange,
-        showButton = false,
-        validateJson = true,
-        ...props
-    }) => {
-    const [isEnabled, setIsEnabled] = useState<boolean>(enabled);
-    const [inputValue, setInputValue] = useState<string>(value);
-    const [error, setError] = useState<string | undefined>(errorMessage);
+const AmeJsonInput: React.FC<AmeJsonInputProps> = ({
+    enabled = true,
+    errorMessage,
+    label,
+    value,
+    onChange,
+    showButton = false,
+    validateJson = true,
+    ...props
+}) => {
+    const [isEnabled, setIsEnabled] = useState<boolean>(enabled)
+    const [inputValue, setInputValue] = useState<string>(value)
+    const [error, setError] = useState<string | undefined>(errorMessage)
 
     useEffect(() => {
-        setInputValue(value);
-    }, [value]);
+        setInputValue(value)
+    }, [value])
 
     const handleJsonChange = (newValue: string) => {
-        setInputValue(newValue);
+        setInputValue(newValue)
         if (onChange) {
-            onChange(newValue);
+            onChange(newValue)
         }
-    };
+    }
 
     const handleBlur = () => {
         if (validateJson) {
             try {
-                JSON.parse(inputValue);
-                setError(undefined);
+                JSON.parse(inputValue)
+                setError(undefined)
             } catch (e) {
-                setError('Invalid JSON');
+                setError('Invalid JSON')
             }
         }
-    };
+    }
 
     return (
         <div>
@@ -70,14 +73,14 @@ const AmeJsonInput: React.FC<AmeJsonInputProps> = (
             />
             {showButton && (
                 <>
-                    <Space h="md"/>
+                    <Space h="md" />
                     <Button onClick={() => setIsEnabled(!isEnabled)}>
                         {isEnabled ? 'Disable' : 'Enable'} Input
                     </Button>
                 </>
             )}
         </div>
-    );
-};
+    )
+}
 
-export default AmeJsonInput;
+export default AmeJsonInput

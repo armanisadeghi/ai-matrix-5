@@ -1,52 +1,51 @@
-"use client";
+'use client'
 
-import { Component, ComponentType } from "@/types/broker";
-import { Container, Button, Space, Select, Paper, Transition, Stack, Flex } from "@mantine/core";
-import { IconArrowLeft, IconPlus } from "@tabler/icons-react";
-import { useState } from "react";
-import BrokerList from "./BrokerList";
-import { BrokerForm } from "./BrokerForm";
-import { BrokerEdit } from "./BrokerEdit";
-import Link from "next/link";
-import { createBrokerManager } from "@/services/brokerService";
+import { Component, ComponentType } from '@/types/broker'
+import { Container, Button, Space, Select, Paper, Transition, Stack, Flex } from '@mantine/core'
+import { IconArrowLeft, IconPlus } from '@tabler/icons-react'
+import { useState } from 'react'
+import BrokerList from './BrokerList'
+import { BrokerForm } from './BrokerForm'
+import { BrokerEdit } from './BrokerEdit'
+import Link from 'next/link'
+import { createBrokerManager } from '@/services/brokerService'
 
 const Brokers: React.FC = () => {
-    const [showSelect, setShowSelect] = useState(false);
-    const [selectedOption, setSelectedOption] = useState<string>('');
-    const [isTypeSelected, setTypeSelected] = useState<boolean>(false);
-    const [currentComponent, setCurrentComponent] = useState<Component>({} as Component);
-    const brokerManager = createBrokerManager();
+    const [showSelect, setShowSelect] = useState(false)
+    const [selectedOption, setSelectedOption] = useState<string>('')
+    const [isTypeSelected, setTypeSelected] = useState<boolean>(false)
+    const [currentComponent, setCurrentComponent] = useState<Component>({} as Component)
+    const brokerManager = createBrokerManager()
     const handleTypeSelection = (value: string) => {
-        setSelectedOption(value);
-        setTypeSelected(true);
-    };
+        setSelectedOption(value)
+        setTypeSelected(true)
+    }
 
     const handleNewBroker = () => {
-        setShowSelect(true);
-        setTypeSelected(false);
-        setSelectedOption('');
+        setShowSelect(true)
+        setTypeSelected(false)
+        setSelectedOption('')
         brokerManager.setCurrentBroker({
             id: '',
             name: '',
             dataType: '',
-            component: {} as Component,
-        });
-    };
+            component: {} as Component
+        })
+    }
 
     const componentOptions = Object.keys(ComponentType).map((key) => ({
         value: key,
-        label: key,
-    })) as { value: string; label: string }[];
+        label: key
+    })) as { value: string; label: string }[]
 
     return (
         <Container>
             <Flex justify="space-between">
-                <Link href="/dashboard/matrix-engine/custom-brokers/example"><Button
-                    variant="light"
-                    leftSection={<IconArrowLeft size={14} />}
-                >
-                    Sample Brokers
-                </Button></Link>
+                <Link href="/dashboard/matrix-engine/custom-brokers/example">
+                    <Button variant="light" leftSection={<IconArrowLeft size={14} />}>
+                        Sample Brokers
+                    </Button>
+                </Link>
             </Flex>
             <Space h="md" />
 
@@ -54,11 +53,17 @@ const Brokers: React.FC = () => {
                 <Transition transition="slide-down" duration={200} mounted={showSelect}>
                     {(styles) => (
                         <Stack style={styles}>
-                            <Select label="Type" description="Choose the type of component" placeholder="Choose the type of component" data={componentOptions} value={selectedOption} onChange={(option) => handleTypeSelection(option as ComponentType)} />
+                            <Select
+                                label="Type"
+                                description="Choose the type of component"
+                                placeholder="Choose the type of component"
+                                data={componentOptions}
+                                value={selectedOption}
+                                onChange={(option) => handleTypeSelection(option as ComponentType)}
+                            />
                             <Space h="md" />
                             <BrokerEdit />
                             <Space h="md" />
-
                         </Stack>
                     )}
                 </Transition>
@@ -73,7 +78,7 @@ const Brokers: React.FC = () => {
             </Stack>
             <BrokerList user={true} />
         </Container>
-    );
-};
+    )
+}
 
-export default Brokers;
+export default Brokers

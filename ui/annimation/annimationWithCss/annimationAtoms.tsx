@@ -1,4 +1,4 @@
-import { atom } from 'recoil';
+import { atom } from 'recoil'
 
 export const leftSidebarAtom = atom({
     key: 'leftSidebarAtom',
@@ -6,11 +6,11 @@ export const leftSidebarAtom = atom({
     effects_UNSTABLE: [
         ({ onSet }) => {
             onSet((newValue) => {
-                document.documentElement.style.setProperty('--sidebar-width', `${newValue}px`);
-            });
-        },
-    ],
-});
+                document.documentElement.style.setProperty('--sidebar-width', `${newValue}px`)
+            })
+        }
+    ]
+})
 
 export const rightSidebarAtom = atom({
     key: 'rightSidebarAtom',
@@ -18,8 +18,8 @@ export const rightSidebarAtom = atom({
     effects_UNSTABLE: [
         ({ onSet }) => {
             onSet((newValue) => {
-                document.documentElement.style.setProperty('--sidebar-width', `${newValue}px`);
-            });
-        },
-    ],
-});
+                document.documentElement.style.setProperty('--sidebar-width', `${newValue}px`)
+            })
+        }
+    ]
+})

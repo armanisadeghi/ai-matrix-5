@@ -1,15 +1,15 @@
-'use client';
+'use client'
 
-import React from 'react';
-import { GuestLayout } from '@/layout';
-import { GuestHero } from '@/components/GuestHero/GuestHero';
+import React from 'react'
+import { GuestLayout } from '@/layout'
+import { GuestHero } from '@/components/GuestHero/GuestHero'
 
 const HomePage = () => {
     return (
-            <GuestLayout>
-                <GuestHero />
-            </GuestLayout>
-    );
-};
+        <GuestLayout>
+            <GuestHero />
+        </GuestLayout>
+    )
+}
 
-export default HomePage;
+export default HomePage

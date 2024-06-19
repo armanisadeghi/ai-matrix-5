@@ -1,16 +1,13 @@
 // app/samples/atom-tester/page.tsx
-'use client';
+'use client'
 
-
-import AtomTester from "@/app/samples/atom-tester/AtomTester";
+import AtomTester from '@/app/samples/atom-tester/AtomTester'
 
 function Page() {
-    return <AtomTester></AtomTester>;
+    return <AtomTester></AtomTester>
 }
 
-export default Page;
-
-
+export default Page
 
 /*
 

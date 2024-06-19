@@ -1,53 +1,47 @@
-import { useSetRecoilState } from 'recoil';
-import { uploadedFilesAtom } from '@/state/aiAtoms/uploadAtoms';
+import { useSetRecoilState } from 'recoil'
+import { uploadedFilesAtom } from '@/state/aiAtoms/uploadAtoms'
 
 interface UploadedFile {
-    id: string;
-    name: string;
-    type: string;
-    content: string | ArrayBuffer | null;
-    status: 'pending' | 'uploaded' | 'error';
+    id: string
+    name: string
+    type: string
+    content: string | ArrayBuffer | null
+    status: 'pending' | 'uploaded' | 'error'
 }
 
 const useFileUpload = () => {
-    const setUploadedFiles = useSetRecoilState(uploadedFilesAtom);
+    const setUploadedFiles = useSetRecoilState(uploadedFilesAtom)
 
     const handleFileUpload = (file: File | null) => {
-        if (!file) return;
+        if (!file) return
 
         const newFile: UploadedFile = {
             id: URL.createObjectURL(file),
             name: file.name,
             type: file.type,
             content: null,
-            status: 'pending',
-        };
+            status: 'pending'
+        }
 
-        setUploadedFiles(prevFiles => [...prevFiles, newFile]);
+        setUploadedFiles((prevFiles) => [...prevFiles, newFile])
 
-        const reader = new FileReader();
+        const reader = new FileReader()
         reader.onload = () => {
-            setUploadedFiles(prevFiles =>
-                prevFiles.map(f =>
-                    f.id === newFile.id
-                        ? { ...f, content: reader.result, status: 'uploaded' }
-                        : f
+            setUploadedFiles((prevFiles) =>
+                prevFiles.map((f) =>
+                    f.id === newFile.id ? { ...f, content: reader.result, status: 'uploaded' } : f
                 )
-            );
-        };
+            )
+        }
         reader.onerror = () => {
-            setUploadedFiles(prevFiles =>
-                prevFiles.map(f =>
-                    f.id === newFile.id
-                        ? { ...f, status: 'error' }
-                        : f
-                )
-            );
-        };
-        reader.readAsDataURL(file);
-    };
+            setUploadedFiles((prevFiles) =>
+                prevFiles.map((f) => (f.id === newFile.id ? { ...f, status: 'error' } : f))
+            )
+        }
+        reader.readAsDataURL(file)
+    }
 
-    return handleFileUpload;
-};
+    return handleFileUpload
+}
 
-export default useFileUpload;
+export default useFileUpload

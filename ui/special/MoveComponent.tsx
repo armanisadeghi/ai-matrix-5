@@ -1,16 +1,16 @@
 // ui/special/MoveComponent.tsx
-import React, { useState } from 'react';
-import { Group, Text, Code, rem } from '@mantine/core';
-import { useMove } from '@mantine/hooks';
+import React, { useState } from 'react'
+import { Group, Text, Code, rem } from '@mantine/core'
+import { useMove } from '@mantine/hooks'
 
 interface MoveComponentProps {
-    initialX?: number;
-    initialY?: number;
+    initialX?: number
+    initialY?: number
 }
 
 const MoveComponent: React.FC<MoveComponentProps> = ({ initialX = 0.2, initialY = 0.6 }) => {
-    const [value, setValue] = useState({ x: initialX, y: initialY });
-    const { ref, active } = useMove(setValue);
+    const [value, setValue] = useState({ x: initialX, y: initialY })
+    const { ref, active } = useMove(setValue)
 
     return (
         <>
@@ -21,7 +21,7 @@ const MoveComponent: React.FC<MoveComponentProps> = ({ initialX = 0.2, initialY 
                         width: rem(400),
                         height: rem(120),
                         backgroundColor: 'var(--mantine-color-blue-light)',
-                        position: 'relative',
+                        position: 'relative'
                     }}
                 >
                     <div
@@ -31,21 +31,22 @@ const MoveComponent: React.FC<MoveComponentProps> = ({ initialX = 0.2, initialY 
                             top: `calc(${value.y * 100}% - ${rem(8)})`,
                             width: rem(16),
                             height: rem(16),
-                            backgroundColor: active ? 'var(--mantine-color-teal-7)' : 'var(--mantine-color-blue-7)',
+                            backgroundColor: active
+                                ? 'var(--mantine-color-teal-7)'
+                                : 'var(--mantine-color-blue-7)'
                         }}
                     />
                 </div>
             </Group>
             <Text ta="center" mt="sm">
-                Values <Code>{`{ x: ${Math.round(value.x * 100)}, y: ${Math.round(value.y * 100)} }`}</Code>
+                Values{' '}
+                <Code>{`{ x: ${Math.round(value.x * 100)}, y: ${Math.round(value.y * 100)} }`}</Code>
             </Text>
         </>
-    );
-};
+    )
+}
 
-export default MoveComponent;
-
-
+export default MoveComponent
 
 /*
 usage:

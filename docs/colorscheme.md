@@ -50,15 +50,15 @@ function Demo() {
 The `useComputedColorScheme` hook returns a computed color scheme value, either `light` or `dark`.
 
 ```typescript
-import { useComputedColorScheme, useMantineColorScheme } from '@mantine/core';
+import { useComputedColorScheme, useMantineColorScheme } from '@mantine/core'
 
 function Demo() {
-  const { colorScheme, setColorScheme } = useMantineColorScheme();
-  const computedColorScheme = useComputedColorScheme('light');
+    const { colorScheme, setColorScheme } = useMantineColorScheme()
+    const computedColorScheme = useComputedColorScheme('light')
 
-  const toggleColorScheme = () => {
-    setColorScheme(computedColorScheme === 'dark' ? 'light' : 'dark');
-  };
+    const toggleColorScheme = () => {
+        setColorScheme(computedColorScheme === 'dark' ? 'light' : 'dark')
+    }
 }
 ```
 
@@ -67,12 +67,12 @@ function Demo() {
 Transitions are disabled by default when changing color schemes to avoid inconsistent animations. To enable transitions, set `keepTransitions: true` in the `useMantineColorScheme` hook.
 
 ```typescript
-import { useMantineColorScheme } from '@mantine/core';
+import { useMantineColorScheme } from '@mantine/core'
 
 function Demo() {
-  const { colorScheme, setColorScheme } = useMantineColorScheme({
-    keepTransitions: true,
-  });
+    const { colorScheme, setColorScheme } = useMantineColorScheme({
+        keepTransitions: true
+    })
 }
 ```
 

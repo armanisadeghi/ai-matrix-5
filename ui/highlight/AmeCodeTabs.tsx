@@ -1,44 +1,46 @@
 // ui/highlight/AmeCodeTabs.tsx
-'use client';
+'use client'
 
-import dynamic from 'next/dynamic';
-import { useState, useEffect } from 'react';
-import { LoadingOverlay, Space } from '@mantine/core';
-import '@mantine/code-highlight/styles.css';
-import styles from './AmeCodeHighlight.module.css';
+import dynamic from 'next/dynamic'
+import { useState, useEffect } from 'react'
+import { LoadingOverlay, Space } from '@mantine/core'
+import '@mantine/code-highlight/styles.css'
+import styles from './AmeCodeHighlight.module.css'
 
 const CodeHighlightTabs = dynamic(
     () => import('@mantine/code-highlight').then((mod) => mod.CodeHighlightTabs),
-    { ssr: false }
-);
+    {
+        ssr: false
+    }
+)
 
 interface AmeCodeTabsProps {
-    codeSnippets: { code: string; language: string; title: string }[];
-    startCollapsed?: boolean;
-    useLoadingEffect?: boolean;
+    codeSnippets: { code: string; language: string; title: string }[]
+    startCollapsed?: boolean
+    useLoadingEffect?: boolean
 }
 
 const AmeCodeTabs: React.FC<AmeCodeTabsProps> = ({
-                                                     codeSnippets,
-                                                     startCollapsed = false,
-                                                     useLoadingEffect = false,
-                                                 }) => {
-    const [loading, setLoading] = useState(useLoadingEffect);
+    codeSnippets,
+    startCollapsed = false,
+    useLoadingEffect = false
+}) => {
+    const [loading, setLoading] = useState(useLoadingEffect)
 
     useEffect(() => {
         if (useLoadingEffect) {
-            const timer = setTimeout(() => setLoading(false), 1000); // Adjust the timer as needed
-            return () => clearTimeout(timer);
+            const timer = setTimeout(() => setLoading(false), 1000) // Adjust the timer as needed
+            return () => clearTimeout(timer)
         } else {
-            setLoading(false);
+            setLoading(false)
         }
-    }, [useLoadingEffect]);
+    }, [useLoadingEffect])
 
-    const formattedSnippets = codeSnippets.map(snippet => ({
+    const formattedSnippets = codeSnippets.map((snippet) => ({
         fileName: snippet.title,
         code: snippet.code,
-        language: snippet.language,
-    }));
+        language: snippet.language
+    }))
 
     return (
         <div className={styles.codeSection}>
@@ -62,7 +64,7 @@ const AmeCodeTabs: React.FC<AmeCodeTabsProps> = ({
             )}
             <Space h="xs" />
         </div>
-    );
-};
+    )
+}
 
-export default AmeCodeTabs;
+export default AmeCodeTabs

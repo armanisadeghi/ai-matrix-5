@@ -1,35 +1,34 @@
-import {createContext, useContext, useEffect, useState} from 'react';
+import { createContext, useContext, useEffect, useState } from 'react'
 
-import ListBasic from "./components/ListBasic/ListBasic.tsx";
+import ListBasic from './components/ListBasic/ListBasic.tsx'
 
-const MyContext = createContext({});
+const MyContext = createContext({})
 
-export const SmartList = ({option, data, disable, selectAll, onSelectedValueChange}: any) => {
-    const [selectedValue, setSelectedValue] = useState([]);
+export const SmartList = ({ option, data, disable, selectAll, onSelectedValueChange }: any) => {
+    const [selectedValue, setSelectedValue] = useState([])
 
-    const [list, setList] = useState(data);
-    const [options, setOptions] = useState(option);
-
+    const [list, setList] = useState(data)
+    const [options, setOptions] = useState(option)
 
     useEffect(() => {
         if (onSelectedValueChange) {
             if (typeof onSelectedValueChange === 'function') {
-                onSelectedValueChange(selectedValue);
+                onSelectedValueChange(selectedValue)
             } else {
-                console.error('onSelectedValueChange is not a function');
+                console.error('onSelectedValueChange is not a function')
             }
         }
-
-    }, [selectedValue]);
-
+    }, [selectedValue])
 
     return (
-        <MyContext.Provider value={{selectedValue, setSelectedValue, options, setOptions, list, setList}}>
+        <MyContext.Provider
+            value={{ selectedValue, setSelectedValue, options, setOptions, list, setList }}
+        >
             <ul className={''}>
-                <ListBasic disable={disable} selectAll={selectAll}/>
+                <ListBasic disable={disable} selectAll={selectAll} />
             </ul>
         </MyContext.Provider>
-    );
-};
+    )
+}
 
-export const useListProvider = () => useContext(MyContext);
+export const useListProvider = () => useContext(MyContext)

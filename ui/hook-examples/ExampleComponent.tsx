@@ -1,16 +1,16 @@
-'use client';
+'use client'
 
-import React, { useState } from 'react';
-import { Button, Textarea, Select, Container, Title, Space } from '@mantine/core';
-import { useWebSocketText } from '@/hooks/redis/useWebSocketText';
-import { useWebSocketData } from '@/hooks/redis/useWebSocketData';
-import AmeJsonInput from '@/ui/json/AmeJsonInput';
-import { RequestPayload } from '@/types/requests';
+import React, { useState } from 'react'
+import { Button, Textarea, Select, Container, Title, Space } from '@mantine/core'
+import { useWebSocketText } from '@/hooks/redis/useWebSocketText'
+import { useWebSocketData } from '@/hooks/redis/useWebSocketData'
+import AmeJsonInput from '@/ui/json/AmeJsonInput'
+import { RequestPayload } from '@/types/requests'
 
 const ExampleComponent: React.FC = () => {
-    const [message, setMessage] = useState<string>('');
-    const [data, setData] = useState<string>('{}');
-    const [communicationType, setCommunicationType] = useState<'text' | 'data'>('text');
+    const [message, setMessage] = useState<string>('')
+    const [data, setData] = useState<string>('{}')
+    const [communicationType, setCommunicationType] = useState<'text' | 'data'>('text')
 
     const [textRequest, setTextRequest] = useState<RequestPayload>({
         channel: 'webSocketText',
@@ -21,7 +21,7 @@ const ExampleComponent: React.FC = () => {
         },
         data: {},
         settings: {}
-    });
+    })
 
     const [dataRequest, setDataRequest] = useState<RequestPayload>({
         channel: 'webSocketData',
@@ -32,20 +32,20 @@ const ExampleComponent: React.FC = () => {
         },
         data: {},
         settings: {}
-    });
+    })
 
-    const [textResponse, sendTextRequest] = useWebSocketText(textRequest);
-    const [dataResponse, sendDataRequest] = useWebSocketData(dataRequest);
+    const [textResponse, sendTextRequest] = useWebSocketText(textRequest)
+    const [dataResponse, sendDataRequest] = useWebSocketData(dataRequest)
 
     const handleSendText = () => {
-        sendTextRequest(message);
-        setMessage('');
-    };
+        sendTextRequest(message)
+        setMessage('')
+    }
 
     const handleSendData = () => {
-        sendDataRequest(JSON.parse(data));
-        setData('{}');
-    };
+        sendDataRequest(JSON.parse(data))
+        setData('{}')
+    }
 
     return (
         <Container>
@@ -86,11 +86,7 @@ const ExampleComponent: React.FC = () => {
                 </>
             ) : (
                 <>
-                    <AmeJsonInput
-                        label="Data"
-                        value={data}
-                        onChange={setData}
-                    />
+                    <AmeJsonInput label="Data" value={data} onChange={setData} />
                     <Space h="md" />
                     <Button onClick={handleSendData}>Send Data</Button>
                     <Space h="md" />
@@ -102,7 +98,7 @@ const ExampleComponent: React.FC = () => {
                 </>
             )}
         </Container>
-    );
-};
+    )
+}
 
-export default ExampleComponent;
+export default ExampleComponent

@@ -1,3 +1,3 @@
 export default function Page() {
-  return <>Agency manager</>;
+    return <>Agency manager</>
 }

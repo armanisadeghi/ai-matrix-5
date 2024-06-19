@@ -1,18 +1,24 @@
-import React, { useState } from 'react';
-import { TextInput } from '@mantine/core';
-import { Broker } from '@/types/broker';
+import React, { useState } from 'react'
+import { TextInput } from '@mantine/core'
+import { Broker } from '@/types/broker'
 
-const SearchComponent = ({ brokersList, setFilteredBrokers }: { brokersList: Broker[], setFilteredBrokers: React.Dispatch<React.SetStateAction<Broker[]>> }) => {
-    const [value, setValue] = useState('');
+const SearchComponent = ({
+    brokersList,
+    setFilteredBrokers
+}: {
+    brokersList: Broker[]
+    setFilteredBrokers: React.Dispatch<React.SetStateAction<Broker[]>>
+}) => {
+    const [value, setValue] = useState('')
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const searchInput = e.target.value.toLowerCase();
-        setValue(searchInput);
+        const searchInput = e.target.value.toLowerCase()
+        setValue(searchInput)
 
-        setFilteredBrokers(brokersList.filter((broker) =>
-            broker.name.toLowerCase().includes(searchInput)
-        ))
-    };
+        setFilteredBrokers(
+            brokersList.filter((broker) => broker.name.toLowerCase().includes(searchInput))
+        )
+    }
 
     return (
         <TextInput
@@ -21,7 +27,7 @@ const SearchComponent = ({ brokersList, setFilteredBrokers }: { brokersList: Bro
             value={value}
             onChange={handleSearchChange}
         />
-    );
-};
+    )
+}
 
-export default SearchComponent;
+export default SearchComponent

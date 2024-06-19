@@ -1,15 +1,15 @@
 // app/samples/AmeJsonInput/page.tsx
-'use client';
+'use client'
 
-import React, { useState } from 'react';
-import AmeJsonInput from '@/ui/json/AmeJsonInput';
+import React, { useState } from 'react'
+import AmeJsonInput from '@/ui/json/AmeJsonInput'
 
 const Page: React.FC = () => {
-    const [jsonValue, setJsonValue] = useState<string>('{"key": "value"}');
+    const [jsonValue, setJsonValue] = useState<string>('{"key": "value"}')
 
     const handleJsonChange = (value: string) => {
-        setJsonValue(value);
-    };
+        setJsonValue(value)
+    }
 
     return (
         <div style={{ padding: '20px' }}>
@@ -22,7 +22,7 @@ const Page: React.FC = () => {
                 validateJson={true}
             />
         </div>
-    );
-};
+    )
+}
 
-export default Page;
+export default Page

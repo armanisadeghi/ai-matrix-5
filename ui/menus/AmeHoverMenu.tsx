@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
-import { Menu, ActionIcon, TextInput, useMantineTheme, MantineTheme } from '@mantine/core';
-import { BsThreeDotsVertical } from "react-icons/bs";
+import React, { useState } from 'react'
+import { Menu, ActionIcon, TextInput, useMantineTheme, MantineTheme } from '@mantine/core'
+import { BsThreeDotsVertical } from 'react-icons/bs'
 
 interface AmeHoverMenuProps {
-    placeholder: string;
-    children: React.ReactNode;
-    editable?: boolean;
+    placeholder: string
+    children: React.ReactNode
+    editable?: boolean
 }
 
 const AmeHoverMenu: React.FC<AmeHoverMenuProps> = ({ placeholder, children, editable = true }) => {
-    const theme = useMantineTheme() as MantineTheme & { colorScheme: 'light' | 'dark' };
-    const iconColor = theme.colorScheme === 'dark' ? theme.colors.gray[6] : theme.colors.gray[7];
-    const hoverBackgroundColor = theme.colorScheme === 'dark' ? '#7c0707' : theme.colors.gray[4]; // Custom dark color
+    const theme = useMantineTheme() as MantineTheme & { colorScheme: 'light' | 'dark' }
+    const iconColor = theme.colorScheme === 'dark' ? theme.colors.gray[6] : theme.colors.gray[7]
+    const hoverBackgroundColor = theme.colorScheme === 'dark' ? '#7c0707' : theme.colors.gray[4] // Custom dark color
 
-    const [isHovered, setIsHovered] = useState(false);
+    const [isHovered, setIsHovered] = useState(false)
 
     return (
         <Menu shadow="md" width={200} position="bottom-end">
@@ -44,11 +44,9 @@ const AmeHoverMenu: React.FC<AmeHoverMenuProps> = ({ placeholder, children, edit
                     </ActionIcon>
                 </div>
             </Menu.Target>
-            <Menu.Dropdown>
-                {children}
-            </Menu.Dropdown>
+            <Menu.Dropdown>{children}</Menu.Dropdown>
         </Menu>
-    );
-};
+    )
+}
 
-export default AmeHoverMenu;
+export default AmeHoverMenu

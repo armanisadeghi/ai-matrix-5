@@ -1,26 +1,26 @@
-import { atom } from "recoil";
+import { atom } from 'recoil'
 
 interface QuickChatSettings {
-    aiPreferencesMain: string;
-    aiPreferencesSecond: string;
-    makeSmallTalk: boolean;
-    quickAnswer: boolean;
-    improveQuestions: boolean;
-    submitOnEnter: boolean;
+    aiPreferencesMain: string
+    aiPreferencesSecond: string
+    makeSmallTalk: boolean
+    quickAnswer: boolean
+    improveQuestions: boolean
+    submitOnEnter: boolean
 }
 
 interface RequestSettings {
-    quickChatSettings: QuickChatSettings;
+    quickChatSettings: QuickChatSettings
     // Define other settings interfaces here...
-    pageSettings?: {},
-    userSettings?: {},
-    matrixSettings?: {},
-    clientSettings?: {},
-    agencySettings?: {},
-    variablesSettings?: {},
-    responseSettings?: {},
-    brokerSettings?: {},
-    aiModelSettings?: {},
+    pageSettings?: {}
+    userSettings?: {}
+    matrixSettings?: {}
+    clientSettings?: {}
+    agencySettings?: {}
+    variablesSettings?: {}
+    responseSettings?: {}
+    brokerSettings?: {}
+    aiModelSettings?: {}
     controlSettings?: {}
 }
 
@@ -33,7 +33,7 @@ export const requestSettingsAtom = atom<RequestSettings>({
             makeSmallTalk: true,
             quickAnswer: false,
             improveQuestions: true,
-            submitOnEnter: true,
+            submitOnEnter: true
         },
         // Initialize other settings as empty objects or with appropriate default values if necessary
         pageSettings: {},
@@ -47,4 +47,4 @@ export const requestSettingsAtom = atom<RequestSettings>({
         aiModelSettings: {},
         controlSettings: {}
     }
-});
+})

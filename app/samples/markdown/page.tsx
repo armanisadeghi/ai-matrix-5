@@ -1,7 +1,7 @@
 // pages/MarkdownDemo.tsx
-'use client';
+'use client'
 
-import AmeMarkdownBeautifier from '@/ui/markdown/AmeMarkdownBeautifier';
+import AmeMarkdownBeautifier from '@/ui/markdown/AmeMarkdownBeautifier'
 
 const markdownContent = `
 <h2 style="text-align: center;">Welcome to AI Matrix</h2>
@@ -22,7 +22,7 @@ const assignTask = (task: string, assignee: string): string => {
 console.log(assignTask('Review Q1 Report', 'Alice'));
 </code></pre>
 <p>Get started with AI Matrix and revolutionize your business operations.</p>
-`;
+`
 
 const MarkdownDemo = () => {
     return (
@@ -30,7 +30,7 @@ const MarkdownDemo = () => {
             <h1>Markdown Demo</h1>
             <AmeMarkdownBeautifier content={markdownContent} />
         </div>
-    );
-};
+    )
+}
 
-export default MarkdownDemo;
+export default MarkdownDemo

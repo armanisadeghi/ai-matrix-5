@@ -1,10 +1,10 @@
 // app/sample/page.tsx
-'use client';
+'use client'
 
-import React from 'react';
+import React from 'react'
 
 const DemoPage = () => {
-    return <div>Code Highlight Demo pages</div>;
-};
+    return <div>Code Highlight Demo pages</div>
+}
 
-export default DemoPage;
+export default DemoPage

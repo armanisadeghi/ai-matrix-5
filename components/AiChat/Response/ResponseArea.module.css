@@ -110,7 +110,9 @@
 }
 
 .userMessagePaper {
-    transition: filter 0.3s ease, background-color 0.3s ease;
+    transition:
+        filter 0.3s ease,
+        background-color 0.3s ease;
 }
 
 .userMessagePaper:hover {
@@ -122,7 +124,7 @@
     border-collapse: collapse;
 }
 
-.mantine-Table-table[data-with-table-border="true"] {
+.mantine-Table-table[data-with-table-border='true'] {
     border: 1px solid #ccc;
 }
 

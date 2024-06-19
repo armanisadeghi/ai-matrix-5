@@ -1,17 +1,17 @@
 // app/chat/response/ResponseArea.tsx
 
-import React from 'react';
-import { ScrollArea } from '@mantine/core';
-import { useResponses } from './ResponseContext';
-import UserMessage from './UserMessage';
-import AIResponse from './AIResponse';
+import React from 'react'
+import { ScrollArea } from '@mantine/core'
+import { useResponses } from './ResponseContext'
+import UserMessage from './UserMessage'
+import AIResponse from './AIResponse'
 
 interface ResponseAreaProps {
-    bottomPadding: number;
+    bottomPadding: number
 }
 
 const ResponseArea: React.FC<ResponseAreaProps> = ({ bottomPadding }) => {
-    const { messages } = useResponses();
+    const { messages } = useResponses()
 
     return (
         <ScrollArea style={{ flexGrow: 1, width: '95%', paddingBottom: bottomPadding }}>
@@ -23,7 +23,7 @@ const ResponseArea: React.FC<ResponseAreaProps> = ({ bottomPadding }) => {
                 )
             )}
         </ScrollArea>
-    );
-};
+    )
+}
 
-export default ResponseArea;
+export default ResponseArea

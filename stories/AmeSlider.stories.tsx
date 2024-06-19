@@ -1,6 +1,6 @@
-import React from 'react';
-import { Meta, Story } from '@storybook/react';
-import AmeSlider, { AmeSliderProps } from './AmeSlider';
+import React from 'react'
+import { Meta, Story } from '@storybook/react'
+import AmeSlider, { AmeSliderProps } from './AmeSlider'
 
 export default {
     title: 'Components/AmeSlider',
@@ -18,12 +18,12 @@ export default {
                 options: ['sm', 'xs']
             }
         }
-    },
-} as Meta;
+    }
+} as Meta
 
-const Template: Story<AmeSliderProps> = (args) => <AmeSlider {...args} />;
+const Template: Story<AmeSliderProps> = (args) => <AmeSlider {...args} />
 
-export const Default = Template.bind({});
+export const Default = Template.bind({})
 Default.args = {
     name: 'Default Slider',
     min: 0,
@@ -33,10 +33,10 @@ Default.args = {
     customLabels: ['0', '25', '50', '75', '100'],
     showNumber: true,
     size: 'sm',
-    color: 'blue',
-};
+    color: 'blue'
+}
 
-export const WithCustomLabels = Template.bind({});
+export const WithCustomLabels = Template.bind({})
 WithCustomLabels.args = {
     name: 'Slider with Custom Labels',
     min: 0,
@@ -46,10 +46,10 @@ WithCustomLabels.args = {
     customLabels: ['Start', 'Quarter', 'Half', 'Three-Quarters', 'End'],
     showNumber: true,
     size: 'sm',
-    color: 'gray',
-};
+    color: 'gray'
+}
 
-export const WithoutNumberInput = Template.bind({});
+export const WithoutNumberInput = Template.bind({})
 WithoutNumberInput.args = {
     name: 'Slider without Number Input',
     min: 0,
@@ -58,5 +58,5 @@ WithoutNumberInput.args = {
     tooltip: 'Slider without number input field',
     showNumber: false,
     size: 'xs',
-    color: 'red',
-};
+    color: 'red'
+}

@@ -1,12 +1,12 @@
 // ai-chatbot/ChatsPage.tsx
-'use client';
-import React from 'react';
-import DynamicTextarea from '@/components/AiChat/UserInput/DynamicTextarea';
-import useDynamicLayout from '@/hooks/ai/useDynamicChatLayout';
-import ResponseArea from "@/components/AiChat/Response/ResponseArea";
+'use client'
+import React from 'react'
+import DynamicTextarea from '@/components/AiChat/UserInput/DynamicTextarea'
+import useDynamicLayout from '@/hooks/ai/useDynamicChatLayout'
+import ResponseArea from '@/components/AiChat/Response/ResponseArea'
 
 const ChatsPage = () => {
-    const { bottomPadding, containerHeight, textareaContainerRef } = useDynamicLayout();
+    const { bottomPadding, containerHeight, textareaContainerRef } = useDynamicLayout()
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', height: containerHeight }}>
@@ -17,7 +17,7 @@ const ChatsPage = () => {
                 ref={textareaContainerRef}
             />
         </div>
-    );
-};
+    )
+}
 
-export default ChatsPage;
+export default ChatsPage

@@ -1,18 +1,25 @@
 // ui/markdown/AmeMarkdownToolbar.tsx
-'use client';
+'use client'
 
-import { RichTextEditor } from '@mantine/tiptap';
-import { IconTextColor, IconHighlight, IconTextSize, IconAlignLeft, IconAlignCenter, IconAlignRight } from '@tabler/icons-react';
-import { BiUndo, BiRedo } from "react-icons/bi";
+import { RichTextEditor } from '@mantine/tiptap'
+import {
+    IconTextColor,
+    IconHighlight,
+    IconTextSize,
+    IconAlignLeft,
+    IconAlignCenter,
+    IconAlignRight
+} from '@tabler/icons-react'
+import { BiUndo, BiRedo } from 'react-icons/bi'
 
 interface AmeMarkdownToolbarProps {
-    editor: any;
-    handleToggleView: () => void;
+    editor: any
+    handleToggleView: () => void
 }
 
 const AmeMarkdownToolbar: React.FC<AmeMarkdownToolbarProps> = ({ editor, handleToggleView }) => {
     if (!editor) {
-        return null;
+        return null
     }
 
     return (
@@ -74,7 +81,7 @@ const AmeMarkdownToolbar: React.FC<AmeMarkdownToolbarProps> = ({ editor, handleT
                         '#40c057',
                         '#82c91e',
                         '#fab005',
-                        '#fd7e14',
+                        '#fd7e14'
                     ]}
                 />
                 <RichTextEditor.Control interactive={false}>
@@ -91,21 +98,33 @@ const AmeMarkdownToolbar: React.FC<AmeMarkdownToolbarProps> = ({ editor, handleT
 
             {/* New Controls for Undo, Redo, and Toggle View */}
             <RichTextEditor.ControlsGroup>
-                <RichTextEditor.Control onClick={() => editor.chain().focus().undo().run()} aria-label="Undo" title="Undo">
+                <RichTextEditor.Control
+                    onClick={() => editor.chain().focus().undo().run()}
+                    aria-label="Undo"
+                    title="Undo"
+                >
                     <BiUndo size="1rem" />
                 </RichTextEditor.Control>
-                <RichTextEditor.Control onClick={() => editor.chain().focus().redo().run()} aria-label="Redo" title="Redo">
+                <RichTextEditor.Control
+                    onClick={() => editor.chain().focus().redo().run()}
+                    aria-label="Redo"
+                    title="Redo"
+                >
                     <BiRedo size="1rem" />
                 </RichTextEditor.Control>
             </RichTextEditor.ControlsGroup>
 
             <RichTextEditor.ControlsGroup>
-                <RichTextEditor.Control onClick={handleToggleView} aria-label="Toggle view" title="Toggle view">
+                <RichTextEditor.Control
+                    onClick={handleToggleView}
+                    aria-label="Toggle view"
+                    title="Toggle view"
+                >
                     <IconTextSize size="1rem" stroke={1.5} />
                 </RichTextEditor.Control>
             </RichTextEditor.ControlsGroup>
         </RichTextEditor.Toolbar>
-    );
-};
+    )
+}
 
-export default AmeMarkdownToolbar;
+export default AmeMarkdownToolbar

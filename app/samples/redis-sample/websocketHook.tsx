@@ -1,44 +1,44 @@
-import React, { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
-import { activeUserAtom } from '@/state/userAtoms';
-import { Button, TextInput } from "@mantine/core";
+import React, { useEffect, useState } from 'react'
+import { useRecoilValue } from 'recoil'
+import { activeUserAtom } from '@/state/userAtoms'
+import { Button, TextInput } from '@mantine/core'
 
 interface Message {
-    message: string;
+    message: string
 }
 
 const WebSocketComponent: React.FC = () => {
-    const [requests, setRequests] = useState<Message[]>([]);
-    const [responses, setResponses] = useState<Message[]>([]);
-    const [userResponse, setUserResponse] = useState<string>('');
-    const [backendRequest, setBackendRequest] = useState<string>('');
+    const [requests, setRequests] = useState<Message[]>([])
+    const [responses, setResponses] = useState<Message[]>([])
+    const [userResponse, setUserResponse] = useState<string>('')
+    const [backendRequest, setBackendRequest] = useState<string>('')
 
-    const user = useRecoilValue(activeUserAtom);
+    const user = useRecoilValue(activeUserAtom)
 
-    const socket = new WebSocket('ws://localhost:8000/ws/app_name:operation/');
+    const socket = new WebSocket('ws://localhost:8000/ws/app_name:operation/')
 
     useEffect(() => {
         socket.onopen = () => {
-            console.log('WebSocket connection established');
-        };
+            console.log('WebSocket connection established')
+        }
 
         socket.onmessage = (event: MessageEvent<string>) => {
-            const message: Message = JSON.parse(event.data);
-            setResponses((prevResponses) => [...prevResponses, message]);
-        };
+            const message: Message = JSON.parse(event.data)
+            setResponses((prevResponses) => [...prevResponses, message])
+        }
 
         socket.onclose = () => {
-            console.log('WebSocket connection closed');
-        };
+            console.log('WebSocket connection closed')
+        }
 
         socket.onerror = (error: Event) => {
-            console.error('WebSocket error observed:', error);
-        };
+            console.error('WebSocket error observed:', error)
+        }
 
         return () => {
-            socket.close();
-        };
-    }, []);
+            socket.close()
+        }
+    }, [])
 
     const sendRequest = () => {
         const request = {
@@ -62,11 +62,11 @@ const WebSocketComponent: React.FC = () => {
             },
             data: { message: backendRequest },
             settings: {}
-        };
-        socket.send(JSON.stringify(request));
-        setRequests((prevRequests) => [...prevRequests, { message: backendRequest }]);
-        setBackendRequest('');
-    };
+        }
+        socket.send(JSON.stringify(request))
+        setRequests((prevRequests) => [...prevRequests, { message: backendRequest }])
+        setBackendRequest('')
+    }
 
     const sendUserResponse = () => {
         const response = {
@@ -90,10 +90,10 @@ const WebSocketComponent: React.FC = () => {
             },
             data: { message: userResponse },
             settings: {}
-        };
-        socket.send(JSON.stringify(response));
-        setUserResponse('');
-    };
+        }
+        socket.send(JSON.stringify(response))
+        setUserResponse('')
+    }
 
     return (
         <div>
@@ -129,7 +129,7 @@ const WebSocketComponent: React.FC = () => {
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default WebSocketComponent;
+export default WebSocketComponent

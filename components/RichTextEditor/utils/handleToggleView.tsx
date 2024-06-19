@@ -1,5 +1,5 @@
 // ui/markdown/utils/handleToggleView.tsx
-import { Editor } from '@tiptap/react';
+import { Editor } from '@tiptap/react'
 
 export const handleToggleView = (
     isPlainText: boolean,
@@ -9,9 +9,9 @@ export const handleToggleView = (
     plainText: string
 ) => {
     if (isPlainText) {
-        editor?.commands.setContent(plainText);
+        editor?.commands.setContent(plainText)
     } else {
-        setPlainText(editor?.getHTML() || '');
+        setPlainText(editor?.getHTML() || '')
     }
-    setIsPlainText(!isPlainText);
-};
+    setIsPlainText(!isPlainText)
+}

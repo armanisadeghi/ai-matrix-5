@@ -1,63 +1,63 @@
 interface Permission {
-    public: boolean;
-    groups: string[];
-    orgs: string[];
-    users: string[];
+    public: boolean
+    groups: string[]
+    orgs: string[]
+    users: string[]
 }
 
 interface Message {
-    type: string;
-    text: string;
+    type: string
+    text: string
 }
 
 interface Broker {
-    name: string;
-    type: string;
-    required: boolean;
-    defaultValue: any; // Use appropriate type based on your data (e.g., string, number, null, etc.)
+    name: string
+    type: string
+    required: boolean
+    defaultValue: any // Use appropriate type based on your data (e.g., string, number, null, etc.)
 }
 
 interface CallParams {
     models: {
-        verifiedModels: string[];
-        eliteModel: string;
-        trialModels: string[];
-    };
-    brokers: Broker[];
+        verifiedModels: string[]
+        eliteModel: string
+        trialModels: string[]
+    }
+    brokers: Broker[]
     overrides: {
-        stream: boolean;
-    };
+        stream: boolean
+    }
 }
 
 interface Processors {
-    permanent: string[];
-    optional: string[];
+    permanent: string[]
+    optional: string[]
 }
 
 interface PostParams {
-    returnBroker: string;
-    processors: Processors;
-    defaultDisplay: string;
-    nextStepOptions: string[]; // might need to be adjusted
+    returnBroker: string
+    processors: Processors
+    defaultDisplay: string
+    nextStepOptions: string[] // might need to be adjusted
 }
 
 interface Recipe {
-    id: string;
-    name: string;
-    tags: string[];
-    description: string;
-    permissions: Permission;
-    messages: Message[];
-    callParams: CallParams;
-    postParams: PostParams;
-    sampleOutput: string;
+    id: string
+    name: string
+    tags: string[]
+    description: string
+    permissions: Permission
+    messages: Message[]
+    callParams: CallParams
+    postParams: PostParams
+    sampleOutput: string
 }
 
 const recipe: Recipe = {
-    id: "",
-    name: "",
+    id: '',
+    name: '',
     tags: [],
-    description: "",
+    description: '',
     permissions: {
         public: false,
         groups: [],
@@ -66,20 +66,20 @@ const recipe: Recipe = {
     },
     messages: [
         {
-            type: "system",
-            text: ""
+            type: 'system',
+            text: ''
         }
     ],
     callParams: {
         models: {
             verifiedModels: [],
-            eliteModel: "",
+            eliteModel: '',
             trialModels: []
         },
         brokers: [
             {
-                name: "",
-                type: "",
+                name: '',
+                type: '',
                 required: true,
                 defaultValue: null
             }
@@ -89,14 +89,13 @@ const recipe: Recipe = {
         }
     },
     postParams: {
-        returnBroker: "",
+        returnBroker: '',
         processors: {
             permanent: [],
             optional: []
         },
-        defaultDisplay: "",
+        defaultDisplay: '',
         nextStepOptions: []
     },
-    sampleOutput: ""
-};
-
+    sampleOutput: ''
+}

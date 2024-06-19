@@ -1,6 +1,6 @@
-import {IconChevronDown, IconChevronRight} from '@tabler/icons-react';
+import { IconChevronDown, IconChevronRight } from '@tabler/icons-react'
 
-const CollapseBtn = ({onCollapse, onClick}) => {
+const CollapseBtn = ({ onCollapse, onClick }) => {
     return (
         <div
             onClick={onClick}
@@ -12,10 +12,10 @@ const CollapseBtn = ({onCollapse, onClick}) => {
                 bottom: 0,
                 left: -24,
                 margin: 'auto 0',
-                width: 'fit-content',
-            }}>
-            {!onCollapse ? <IconChevronRight/> : <IconChevronDown/>}
-
+                width: 'fit-content'
+            }}
+        >
+            {!onCollapse ? <IconChevronRight /> : <IconChevronDown />}
         </div>
     )
 }

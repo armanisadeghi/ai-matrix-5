@@ -1,16 +1,16 @@
-'use client';
-import React from 'react';
-import useDynamicLayout from '@/hooks/ai/useDynamicChatLayout';
-import ResponseArea from "@/components/AiChat/Response/ResponseArea";
-import responseStyles from '@/components/AiChat/Response/ResponseArea.module.css';
-import textareaStyles from '@/components/AiChat/UserInput/DynamicTextarea.module.css';
-import containerStyles from './AiChat.module.css';
-import AmeTextAreaFancyDynamic from "@/ui/textarea/AmeTextAreaFancyDynamic";
-import ResponsiveSlider from "@/components/AiChat/UserInput/settings/MatrixSlider/ResponsiveSlider";
-import { simpleChatSettingsList } from "@/state/aiAtoms/settingsAtoms";
+'use client'
+import React from 'react'
+import useDynamicLayout from '@/hooks/ai/useDynamicChatLayout'
+import ResponseArea from '@/components/AiChat/Response/ResponseArea'
+import responseStyles from '@/components/AiChat/Response/ResponseArea.module.css'
+import textareaStyles from '@/components/AiChat/UserInput/DynamicTextarea.module.css'
+import containerStyles from './AiChat.module.css'
+import AmeTextAreaFancyDynamic from '@/ui/textarea/AmeTextAreaFancyDynamic'
+import ResponsiveSlider from '@/components/AiChat/UserInput/settings/MatrixSlider/ResponsiveSlider'
+import { simpleChatSettingsList } from '@/state/aiAtoms/settingsAtoms'
 
 const ChatsPage = () => {
-    const { bottomPadding, containerHeight, textareaContainerRef } = useDynamicLayout();
+    const { bottomPadding, containerHeight, textareaContainerRef } = useDynamicLayout()
 
     return (
         <div className={containerStyles.container} style={{ height: containerHeight }}>
@@ -25,7 +25,7 @@ const ChatsPage = () => {
             />
             <ResponsiveSlider />
         </div>
-    );
-};
+    )
+}
 
-export default ChatsPage;
+export default ChatsPage

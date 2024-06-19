@@ -1,8 +1,8 @@
 // matrix-apps/page.tsx
 
-"use client";
+'use client'
 
-import React from "react";
+import React from 'react'
 
 const SampleParentPage = () => {
     return (
@@ -12,7 +12,7 @@ const SampleParentPage = () => {
                 In this section, we will need to create an app dashboard for each app
             </p>
         </div>
-    );
-};
+    )
+}
 
-export default SampleParentPage;
+export default SampleParentPage

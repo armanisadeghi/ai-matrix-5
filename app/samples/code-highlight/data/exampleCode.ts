@@ -49,7 +49,7 @@ export const VisuallyHidden = factory<VisuallyHiddenFactory>((_props, ref) => {
 
 VisuallyHidden.classes = classes;
 VisuallyHidden.displayName = '@mantine/core/VisuallyHidden';
-`;
+`
 
 export const cssCode = `
 .root {
@@ -63,7 +63,7 @@ export const cssCode = `
     color: var(--mantine-color-white);
   }
 }
-`;
+`
 
 export const pythonCode = `
 def process_frontend_data(data):
@@ -115,7 +115,7 @@ def process_frontend_data(data):
     }
 
     return user_id, task, index, prepared_data
-`;
+`
 
 export const htmlCode = `
 <!DOCTYPE html>
@@ -129,7 +129,7 @@ export const htmlCode = `
   <h1>Hello, World!</h1>
 </body>
 </html>
-`;
+`
 
 export const javascriptCode = `
 function greet(name) {
@@ -138,14 +138,14 @@ function greet(name) {
 
 const message = greet('World');
 console.log(message);
-`;
+`
 
 export const sqlCode = `
 SELECT id, name, age
 FROM users
 WHERE age > 21
 ORDER BY age DESC;
-`;
+`
 
 export const javaCode = `
 public class Main {
@@ -153,7 +153,7 @@ public class Main {
     System.out.println("Hello, World!");
   }
 }
-`;
+`
 
 export const csharpCode = `
 using System;
@@ -163,7 +163,7 @@ class Program {
     Console.WriteLine("Hello, World!");
   }
 }
-`;
+`
 
 export const rubyCode = `
 def greet(name)
@@ -171,7 +171,7 @@ def greet(name)
 end
 
 puts greet("World")
-`;
+`
 
 export const phpCode = `
 <?php
@@ -181,7 +181,7 @@ function greet($name) {
 
 echo greet("World");
 ?>
-`;
+`
 
 export const goCode = `
 package main
@@ -191,29 +191,29 @@ import "fmt"
 func main() {
   fmt.Println("Hello, World!")
 }
-`;
+`
 
 export const kotlinCode = `
 fun main() {
   println("Hello, World!")
 }
-`;
+`
 
 export const swiftCode = `
 import Foundation
 
 print("Hello, World!")
-`;
+`
 
 export const rCode = `
 name <- "World"
 cat("Hello, ", name, "!\n", sep="")
-`;
+`
 
 export const shellCode = `
 #!/bin/bash
 echo "Hello, World!"
-`;
+`
 
 export const markdownCode = `
 # Hello, World!
@@ -223,7 +223,7 @@ This is a sample markdown file.
 - Item 1
 - Item 2
 - Item 3
-`;
+`
 
 export const yamlCode = `
 name: John Doe
@@ -233,13 +233,13 @@ courses:
   - HTML
   - CSS
   - JavaScript
-`;
+`
 
 export const rustCode = `
 fn main() {
   println!("Hello, World!");
 }
-`;
+`
 
 export const cppCode = `
 #include <iostream>
@@ -248,7 +248,7 @@ int main() {
   std::cout << "Hello, World!" << std::endl;
   return 0;
 }
-`;
+`
 
 export const typescriptCode = `
 // ui/highlight/AmeCodeTabs.tsx
@@ -320,14 +320,14 @@ const AmeCodeTabs: React.FC<AmeCodeTabsProps> = ({
 
 export default AmeCodeTabs;
 
-`;
+`
 
 export const pythonCodeShort = `
 def greet(name):
     return f"Hello, {name}!"
 
 print(greet("World"))
-`;
+`
 
 export const jsonCode = `
 {
@@ -336,14 +336,4 @@ export const jsonCode = `
   "isAdmin": false,
   "courses": ["HTML", "CSS", "JavaScript"]
 }
-`;
-
-
-
-
-
-
-
-
-
-
+`

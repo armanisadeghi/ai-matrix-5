@@ -1,27 +1,29 @@
 // chat-app/nice-working/settings/simpleChatSettings.tsx
-'use client';
+'use client'
 
-import React from 'react';
-import { Select } from '@mantine/core';
-import { aiPreferencesMainOptions, aiPreferencesSecondOptions } from '@/utils/config/chatSettingsOptions';
-import AmeFieldset from '@/ui/fieldset/AmeFieldset';
-import AmeCheckbox from '@/ui/checkbox/AmeCheckbox';
-import { ChatSettings } from '../../../../types/settings';
+import React from 'react'
+import { Select } from '@mantine/core'
+import {
+    aiPreferencesMainOptions,
+    aiPreferencesSecondOptions
+} from '@/utils/config/chatSettingsOptions'
+import AmeFieldset from '@/ui/fieldset/AmeFieldset'
+import AmeCheckbox from '@/ui/checkbox/AmeCheckbox'
+import { ChatSettings } from '../../../../types/settings'
 
 export interface SimpleChatSettingsProps {
-    settings: ChatSettings;
-    onChange: (field: keyof ChatSettings, value: boolean | string) => void;
-    onSubmit: () => void;
+    settings: ChatSettings
+    onChange: (field: keyof ChatSettings, value: boolean | string) => void
+    onSubmit: () => void
 }
 
-const SimpleChatSettings: React.FC<SimpleChatSettingsProps> = ({ settings, onChange, onSubmit }) => {
+const SimpleChatSettings: React.FC<SimpleChatSettingsProps> = ({
+    settings,
+    onChange,
+    onSubmit
+}) => {
     return (
-        <AmeFieldset
-            legend="Settings"
-            layout="quad"
-            fieldsetWidth="95%"
-            showButton={false}
-        >
+        <AmeFieldset legend="Settings" layout="quad" fieldsetWidth="95%" showButton={false}>
             <AmeCheckbox
                 label="Submit on Enter"
                 checked={settings.submitOnEnter}
@@ -55,7 +57,7 @@ const SimpleChatSettings: React.FC<SimpleChatSettingsProps> = ({ settings, onCha
                 onChange={(value) => onChange('aiPreferencesSecond', value || '')}
             />
         </AmeFieldset>
-    );
-};
+    )
+}
 
-export default SimpleChatSettings;
+export default SimpleChatSettings

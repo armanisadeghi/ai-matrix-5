@@ -9,7 +9,7 @@ const listData: { [key: string]: string[] } = {
         'Agency Admin',
         'Agency Super Admin',
         'System Admin',
-        'System Super Admin',
+        'System Super Admin'
     ],
     recipeCategories: [
         '🩺 Medical',
@@ -76,9 +76,8 @@ const listData: { [key: string]: string[] } = {
         '🚗 Cars',
         '🏡 Home',
         '📦 Shopping',
-        '🌸 Aesthetics and Beauty',
+        '🌸 Aesthetics and Beauty'
     ]
+}
 
-};
-
-export default listData;
+export default listData

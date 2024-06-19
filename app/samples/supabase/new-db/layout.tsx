@@ -1,19 +1,15 @@
 // app/dashboard/layout.tsx
-"use client";
+'use client'
 
-import ErrorBoundary from "@/components/ErrorManagement/ErrorBoundary";
-import { ReactNode } from "react";
+import ErrorBoundary from '@/components/ErrorManagement/ErrorBoundary'
+import { ReactNode } from 'react'
 
 type Props = {
-    children: ReactNode;
-};
-
-function Layout({children}: Props) {
-    return (
-        <ErrorBoundary>
-            {children}
-        </ErrorBoundary>
-    );
+    children: ReactNode
 }
 
-export default Layout;
+function Layout({ children }: Props) {
+    return <ErrorBoundary>{children}</ErrorBoundary>
+}
+
+export default Layout

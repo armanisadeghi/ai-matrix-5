@@ -1,12 +1,12 @@
-import { Card, Image, Text, Badge, Button, Group } from '@mantine/core';
-import Link from 'next/link';
+import { Card, Image, Text, Badge, Button, Group } from '@mantine/core'
+import Link from 'next/link'
 
 export interface CardProps {
-    title: string;
-    description: string;
-    imageUrl: string;
-    badgeText: string;
-    link: string;
+    title: string
+    description: string
+    imageUrl: string
+    badgeText: string
+    link: string
 }
 
 export function CustomCard({ title, description, imageUrl, badgeText, link }: CardProps) {
@@ -35,5 +35,5 @@ export function CustomCard({ title, description, imageUrl, badgeText, link }: Ca
                 </Button>
             </Link>
         </Card>
-    );
+    )
 }

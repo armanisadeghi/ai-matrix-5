@@ -1,8 +1,7 @@
-import React from 'react';
-import { Slider, Grid } from '@mantine/core';
+import React from 'react'
+import { Slider, Grid } from '@mantine/core'
 
 // This isn't needed anymore because the new one is much better and fully reusable and integrated with atoms!
-
 
 const FullSlider = () => {
     return (
@@ -21,14 +20,14 @@ const FullSlider = () => {
                             { value: 4, label: 'Conductor' },
                             { value: 6, label: 'Lattice' },
                             { value: 8, label: 'Cluster' },
-                            { value: 10, label: 'Hypercluster' },
+                            { value: 10, label: 'Hypercluster' }
                         ]}
                     />
                 </Grid.Col>
                 <Grid.Col span={1}></Grid.Col>
             </Grid>
         </div>
-    );
-};
+    )
+}
 
-export default FullSlider;
+export default FullSlider

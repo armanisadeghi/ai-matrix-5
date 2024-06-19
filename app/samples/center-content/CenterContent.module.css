@@ -13,7 +13,8 @@
     height: calc(100vh - var(--header-height) - var(--layout-padding));
 }
 
-.leftGapColumn, .rightGapColumn {
+.leftGapColumn,
+.rightGapColumn {
     flex-shrink: 1;
 }
 
@@ -30,7 +31,6 @@
 .mainContent {
     overflow: hidden;
     flex-grow: 1;
-
 }
 
 .bottomSection {

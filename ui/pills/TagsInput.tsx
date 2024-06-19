@@ -1,6 +1,12 @@
-import AmePillsInput from './AmePillsInput';
+import AmePillsInput from './AmePillsInput'
 
-function TagsInput({ initialTags, onTagsChange }: { initialTags: string[], onTagsChange?: (tags: string[]) => void }) {
+function TagsInput({
+    initialTags,
+    onTagsChange
+}: {
+    initialTags: string[]
+    onTagsChange?: (tags: string[]) => void
+}) {
     return (
         <AmePillsInput
             initialPills={initialTags}
@@ -10,7 +16,7 @@ function TagsInput({ initialTags, onTagsChange }: { initialTags: string[], onTag
             renderPillContent={(tag: string) => tag}
             onPillsChange={onTagsChange}
         />
-    );
+    )
 }
 
-export default TagsInput;
+export default TagsInput

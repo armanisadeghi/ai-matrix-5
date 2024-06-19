@@ -1,37 +1,37 @@
 // app/dashboard/intelligence/aiChat/layout.tsx
-"use client";
+'use client'
 
-import React, { useCallback, useEffect } from "react";
-import { Container, Grid } from "@mantine/core";
-import styles from './AiChat.module.css';
-import { useRecoilState, useRecoilValue } from "recoil";
-import { activeUserAtom } from "@/state/userAtoms";
-import { SidebarProvider, useSidebar } from "@/context/SidebarContext";
-import ChatSidebar from "@/components/AiChat/Sidebar/ChatList";
-import { deviceTypeAtom, overrideFlagAtom, presetTypeAtom } from "@/state/layoutAtoms";
+import React, { useCallback, useEffect } from 'react'
+import { Container, Grid } from '@mantine/core'
+import styles from './AiChat.module.css'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { activeUserAtom } from '@/state/userAtoms'
+import { SidebarProvider, useSidebar } from '@/context/SidebarContext'
+import ChatSidebar from '@/components/AiChat/Sidebar/ChatList'
+import { deviceTypeAtom, overrideFlagAtom, presetTypeAtom } from '@/state/layoutAtoms'
 
-const ChatLayout = ({children}: { children: React.ReactNode }) => {
-    const [presetType, setPresetType] = useRecoilState(presetTypeAtom);
-    const deviceType = useRecoilValue(deviceTypeAtom);
-    const [activeUser, setActiveUser] = useRecoilState(activeUserAtom);
-    const [overrideFlag, setOverrideFlag] = useRecoilState(overrideFlagAtom);
-    const {setSidebarContent} = useSidebar();
-    const memoizedSetSidebarContent = useCallback(setSidebarContent, []);
+const ChatLayout = ({ children }: { children: React.ReactNode }) => {
+    const [presetType, setPresetType] = useRecoilState(presetTypeAtom)
+    const deviceType = useRecoilValue(deviceTypeAtom)
+    const [activeUser, setActiveUser] = useRecoilState(activeUserAtom)
+    const [overrideFlag, setOverrideFlag] = useRecoilState(overrideFlagAtom)
+    const { setSidebarContent } = useSidebar()
+    const memoizedSetSidebarContent = useCallback(setSidebarContent, [])
 
     useEffect(() => {
-        setOverrideFlag(true);
-        setPresetType('chat');
+        setOverrideFlag(true)
+        setPresetType('chat')
 
         if (activeUser) {
-            memoizedSetSidebarContent(<ChatSidebar />);
+            memoizedSetSidebarContent(<ChatSidebar />)
         } else {
-            memoizedSetSidebarContent(null);
+            memoizedSetSidebarContent(null)
         }
 
         return () => {
-            memoizedSetSidebarContent(null);
-        };
-    }, [deviceType, activeUser, memoizedSetSidebarContent]);
+            memoizedSetSidebarContent(null)
+        }
+    }, [deviceType, activeUser, memoizedSetSidebarContent])
 
     return (
         <SidebarProvider>
@@ -57,7 +57,7 @@ const ChatLayout = ({children}: { children: React.ReactNode }) => {
                 </Container>
             )}
         </SidebarProvider>
-    );
-};
+    )
+}
 
-export default ChatLayout;
+export default ChatLayout

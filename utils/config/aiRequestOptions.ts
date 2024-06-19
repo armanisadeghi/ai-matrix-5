@@ -1,8 +1,5 @@
 // app/mainModule/settings/aiRequestOptions.ts
 
-
-
-
 export const EVENT_TASKS = [
     'directChat',
     'simpleChat',
@@ -12,17 +9,16 @@ export const EVENT_TASKS = [
     'processWorkflow',
     'dataProcessing',
     'directStream',
-    'openai_stream_request',
-] as const;
-
+    'openai_stream_request'
+] as const
 
 export const SOCKET_EVENTS = [
     'matrix_chat',
     'playground_stream',
     'run_recipe',
     'validation',
-    'workflow',
-] as const;
+    'workflow'
+] as const
 
 export const SOURCES = [
     'ai-chat',
@@ -33,33 +29,23 @@ export const SOURCES = [
     'wordpress',
     'shopify',
     'thirdParty',
-    'ai-tests',
-] as const;
+    'ai-tests'
+] as const
 
+export const CHANNELS = ['text', 'voice', 'video', 'image'] as const
 
-export const CHANNELS = [
-    'text',
-    'voice',
-    'video',
-    'image',
-] as const;
-
-export const ROLE_TYPES = [
-    'system',
-    'user',
-    'assistant',
-] as const;
+export const ROLE_TYPES = ['system', 'user', 'assistant'] as const
 
 export const AI_PREFERENCES_MAIN = [
     'default',
     'custom1',
-    'custom2',
+    'custom2'
     // Add other main AI preferences here
-] as const;
+] as const
 
 export const AI_PREFERENCES_SECOND = [
     'assistant',
     'helper',
-    'advisor',
+    'advisor'
     // Add other second AI preferences here
-] as const;
+] as const

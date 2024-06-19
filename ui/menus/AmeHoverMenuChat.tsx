@@ -1,10 +1,10 @@
 // ui/menus/AmeHoverMenuChat.tsx
-import React from 'react';
-import AmeHoverMenu from '@/ui/menus/AmeHoverMenu';
-import { Menu } from "@mantine/core";
+import React from 'react'
+import AmeHoverMenu from '@/ui/menus/AmeHoverMenu'
+import { Menu } from '@mantine/core'
 
 interface AmeHoverMenuChatProps {
-    placeholder: string;
+    placeholder: string
 }
 
 const AmeHoverMenuChat: React.FC<AmeHoverMenuChatProps> = ({ placeholder }) => {
@@ -17,7 +17,7 @@ const AmeHoverMenuChat: React.FC<AmeHoverMenuChatProps> = ({ placeholder }) => {
             <Menu.Item>Use in Playground</Menu.Item>
             <Menu.Item>Use for Apps</Menu.Item>
         </AmeHoverMenu>
-    );
-};
+    )
+}
 
-export default AmeHoverMenuChat;
+export default AmeHoverMenuChat

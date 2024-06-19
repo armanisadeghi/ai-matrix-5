@@ -1,36 +1,44 @@
-'use client';
-import { Group, Stack, NavLink, ActionIcon, Box } from "@mantine/core";
-import { useState } from "react";
-import { IconChevronLeft, IconChevronRight, IconSettings, IconMessage, IconHelp, IconFile, IconShield } from "@tabler/icons-react";
-import { navItems } from "../../Main/Navbar/navItems";
-import { useLayout } from '../../../context/LayoutContext';
+'use client'
+import { Group, Stack, NavLink, ActionIcon, Box } from '@mantine/core'
+import { useState } from 'react'
+import {
+    IconChevronLeft,
+    IconChevronRight,
+    IconSettings,
+    IconMessage,
+    IconHelp,
+    IconFile,
+    IconShield
+} from '@tabler/icons-react'
+import { navItems } from '../../Main/Navbar/navItems'
+import { useLayout } from '../../../context/LayoutContext'
 
 interface NavbarProps {
-    state: "full" | "compact" | "icons" | "hidden";
+    state: 'full' | 'compact' | 'icons' | 'hidden'
 }
 
-export const Navbar = ({state}: NavbarProps) => {
+export const Navbar = ({ state }: NavbarProps) => {
     const {
         handleNavbarExpand,
         handleNavbarCollapse,
         handleIconMouseover,
         handleEndIconMouseover
-    } = useLayout();
-    const [hovered, setHovered] = useState(false);
+    } = useLayout()
+    const [hovered, setHovered] = useState(false)
 
     const handleMouseEnter = () => {
-        if (state === "icons") {
-            setHovered(true);
-            handleIconMouseover();
+        if (state === 'icons') {
+            setHovered(true)
+            handleIconMouseover()
         }
-    };
+    }
 
     const handleMouseLeave = () => {
-        if (state === "compact") {
-            setHovered(false);
-            handleEndIconMouseover();
+        if (state === 'compact') {
+            setHovered(false)
+            handleEndIconMouseover()
         }
-    };
+    }
 
     return (
         <Box
@@ -39,28 +47,28 @@ export const Navbar = ({state}: NavbarProps) => {
             onMouseLeave={handleMouseLeave}
         >
             <div>
-                {state === "compact" && (
+                {state === 'compact' && (
                     <Group justify="flex-end" gap="xs">
                         <ActionIcon onClick={handleNavbarCollapse}>
-                            <IconChevronLeft size={14}/>
+                            <IconChevronLeft size={14} />
                         </ActionIcon>
                         <ActionIcon onClick={handleNavbarExpand}>
-                            <IconChevronRight size={14}/>
+                            <IconChevronRight size={14} />
                         </ActionIcon>
                     </Group>
                 )}
 
-                {state === "full" && (
+                {state === 'full' && (
                     <Group justify="flex-end" gap="xs">
                         <ActionIcon onClick={handleNavbarCollapse}>
-                            <IconChevronLeft size={14}/>
+                            <IconChevronLeft size={14} />
                         </ActionIcon>
                     </Group>
                 )}
-                {state === "icons" && (
+                {state === 'icons' && (
                     <Group justify="center" gap="xs">
                         <ActionIcon onClick={handleNavbarExpand}>
-                            <IconChevronRight size={14}/>
+                            <IconChevronRight size={14} />
                         </ActionIcon>
                     </Group>
                 )}
@@ -70,21 +78,41 @@ export const Navbar = ({state}: NavbarProps) => {
                         <div key={index}>
                             <NavLink
                                 label={
-                                    <Group style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} gap="xs">
+                                    <Group
+                                        style={{
+                                            whiteSpace: 'nowrap',
+                                            overflow: 'hidden',
+                                            textOverflow: 'ellipsis'
+                                        }}
+                                        gap="xs"
+                                    >
                                         <item.icon size={20} />
-                                        {state !== "icons" && (
-                                            <span style={{ marginLeft: '8px', flex: '1', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                {item.label}
-                            </span>
+                                        {state !== 'icons' && (
+                                            <span
+                                                style={{
+                                                    marginLeft: '8px',
+                                                    flex: '1',
+                                                    overflow: 'hidden',
+                                                    textOverflow: 'ellipsis'
+                                                }}
+                                            >
+                                                {item.label}
+                                            </span>
                                         )}
                                     </Group>
                                 }
                                 childrenOffset={28}
                                 defaultOpened={item.initiallyOpened}
                             >
-                                {state !== "icons" && item.links.map((link, linkIndex) => (
-                                    <NavLink key={linkIndex} label={link.label} component="a" href={link.link} />
-                                ))}
+                                {state !== 'icons' &&
+                                    item.links.map((link, linkIndex) => (
+                                        <NavLink
+                                            key={linkIndex}
+                                            label={link.label}
+                                            component="a"
+                                            href={link.link}
+                                        />
+                                    ))}
                             </NavLink>
                         </div>
                     ))}
@@ -111,5 +139,5 @@ export const Navbar = ({state}: NavbarProps) => {
                 </Group>
             </Box>
         </Box>
-    );
-};
+    )
+}

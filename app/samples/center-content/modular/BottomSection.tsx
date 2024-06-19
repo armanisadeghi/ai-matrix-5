@@ -1,12 +1,12 @@
 // BottomSection component
-import React from 'react';
-import textareaStyles from '@/components/AiChat/UserInput/DynamicTextarea.module.css';
-import { simpleChatSettingsList } from '@/state/aiAtoms/settingsAtoms';
-import AmeTextWithSlider from "@/ui/textarea/AmeTextWithSlider";
-import useDynamicLayout from "@/hooks/ai/useDynamicChatLayout";
+import React from 'react'
+import textareaStyles from '@/components/AiChat/UserInput/DynamicTextarea.module.css'
+import { simpleChatSettingsList } from '@/state/aiAtoms/settingsAtoms'
+import AmeTextWithSlider from '@/ui/textarea/AmeTextWithSlider'
+import useDynamicLayout from '@/hooks/ai/useDynamicChatLayout'
 
 const BottomSection: React.FC = () => {
-    const { textareaContainerRef } = useDynamicLayout();
+    const { textareaContainerRef } = useDynamicLayout()
 
     return (
         <div>
@@ -19,7 +19,7 @@ const BottomSection: React.FC = () => {
                 settingAtomNames={simpleChatSettingsList}
             />
         </div>
-    );
-};
+    )
+}
 
-export default BottomSection;
+export default BottomSection

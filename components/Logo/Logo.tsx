@@ -1,13 +1,12 @@
 // components/Logo/Logo.tsx
 
-import { Group, GroupProps, Text, UnstyledButton, useMantineColorScheme } from "@mantine/core";
-import { ReactElement } from "react";
+import { Group, GroupProps, Text, UnstyledButton, useMantineColorScheme } from '@mantine/core'
+import { ReactElement } from 'react'
 
-interface LogoProps extends Partial<GroupProps> {
-}
+interface LogoProps extends Partial<GroupProps> {}
 
-export function Logo({...others}: LogoProps): ReactElement {
-    const {colorScheme} = useMantineColorScheme();
+export function Logo({ ...others }: LogoProps): ReactElement {
+    const { colorScheme } = useMantineColorScheme()
 
     return (
         <Group gap="xs" component={UnstyledButton} {...others} className={colorScheme}>
@@ -17,10 +16,13 @@ export function Logo({...others}: LogoProps): ReactElement {
                 viewBox="0 0 512 512"
                 height={24}
                 width={24}
-                style={{borderRadius: "6px"}}
+                style={{ borderRadius: '6px' }}
             >
-                <path fill="currentColor" opacity="1.000000" stroke="none"
-                      d="
+                <path
+                    fill="currentColor"
+                    opacity="1.000000"
+                    stroke="none"
+                    d="
                         M1.000000,221.333328
                             C2.590635,219.888992 2.570724,218.223190 2.632113,216.526382
                             C3.822345,183.628342 19.481266,159.090256 46.717129,141.677048
@@ -105,11 +107,12 @@ export function Logo({...others}: LogoProps): ReactElement {
                             C234.275665,314.727051 243.629517,311.894318 252.655411,308.022614
                             C254.587402,307.193878 256.715637,306.563904 257.854279,303.414062
                             C254.393661,300.218231 250.725052,296.830322 246.555847,292.940430
-                        z"/>
+                        z"
+                />
             </svg>
             <Text fw={600} fz="lg">
                 AI Matrix
             </Text>
         </Group>
-    );
+    )
 }

@@ -3,342 +3,347 @@
 import {
     IconAi,
     IconAutomation,
-    IconCalendarStats, IconCurrency,
+    IconCalendarStats,
+    IconCurrency,
     IconGauge,
-    IconGrid3x3, IconGrid4x4,
-    IconLayersIntersect, IconPresentationAnalytics, IconSettings, IconSettingsCog,
+    IconGrid3x3,
+    IconGrid4x4,
+    IconLayersIntersect,
+    IconPresentationAnalytics,
+    IconSettings,
+    IconSettingsCog,
     IconTools
-} from "@tabler/icons-react";
-import { PATH_ADMIN, PATH_AGENCY } from "@/routes";
+} from '@tabler/icons-react'
+import { PATH_ADMIN, PATH_AGENCY } from '@/routes'
 
 export const navItems = [
     {
-        label: "Intelligence",
+        label: 'Intelligence',
         icon: IconGauge,
         initiallyOpened: false,
         links: [
             {
-                label: "AI Chat",
-                link: "/chat"
+                label: 'AI Chat',
+                link: '/chat'
             },
             {
-                label: "Custom Bots",
-                link: "/"
+                label: 'Custom Bots',
+                link: '/'
             },
             {
-                label: "Bot Builder",
-                link: "/"
-            },
-        ],
+                label: 'Bot Builder',
+                link: '/'
+            }
+        ]
     },
     {
-        label: "AI Apps",
+        label: 'AI Apps',
         icon: IconAi,
         links: [
             {
-                label: "Legal",
-                link: "/"
+                label: 'Legal',
+                link: '/'
             },
             {
-                label: "Medical",
-                link: "/"
+                label: 'Medical',
+                link: '/'
             },
             {
-                label: "Marketing",
-                link: "/"
+                label: 'Marketing',
+                link: '/'
             },
             {
-                label: "SEO",
-                link: "/"
+                label: 'SEO',
+                link: '/'
             },
             {
-                label: "Kids",
-                link: "/"
+                label: 'Kids',
+                link: '/'
             },
             {
-                label: "School",
-                link: "/"
+                label: 'School',
+                link: '/'
             },
             {
-                label: "Fun",
-                link: "/"
+                label: 'Fun',
+                link: '/'
             },
             {
-                label: "Image",
-                link: "/"
+                label: 'Image',
+                link: '/'
             },
             {
-                label: "Video",
-                link: "/"
+                label: 'Video',
+                link: '/'
             },
             {
-                label: "Others",
-                link: "/"
-            },
-        ],
+                label: 'Others',
+                link: '/'
+            }
+        ]
     },
     {
-        label: "Productivity",
+        label: 'Productivity',
         icon: IconCalendarStats,
         links: [
             {
-                label: "Messenger",
-                link: "/"
+                label: 'Messenger',
+                link: '/'
             },
             {
-                label: "Email",
-                link: "/"
+                label: 'Email',
+                link: '/'
             },
             {
-                label: "Task Manager",
-                link: "/"
+                label: 'Task Manager',
+                link: '/'
             },
             {
-                label: "Calendar",
-                link: "/"
+                label: 'Calendar',
+                link: '/'
             },
             {
-                label: "Meetings",
-                link: "/"
-            },
-        ],
+                label: 'Meetings',
+                link: '/'
+            }
+        ]
     },
     {
-        label: "Tools",
+        label: 'Tools',
         icon: IconTools,
         links: [
             {
-                label: "Audio",
-                link: "/"
+                label: 'Audio',
+                link: '/'
             },
             {
-                label: "Image",
-                link: "/"
+                label: 'Image',
+                link: '/'
             },
             {
-                label: "Video",
-                link: "/"
+                label: 'Video',
+                link: '/'
             },
             {
-                label: "PDF",
-                link: "/"
+                label: 'PDF',
+                link: '/'
             },
             {
-                label: "Text",
-                link: "/"
+                label: 'Text',
+                link: '/'
             },
             {
-                label: "Web",
-                link: "/"
+                label: 'Web',
+                link: '/'
             },
             {
-                label: "Writing",
-                link: "/"
+                label: 'Writing',
+                link: '/'
             },
             {
-                label: "Marketing",
-                link: "/"
+                label: 'Marketing',
+                link: '/'
             },
             {
-                label: "SEO",
-                link: "/"
-            },
-        ],
+                label: 'SEO',
+                link: '/'
+            }
+        ]
     },
     {
-        label: "Integrations",
+        label: 'Integrations',
         icon: IconLayersIntersect,
         links: [
             {
-                label: "Shopify",
-                link: "/"
+                label: 'Shopify',
+                link: '/'
             },
             {
-                label: "Wordpress",
-                link: "/"
+                label: 'Wordpress',
+                link: '/'
             },
             {
-                label: "Zappier",
-                link: "/"
+                label: 'Zappier',
+                link: '/'
             },
             {
-                label: "Google",
-                link: "/"
+                label: 'Google',
+                link: '/'
             },
             {
-                label: "Microsoft",
-                link: "/"
+                label: 'Microsoft',
+                link: '/'
             },
             {
-                label: "GitHub",
-                link: "/"
-            },
-        ],
+                label: 'GitHub',
+                link: '/'
+            }
+        ]
     },
     {
-        label: "Matrix Engine",
+        label: 'Matrix Engine',
         icon: IconGrid3x3,
         links: [
             {
-                label: "Prompt Playground",
-                link: "/"
+                label: 'Prompt Playground',
+                link: '/'
             },
             {
-                label: "Agents",
-                link: "/"
+                label: 'Agents',
+                link: '/'
             },
             {
-                label: "Super Agents",
-                link: "/"
+                label: 'Super Agents',
+                link: '/'
             },
             {
-                label: "Recipes",
-                link: "/"
+                label: 'Recipes',
+                link: '/'
             },
             {
-                label: "Tools",
-                link: "/"
+                label: 'Tools',
+                link: '/'
             },
             {
-                label: "Knowledge",
-                link: "/"
+                label: 'Knowledge',
+                link: '/'
             },
             {
-                label: "System Brokers",
-                link: "/"
+                label: 'System Brokers',
+                link: '/'
             },
             {
-                label: "Custom Brokers",
-                link: "/dashboard/matrix-engine/custom-brokers"
-            },
-        ],
+                label: 'Custom Brokers',
+                link: '/dashboard/matrix-engine/custom-brokers'
+            }
+        ]
     },
     {
-        label: "Automation Matrix",
+        label: 'Automation Matrix',
         icon: IconAutomation,
         links: [
             {
-                label: "Actions",
-                link: "/"
+                label: 'Actions',
+                link: '/'
             },
             {
-                label: "Tasks",
-                link: "/"
+                label: 'Tasks',
+                link: '/'
             },
             {
-                label: "Clusters",
-                link: "/"
+                label: 'Clusters',
+                link: '/'
             },
             {
-                label: "Hyperclustures",
-                link: "/"
+                label: 'Hyperclustures',
+                link: '/'
             },
             {
-                label: "Automation",
-                link: "/"
-            },
-        ],
+                label: 'Automation',
+                link: '/'
+            }
+        ]
     },
     {
-        label: "Matrix Apps",
+        label: 'Matrix Apps',
         icon: IconGrid4x4,
         links: [
             {
-                label: "App Builder",
-                link: "/dashboard/matrix-apps/build/"
+                label: 'App Builder',
+                link: '/dashboard/matrix-apps/build/'
             },
             {
-                label: "App Tester",
-                link: "/"
+                label: 'App Tester',
+                link: '/'
             },
             {
-                label: "App Components",
-                link: "/"
-            },
-        ],
+                label: 'App Components',
+                link: '/'
+            }
+        ]
     },
     {
-        label: "Analytics",
+        label: 'Analytics',
         icon: IconPresentationAnalytics,
         links: [
             {
-                label: "Google Analytics",
-                link: "/"
+                label: 'Google Analytics',
+                link: '/'
             },
             {
-                label: "Google Search Console",
-                link: "/"
+                label: 'Google Search Console',
+                link: '/'
             },
             {
-                label: "Social Media",
-                link: "/"
+                label: 'Social Media',
+                link: '/'
             },
             {
-                label: "AI Matrix Stats",
-                link: "/"
-            },
-        ],
+                label: 'AI Matrix Stats',
+                link: '/'
+            }
+        ]
     },
     {
-        label: "Agency Manager",
+        label: 'Agency Manager',
         icon: IconCurrency,
         links: [
             {
-                label: "Manage Clients",
+                label: 'Manage Clients',
                 link: PATH_AGENCY.clients.root
             },
             {
-                label: "Manage Users",
-                link: "/"
+                label: 'Manage Users',
+                link: '/'
             },
             {
-                label: "Agency Settings",
-                link: "/"
+                label: 'Agency Settings',
+                link: '/'
             },
             {
-                label: "Secrets Manager",
-                link: "/"
-            },
-        ],
+                label: 'Secrets Manager',
+                link: '/'
+            }
+        ]
     },
     {
-        label: "Admin",
+        label: 'Admin',
         icon: IconSettings,
         links: [
             {
-                label: "Agencies",
+                label: 'Agencies',
                 link: PATH_ADMIN.clients.root
             },
             {
-                label: "Clients",
-                link: "/"
+                label: 'Clients',
+                link: '/'
             },
             {
-                label: "Users",
-                link: "/"
+                label: 'Users',
+                link: '/'
             },
             {
-                label: "Configuration",
-                link: "/"
-            },
-        ],
+                label: 'Configuration',
+                link: '/'
+            }
+        ]
     },
     {
-        label: "Super Admin",
+        label: 'Super Admin',
         icon: IconSettingsCog,
         links: [
             {
-                label: "Function Manager",
-                link: "/"
+                label: 'Function Manager',
+                link: '/'
             },
             {
-                label: "System Apps",
-                link: "/"
+                label: 'System Apps',
+                link: '/'
             },
             {
-                label: "Access Management",
-                link: "/"
-            },
-        ],
-    },
-];
+                label: 'Access Management',
+                link: '/'
+            }
+        ]
+    }
+]

@@ -1,14 +1,6 @@
 // app/samples/page.tsx
-'use client';
-
+'use client'
 
 export default function Index() {
-
-    return (
-        <div>
-            Sample Page
-        </div>
-    );
+    return <div>Sample Page</div>
 }
-
-

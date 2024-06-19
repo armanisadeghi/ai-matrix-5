@@ -13,5 +13,5 @@ export const colorPickerColors = [
     '#40c057',
     '#82c91e',
     '#fab005',
-    '#fd7e14',
-];
+    '#fd7e14'
+]

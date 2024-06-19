@@ -1,16 +1,12 @@
 // app/dashboard/matrix-apps/layout.tsx
-'use client';
+'use client'
 
-import React, { ReactNode } from 'react';
+import React, { ReactNode } from 'react'
 
 interface LayoutProps {
-    children: ReactNode;
+    children: ReactNode
 }
 
-const Layout: React.FC<LayoutProps> = ({ children }) => (
-    <div>
-        {children}
-    </div>
-);
+const Layout: React.FC<LayoutProps> = ({ children }) => <div>{children}</div>
 
-export default Layout;
+export default Layout

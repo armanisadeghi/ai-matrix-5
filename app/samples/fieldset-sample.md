@@ -1,10 +1,10 @@
 was having issues with the build so I just deleted the folder:
 
 fieldset-sample
-- page.tsx:
-  "use client";
-- 
-'''tsx
+
+-   page.tsx:
+    "use client";
+-   '''tsx
 
 import { Select } from '@mantine/core';
 import { useState } from 'react';
@@ -87,6 +87,7 @@ onChange(field, newChecked);
             />
         </AmeFieldset>
     );
+
 }
 
 export default ChatBotSettings;

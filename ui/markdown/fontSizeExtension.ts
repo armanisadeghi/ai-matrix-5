@@ -1,16 +1,16 @@
-import '@tiptap/extension-text-style';
-import { Extension } from "@tiptap/core";
+import '@tiptap/extension-text-style'
+import { Extension } from '@tiptap/core'
 
 export type FontSizeOptions = {
-    types: string[];
-};
+    types: string[]
+}
 
 declare module '@tiptap/core' {
     interface Commands<ReturnType> {
         fontSize: {
-            setFontSize: (fontSize: string) => ReturnType;
-            unsetFontSize: () => ReturnType;
-        };
+            setFontSize: (fontSize: string) => ReturnType
+            unsetFontSize: () => ReturnType
+        }
     }
 }
 
@@ -19,8 +19,8 @@ const FontSize = Extension.create<FontSizeOptions>({
 
     addOptions() {
         return {
-            types: ['textStyle'],
-        };
+            types: ['textStyle']
+        }
     },
 
     addGlobalAttributes() {
@@ -33,35 +33,35 @@ const FontSize = Extension.create<FontSizeOptions>({
                         parseHTML: (element) => element.style.fontSize.replace(/['"]+/g, ''),
                         renderHTML: (attributes) => {
                             if (!attributes.fontSize) {
-                                return {};
+                                return {}
                             }
                             return {
-                                style: `font-size: ${attributes.fontSize}`,
-                            };
-                        },
-                    },
-                },
-            },
-        ];
+                                style: `font-size: ${attributes.fontSize}`
+                            }
+                        }
+                    }
+                }
+            }
+        ]
     },
 
     addCommands() {
         return {
             setFontSize:
                 (fontSize) =>
-                    ({ chain }) => {
-                        return chain().setMark('textStyle', { fontSize }).run();
-                    },
+                ({ chain }) => {
+                    return chain().setMark('textStyle', { fontSize }).run()
+                },
             unsetFontSize:
                 () =>
-                    ({ chain }) => {
-                        return chain()
-                            .setMark('textStyle', { fontSize: null })
-                            .removeEmptyTextStyle()
-                            .run();
-                    },
-        };
-    },
-});
+                ({ chain }) => {
+                    return chain()
+                        .setMark('textStyle', { fontSize: null })
+                        .removeEmptyTextStyle()
+                        .run()
+                }
+        }
+    }
+})
 
-export default FontSize;
+export default FontSize

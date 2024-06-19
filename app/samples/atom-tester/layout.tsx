@@ -1,29 +1,27 @@
 // app/samples/atom_tester/layout.tsx
 'use client'
 
-import React, { useEffect } from 'react';
-import { ReactNode } from 'react';
-import { useSetRecoilState } from 'recoil';
-import { overrideFlagAtom, presetTypeAtom } from "@/state/layoutAtoms";
-import Loading from "@/app/dashboard/loading";
-import { useUser } from "@auth0/nextjs-auth0/client";
-import { Box, LoadingOverlay } from "@mantine/core";
+import React, { useEffect } from 'react'
+import { ReactNode } from 'react'
+import { useSetRecoilState } from 'recoil'
+import { overrideFlagAtom, presetTypeAtom } from '@/state/layoutAtoms'
+import Loading from '@/app/dashboard/loading'
+import { useUser } from '@auth0/nextjs-auth0/client'
+import { Box, LoadingOverlay } from '@mantine/core'
 
 type Props = {
-    children: ReactNode;
-};
+    children: ReactNode
+}
 
-const LayoutContent: React.FC<{  }> = ({}) => {
-    const setOverrideFlag = useSetRecoilState(overrideFlagAtom);
-    const setPresetType = useSetRecoilState(presetTypeAtom);
-    const {user, error, isLoading} = useUser();
-
+const LayoutContent: React.FC<{}> = ({}) => {
+    const setOverrideFlag = useSetRecoilState(overrideFlagAtom)
+    const setPresetType = useSetRecoilState(presetTypeAtom)
+    const { user, error, isLoading } = useUser()
 
     useEffect(() => {
         setOverrideFlag(true)
-        setPresetType('balanced');
-
-    }, [setPresetType]);
+        setPresetType('balanced')
+    }, [setPresetType])
 
     if (isLoading) {
         return (
@@ -38,21 +36,19 @@ const LayoutContent: React.FC<{  }> = ({}) => {
                     {/* ...other content */}
                 </Box>
             </div>
-        );
+        )
     }
 
+    return null
+}
 
-    return null;
-};
-
-
-const Layout: React.FC<Props> = ({children}) => {
+const Layout: React.FC<Props> = ({ children }) => {
     return (
         <>
-            <LayoutContent/>
+            <LayoutContent />
             {children}
         </>
-    );
-};
+    )
+}
 
-export default Layout;
+export default Layout

@@ -1,52 +1,51 @@
-import React from 'react';
-import Tag from './tagAtoms';
-import Message from './messageAtoms';
-import Broker from './brokerAtoms';
-
+import React from 'react'
+import Tag from './tagAtoms'
+import Message from './messageAtoms'
+import Broker from './brokerAtoms'
 
 interface RecipeProps {
     recipe: {
-        _id: string;
-        name: string;
-        tags: string[];
-        description: string;
+        _id: string
+        name: string
+        tags: string[]
+        description: string
         permissions: {
-            public: boolean;
-            groups: string[];
-            orgs: string[];
-            users: string[];
-        };
+            public: boolean
+            groups: string[]
+            orgs: string[]
+            users: string[]
+        }
         messages: {
-            type: string;
-            text: string;
-        }[];
+            type: string
+            text: string
+        }[]
         callParams: {
             models: {
-                verifiedModels: string[];
-                eliteModel: string;
-                trialModels: string[];
-            };
+                verifiedModels: string[]
+                eliteModel: string
+                trialModels: string[]
+            }
             brokers: {
-                name: string;
-                type: string;
-                required: boolean;
-                defaultValue: any;
-            }[];
+                name: string
+                type: string
+                required: boolean
+                defaultValue: any
+            }[]
             overrides: {
-                stream: boolean;
-            };
-        };
+                stream: boolean
+            }
+        }
         postParams: {
-            returnBroker: string;
+            returnBroker: string
             processors: {
-                permanent: string[];
-                optional: string[];
-            };
-            defaultDisplay: string;
-            nextStepOptions: string[];
-        };
-        sampleOutput: string;
-    };
+                permanent: string[]
+                optional: string[]
+            }
+            defaultDisplay: string
+            nextStepOptions: string[]
+        }
+        sampleOutput: string
+    }
 }
 
 const Recipe: React.FC<RecipeProps> = ({ recipe }) => (
@@ -54,7 +53,9 @@ const Recipe: React.FC<RecipeProps> = ({ recipe }) => (
         <h1>{recipe.name}</h1>
         <p>{recipe.description}</p>
         <div className="tags">
-            {recipe.tags.map(tag => <Tag key={tag} tag={tag} />)}
+            {recipe.tags.map((tag) => (
+                <Tag key={tag} tag={tag} />
+            ))}
         </div>
         <div className="permissions">
             <p>Public: {recipe.permissions.public ? 'Yes' : 'No'}</p>
@@ -96,6 +97,6 @@ const Recipe: React.FC<RecipeProps> = ({ recipe }) => (
             <pre>{recipe.sampleOutput}</pre>
         </div>
     </div>
-);
+)
 
-export default Recipe;
+export default Recipe

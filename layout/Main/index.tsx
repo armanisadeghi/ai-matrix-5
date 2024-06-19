@@ -1,79 +1,81 @@
-"use client";
+'use client'
 
-import { AppShell, Box } from "@mantine/core";
-import { ReactNode, useEffect } from "react";
-import { Navbar } from "./Navbar";
-import { Header } from "./Header";
-import { Sidebar } from "./Sidebar";
-import { Footer } from "@/layout/Main/Footer";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { AppShell, Box } from '@mantine/core'
+import { ReactNode, useEffect } from 'react'
+import { Navbar } from './Navbar'
+import { Header } from './Header'
+import { Sidebar } from './Sidebar'
+import { Footer } from '@/layout/Main/Footer'
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import {
     rightSidebarAtom,
     leftSidebarAtom,
     footerAtom,
     headerAtom,
-    deviceTypeAtom, windowHeightState, windowWidthState,
-} from "@/state/layoutAtoms";
-import useLayoutPresets from "@/hooks/layout/useLayoutPresets";
-import { useMediaQuery } from "@mantine/hooks";
-import { PresetType } from "@/types/layout";
+    deviceTypeAtom,
+    windowHeightState,
+    windowWidthState
+} from '@/state/layoutAtoms'
+import useLayoutPresets from '@/hooks/layout/useLayoutPresets'
+import { useMediaQuery } from '@mantine/hooks'
+import { PresetType } from '@/types/layout'
 
 type Props = {
-    children: ReactNode;
-};
+    children: ReactNode
+}
 
 export function MainLayout({ children }: Props) {
-    const rightSideBarWidth = useRecoilValue(rightSidebarAtom);
-    const leftSideBarWidth = useRecoilValue(leftSidebarAtom);
-    const footerHeight = useRecoilValue(footerAtom);
-    const headerHeight = useRecoilValue(headerAtom);
-    const [deviceType, setDeviceType] = useRecoilState(deviceTypeAtom);
+    const rightSideBarWidth = useRecoilValue(rightSidebarAtom)
+    const leftSideBarWidth = useRecoilValue(leftSidebarAtom)
+    const footerHeight = useRecoilValue(footerAtom)
+    const headerHeight = useRecoilValue(headerAtom)
+    const [deviceType, setDeviceType] = useRecoilState(deviceTypeAtom)
 
-    const mobileMatch = useMediaQuery("(max-width: 768px)");
-    const tabletMatch = useMediaQuery("(min-width: 769px) and (max-width: 1024px)");
-    const desktopMatch = useMediaQuery("(min-width: 1025px)");
+    const mobileMatch = useMediaQuery('(max-width: 768px)')
+    const tabletMatch = useMediaQuery('(min-width: 769px) and (max-width: 1024px)')
+    const desktopMatch = useMediaQuery('(min-width: 1025px)')
 
-    const [windowWidth, setWindowWidth] = useRecoilState(windowWidthState);
-    const [windowHeight, setWindowHeight] = useRecoilState(windowHeightState);
+    const [windowWidth, setWindowWidth] = useRecoilState(windowWidthState)
+    const [windowHeight, setWindowHeight] = useRecoilState(windowHeightState)
 
     useEffect(() => {
-        setWindowWidth(window.innerWidth);
-        setWindowHeight(window.innerHeight);
-    }, [setWindowWidth, setWindowHeight]);
+        setWindowWidth(window.innerWidth)
+        setWindowHeight(window.innerHeight)
+    }, [setWindowWidth, setWindowHeight])
 
     useEffect(() => {
         if (mobileMatch) {
-            setDeviceType('mobile');
+            setDeviceType('mobile')
         } else if (tabletMatch) {
-            setDeviceType('tablet');
+            setDeviceType('tablet')
         } else if (desktopMatch) {
-            setDeviceType('desktop');
+            setDeviceType('desktop')
         }
-    }, [mobileMatch, tabletMatch, desktopMatch, setDeviceType]);
+    }, [mobileMatch, tabletMatch, desktopMatch, setDeviceType])
 
-    useLayoutPresets();
+    useLayoutPresets()
 
     return (
         <AppShell
             layout="default"
             header={{
-                height: headerHeight,
+                height: headerHeight
             }}
             navbar={{
                 width: leftSideBarWidth,
-                breakpoint: "sm",
-                collapsed: { mobile: leftSideBarWidth === 0 },
+                breakpoint: 'sm',
+                collapsed: { mobile: leftSideBarWidth === 0 }
             }}
             aside={{
                 width: rightSideBarWidth,
-                breakpoint: "md",
+                breakpoint: 'md',
                 collapsed: {
                     desktop: false,
-                    mobile: true,
-                },
+                    mobile: true
+                }
             }}
             footer={{
-                height: footerHeight,
+                height: footerHeight
             }}
         >
             <AppShell.Header>
@@ -98,5 +100,5 @@ export function MainLayout({ children }: Props) {
                 </AppShell.Footer>
             )}
         </AppShell>
-    );
+    )
 }

@@ -1,8 +1,8 @@
 // pages/MarkdownDemo.tsx
-'use client';
+'use client'
 
-import AmeMarkdownBeautifier from '@/components/RichTextEditor/AmeMarkdownBeautifier';
-import RichTextEditorPage from "@/components/RichTextEditor/RichTextEditorPage";
+import AmeMarkdownBeautifier from '@/components/RichTextEditor/AmeMarkdownBeautifier'
+import RichTextEditorPage from '@/components/RichTextEditor/RichTextEditorPage'
 
 const markdownContent = `
 <h2 style="text-align: center;">Welcome to AI Matrix</h2>
@@ -23,20 +23,19 @@ const assignTask = (task: string, assignee: string): string => {
 console.log(assignTask('Review Q1 Report', 'Alice'));
 </code></pre>
 <p>Get started with AI Matrix and revolutionize your business operations.</p>
-`;
+`
 
 const MarkdownDemo = () => {
     const handleSave = (content: string) => {
-        console.log('Saved content:', content);
+        console.log('Saved content:', content)
         // Save logic here
-    };
+    }
 
     return (
         <div>
             <RichTextEditorPage content={markdownContent} onSave={handleSave} />
         </div>
-    );
-};
+    )
+}
 
-
-export default MarkdownDemo;
+export default MarkdownDemo

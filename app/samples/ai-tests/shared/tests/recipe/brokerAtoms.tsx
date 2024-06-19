@@ -1,10 +1,10 @@
-import React from 'react';
+import React from 'react'
 
 interface BrokerProps {
-    name: string;
-    type: string;
-    required: boolean;
-    defaultValue: any;
+    name: string
+    type: string
+    required: boolean
+    defaultValue: any
 }
 
 const Broker: React.FC<BrokerProps> = ({ name, type, required, defaultValue }) => (
@@ -14,6 +14,6 @@ const Broker: React.FC<BrokerProps> = ({ name, type, required, defaultValue }) =
         <p>Required: {required ? 'Yes' : 'No'}</p>
         <p>Default Value: {defaultValue}</p>
     </div>
-);
+)
 
-export default Broker;
+export default Broker

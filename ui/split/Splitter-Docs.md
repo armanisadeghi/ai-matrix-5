@@ -10,14 +10,14 @@ The `VerticalSplitter` component creates a vertically split layout, allowing for
 
 #### Props
 
-- **children** (ReactNode[]): An array of React nodes representing the content to be displayed within each split section. (Required)
-- **initialSizes** (number[]): An optional array of numbers representing the initial sizes (in percentages) of each split section. Defaults to equal distribution.
+-   **children** (ReactNode[]): An array of React nodes representing the content to be displayed within each split section. (Required)
+-   **initialSizes** (number[]): An optional array of numbers representing the initial sizes (in percentages) of each split section. Defaults to equal distribution.
 
 #### Example Usage
 
 ```tsx
-import React from 'react';
-import VerticalSplitter from '@/ui/split/VerticalSplitter';
+import React from 'react'
+import VerticalSplitter from '@/ui/split/VerticalSplitter'
 
 const VerticalExample: React.FC = () => {
     return (
@@ -31,10 +31,10 @@ const VerticalExample: React.FC = () => {
                 <p>Content for the right section.</p>
             </div>
         </VerticalSplitter>
-    );
-};
+    )
+}
 
-export default VerticalExample;
+export default VerticalExample
 ```
 
 ### HorizontalSplitter Component
@@ -43,14 +43,14 @@ The `HorizontalSplitter` component creates a horizontally split layout, allowing
 
 #### Props
 
-- **children** (ReactNode[]): An array of React nodes representing the content to be displayed within each split section. (Required)
-- **initialSizes** (number[]): An optional array of numbers representing the initial sizes (in percentages) of each split section. Defaults to equal distribution.
+-   **children** (ReactNode[]): An array of React nodes representing the content to be displayed within each split section. (Required)
+-   **initialSizes** (number[]): An optional array of numbers representing the initial sizes (in percentages) of each split section. Defaults to equal distribution.
 
 #### Example Usage
 
 ```tsx
-import React from 'react';
-import HorizontalSplitter from '@/ui/split/HorizontalSplitter';
+import React from 'react'
+import HorizontalSplitter from '@/ui/split/HorizontalSplitter'
 
 const HorizontalExample: React.FC = () => {
     return (
@@ -64,10 +64,10 @@ const HorizontalExample: React.FC = () => {
                 <p>Content for the bottom section.</p>
             </div>
         </HorizontalSplitter>
-    );
-};
+    )
+}
 
-export default HorizontalExample;
+export default HorizontalExample
 ```
 
 ### DynamicSplitter Component
@@ -76,17 +76,17 @@ The `DynamicSplitter` component provides a flexible layout that can dynamically 
 
 #### Props
 
-- **verticalSections** (SectionContent[]): An array of objects defining the title and content for each vertical section. (Required)
-- **horizontalSectionIndex** (number): An optional index specifying which vertical section should be split horizontally. If not provided, no horizontal split will occur.
-- **initialVerticalSizes** (number[]): An optional array defining the initial sizes (in percentages) of each vertical section. Defaults to equal distribution.
-- **initialHorizontalSizes** (number[]): An optional array defining the initial sizes (in percentages) of each horizontal subsection. Defaults to equal distribution.
-- **horizontalSections** (SectionContent[]): An optional array of objects defining the title and content for each horizontal subsection. Required if `horizontalSectionIndex` is provided.
+-   **verticalSections** (SectionContent[]): An array of objects defining the title and content for each vertical section. (Required)
+-   **horizontalSectionIndex** (number): An optional index specifying which vertical section should be split horizontally. If not provided, no horizontal split will occur.
+-   **initialVerticalSizes** (number[]): An optional array defining the initial sizes (in percentages) of each vertical section. Defaults to equal distribution.
+-   **initialHorizontalSizes** (number[]): An optional array defining the initial sizes (in percentages) of each horizontal subsection. Defaults to equal distribution.
+-   **horizontalSections** (SectionContent[]): An optional array of objects defining the title and content for each horizontal subsection. Required if `horizontalSectionIndex` is provided.
 
 #### Example Usage
 
 ```tsx
-import React from 'react';
-import DynamicSplitter from '@/nice-working/DynamicSplitter';
+import React from 'react'
+import DynamicSplitter from '@/nice-working/DynamicSplitter'
 
 const DynamicExample: React.FC = () => {
     const verticalSections = [
@@ -94,12 +94,12 @@ const DynamicExample: React.FC = () => {
         { title: 'Section 2', content: 'Content for section 2.' },
         { title: 'Section 3', content: 'Content for section 3.' },
         { title: 'Section 4', content: 'Content for section 4.' }
-    ];
+    ]
 
     const horizontalSections = [
         { title: 'Top Subsection', content: 'Content for the top subsection.' },
         { title: 'Bottom Subsection', content: 'Content for the bottom subsection.' }
-    ];
+    ]
 
     return (
         <DynamicSplitter
@@ -109,10 +109,10 @@ const DynamicExample: React.FC = () => {
             initialHorizontalSizes={[70, 30]} // Custom sizes for horizontal subsections
             horizontalSections={horizontalSections}
         />
-    );
-};
+    )
+}
 
-export default DynamicExample;
+export default DynamicExample
 ```
 
 ### Summary

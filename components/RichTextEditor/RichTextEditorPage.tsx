@@ -1,13 +1,13 @@
 // nice-working/RichTextEditor/RichTextEditorPage.tsx
 
-'use client';
+'use client'
 
-import { RichTextEditorContextProvider } from './RichTextEditorContextProvider';
-import AmeMarkdownBeautifier from './AmeMarkdownBeautifier';
+import { RichTextEditorContextProvider } from './RichTextEditorContextProvider'
+import AmeMarkdownBeautifier from './AmeMarkdownBeautifier'
 
 interface RichTextEditorPageProps {
-    content: string;
-    onSave: (content: string) => void;
+    content: string
+    onSave: (content: string) => void
 }
 
 const RichTextEditorPage: React.FC<RichTextEditorPageProps> = ({ content, onSave }) => {
@@ -15,7 +15,7 @@ const RichTextEditorPage: React.FC<RichTextEditorPageProps> = ({ content, onSave
         <RichTextEditorContextProvider content={content}>
             <AmeMarkdownBeautifier onSave={onSave} />
         </RichTextEditorContextProvider>
-    );
-};
+    )
+}
 
-export default RichTextEditorPage;
+export default RichTextEditorPage

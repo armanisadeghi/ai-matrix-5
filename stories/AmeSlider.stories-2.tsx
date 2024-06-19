@@ -1,22 +1,22 @@
 // AmeSlider.stories.tsx
-import type { Meta, StoryObj } from '@storybook/react';
-import AmeSlider, { AmeSliderProps } from './AmeSlider';
+import type { Meta, StoryObj } from '@storybook/react'
+import AmeSlider, { AmeSliderProps } from './AmeSlider'
 
 const meta: Meta<AmeSliderProps> = {
     title: 'Components/AmeSlider',
     component: AmeSlider,
     argTypes: {
         color: {
-            control: { type: 'select', options: ['blue', 'gray', 'red'] },
+            control: { type: 'select', options: ['blue', 'gray', 'red'] }
         },
         size: {
-            control: { type: 'select', options: ['sm', 'xs'] },
-        },
-    },
-};
-export default meta;
+            control: { type: 'select', options: ['sm', 'xs'] }
+        }
+    }
+}
+export default meta
 
-type Story = StoryObj<AmeSliderProps>;
+type Story = StoryObj<AmeSliderProps>
 
 export const Default: Story = {
     args: {
@@ -28,9 +28,9 @@ export const Default: Story = {
         customLabels: ['0', '25', '50', '75', '100'],
         showNumber: true,
         size: 'sm',
-        color: 'blue',
-    },
-};
+        color: 'blue'
+    }
+}
 
 export const WithCustomLabels: Story = {
     args: {
@@ -42,9 +42,9 @@ export const WithCustomLabels: Story = {
         customLabels: ['Start', 'Quarter', 'Half', 'Three-Quarters', 'End'],
         showNumber: true,
         size: 'sm',
-        color: 'gray',
-    },
-};
+        color: 'gray'
+    }
+}
 
 export const WithoutNumberInput: Story = {
     args: {
@@ -55,6 +55,6 @@ export const WithoutNumberInput: Story = {
         tooltip: 'Slider without number input field',
         showNumber: false,
         size: 'xs',
-        color: 'red',
-    },
-};
+        color: 'red'
+    }
+}

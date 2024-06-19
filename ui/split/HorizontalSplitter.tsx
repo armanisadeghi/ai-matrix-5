@@ -1,82 +1,92 @@
-import React, { CSSProperties, ReactNode, useState, useRef, useEffect, useImperativeHandle, forwardRef } from 'react';
-import Split from 'react-split';
+import React, {
+    CSSProperties,
+    ReactNode,
+    useState,
+    useRef,
+    useEffect,
+    useImperativeHandle,
+    forwardRef
+} from 'react'
+import Split from 'react-split'
 
 interface HorizontalSplitterProps {
-    children: ReactNode[];
-    initialSizes?: number[];
+    children: ReactNode[]
+    initialSizes?: number[]
 }
 
 export interface HorizontalSplitterRef {
-    updateSizes: (sizes: number[]) => void;
+    updateSizes: (sizes: number[]) => void
 }
 
-const HorizontalSplitter = forwardRef<HorizontalSplitterRef, HorizontalSplitterProps>(({ children, initialSizes }, ref) => {
-    const sections = children.length;
-    const defaultSizes = Array(sections).fill(100 / sections);
-    const [sizes, setSizes] = useState<number[]>(initialSizes || defaultSizes);
-    const gutters = useRef<HTMLDivElement[]>([]);
+const HorizontalSplitter = forwardRef<HorizontalSplitterRef, HorizontalSplitterProps>(
+    ({ children, initialSizes }, ref) => {
+        const sections = children.length
+        const defaultSizes = Array(sections).fill(100 / sections)
+        const [sizes, setSizes] = useState<number[]>(initialSizes || defaultSizes)
+        const gutters = useRef<HTMLDivElement[]>([])
 
-    useImperativeHandle(ref, () => ({
-        updateSizes: (newSizes: number[]) => setSizes(newSizes)
-    }));
+        useImperativeHandle(ref, () => ({
+            updateSizes: (newSizes: number[]) => setSizes(newSizes)
+        }))
 
-    const panelStyle = (index: number): CSSProperties => ({
-        padding: '10px',
-        width: '100%',
-        overflow: 'hidden',
-        visibility: sizes[index] < 5 ? 'hidden' : 'visible',
-    });
+        const panelStyle = (index: number): CSSProperties => ({
+            padding: '10px',
+            width: '100%',
+            overflow: 'hidden',
+            visibility: sizes[index] < 5 ? 'hidden' : 'visible'
+        })
 
-    const gutterStyle: CSSProperties = {
-        backgroundColor: '#403f3f',
-    };
-
-    useEffect(() => {
-        const updatedSizes = sizes.map(size => Math.max(size, 5));
-        if (sizes.some((size, index) => size !== updatedSizes[index])) {
-            setSizes(updatedSizes);
+        const gutterStyle: CSSProperties = {
+            backgroundColor: '#403f3f'
         }
-    }, [sizes]);
 
-    return (
-        <Split
-            sizes={sizes}
-            minSize={50}
-            expandToMin={true}
-            gutterSize={15}
-            gutterAlign="center"
-            snapOffset={10}
-            dragInterval={1}
-            direction="vertical"
-            cursor="row-resize"
-            onDragEnd={newSizes => setSizes(newSizes)}
-            style={{ display: 'flex', height: 'calc(100vh - 10px)', flexDirection: 'column' }}
-            gutter={(index, direction) => {
-                const gutter = document.createElement('div');
-                gutter.style.cssText = `width: 100%; background-color: transparent; height: 30px; cursor: row-resize; position: relative;`;
+        useEffect(() => {
+            const updatedSizes = sizes.map((size) => Math.max(size, 5))
+            if (sizes.some((size, index) => size !== updatedSizes[index])) {
+                setSizes(updatedSizes)
+            }
+        }, [sizes])
 
-                const innerGutter = document.createElement('div');
-                innerGutter.style.cssText = `width: 100%; background-color: ${gutterStyle.backgroundColor}; height: 1px; position: absolute; top: 14.5px;`;
-                gutter.appendChild(innerGutter);
-                gutters.current[index] = gutter;
+        return (
+            <Split
+                sizes={sizes}
+                minSize={50}
+                expandToMin={true}
+                gutterSize={15}
+                gutterAlign="center"
+                snapOffset={10}
+                dragInterval={1}
+                direction="vertical"
+                cursor="row-resize"
+                onDragEnd={(newSizes) => setSizes(newSizes)}
+                style={{ display: 'flex', height: 'calc(100vh - 10px)', flexDirection: 'column' }}
+                gutter={(index, direction) => {
+                    const gutter = document.createElement('div')
+                    gutter.style.cssText = `width: 100%; background-color: transparent; height: 30px; cursor: row-resize; position: relative;`
 
-                gutter.addEventListener('mouseenter', () => {
-                    gutter.style.cursor = 'row-resize';
-                });
-                gutter.addEventListener('mouseleave', () => {
-                    gutter.style.cursor = 'default';
-                });
+                    const innerGutter = document.createElement('div')
+                    innerGutter.style.cssText = `width: 100%; background-color: ${gutterStyle.backgroundColor}; height: 1px; position: absolute; top: 14.5px;`
+                    gutter.appendChild(innerGutter)
+                    gutters.current[index] = gutter
 
-                return gutter;
-            }}
-        >
-            {children.map((child, index) => (
-                <div key={index} style={panelStyle(index)}>
-                    {child}
-                </div>
-            ))}
-        </Split>
-    );
-});
+                    gutter.addEventListener('mouseenter', () => {
+                        gutter.style.cursor = 'row-resize'
+                    })
+                    gutter.addEventListener('mouseleave', () => {
+                        gutter.style.cursor = 'default'
+                    })
 
-export default HorizontalSplitter;
+                    return gutter
+                }}
+            >
+                {children.map((child, index) => (
+                    <div key={index} style={panelStyle(index)}>
+                        {child}
+                    </div>
+                ))}
+            </Split>
+        )
+    }
+)
+
+export default HorizontalSplitter

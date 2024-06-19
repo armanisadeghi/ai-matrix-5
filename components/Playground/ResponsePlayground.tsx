@@ -1,11 +1,11 @@
-import {useState} from "react";
-import {Button, Flex, Group, Paper, Select, Text, Textarea} from "@mantine/core";
+import { useState } from 'react'
+import { Button, Flex, Group, Paper, Select, Text, Textarea } from '@mantine/core'
 import {
     IconArrowsDiagonal,
     IconArrowsDiagonalMinimize2,
     IconSquareRoundedArrowLeft,
     IconTrash
-} from "@tabler/icons-react";
+} from '@tabler/icons-react'
 
 const ResponsePlayground = () => {
     const [minimize, setMinimize] = useState(true)
@@ -14,39 +14,56 @@ const ResponsePlayground = () => {
             <Flex align={'center'} justify={'space-between'}>
                 <Text size={'xs'}>Response 1</Text>
                 <Group>
-                    <IconTrash width={16}/>
-                    {!minimize ? <IconArrowsDiagonalMinimize2 width={16} style={{cursor: 'pointer'}}
-                                                              onClick={() => setMinimize(!minimize)}/> :
-                        <IconArrowsDiagonal width={16} style={{cursor: 'pointer'}}
-                                            onClick={() => setMinimize(!minimize)}/>}
+                    <IconTrash width={16} />
+                    {!minimize ? (
+                        <IconArrowsDiagonalMinimize2
+                            width={16}
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => setMinimize(!minimize)}
+                        />
+                    ) : (
+                        <IconArrowsDiagonal
+                            width={16}
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => setMinimize(!minimize)}
+                        />
+                    )}
                 </Group>
             </Flex>
 
-            {
-                minimize ?
-                    <div style={{maxHeight: 80, overflow: 'hidden'}}><Text size={'xs'}
-                                                                           onClick={() => setMinimize(false)}>Lorem
-                        ipsum dolor sit amet, consectetur adipisicing elit. Ad culpa dolorum eveniet illo in itaque
-                        molestiae nemo, quae reiciendis rem? Beatae dolorum expedita illum ipsa optio quidem reiciendis,
-                        temporibus tenetur?</Text>
-                    </div> :
-                    (
-                        <Textarea autosize={true} variant="unstyled" size={'xs'}
-                                  defaultValue={'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad culpa dolorum eveniet illo in itaque molestiae nemo, quae reiciendis rem? Beatae dolorum expedita illum ipsa optio quidem reiciendis, temporibus tenetur?'}/>
-                    )
-            }
+            {minimize ? (
+                <div style={{ maxHeight: 80, overflow: 'hidden' }}>
+                    <Text size={'xs'} onClick={() => setMinimize(false)}>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad culpa dolorum
+                        eveniet illo in itaque molestiae nemo, quae reiciendis rem? Beatae dolorum
+                        expedita illum ipsa optio quidem reiciendis, temporibus tenetur?
+                    </Text>
+                </div>
+            ) : (
+                <Textarea
+                    autosize={true}
+                    variant="unstyled"
+                    size={'xs'}
+                    defaultValue={
+                        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad culpa dolorum eveniet illo in itaque molestiae nemo, quae reiciendis rem? Beatae dolorum expedita illum ipsa optio quidem reiciendis, temporibus tenetur?'
+                    }
+                />
+            )}
 
             <Flex justify={'space-between'} mt={24}>
                 <Select
                     size={'xs'}
                     placeholder="Pick a type"
                     data={['Text', 'Markdown', 'Form', 'Table', 'JSON']}
-                    defaultValue='Text'
+                    defaultValue="Text"
                 />
 
-
                 <Flex gap={8}>
-                    <Button color="gray" size="xs" leftSection={<IconSquareRoundedArrowLeft width={14}/>}>
+                    <Button
+                        color="gray"
+                        size="xs"
+                        leftSection={<IconSquareRoundedArrowLeft width={14} />}
+                    >
                         Move
                     </Button>
                     <Button color="gray" size="xs">
@@ -57,9 +74,8 @@ const ResponsePlayground = () => {
                     </Button>
                 </Flex>
             </Flex>
-
         </Paper>
     )
 }
 
-export default ResponsePlayground;
+export default ResponsePlayground

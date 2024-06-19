@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 const RunPage = () => {
     return (
@@ -6,7 +6,7 @@ const RunPage = () => {
             <h1>Run App</h1>
             <p>This is the Run App Page.</p>
         </div>
-    );
-};
+    )
+}
 
-export default RunPage;
+export default RunPage

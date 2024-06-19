@@ -1,24 +1,23 @@
-'use client';
+'use client'
 
-import { Box, useMantineTheme, useMantineColorScheme, Space } from '@mantine/core';
-import AmeTextAreaFancy from "@/ui/textarea/AmeTextAreaFancy";
+import { Box, useMantineTheme, useMantineColorScheme, Space } from '@mantine/core'
+import AmeTextAreaFancy from '@/ui/textarea/AmeTextAreaFancy'
 
 function Demo() {
-    const theme = useMantineTheme();
-    const {colorScheme} = useMantineColorScheme();
-    const boxShadow = colorScheme === 'dark'
-        ? '0 4px 15px rgba(255, 255, 255, 0.2)'
-        : '0 4px 15px rgba(0, 0, 0, 0.2)';
-    const glowHover = colorScheme === 'dark'
-        ? '0 0 20px rgba(255, 255, 255, 0.5)'
-        : '0 0 20px rgba(0, 0, 0, 0.5)';
+    const theme = useMantineTheme()
+    const { colorScheme } = useMantineColorScheme()
+    const boxShadow =
+        colorScheme === 'dark'
+            ? '0 4px 15px rgba(255, 255, 255, 0.2)'
+            : '0 4px 15px rgba(0, 0, 0, 0.2)'
+    const glowHover =
+        colorScheme === 'dark' ? '0 0 20px rgba(255, 255, 255, 0.5)' : '0 0 20px rgba(0, 0, 0, 0.5)'
 
     return (
         <>
-            <Space h="xl"/>
-            <Space h="xl"/>
-            <Space h="xl"/>
-
+            <Space h="xl" />
+            <Space h="xl" />
+            <Space h="xl" />
 
             <Box
                 mx="auto"
@@ -29,7 +28,7 @@ function Demo() {
                     position: 'relative',
                     zIndex: 1,
                     '&:hover': {
-                        boxShadow: glowHover,
+                        boxShadow: glowHover
                     },
                     '&::before': {
                         content: '""',
@@ -39,17 +38,20 @@ function Demo() {
                         right: -20,
                         bottom: -20,
                         zIndex: -1,
-                        background: colorScheme === 'dark' ? 'rgba(0, 0, 0, 0.5)' : 'rgba(255, 255, 255, 0.5)',
-                        filter: 'blur(50px)',
-                    },
+                        background:
+                            colorScheme === 'dark'
+                                ? 'rgba(0, 0, 0, 0.5)'
+                                : 'rgba(255, 255, 255, 0.5)',
+                        filter: 'blur(50px)'
+                    }
                 }}
             >
-                <AmeTextAreaFancy/>
+                <AmeTextAreaFancy />
             </Box>
-            <Space h="xl"/>
-            <Space h="xl"/>
+            <Space h="xl" />
+            <Space h="xl" />
         </>
-    );
+    )
 }
 
-export default Demo;
+export default Demo

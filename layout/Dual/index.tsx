@@ -1,49 +1,42 @@
-'use client';
-import { ActionIcon, AppShell, Button } from "@mantine/core";
-import { useState, ReactNode } from "react";
-import { useMediaQuery } from "@mantine/hooks";
-import { useLayout } from '../../context/LayoutContext';
-import { Navbar } from "./Navbar";
-import { Header } from "./Header";
-import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
+'use client'
+import { ActionIcon, AppShell, Button } from '@mantine/core'
+import { useState, ReactNode } from 'react'
+import { useMediaQuery } from '@mantine/hooks'
+import { useLayout } from '../../context/LayoutContext'
+import { Navbar } from './Navbar'
+import { Header } from './Header'
+import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react'
 
 type Props = {
-    children: ReactNode;
-    initialNavbarState?: "full" | "compact" | "icons" | "hidden";
-};
+    children: ReactNode
+    initialNavbarState?: 'full' | 'compact' | 'icons' | 'hidden'
+}
 
-export function DualLayout({
-                               children,
-                               initialNavbarState = "full"
-                           }: Props) {
-    const {
-        opened,
-        toggleOpened,
-        navbarState
-    } = useLayout();
-    const mobileMatch = useMediaQuery("(min-width: 768px)");
-    const [asideOpen, setAsideOpen] = useState(true);
+export function DualLayout({ children, initialNavbarState = 'full' }: Props) {
+    const { opened, toggleOpened, navbarState } = useLayout()
+    const mobileMatch = useMediaQuery('(min-width: 768px)')
+    const [asideOpen, setAsideOpen] = useState(true)
 
     const getNavbarWidth = () => {
-        if (!mobileMatch) return "100%";
+        if (!mobileMatch) return '100%'
         switch (navbarState) {
-            case "full":
-                return 250;
-            case "compact":
-                return 200;
-            case "icons":
-                return 70;
+            case 'full':
+                return 250
+            case 'compact':
+                return 200
+            case 'icons':
+                return 70
             default:
-                return 0;
+                return 0
         }
-    };
+    }
 
-    const navbarWidth = getNavbarWidth();
-    const asideWidth = asideOpen ? 250 : 25;
+    const navbarWidth = getNavbarWidth()
+    const asideWidth = asideOpen ? 250 : 25
 
     const toggleAside = () => {
-        setAsideOpen(prev => !prev);
-    };
+        setAsideOpen((prev) => !prev)
+    }
 
     return (
         <>
@@ -51,7 +44,7 @@ export function DualLayout({
                 layout="default"
                 header={{
                     height: {
-                        base: 50,
+                        base: 50
                     }
                 }}
                 navbar={{
@@ -79,19 +72,20 @@ export function DualLayout({
                 <AppShell.Header withBorder={true}>
                     <Header tabletMatch={mobileMatch} />
                 </AppShell.Header>
-                {navbarState !== "hidden" && (
+                {navbarState !== 'hidden' && (
                     <AppShell.Navbar p="xs">
                         <Navbar state={navbarState} />
                     </AppShell.Navbar>
                 )}
-                <AppShell.Main>
-                    {children}
-                </AppShell.Main>
+                <AppShell.Main>{children}</AppShell.Main>
                 <AppShell.Aside p="md">
                     {asideOpen && (
                         <>
                             <div>Right Sidebar Content</div>
-                            <ActionIcon onClick={toggleAside} style={{ position: 'absolute', top: '50%', right: asideWidth - 27 }}>
+                            <ActionIcon
+                                onClick={toggleAside}
+                                style={{ position: 'absolute', top: '50%', right: asideWidth - 27 }}
+                            >
                                 <IconChevronRight size={12} />
                             </ActionIcon>
                         </>
@@ -99,12 +93,13 @@ export function DualLayout({
                     {!asideOpen && (
                         <ActionIcon
                             onClick={toggleAside}
-                            style={{ position: 'absolute', top: '50%', right: asideWidth }}>
+                            style={{ position: 'absolute', top: '50%', right: asideWidth }}
+                        >
                             <IconChevronLeft size={12} />
                         </ActionIcon>
                     )}
                 </AppShell.Aside>
             </AppShell>
         </>
-    );
+    )
 }

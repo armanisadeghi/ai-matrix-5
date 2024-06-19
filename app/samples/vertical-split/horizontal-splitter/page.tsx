@@ -1,16 +1,16 @@
-'use client';
-import React, { useRef } from 'react';
-import HorizontalSplitter, { HorizontalSplitterRef } from '@/ui/split/HorizontalSplitter';
-import { Checkbox, Group } from '@mantine/core';
-import AmeCheckbox from '@/ui/checkbox/AmeCheckbox';
+'use client'
+import React, { useRef } from 'react'
+import HorizontalSplitter, { HorizontalSplitterRef } from '@/ui/split/HorizontalSplitter'
+import { Checkbox, Group } from '@mantine/core'
+import AmeCheckbox from '@/ui/checkbox/AmeCheckbox'
 
 const RunPage = () => {
-    const splitterRef = useRef<HorizontalSplitterRef>(null);
+    const splitterRef = useRef<HorizontalSplitterRef>(null)
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newSize = e.target.value.length > 10 ? [10, 90] : [50, 50];
-        splitterRef.current?.updateSizes(newSize);
-    };
+        const newSize = e.target.value.length > 10 ? [10, 90] : [50, 50]
+        splitterRef.current?.updateSizes(newSize)
+    }
 
     return (
         <div>
@@ -25,8 +25,8 @@ const RunPage = () => {
                         withAsterisk
                     >
                         <Group mt="xs">
-                            <AmeCheckbox value="aimatrix" label="AI Matrix"/>
-                            <AmeCheckbox value="autogen" label="Microsoft Autogen"/>
+                            <AmeCheckbox value="aimatrix" label="AI Matrix" />
+                            <AmeCheckbox value="autogen" label="Microsoft Autogen" />
                         </Group>
                     </Checkbox.Group>
                 </div>
@@ -38,8 +38,8 @@ const RunPage = () => {
                         description="Choose one or more of the following options:"
                     >
                         <Group mt="xs">
-                            <AmeCheckbox value="aimatrix" label="AI Matrix"/>
-                            <AmeCheckbox value="autogen" label="Microsoft Autogen"/>
+                            <AmeCheckbox value="aimatrix" label="AI Matrix" />
+                            <AmeCheckbox value="autogen" label="Microsoft Autogen" />
                         </Group>
                     </Checkbox.Group>
                 </div>
@@ -51,15 +51,14 @@ const RunPage = () => {
                         description="Choose one or more of the following options:"
                     >
                         <Group mt="xs">
-                            <AmeCheckbox value="aimatrix" label="AI Matrix"/>
-                            <AmeCheckbox value="autogen" label="Microsoft Autogen"/>
+                            <AmeCheckbox value="aimatrix" label="AI Matrix" />
+                            <AmeCheckbox value="autogen" label="Microsoft Autogen" />
                         </Group>
                     </Checkbox.Group>
                 </div>
-
             </HorizontalSplitter>
         </div>
-    );
-};
+    )
+}
 
-export default RunPage;
+export default RunPage

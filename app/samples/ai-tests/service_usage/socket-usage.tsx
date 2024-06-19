@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
-import { useDynamicSocketHandler } from "@/hooks/ai/dynamicSocketHandler";
+import React, { useState } from 'react'
+import { useDynamicSocketHandler } from '@/hooks/ai/dynamicSocketHandler'
 
 const ChatComponent = () => {
-    const [streamedData, setStreamedData] = useState<string>('');
+    const [streamedData, setStreamedData] = useState<string>('')
 
     const handleRealTime = (data: string) => {
-        setStreamedData(prevData => prevData + data);
-    };
+        setStreamedData((prevData) => prevData + data)
+    }
 
     const handleStreamEnd = (streamBuffer: string) => {
-        console.log('Stream ended with buffer:', streamBuffer);
-    };
+        console.log('Stream ended with buffer:', streamBuffer)
+    }
 
-    const { handleDynamicElements } = useDynamicSocketHandler(handleRealTime, handleStreamEnd);
+    const { handleDynamicElements } = useDynamicSocketHandler(handleRealTime, handleStreamEnd)
 
     const handleClick = async () => {
-        await handleDynamicElements();
-    };
+        await handleDynamicElements()
+    }
 
     return (
         <div>
@@ -26,7 +26,7 @@ const ChatComponent = () => {
                 <pre>{streamedData}</pre>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default ChatComponent;
+export default ChatComponent

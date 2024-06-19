@@ -1,7 +1,7 @@
 // pages/code-highlight/CodeHighlightDemo.tsx
-'use client';
+'use client'
 
-import AmeCodeHighlight from '@/ui/highlight/AmeCodeHighlight';
+import AmeCodeHighlight from '@/ui/highlight/AmeCodeHighlight'
 import {
     exampleCode,
     cssCode,
@@ -14,8 +14,8 @@ import {
     sqlCode,
     jsonCode,
     typescriptCode
-} from '../data/exampleCode';
-import AmeCodeTabs from '@/ui/highlight/AmeCodeTabs';
+} from '../data/exampleCode'
+import AmeCodeTabs from '@/ui/highlight/AmeCodeTabs'
 
 const codeSnippets = [
     { code: typescriptCode, language: 'typescript', title: 'TypeScript' },
@@ -29,7 +29,7 @@ const codeSnippets = [
     { code: sqlCode, language: 'sql', title: 'SQL' },
     { code: jsonCode, language: 'json', title: 'JSON' },
     { code: exampleCode, language: 'typescript', title: 'TypeScript' }
-];
+]
 
 const CodeHighlightDemo = () => {
     return (
@@ -40,7 +40,7 @@ const CodeHighlightDemo = () => {
                 useLoadingEffect={true}
             />
         </div>
-    );
-};
+    )
+}
 
-export default CodeHighlightDemo;
+export default CodeHighlightDemo

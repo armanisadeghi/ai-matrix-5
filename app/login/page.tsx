@@ -1,21 +1,21 @@
-'use client';
-import { useAuth0 } from '@auth0/auth0-react';
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+'use client'
+import { useAuth0 } from '@auth0/auth0-react'
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
 const Login = () => {
-    const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
-    const router = useRouter();
+    const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0()
+    const router = useRouter()
 
     useEffect(() => {
-        if(!isAuthenticated) {
-            loginWithRedirect();
+        if (!isAuthenticated) {
+            loginWithRedirect()
         } else {
-            router.push('/');
+            router.push('/')
         }
-    }, [loginWithRedirect, isAuthenticated]);
+    }, [loginWithRedirect, isAuthenticated])
 
-    return <div>Loading...</div>;
-};
+    return <div>Loading...</div>
+}
 
-export default Login;
+export default Login

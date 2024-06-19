@@ -14,7 +14,18 @@ interface BrokerRadioGroupProps {
     defaultValue?: any
 }
 
-const BrokerRadioGroup = ({ required, value, onChange, error, description, label, placeholder, size = 'sm', color, defaultValue }: BrokerRadioGroupProps) => {
+const BrokerRadioGroup = ({
+    required,
+    value,
+    onChange,
+    error,
+    description,
+    label,
+    placeholder,
+    size = 'sm',
+    color,
+    defaultValue
+}: BrokerRadioGroupProps) => {
     return (
         <Radio.Group
             defaultValue={defaultValue}
@@ -27,14 +38,8 @@ const BrokerRadioGroup = ({ required, value, onChange, error, description, label
             color={color}
         >
             <Group mt="xs">
-                <Radio
-                    size={size}
-                    color={color}
-                    value="yes" label="Yes" />
-                <Radio
-                    size={size}
-                    color={color}
-                    value="no" label="No" />
+                <Radio size={size} color={color} value="yes" label="Yes" />
+                <Radio size={size} color={color} value="no" label="No" />
             </Group>
         </Radio.Group>
     )

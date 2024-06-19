@@ -1,8 +1,8 @@
 // /chat-app/nice-working/SpecialChatForm.tsx
 
-import React from 'react';
-import { FormData } from '@/types/chat';
-import { useForm } from "@/app/samples/ai-tests/chat-app/components/dynamic-forms/useForm";
+import React from 'react'
+import { FormData } from '@/types/chat'
+import { useForm } from '@/app/samples/ai-tests/chat-app/components/dynamic-forms/useForm'
 
 const initialFormData: FormData = {
     promptData: [
@@ -11,41 +11,41 @@ const initialFormData: FormData = {
             message: '',
             formResponses: [
                 { question: 'field1', response: '' },
-                { question: 'field2', response: '' },
+                { question: 'field2', response: '' }
             ],
-            customInputs: [],
+            customInputs: []
         }
     ],
     formResponses: [
         { question: 'field1', response: '' },
-        { question: 'field2', response: '' },
+        { question: 'field2', response: '' }
     ],
-    customInputs: [],
-};
+    customInputs: []
+}
 
 const SpecialChatForm = () => {
-    const { values, handleChange } = useForm(initialFormData);
+    const { values, handleChange } = useForm(initialFormData)
 
     const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        console.log('Submit Special Form:', values);
-    };
+        e.preventDefault()
+        console.log('Submit Special Form:', values)
+    }
 
     return (
         <form onSubmit={handleSubmit}>
             <input
                 name="field1"
-                value={values.formResponses.find(fr => fr.question === 'field1')?.response || ''}
+                value={values.formResponses.find((fr) => fr.question === 'field1')?.response || ''}
                 onChange={(e) => handleChange(e.target.name, e.target.value)}
             />
             <input
                 name="field2"
-                value={values.formResponses.find(fr => fr.question === 'field2')?.response || ''}
+                value={values.formResponses.find((fr) => fr.question === 'field2')?.response || ''}
                 onChange={(e) => handleChange(e.target.name, e.target.value)}
             />
             <button type="submit">Submit</button>
         </form>
-    );
-};
+    )
+}
 
-export default SpecialChatForm;
+export default SpecialChatForm

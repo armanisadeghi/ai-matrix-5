@@ -1,21 +1,20 @@
-import { useEffect, useRef, useState, CSSProperties } from "react";
-import { useListProvider } from "../../SmartList";
-import { Text as MantineText } from '@mantine/core';
+import { useEffect, useRef, useState, CSSProperties } from 'react'
+import { useListProvider } from '../../SmartList'
+import { Text as MantineText } from '@mantine/core'
 
 // I made a TON of changes to this file that I didn't test because I just need to build the code so make sure you go through this in detail.
 
-
 type TextT = {
-    item: any, // Use the appropriate type for item
-    isSelected: boolean,
+    item: any // Use the appropriate type for item
+    isSelected: boolean
     onClick: any
 }
 
 export default function Text({ item, isSelected, onClick }: TextT) {
-    const { options }: any = useListProvider();
-    const [editable, setEditable] = useState(false);
-    const inputRef = useRef<HTMLInputElement | null>(null);
-    const [label, setLabel] = useState(item.value);
+    const { options }: any = useListProvider()
+    const [editable, setEditable] = useState(false)
+    const inputRef = useRef<HTMLInputElement | null>(null)
+    const [label, setLabel] = useState(item.value)
 
     const style: CSSProperties = {
         padding: 4,
@@ -23,34 +22,34 @@ export default function Text({ item, isSelected, onClick }: TextT) {
         border: 'none',
         margin: 0,
         outline: 'none',
-        ...(isSelected ? { backgroundColor: '#3b82f6', color: 'white', borderRadius: 4 } : {}),
-    };
+        ...(isSelected ? { backgroundColor: '#3b82f6', color: 'white', borderRadius: 4 } : {})
+    }
 
     const handleClick = (event: React.MouseEvent) => {
         if (options['editable'] === true) {
             if (event.shiftKey) {
-                setEditable(true);
+                setEditable(true)
             } else {
-                onClick();
+                onClick()
             }
         } else {
             if (onClick) {
-                onClick();
+                onClick()
             }
         }
-    };
+    }
 
     useEffect(() => {
         if (editable && inputRef.current) {
-            inputRef.current.focus();
+            inputRef.current.focus()
         }
-    }, [editable]);
+    }, [editable])
 
     const handleDoubleClick = (event: React.MouseEvent) => {
         if (options['editable'] === true && !item['disabled']) {
-            setEditable(true);
+            setEditable(true)
         }
-    };
+    }
 
     if (editable) {
         return (
@@ -63,7 +62,7 @@ export default function Text({ item, isSelected, onClick }: TextT) {
                 onChange={(e) => setLabel(e.target.value)}
                 placeholder={item.label}
             />
-        );
+        )
     }
 
     return (
@@ -73,5 +72,5 @@ export default function Text({ item, isSelected, onClick }: TextT) {
             onDoubleClick={(event) => handleDoubleClick(event)}
             dangerouslySetInnerHTML={{ __html: label }}
         />
-    );
+    )
 }

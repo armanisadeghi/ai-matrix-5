@@ -1,6 +1,6 @@
-'use client';
+'use client'
 
-import { Grid, Loader, Skeleton, Container, SimpleGrid, LoadingOverlay, Box } from "@mantine/core";
+import { Grid, Loader, Skeleton, Container, SimpleGrid, LoadingOverlay, Box } from '@mantine/core'
 
 const LoadingPage = () => {
     return (
@@ -9,17 +9,16 @@ const LoadingPage = () => {
                 <LoadingOverlay
                     visible={true}
                     zIndex={1000}
-                    overlayProps={{radius: 'sm', blur: 2}}
-                    loaderProps={{color: 'pink', type: 'bars'}}
+                    overlayProps={{ radius: 'sm', blur: 2 }}
+                    loaderProps={{ color: 'pink', type: 'bars' }}
                 />
                 {/* ...other content */}
             </Box>
         </div>
+    )
+}
 
-    );
-};
-
-export default LoadingPage;
+export default LoadingPage
 
 /*
         <SimpleGrid cols={1} spacing="xl" verticalSpacing="xl">

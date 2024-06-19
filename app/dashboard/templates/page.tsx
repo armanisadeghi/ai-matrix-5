@@ -1,15 +1,7 @@
 // app/dashboard/templates/page.tsx
 
 function Page() {
-    return <>
-
-
-
-
-
-
-
-    </>;
+    return <></>
 }
 
-export default Page;
+export default Page

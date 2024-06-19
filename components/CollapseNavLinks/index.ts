@@ -1,1 +1,1 @@
-export * from "./CollapseNavLinks"
+export * from './CollapseNavLinks'

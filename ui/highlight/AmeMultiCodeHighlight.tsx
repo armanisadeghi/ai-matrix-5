@@ -1,27 +1,26 @@
 // ui/highlight/AmeMultiCodeHighlight.tsx
-'use client';
+'use client'
 
-import React from 'react';
-import AmeCodeHighlight from './AmeCodeHighlight';
+import React from 'react'
+import AmeCodeHighlight from './AmeCodeHighlight'
 
 interface CodeSnippet {
-    code: string;
-    language: string;
-    title: string;
+    code: string
+    language: string
+    title: string
 }
 
 interface AmeMultiCodeHighlightProps {
-    codeSnippets: CodeSnippet[];
-    startCollapsed?: boolean;
-    useLoadingEffect?: boolean;
+    codeSnippets: CodeSnippet[]
+    startCollapsed?: boolean
+    useLoadingEffect?: boolean
 }
 
-const AmeMultiCodeHighlight: React.FC<AmeMultiCodeHighlightProps> = (
-    {
-        codeSnippets,
-        startCollapsed = false,
-        useLoadingEffect = false,
-    }) => {
+const AmeMultiCodeHighlight: React.FC<AmeMultiCodeHighlightProps> = ({
+    codeSnippets,
+    startCollapsed = false,
+    useLoadingEffect = false
+}) => {
     return (
         <div>
             {codeSnippets.map((snippet, index) => (
@@ -35,7 +34,7 @@ const AmeMultiCodeHighlight: React.FC<AmeMultiCodeHighlightProps> = (
                 />
             ))}
         </div>
-    );
-};
+    )
+}
 
-export default AmeMultiCodeHighlight;
+export default AmeMultiCodeHighlight

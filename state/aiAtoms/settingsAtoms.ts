@@ -1,7 +1,7 @@
 // recoil/aiAtoms/settingsAtoms.ts
-import { atom, selector, RecoilState } from 'recoil';
-import { AIModel } from "@/utils/config/aiModels";
-import { string } from "@recoiljs/refine";
+import { atom, selector, RecoilState } from 'recoil'
+import { AIModel } from '@/utils/config/aiModels'
+import { string } from '@recoiljs/refine'
 import {
     SettingAtom,
     CheckboxSettingAtom,
@@ -9,12 +9,12 @@ import {
     InputSettingAtom,
     SliderSettingAtom,
     SliderPresetSettingAtom
-} from '@/types/settings';
+} from '@/types/settings'
 
 export const matrixLevelAtom = atom<number>({
     key: 'matrixLevelAtom',
-    default: 0,
-});
+    default: 0
+})
 
 export const matrixLevelSetting: SliderPresetSettingAtom = {
     atom: matrixLevelAtom,
@@ -26,26 +26,25 @@ export const matrixLevelSetting: SliderPresetSettingAtom = {
         { value: 4, label: 'Conductor' },
         { value: 6, label: 'Lattice' },
         { value: 8, label: 'Cluster' },
-        { value: 10, label: 'Hypercluster' },
-    ],
-};
-
+        { value: 10, label: 'Hypercluster' }
+    ]
+}
 
 export const submitOnEnterAtom = atom<boolean>({
     key: 'submitOnEnterAtom',
-    default: true,
-});
+    default: true
+})
 
 export const submitOnEnterSetting: CheckboxSettingAtom = {
     atom: submitOnEnterAtom,
     label: 'Submit on Enter',
     componentType: 'Checkbox'
-};
+}
 
 export const aiPreferencesMainAtom = atom<string>({
     key: 'aiPreferencesMainAtom',
-    default: 'direct_chat',
-});
+    default: 'direct_chat'
+})
 
 export const aiPreferencesMainSetting: SelectSettingAtom = {
     atom: aiPreferencesMainAtom,
@@ -55,12 +54,12 @@ export const aiPreferencesMainSetting: SelectSettingAtom = {
         { value: 'direct_chat', label: 'Direct Chat' },
         { value: 'group_chat', label: 'Group Chat' }
     ]
-};
+}
 
 export const aiPreferencesSecondAtom = atom<string>({
     key: 'aiPreferencesSecondAtom',
-    default: 'one_ai_chat',
-});
+    default: 'one_ai_chat'
+})
 
 export const aiPreferencesSecondSetting: SelectSettingAtom = {
     atom: aiPreferencesSecondAtom,
@@ -70,45 +69,45 @@ export const aiPreferencesSecondSetting: SelectSettingAtom = {
         { value: 'one_ai_chat', label: 'One AI Chat' },
         { value: 'multiple_ai_chat', label: 'Multiple AI Chat' }
     ]
-};
+}
 
 export const makeSmallTalkAtom = atom<boolean>({
     key: 'makeSmallTalkAtom',
-    default: false,
-});
+    default: false
+})
 
 export const makeSmallTalkSetting: CheckboxSettingAtom = {
     atom: makeSmallTalkAtom,
     label: 'Make Small Talk',
     componentType: 'Checkbox'
-};
+}
 
 export const quickAnswerAtom = atom<boolean>({
     key: 'quickAnswerAtom',
-    default: false,
-});
+    default: false
+})
 
 export const quickAnswerSetting: CheckboxSettingAtom = {
     atom: quickAnswerAtom,
     label: 'Quick Answer',
     componentType: 'Checkbox'
-};
+}
 
 export const improveQuestionsAtom = atom<boolean>({
     key: 'improveQuestionsAtom',
-    default: false,
-});
+    default: false
+})
 
 export const improveQuestionsSetting: CheckboxSettingAtom = {
     atom: improveQuestionsAtom,
     label: 'Improve Questions',
     componentType: 'Checkbox'
-};
+}
 
 export const aiModelAtom = atom<string>({
     key: 'aiModelAtom',
-    default: 'gpt-4o',
-});
+    default: 'gpt-4o'
+})
 
 export const aiModelSetting: SelectSettingAtom = {
     atom: aiModelAtom,
@@ -119,67 +118,66 @@ export const aiModelSetting: SelectSettingAtom = {
         { value: 'gpt-4', label: 'GPT 4' },
         { value: 'gpt-3-turbo', label: 'GPT 3 Turbo' }
     ]
-};
+}
 
 export const temperatureAtom = atom<number>({
     key: 'temperatureAtom',
-    default: 1,
-});
+    default: 1
+})
 
 export const temperatureSetting: SliderSettingAtom = {
     atom: temperatureAtom,
     label: 'Temperature',
     componentType: 'Slider',
     options: { min: 0, max: 1, step: 0.1 }
-};
+}
 
 export const maxTokensAtom = atom<number>({
     key: 'maxTokensAtom',
-    default: 500,
-});
+    default: 500
+})
 
 export const maxTokensSetting: SliderSettingAtom = {
     atom: maxTokensAtom,
     label: 'Max Tokens',
     componentType: 'Slider',
     options: { min: 100, max: 2000, step: 100 }
-};
+}
 
 export const topPAtom = atom<number>({
     key: 'topPAtom',
-    default: 1,
-});
+    default: 1
+})
 
 export const topPSetting: SliderSettingAtom = {
     atom: topPAtom,
     label: 'Top P',
     componentType: 'Slider',
     options: { min: 0, max: 1, step: 0.1 }
-};
+}
 
 export const frequencyPenaltyAtom = atom<number>({
     key: 'frequencyPenaltyAtom',
-    default: 0,
-});
+    default: 0
+})
 
 export const frequencyPenaltySetting: SliderSettingAtom = {
     atom: frequencyPenaltyAtom,
     label: 'Frequency Penalty',
     componentType: 'Slider',
     options: { min: 0, max: 1, step: 0.1 }
-};
+}
 
 export const stopSequenceAtom = atom<string>({
     key: 'stopSequenceAtom',
-    default: '',
-});
+    default: ''
+})
 
 export const stopSequenceSetting: InputSettingAtom = {
     atom: stopSequenceAtom,
     label: 'Stop Sequence',
-    componentType: 'Input',
-};
-
+    componentType: 'Input'
+}
 
 export const settingsAtoms = {
     submitOnEnter: submitOnEnterSetting,
@@ -194,12 +192,11 @@ export const settingsAtoms = {
     maxTokens: maxTokensSetting,
     topP: topPSetting,
     frequencyPenalty: frequencyPenaltySetting,
-    stopSequence: stopSequenceSetting,
-};
+    stopSequence: stopSequenceSetting
+}
 
 // Optionally, export the atom names if needed for type checking or iteration
-export type AtomName = keyof typeof settingsAtoms;
-
+export type AtomName = keyof typeof settingsAtoms
 
 export const quickChatSettingsState = selector({
     key: 'quickChatSettingsState',
@@ -218,9 +215,9 @@ export const quickChatSettingsState = selector({
             topP: get(topPAtom),
             frequencyPenalty: get(frequencyPenaltyAtom),
             stopSequence: get(stopSequenceAtom)
-        };
+        }
     }
-});
+})
 
 export const aiModelSettingsState = selector({
     key: 'aiModelSettingsState',
@@ -232,24 +229,37 @@ export const aiModelSettingsState = selector({
             topP: get(topPAtom),
             frequencyPenalty: get(frequencyPenaltyAtom),
             stopSequence: get(stopSequenceAtom)
-        };
+        }
     }
-});
-
+})
 
 export const combinedSettingsState = selector({
     key: 'combinedSettingsState',
     get: ({ get }) => {
-        const quickChatSettings = get(quickChatSettingsState);
-        const aiModelSettings = get(aiModelSettingsState);
+        const quickChatSettings = get(quickChatSettingsState)
+        const aiModelSettings = get(aiModelSettingsState)
         return {
             quickChatSettings,
-            aiModelSettings,
-        };
-    },
-});
+            aiModelSettings
+        }
+    }
+})
 
-
-
-export const simpleChatSettingsList = ['submitOnEnter', 'makeSmallTalk', 'quickAnswer', 'improveQuestions', 'aiPreferencesMain', 'stopSequence', 'aiPreferencesSecond', 'matrixLevel'] as AtomName[]
-export const aiModelSettingsList = ['aiModel', 'temperature', 'maxTokens', 'topP', 'frequencyPenalty', 'stopSequence'] as AtomName[]
+export const simpleChatSettingsList = [
+    'submitOnEnter',
+    'makeSmallTalk',
+    'quickAnswer',
+    'improveQuestions',
+    'aiPreferencesMain',
+    'stopSequence',
+    'aiPreferencesSecond',
+    'matrixLevel'
+] as AtomName[]
+export const aiModelSettingsList = [
+    'aiModel',
+    'temperature',
+    'maxTokens',
+    'topP',
+    'frequencyPenalty',
+    'stopSequence'
+] as AtomName[]

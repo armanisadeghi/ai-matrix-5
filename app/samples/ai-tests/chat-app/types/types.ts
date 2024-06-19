@@ -6,11 +6,11 @@ export enum eRoleType {
 }
 
 export interface iMessage {
-    role: eRoleType,
+    role: eRoleType
     content: string
 }
 
 export interface iChat {
-    title: string,
+    title: string
     msgArr: iMessage[]
 }

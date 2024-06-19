@@ -1,16 +1,16 @@
-import { TextInput } from '@mantine/core';
+import { TextInput } from '@mantine/core'
 
 type BrokerTextInputProps = {
-    label: string;
-    description: string;
-    placeholder: string;
-    required: boolean;
-    size: string;
-    value: string;
-    onChange: (value: any) => void;
-    error: string;
-    disabled: boolean;
-};
+    label: string
+    description: string
+    placeholder: string
+    required: boolean
+    size: string
+    value: string
+    onChange: (value: any) => void
+    error: string
+    disabled: boolean
+}
 
 export const BrokerTextInput = ({
     label,
@@ -21,7 +21,7 @@ export const BrokerTextInput = ({
     value,
     onChange,
     error,
-    disabled,
+    disabled
 }: BrokerTextInputProps) => {
     return (
         <TextInput
@@ -35,5 +35,5 @@ export const BrokerTextInput = ({
             error={error}
             disabled={disabled}
         />
-    );
-};
+    )
+}

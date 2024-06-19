@@ -1,13 +1,13 @@
-import { Image } from '@mantine/core';
+import { Image } from '@mantine/core'
 
 interface BrokerImageProps {
-    src: string;
-    alt?: string;
-    w?: number | "auto";
-    h?: number | "auto";
-    radius?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | string;
-    fit?: "fill" | "contain" | "cover" | "none" | "scale-down";
-    onChange?: (value: File | null) => void;
+    src: string
+    alt?: string
+    w?: number | 'auto'
+    h?: number | 'auto'
+    radius?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | string
+    fit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
+    onChange?: (value: File | null) => void
 }
 
 export const BrokerImage = ({ src, alt, w, h, radius, fit, onChange }: BrokerImageProps) => {
@@ -21,5 +21,5 @@ export const BrokerImage = ({ src, alt, w, h, radius, fit, onChange }: BrokerIma
             alt={alt}
             onChange={() => onChange}
         />
-    );
+    )
 }

@@ -1,30 +1,28 @@
-"use client";
+'use client'
 
-import { ActionIcon, ActionIconProps, AppShell, Box, Group, Stack } from "@mantine/core";
-import { useRecoilValue } from "recoil";
-import { leftSidebarAtom } from "@/state/layoutAtoms";
-import { useSidebar } from "@/context/SidebarContext";
+import { ActionIcon, ActionIconProps, AppShell, Box, Group, Stack } from '@mantine/core'
+import { useRecoilValue } from 'recoil'
+import { leftSidebarAtom } from '@/state/layoutAtoms'
+import { useSidebar } from '@/context/SidebarContext'
 
 const actionProps: ActionIconProps = {
-    variant: "light",
-};
+    variant: 'light'
+}
 
 interface SidebarProps {
-    title?: string | null;
+    title?: string | null
 }
 
 export const Sidebar = ({ title }: SidebarProps) => {
-    const sidebarWidth = useRecoilValue(leftSidebarAtom);
-    const { sidebarContent } = useSidebar();
+    const sidebarWidth = useRecoilValue(leftSidebarAtom)
+    const { sidebarContent } = useSidebar()
 
     return (
         <Box component="aside" p="0">
             <AppShell.Section>
                 {sidebarWidth >= 200 && (
                     <Group justify="flex-start" gap="xs" style={{ padding: '4px' }}>
-                        <div style={{ marginLeft: '35px' }}>
-                            {title && <h3>{title}</h3>}
-                        </div>
+                        <div style={{ marginLeft: '35px' }}>{title && <h3>{title}</h3>}</div>
                     </Group>
                 )}
                 {sidebarWidth < 200 && sidebarWidth >= 70 && (
@@ -37,5 +35,5 @@ export const Sidebar = ({ title }: SidebarProps) => {
                 </Stack>
             </AppShell.Section>
         </Box>
-    );
-};
+    )
+}

@@ -1,11 +1,11 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { Slider, Text, Box, Group, Grid, Space, Badge } from '@mantine/core';
+import { useState } from 'react'
+import { Slider, Text, Box, Group, Grid, Space, Badge } from '@mantine/core'
 
 function CustomProgressSlider() {
-    const [value, setValue] = useState({ speed: 80, quality: 10, involvement: 5, steps: 5 });
-    const total = value.speed + value.quality + value.involvement + value.steps;
+    const [value, setValue] = useState({ speed: 80, quality: 10, involvement: 5, steps: 5 })
+    const total = value.speed + value.quality + value.involvement + value.steps
 
     return (
         <Box mx="auto" p="md">
@@ -15,13 +15,20 @@ function CustomProgressSlider() {
                 <Text>Involvement: {value.involvement}</Text>
                 <Text>Steps: {value.steps}</Text>
             </Group>
-            <Box style={{ position: 'relative', height: '30px', width: '100%', backgroundColor: '#f3f3f3' }}>
+            <Box
+                style={{
+                    position: 'relative',
+                    height: '30px',
+                    width: '100%',
+                    backgroundColor: '#f3f3f3'
+                }}
+            >
                 <Box
                     style={{
                         position: 'absolute',
                         height: '100%',
                         width: `${(value.speed / total) * 100}%`,
-                        backgroundColor: '#9fbfdf'  // Soft Blue
+                        backgroundColor: '#9fbfdf' // Soft Blue
                     }}
                 />
                 <Box
@@ -30,7 +37,7 @@ function CustomProgressSlider() {
                         left: `${(value.speed / total) * 100}%`,
                         height: '100%',
                         width: `${(value.quality / total) * 100}%`,
-                        backgroundColor: '#e1d7d2'  // Soft Beige
+                        backgroundColor: '#e1d7d2' // Soft Beige
                     }}
                 />
                 <Box
@@ -39,7 +46,7 @@ function CustomProgressSlider() {
                         left: `${((value.speed + value.quality) / total) * 100}%`,
                         height: '100%',
                         width: `${(value.involvement / total) * 100}%`,
-                        backgroundColor: '#b7d7e8'  // Soft Cyan
+                        backgroundColor: '#b7d7e8' // Soft Cyan
                     }}
                 />
                 <Box
@@ -48,29 +55,40 @@ function CustomProgressSlider() {
                         left: `${((value.speed + value.quality + value.involvement) / total) * 100}%`,
                         height: '100%',
                         width: `${(value.steps / total) * 100}%`,
-                        backgroundColor: '#d1c4e9'  // Soft Purple
+                        backgroundColor: '#d1c4e9' // Soft Purple
                     }}
                 />
-                <Text style={{ position: 'absolute', width: '100%', textAlign: 'center', lineHeight: '30px' }}>
+                <Text
+                    style={{
+                        position: 'absolute',
+                        width: '100%',
+                        textAlign: 'center',
+                        lineHeight: '30px'
+                    }}
+                >
                     Total: {total}%
                 </Text>
             </Box>
             <Space h="md" />
             <Grid>
-                <Grid.Col span={1}><Badge color="blue">Speed</Badge> </Grid.Col>
+                <Grid.Col span={1}>
+                    <Badge color="blue">Speed</Badge>{' '}
+                </Grid.Col>
                 <Grid.Col span={11}>
                     <Slider
-                    mt="md"
-                    min={0}
-                    max={100}
-                    value={value.speed}
-                    onChange={(newValue) => setValue({ ...value, speed: newValue })}
-                    label={(value) => `${value}%`}
+                        mt="md"
+                        min={0}
+                        max={100}
+                        value={value.speed}
+                        onChange={(newValue) => setValue({ ...value, speed: newValue })}
+                        label={(value) => `${value}%`}
                     />
                 </Grid.Col>
             </Grid>
             <Grid>
-                <Grid.Col span={1}><Badge color="blue">Speed</Badge> </Grid.Col>
+                <Grid.Col span={1}>
+                    <Badge color="blue">Speed</Badge>{' '}
+                </Grid.Col>
                 <Grid.Col span={11}>
                     <Slider
                         mt="md"
@@ -83,7 +101,9 @@ function CustomProgressSlider() {
                 </Grid.Col>
             </Grid>
             <Grid>
-                <Grid.Col span={1}><Badge color="blue">Speed</Badge> </Grid.Col>
+                <Grid.Col span={1}>
+                    <Badge color="blue">Speed</Badge>{' '}
+                </Grid.Col>
                 <Grid.Col span={11}>
                     <Slider
                         mt="md"
@@ -96,7 +116,9 @@ function CustomProgressSlider() {
                 </Grid.Col>
             </Grid>
             <Grid>
-                <Grid.Col span={1}><Badge color="blue">Speed</Badge> </Grid.Col>
+                <Grid.Col span={1}>
+                    <Badge color="blue">Speed</Badge>{' '}
+                </Grid.Col>
                 <Grid.Col span={11}>
                     <Slider
                         mt="md"
@@ -109,7 +131,7 @@ function CustomProgressSlider() {
                 </Grid.Col>
             </Grid>
         </Box>
-    );
+    )
 }
 
-export default CustomProgressSlider;
+export default CustomProgressSlider

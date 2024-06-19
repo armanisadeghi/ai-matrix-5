@@ -15,7 +15,9 @@
 .dynamicTextareaContainer:focus {
     border: 2px solid rgba(128, 128, 128, 0.62);
     box-shadow: 0 0 12px rgba(205, 202, 202, 0.2);
-    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    transition:
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
 }
 
 .dynamicTextareaContainer.focused {
@@ -24,7 +26,7 @@
 }
 
 .textareaStyle {
-  font-family: 'Google Sans', 'Helvetica Neue', sans-serif;
+    font-family: 'Google Sans', 'Helvetica Neue', sans-serif;
 }
 
 /*

@@ -1,32 +1,32 @@
-"use client";
-import { brokersAtom } from '@/context/atoms/brokerAtoms';
-import { CheckIcon, Combobox, Group, Input, Pill, PillsInput, useCombobox } from '@mantine/core';
-import { useRecoilValue } from 'recoil';
+'use client'
+import { brokersAtom } from '@/context/atoms/brokerAtoms'
+import { CheckIcon, Combobox, Group, Input, Pill, PillsInput, useCombobox } from '@mantine/core'
+import { useRecoilValue } from 'recoil'
 
 export function BrokerMultiSelect({ value, setValue }: any) {
     const combobox = useCombobox({
         onDropdownClose: () => combobox.resetSelectedOption(),
-        onDropdownOpen: () => combobox.updateSelectedOptionIndex('active'),
-    });
-    const brokers = useRecoilValue(brokersAtom);
+        onDropdownOpen: () => combobox.updateSelectedOptionIndex('active')
+    })
+    const brokers = useRecoilValue(brokersAtom)
 
     const handleValueSelect = (val: string) => {
         setValue((current: string[]) => {
             const updatedValue = current.includes(val)
                 ? current.filter((v) => v !== val)
-                : [...current, val];
-            return updatedValue;
-        });
-    };
+                : [...current, val]
+            return updatedValue
+        })
+    }
 
     const handleValueRemove = (val: string) =>
-        setValue((current: string[]) => current.filter((v) => v !== val));
+        setValue((current: string[]) => current.filter((v) => v !== val))
 
     const values = value.map((item: string) => (
         <Pill key={item} withRemoveButton onRemove={() => handleValueRemove(item)}>
             {item}
         </Pill>
-    ));
+    ))
 
     const options = brokers.map((item) => (
         <Combobox.Option value={item.name} key={item.id} active={value.includes(item.name)}>
@@ -35,7 +35,7 @@ export function BrokerMultiSelect({ value, setValue }: any) {
                 <span>{item.name}</span>
             </Group>
         </Combobox.Option>
-    ));
+    ))
 
     // const systemBrokersOptions = system.map((item) => (
     //     <Combobox.Option value={item.name} key={item.id} active={value.includes(item.name)}>
@@ -63,8 +63,8 @@ export function BrokerMultiSelect({ value, setValue }: any) {
                                 onBlur={() => combobox.closeDropdown()}
                                 onKeyDown={(event) => {
                                     if (event.key === 'Backspace') {
-                                        event.preventDefault();
-                                        handleValueRemove(value[value.length - 1]);
+                                        event.preventDefault()
+                                        handleValueRemove(value[value.length - 1])
                                     }
                                 }}
                             />
@@ -80,5 +80,5 @@ export function BrokerMultiSelect({ value, setValue }: any) {
                 </Combobox.Options>
             </Combobox.Dropdown>
         </Combobox>
-    );
+    )
 }

@@ -1,8 +1,8 @@
 // app/config/componentConfig.ts
-import dynamic from 'next/dynamic';
-import { exampleCode, cssCode, pythonCode } from '../code-highlight/data/exampleCode';
-import { AtomName } from "@/state/aiAtoms/settingsAtoms";
-import SimpleChatSettingsModal from "@/components/AiChat/UserInput/settings/SimpleChatSettingsModal";
+import dynamic from 'next/dynamic'
+import { exampleCode, cssCode, pythonCode } from '../code-highlight/data/exampleCode'
+import { AtomName } from '@/state/aiAtoms/settingsAtoms'
+import SimpleChatSettingsModal from '@/components/AiChat/UserInput/settings/SimpleChatSettingsModal'
 
 export const componentMap: { [key: string]: React.ComponentType<any> } = {
     AIResponse: dynamic(() => import('@/app/samples/ai-tests/response/AIResponse')),
@@ -26,14 +26,18 @@ export const componentMap: { [key: string]: React.ComponentType<any> } = {
     AmeSlider: dynamic(() => import('@/ui/slider/AmeSlider')),
     MoveComponent: dynamic(() => import('@/ui/special/MoveComponent')),
     FormStepper: dynamic(() => import('@/ui/steps/FormStepper')),
-    NotesCard: dynamic(() => import('@/components/NotesCard/NotesCard').then(mod => mod.NotesCard)),
+    NotesCard: dynamic(() =>
+        import('@/components/NotesCard/NotesCard').then((mod) => mod.NotesCard)
+    ),
     RichTextEditorPage: dynamic(() => import('@/components/RichTextEditor/RichTextEditorPage')),
     AmeJsonInput: dynamic(() => import('@/ui/json/AmeJsonInput')),
     AmeTextAreaFancy: dynamic(() => import('@/ui/textarea/AmeTextAreaFancy')),
     AmeTextAreaFancyDynamic: dynamic(() => import('@/ui/textarea/AmeTextAreaFancyDynamic')),
-    SimpleChatSettingsModal: dynamic(() => import('@/components/AiChat/UserInput/settings/SimpleChatSettingsModal')),
-    AmeSettingsModal: dynamic(() => import('@/ui/modal/AmeSettingsModal')),
-};
+    SimpleChatSettingsModal: dynamic(
+        () => import('@/components/AiChat/UserInput/settings/SimpleChatSettingsModal')
+    ),
+    AmeSettingsModal: dynamic(() => import('@/ui/modal/AmeSettingsModal'))
+}
 
 export const propDefinitions: { [key: string]: any } = {
     AIResponse: {
@@ -81,7 +85,7 @@ export const propDefinitions: { [key: string]: any } = {
                 title: 'Bottom Subsection',
                 content: 'Content for the bottom subsection.'
             }
-        ],
+        ]
     },
 
     // Default props for AmeCheckbox
@@ -92,8 +96,7 @@ export const propDefinitions: { [key: string]: any } = {
         checked: false,
         disabled: false,
         defaultChecked: false,
-        onChange: () => {
-        },
+        onChange: () => {}
     },
 
     // Default props for AmeCheckboxGroup
@@ -119,14 +122,14 @@ export const propDefinitions: { [key: string]: any } = {
                 tooltip: 'Tooltip 3',
                 checked: false,
                 disabled: false
-            },
+            }
         ],
         legend: 'Sample Legend',
         layout: 'single',
         buttonLabel: 'Click Me',
         showButton: true,
         buttonWidth: '100px',
-        fieldsetWidth: '100%',
+        fieldsetWidth: '100%'
     },
 
     // Default props for CustomCollapse
@@ -134,7 +137,7 @@ export const propDefinitions: { [key: string]: any } = {
         activatorLabel: 'Show More',
         hiddenText: 'This is the hidden text.',
         width: 1000,
-        justify: 'flex-start',
+        justify: 'flex-start'
     },
 
     // Default props for CustomCollapse with preText
@@ -143,7 +146,7 @@ export const propDefinitions: { [key: string]: any } = {
         hiddenText: 'This is the hidden text.',
         preText: 'Preceding text.',
         width: 1000,
-        justify: 'flex-start',
+        justify: 'flex-start'
     },
 
     // Default props for AmeFieldset
@@ -156,7 +159,7 @@ export const propDefinitions: { [key: string]: any } = {
         buttonWidth: 'auto',
         fieldsetWidth: '100%',
         justifyContent: 'flex-end',
-        alignSelf: 'stretch',
+        alignSelf: 'stretch'
     },
 
     AmeCodeHighlight: {
@@ -164,7 +167,7 @@ export const propDefinitions: { [key: string]: any } = {
         language: 'typescript',
         title: 'TypeScript Example',
         startCollapsed: false,
-        useLoadingEffect: false,
+        useLoadingEffect: false
     },
     AmeMultiCodeHighlight: {
         codeSnippets: [
@@ -182,10 +185,10 @@ export const propDefinitions: { [key: string]: any } = {
                 code: pythonCode,
                 language: 'python',
                 title: 'Python Example'
-            },
+            }
         ],
         startCollapsed: false,
-        useLoadingEffect: false,
+        useLoadingEffect: false
     },
 
     AmeCodeTabs: {
@@ -229,19 +232,19 @@ export const propDefinitions: { [key: string]: any } = {
             }
         ],
         startCollapsed: false,
-        useLoadingEffect: false,
+        useLoadingEffect: false
     },
     AmeActionTextInput: {
         initialValue: 'Editable text',
-        editable: true,
+        editable: true
     },
     AmeNumericInput: {
         value: 0,
         onChange: (value: number) => console.log(value),
-        width: '100px',
+        width: '100px'
     },
     AmeSearchInput: {
-        w: '200px',
+        w: '200px'
     },
     AmePillsInput: {
         initialPills: ['pill1', 'pill2', 'pill3'],
@@ -251,18 +254,18 @@ export const propDefinitions: { [key: string]: any } = {
         renderPillContent: (item: string) => item,
         onPillsChange: (pills: string[]) => console.log(pills),
         maxWidth: '100%',
-        justify: 'flex-start',
+        justify: 'flex-start'
     },
     SelectableList: {
         items: ['Option 1', 'Option 2', 'Option 3'],
         label: 'Selectable List',
         placeholder: 'Search values',
-        description: 'Select items from the list',
+        description: 'Select items from the list'
     },
     AmeRadioCard: {
         description: 'This is a description',
         icon: null,
-        withIndicator: true,
+        withIndicator: true
     },
     AmeSelect: {
         label: 'Select an option',
@@ -270,18 +273,18 @@ export const propDefinitions: { [key: string]: any } = {
         placeholder: 'Choose...',
         withAsterisk: true,
         error: 'This field is required',
-        nothingFoundMessage: 'No matches found',
+        nothingFoundMessage: 'No matches found'
     },
     AmeSlider: {
         name: 'Adjust the value',
         tooltip: 'Slide to select a value',
         min: 0,
         max: 100,
-        step: 1,
+        step: 1
     },
     MoveComponent: {
         initialX: 0.2,
-        initialY: 0.6,
+        initialY: 0.6
     },
     FormStepper: {
         steps: [
@@ -294,9 +297,9 @@ export const propDefinitions: { [key: string]: any } = {
                 label: 'Step 2',
                 description: 'Description 2',
                 content: 'Content 2'
-            },
+            }
         ],
-        onFormSubmit: () => console.log('Form Submitted'),
+        onFormSubmit: () => console.log('Form Submitted')
     },
     NotesCard: {
         data: [
@@ -311,12 +314,12 @@ export const propDefinitions: { [key: string]: any } = {
                 created: new Date().toString(),
                 note: 'This is a sample note 2.',
                 noteColor: 'gray'
-            },
-        ],
+            }
+        ]
     },
     RichTextEditorPage: {
         content: 'Initial content',
-        onSave: (content: string) => console.log(content),
+        onSave: (content: string) => console.log(content)
     },
     AmeJsonInput: {
         enabled: true,
@@ -324,7 +327,7 @@ export const propDefinitions: { [key: string]: any } = {
         label: 'JSON Input',
         value: '{"id":"e75e73f4-b4c2-40d6-bd09-89be22b76575","company_name":"Nolan, Gutkowski and Cremin","address_line":"Apt 666","city":"Reno","state":"Nevada","zip":"3133","country":"United States","primary_contact":"xmccoole0@noaa.gov"}',
         showButton: true,
-        validateJson: true,
+        validateJson: true
     },
     AmeTextAreaFancy: {
         label: 'Text Area',
@@ -337,7 +340,7 @@ export const propDefinitions: { [key: string]: any } = {
             'aiPreferencesMain',
             'stopSequence',
             'aiPreferencesSecond'
-        ],
+        ]
     },
     AmeTextAreaFancyDynamic: {
         label: 'Text Area',
@@ -350,10 +353,10 @@ export const propDefinitions: { [key: string]: any } = {
             'aiPreferencesMain',
             'stopSequence',
             'aiPreferencesSecond'
-        ],
+        ]
     },
     SimpleChatSettingsModal: {
-        opened: true,
+        opened: true
     },
     AmeSettingsModal: {
         opened: true,
@@ -363,9 +366,6 @@ export const propDefinitions: { [key: string]: any } = {
             'aiPreferencesMain',
             'stopSequence',
             'aiPreferencesSecond'
-        ],
-    },
-
-};
-
-
+        ]
+    }
+}

@@ -1,10 +1,10 @@
 // app/chat/response/AIResponse.tsx
 
-import React from 'react';
-import { Paper, Textarea } from '@mantine/core';
+import React from 'react'
+import { Paper, Textarea } from '@mantine/core'
 
 interface AIResponseProps {
-    message: { id: string; content: string };
+    message: { id: string; content: string }
 }
 
 const AIResponse: React.FC<AIResponseProps> = ({ message }) => {
@@ -20,7 +20,7 @@ const AIResponse: React.FC<AIResponseProps> = ({ message }) => {
         >
             <Textarea minRows={10} readOnly value={message.content} />
         </Paper>
-    );
-};
+    )
+}
 
-export default AIResponse;
+export default AIResponse

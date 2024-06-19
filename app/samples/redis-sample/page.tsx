@@ -1,55 +1,55 @@
 // app/dashboard/page.tsx
-'use client';
+'use client'
 
-import React, { useEffect, useState } from 'react';
-import AmeSlider from "@/ui/slider/AmeSlider";
-import { Space, Textarea, Button, TextInput } from "@mantine/core";
+import React, { useEffect, useState } from 'react'
+import AmeSlider from '@/ui/slider/AmeSlider'
+import { Space, Textarea, Button, TextInput } from '@mantine/core'
 
 function Page() {
-    const customLabels = ['Armani', 'Hello', 'Kevin', 'One More', 'Natalie'];
-    const [data, setData] = useState('');
-    const [inputData, setInputData] = useState('');
+    const customLabels = ['Armani', 'Hello', 'Kevin', 'One More', 'Natalie']
+    const [data, setData] = useState('')
+    const [inputData, setInputData] = useState('')
 
     useEffect(() => {
-        const eventSource = new EventSource('/api/redis?channel=channel-chat');
+        const eventSource = new EventSource('/api/redis?channel=channel-chat')
 
         eventSource.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            setData(data.data);
-        };
+            const data = JSON.parse(event.data)
+            setData(data.data)
+        }
 
         eventSource.onerror = (error) => {
-            console.error('EventSource failed:', error);
-            eventSource.close();
-        };
+            console.error('EventSource failed:', error)
+            eventSource.close()
+        }
 
         return () => {
-            eventSource.close();
-        };
-    }, []);
+            eventSource.close()
+        }
+    }, [])
 
     const handleSubmit = async (e: any) => {
-        e.preventDefault();
-        if (!inputData) return;
+        e.preventDefault()
+        if (!inputData) return
 
         try {
             const response = await fetch('/api/redis', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ channel: 'channel-chat', data: inputData }),
-            });
+                body: JSON.stringify({ channel: 'channel-chat', data: inputData })
+            })
 
             if (response.ok) {
-                setInputData('');
+                setInputData('')
             } else {
-                console.error('Failed to send data');
+                console.error('Failed to send data')
             }
         } catch (error) {
-            console.error('Error sending data:', error);
+            console.error('Error sending data:', error)
         }
-    };
+    }
 
     return (
         <div>
@@ -73,14 +73,14 @@ function Page() {
                 name=""
                 tooltip="Hint: my favorite is Natalie"
                 size="xs"
-                color='gray'
+                color="gray"
                 min={0}
                 max={1}
-                step={.01}
+                step={0.01}
                 showNumber={true}
             />
         </div>
-    );
+    )
 }
 
-export default Page;
+export default Page

@@ -6,29 +6,30 @@ AI Matrix Solutions bridges the gap between current AI capabilities and real-wor
 
 ### AI Matrix Engine
 
-- A core AI automation framework developed in Python.
-- Enables rapid development and deployment of complex AI systems.
-- Caters to businesses needing advanced AI integration without the constraints of traditional methods.
+-   A core AI automation framework developed in Python.
+-   Enables rapid development and deployment of complex AI systems.
+-   Caters to businesses needing advanced AI integration without the constraints of traditional methods.
 
 ### AI Matrix
 
-- A user-friendly, no-code platform built using React, Next.js, and TypeScript.
-- Allows businesses to effortlessly build AI applications, making advanced AI tools accessible without extensive technical knowledge.
-- Currently under development, AI Matrix is the first of many no-code, user-friendly interfaces that will be built on top of the AI Matrix Engine.
+-   A user-friendly, no-code platform built using React, Next.js, and TypeScript.
+-   Allows businesses to effortlessly build AI applications, making advanced AI tools accessible without extensive technical knowledge.
+-   Currently under development, AI Matrix is the first of many no-code, user-friendly interfaces that will be built on top of the AI Matrix Engine.
 
 ## Development Guidelines
 
 **Daily Workflow:**
 
-- **Morning:**
-  - At the start of each development day, pull the latest version of the 'main' branch.
-  - Merge it fully with your branch to ensure you have the latest changes.
-  - Resolve all conflicts and push the updated code to your branch.
+-   **Morning:**
 
-- **Evening:**
-  - At the end of your development day, repeat the morning steps: pull the latest 'main', merge, and resolve all conflicts within your code.
-  - Push the updated code to your branch.
-  - If there are issues that need to be resolved on 'main', report them to the lead developer, **Armani Sadeghi**.
+    -   At the start of each development day, pull the latest version of the 'main' branch.
+    -   Merge it fully with your branch to ensure you have the latest changes.
+    -   Resolve all conflicts and push the updated code to your branch.
+
+-   **Evening:**
+    -   At the end of your development day, repeat the morning steps: pull the latest 'main', merge, and resolve all conflicts within your code.
+    -   Push the updated code to your branch.
+    -   If there are issues that need to be resolved on 'main', report them to the lead developer, **Armani Sadeghi**.
 
 ## Setup and Installation
 

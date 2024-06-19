@@ -1,6 +1,6 @@
 export interface aiPreferencesMainOptions {
-    value: string;
-    label: string;
+    value: string
+    label: string
 }
 
 export const aiPreferencesMainOptions = [
@@ -19,12 +19,12 @@ export const aiPreferencesMainOptions = [
     {
         value: 'fill_form',
         label: 'I wll Fill Out a Form'
-    },
+    }
 ]
 
 export interface aiPreferencesSecondOptions {
-    value: string;
-    label: string;
+    value: string
+    label: string
 }
 
 export const aiPreferencesSecondOptions = [
@@ -47,5 +47,5 @@ export const aiPreferencesSecondOptions = [
     {
         value: 'infinity_matrix',
         label: 'Unleash Infinity Matrix!'
-    },
+    }
 ]

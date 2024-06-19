@@ -1,33 +1,27 @@
+'use client'
 
-'use client';
+import { useEffect, useState, useCallback } from 'react'
+import { io, Socket } from 'socket.io-client'
 
-import { useEffect, useState, useCallback } from 'react';
-import { io, Socket } from 'socket.io-client';
-
-const URL = 'https://aimatrix.ngrok.app/';
+const URL = 'https://aimatrix.ngrok.app/'
 
 export const useSocketManager = (onNewResponse: (response: string) => void) => {
-
-    const [socket, setSocket] = useState<Socket | null>(null);
+    const [socket, setSocket] = useState<Socket | null>(null)
 
     const connectSocket = useCallback(
         (message: string) => {
-
-            let newSocket = socket;
-
+            let newSocket = socket
 
             if (!newSocket) {
-                newSocket = io(URL, { autoConnect: false });
-                setSocket(newSocket);
-                newSocket.connect();
+                newSocket = io(URL, { autoConnect: false })
+                setSocket(newSocket)
+                newSocket.connect()
 
                 newSocket.on('connect', () => {
-                    console.log('Connected to the Socket.IO server.');
-                });
+                    console.log('Connected to the Socket.IO server.')
+                })
 
-                newSocket.on('error', (error: any) =>
-                    console.error('Socket.IO error:', error),
-                );
+                newSocket.on('error', (error: any) => console.error('Socket.IO error:', error))
             }
 
             // Emit message upon request
@@ -35,27 +29,27 @@ export const useSocketManager = (onNewResponse: (response: string) => void) => {
                 promptMessage: message,
                 task: 'basic_chat',
                 index: 1,
-                uid: '1234567890',
-            });
+                uid: '1234567890'
+            })
 
             newSocket.on('chat_response', (data: any) => {
-                console.log('Received chunk:', data);
+                console.log('Received chunk:', data)
                 if (data && typeof data === 'object' && 'data' in data) {
-                    onNewResponse(data.data); // Append the text from the 'data' field
+                    onNewResponse(data.data) // Append the text from the 'data' field
                 }
-            });
+            })
         },
-        [socket],
-    );
+        [socket]
+    )
 
     useEffect(() => {
         return () => {
             if (socket) {
-                socket.disconnect();
-                console.log('Disconnected from the server.');
+                socket.disconnect()
+                console.log('Disconnected from the server.')
             }
-        };
-    }, [socket]);
+        }
+    }, [socket])
 
-    return connectSocket;
-};
+    return connectSocket
+}

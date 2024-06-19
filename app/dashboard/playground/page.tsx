@@ -1,29 +1,26 @@
-'use client';
+'use client'
 
-import {Button, Flex, Grid, Select} from "@mantine/core";
-import {
-    IconSquareRoundedPlus,
-} from '@tabler/icons-react'
-import {useState} from "react";
-import Prompt from "@/components/Prompt/Prompt";
-import ResponsePlayground from "@/components/Playground/ResponsePlayground";
-import PlaygroundRunForm from "@/components/Playground/PlaygroundRunForm";
-import VerticalSplitter from "@/ui/split/VerticalSplitter";
-import DynamicSplitter from "@/ui/split/DynamicSplitter";
-import HorizontalSplitter from "@/ui/split/HorizontalSplitter";
-
+import { Button, Flex, Grid, Select } from '@mantine/core'
+import { IconSquareRoundedPlus } from '@tabler/icons-react'
+import { useState } from 'react'
+import Prompt from '@/components/Prompt/Prompt'
+import ResponsePlayground from '@/components/Playground/ResponsePlayground'
+import PlaygroundRunForm from '@/components/Playground/PlaygroundRunForm'
+import VerticalSplitter from '@/ui/split/VerticalSplitter'
+import DynamicSplitter from '@/ui/split/DynamicSplitter'
+import HorizontalSplitter from '@/ui/split/HorizontalSplitter'
 
 const PlaygroundPage = () => {
     const [prompts, setPrompts] = useState([
         {
             type: 'System',
             value: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque eius ipsam omnis possimus sint vero voluptatem? Aut blanditiis debitis deserunt dignissimos dolore, dolores dolorum eos placeat porro quam unde velit?',
-            id: 0,
+            id: 0
         },
         {
             type: 'User',
             value: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque eius ipsam omnis possimus sint vero voluptatem? Aut blanditiis debitis deserunt dignissimos dolore, dolores dolorum eos placeat porro quam unde velit?',
-            id: 1,
+            id: 1
         }
     ])
 
@@ -43,10 +40,9 @@ const PlaygroundPage = () => {
                 <Button color="gray" size="xs">
                     Clear
                 </Button>
-
             </Flex>
 
-            <VerticalSplitter initialSizes={[150,250,500,200]} expandToMin={false}>
+            <VerticalSplitter initialSizes={[150, 250, 500, 200]} expandToMin={false}>
                 <div>
                     <Flex direction={'column'} gap={12}>
                         <Button color="gray" size="xs" fullWidth>
@@ -56,33 +52,46 @@ const PlaygroundPage = () => {
                             Make Section Optional
                         </Button>
                     </Flex>
-
                 </div>
                 <div>
                     <Flex direction={'column'} gap={12}>
-                        {
-                            prompts.map((item) => <Prompt type={item.type} value={item.value} key={item.id} id={item.id}
-                                                          remove={() => {
-                                                              const p = prompts.filter((a, b) => a.id !== item.id)
-                                                              setPrompts(p)
-                                                          }}/>)
-                        }
+                        {prompts.map((item) => (
+                            <Prompt
+                                type={item.type}
+                                value={item.value}
+                                key={item.id}
+                                id={item.id}
+                                remove={() => {
+                                    const p = prompts.filter((a, b) => a.id !== item.id)
+                                    setPrompts(p)
+                                }}
+                            />
+                        ))}
 
-                        <Button color="gray" size="xs" fullWidth leftSection={<IconSquareRoundedPlus width={14}/>}
-                                onClick={() => {
-                                    const newId = prompts.length > 0 ? prompts[prompts.length - 1].id + 1 : 1;
-                                    setPrompts([...prompts, {type: 'User', value: 'Bla bla bla', id: newId}]);
-                                }}>
+                        <Button
+                            color="gray"
+                            size="xs"
+                            fullWidth
+                            leftSection={<IconSquareRoundedPlus width={14} />}
+                            onClick={() => {
+                                const newId =
+                                    prompts.length > 0 ? prompts[prompts.length - 1].id + 1 : 1
+                                setPrompts([
+                                    ...prompts,
+                                    { type: 'User', value: 'Bla bla bla', id: newId }
+                                ])
+                            }}
+                        >
                             Add Prompt
                         </Button>
                     </Flex>
                 </div>
 
                 <div>
-                    <ResponsePlayground/>
+                    <ResponsePlayground />
                 </div>
                 <div>
-                    <PlaygroundRunForm/>
+                    <PlaygroundRunForm />
                 </div>
             </VerticalSplitter>
         </>

@@ -1,46 +1,45 @@
 // ui/highlight/AmeCodeHighlight.tsx
-'use client';
+'use client'
 
-import dynamic from 'next/dynamic';
-import { useEffect, useState } from 'react';
-import { LoadingOverlay, Space } from '@mantine/core';
-import '@mantine/code-highlight/styles.css';
-import styles from './AmeCodeHighlight.module.css';
+import dynamic from 'next/dynamic'
+import { useEffect, useState } from 'react'
+import { LoadingOverlay, Space } from '@mantine/core'
+import '@mantine/code-highlight/styles.css'
+import styles from './AmeCodeHighlight.module.css'
 
 const CodeHighlight = dynamic(
     () => import('@mantine/code-highlight').then((mod) => mod.CodeHighlight),
-    {ssr: false}
-);
+    { ssr: false }
+)
 
 interface AmeCodeHighlightProps {
-    code: string;
-    language: string;
-    title: string;
-    startCollapsed?: boolean;
-    useLoadingEffect?: boolean;
+    code: string
+    language: string
+    title: string
+    startCollapsed?: boolean
+    useLoadingEffect?: boolean
 }
 
-const AmeCodeHighlight: React.FC<AmeCodeHighlightProps> = (
-    {
-        code,
-        language,
-        title,
-        startCollapsed = false,
-        useLoadingEffect = false,
-    }) => {
-    const [loading, setLoading] = useState(useLoadingEffect);
-    const [expanded, setExpanded] = useState(!startCollapsed);
+const AmeCodeHighlight: React.FC<AmeCodeHighlightProps> = ({
+    code,
+    language,
+    title,
+    startCollapsed = false,
+    useLoadingEffect = false
+}) => {
+    const [loading, setLoading] = useState(useLoadingEffect)
+    const [expanded, setExpanded] = useState(!startCollapsed)
 
     useEffect(() => {
         if (useLoadingEffect) {
-            const timer = setTimeout(() => setLoading(false), 1000); // Adjust the timer as needed
-            return () => clearTimeout(timer);
+            const timer = setTimeout(() => setLoading(false), 1000) // Adjust the timer as needed
+            return () => clearTimeout(timer)
         }
-    }, [useLoadingEffect]);
+    }, [useLoadingEffect])
 
     return (
         <div className={styles.codeSection}>
-            <Space h="xs"/>
+            <Space h="xs" />
             <div className={styles.header}>
                 {title}
                 <button onClick={() => setExpanded(!expanded)} className={styles.expandButton}>
@@ -62,15 +61,11 @@ const AmeCodeHighlight: React.FC<AmeCodeHighlightProps> = (
                 />
             )}
             {!loading && expanded && (
-                <CodeHighlight
-                    code={code}
-                    language={language}
-                    highlightOnClient={true}
-                />
+                <CodeHighlight code={code} language={language} highlightOnClient={true} />
             )}
-            <Space h="xs"/>
+            <Space h="xs" />
         </div>
-    );
-};
+    )
+}
 
-export default AmeCodeHighlight;
+export default AmeCodeHighlight

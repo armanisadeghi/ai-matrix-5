@@ -1,45 +1,45 @@
-'use client';
+'use client'
 
-import React, { useRef, useEffect, useCallback } from 'react';
-import { useRecoilState } from 'recoil';
-import { autoscrollStateAtom } from './layoutAtoms';
-import CenterContent from './CenterContent';
-import styles from './CenterContent.module.css';
-import AmeTextWithSlider, { AmeTextWithSliderProps } from '@/ui/textarea/AmeTextWithSlider';
-import textareaStyles from '@/components/AiChat/UserInput/DynamicTextarea.module.css';
-import { simpleChatSettingsList } from '@/state/aiAtoms/settingsAtoms';
-import ResponseArea, { ResponseAreaProps } from '@/components/AiChat/Response/ResponseArea';
-import useDynamicLayout from '@/hooks/ai/useDynamicChatLayout';
+import React, { useRef, useEffect, useCallback } from 'react'
+import { useRecoilState } from 'recoil'
+import { autoscrollStateAtom } from './layoutAtoms'
+import CenterContent from './CenterContent'
+import styles from './CenterContent.module.css'
+import AmeTextWithSlider, { AmeTextWithSliderProps } from '@/ui/textarea/AmeTextWithSlider'
+import textareaStyles from '@/components/AiChat/UserInput/DynamicTextarea.module.css'
+import { simpleChatSettingsList } from '@/state/aiAtoms/settingsAtoms'
+import ResponseArea, { ResponseAreaProps } from '@/components/AiChat/Response/ResponseArea'
+import useDynamicLayout from '@/hooks/ai/useDynamicChatLayout'
 
 const Page: React.FC = () => {
-    const [isAutoscroll, setIsAutoscroll] = useRecoilState(autoscrollStateAtom);
-    const contentRef = useRef<HTMLDivElement>(null);
-    const { bottomPadding, textareaContainerRef } = useDynamicLayout();
+    const [isAutoscroll, setIsAutoscroll] = useRecoilState(autoscrollStateAtom)
+    const contentRef = useRef<HTMLDivElement>(null)
+    const { bottomPadding, textareaContainerRef } = useDynamicLayout()
 
     useEffect(() => {
         if (isAutoscroll && contentRef.current) {
-            contentRef.current.scrollTop = contentRef.current.scrollHeight;
+            contentRef.current.scrollTop = contentRef.current.scrollHeight
         }
-    }, [isAutoscroll]);
+    }, [isAutoscroll])
 
     const handleScroll = useCallback(() => {
         if (isAutoscroll) {
-            setIsAutoscroll(false);
+            setIsAutoscroll(false)
         }
-    }, [isAutoscroll, setIsAutoscroll]);
+    }, [isAutoscroll, setIsAutoscroll])
 
     useEffect(() => {
-        const contentElement = contentRef.current;
+        const contentElement = contentRef.current
         if (contentElement) {
-            contentElement.addEventListener('scroll', handleScroll);
+            contentElement.addEventListener('scroll', handleScroll)
             return () => {
-                contentElement.removeEventListener('scroll', handleScroll);
-            };
+                contentElement.removeEventListener('scroll', handleScroll)
+            }
         }
-    }, [handleScroll]);
+    }, [handleScroll])
 
-    const responseAreaProps: Partial<ResponseAreaProps> = {}; // Define as necessary
-    const ameTextWithSliderProps: Partial<AmeTextWithSliderProps> = {}; // Define as necessary
+    const responseAreaProps: Partial<ResponseAreaProps> = {} // Define as necessary
+    const ameTextWithSliderProps: Partial<AmeTextWithSliderProps> = {} // Define as necessary
 
     return (
         <CenterContent
@@ -63,7 +63,7 @@ const Page: React.FC = () => {
                 />
             }
         />
-    );
-};
+    )
+}
 
-export default Page;
+export default Page

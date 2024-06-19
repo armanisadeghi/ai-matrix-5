@@ -1,14 +1,13 @@
-import { SimpleGrid } from '@mantine/core';
-import { CustomCard, CardProps } from './CustomCard';
+import { SimpleGrid } from '@mantine/core'
+import { CustomCard, CardProps } from './CustomCard'
 
 interface CardsGridProps {
-    cardsData: CardProps[];
+    cardsData: CardProps[]
 }
 
 function CardsGrid({ cardsData }: CardsGridProps) {
     return (
-        <SimpleGrid
-            cols={{ xs: 1, sm: 2, md: 3 }} spacing="lg">
+        <SimpleGrid cols={{ xs: 1, sm: 2, md: 3 }} spacing="lg">
             {cardsData.map((card, index) => (
                 <CustomCard
                     key={index}
@@ -20,7 +19,7 @@ function CardsGrid({ cardsData }: CardsGridProps) {
                 />
             ))}
         </SimpleGrid>
-    );
+    )
 }
 
-export default CardsGrid;
+export default CardsGrid

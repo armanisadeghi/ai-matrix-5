@@ -1,13 +1,9 @@
-'use client';
+'use client'
 
-import React from 'react';
+import React from 'react'
 
 const ChatHistory = () => {
-    return (
-            <h3>Chat History</h3>
-    );
-
-
+    return <h3>Chat History</h3>
 
     /*    const { chatHistory } = useHistory();
 
@@ -26,6 +22,6 @@ const ChatHistory = () => {
                 ))}
             </div>
         );*/
-};
+}
 
-export default ChatHistory;
+export default ChatHistory

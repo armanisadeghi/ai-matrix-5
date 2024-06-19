@@ -1,25 +1,25 @@
-import React, { useState } from 'react';
-import { Paper, Textarea, Button, ActionIcon } from '@mantine/core';
-import { IconEdit } from '@tabler/icons-react';
-import { useResponses } from '../../../../../../context/AiContext/ResponseContext';
+import React, { useState } from 'react'
+import { Paper, Textarea, Button, ActionIcon } from '@mantine/core'
+import { IconEdit } from '@tabler/icons-react'
+import { useResponses } from '../../../../../../context/AiContext/ResponseContext'
 
 interface UserMessageProps {
-    message: { id: string; content: string };
+    message: { id: string; content: string }
 }
 
 const UserMessage: React.FC<UserMessageProps> = ({ message }) => {
-    const { updateMessage } = useResponses();
-    const [isEditing, setIsEditing] = useState(false);
-    const [content, setContent] = useState(message.content);
+    const { updateMessage } = useResponses()
+    const [isEditing, setIsEditing] = useState(false)
+    const [content, setContent] = useState(message.content)
 
     const handleEdit = () => {
-        setIsEditing(true);
-    };
+        setIsEditing(true)
+    }
 
     const handleSave = () => {
-        updateMessage(message.id, content);
-        setIsEditing(false);
-    };
+        updateMessage(message.id, content)
+        setIsEditing(false)
+    }
 
     return (
         <Paper
@@ -31,7 +31,7 @@ const UserMessage: React.FC<UserMessageProps> = ({ message }) => {
                 width: '80%',
                 marginLeft: '20%',
                 position: 'relative',
-                transition: 'transform 0.2s',
+                transition: 'transform 0.2s'
             }}
             onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.02)')}
             onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
@@ -58,7 +58,7 @@ const UserMessage: React.FC<UserMessageProps> = ({ message }) => {
                 </>
             )}
         </Paper>
-    );
-};
+    )
+}
 
-export default UserMessage;
+export default UserMessage

@@ -1,80 +1,79 @@
-
 import {
     closestCenter,
-    DndContext, DragOverlay,
-    KeyboardSensor, MeasuringStrategy, MouseSensor,
+    DndContext,
+    DragOverlay,
+    KeyboardSensor,
+    MeasuringStrategy,
+    MouseSensor,
     PointerSensor,
     TouchSensor,
     useDroppable,
     useSensor,
     useSensors
-} from '@dnd-kit/core';
-import {useEffect, useState} from "react";
-import {arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy} from "@dnd-kit/sortable";
-import { useListProvider } from "@/components/SmartList/SmartList";
+} from '@dnd-kit/core'
+import { useEffect, useState } from 'react'
+import {
+    arrayMove,
+    SortableContext,
+    sortableKeyboardCoordinates,
+    verticalListSortingStrategy
+} from '@dnd-kit/sortable'
+import { useListProvider } from '@/components/SmartList/SmartList'
 
+export default function DragAndDropWrapper({ children }) {
+    const [activeId, setActiveId] = useState(null)
 
-export default function DragAndDropWrapper({children}) {
-    const [activeId, setActiveId] = useState(null);
+    const { list, setList }: any = useListProvider()
 
-    const {list, setList}: any = useListProvider();
-
-
-    const getItemPost = id => list.findIndex(item => item.id === id)
+    const getItemPost = (id) => list.findIndex((item) => item.id === id)
 
     function searchId(data, targetId) {
         for (let item of data) {
             if (item.id === targetId) {
-                return item;
+                return item
             }
             if (item.children) {
-                let result = searchId(item.children, targetId);
+                let result = searchId(item.children, targetId)
                 if (result) {
-                    return result;
+                    return result
                 }
             }
         }
-        return null;
+        return null
     }
-
 
     function handleDragStart(event: any) {
-        const {active, over} = event;
-        setActiveId(active);
-
+        const { active, over } = event
+        setActiveId(active)
     }
 
-
     function handleDragEnd(event) {
-        const {active, over} = event;
-        if (active.id === over.id) return;
+        const { active, over } = event
+        if (active.id === over.id) return
 
-        setList(item => {
+        setList((item) => {
             const originPos = getItemPost(active.id)
             const newPos = getItemPost(over.id)
             return arrayMove(list, originPos, newPos)
         })
-
-
     }
 
-
     const sensors = useSensors(
-        useSensor(PointerSensor, {activationConstraint: {distance: 3},}),
+        useSensor(PointerSensor, { activationConstraint: { distance: 3 } }),
         useSensor(MouseSensor),
         useSensor(TouchSensor),
-        useSensor(KeyboardSensor, {coordinateGetter: sortableKeyboardCoordinates})
+        useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
     )
-
 
     const measuring = {
         droppable: {
             strategy: MeasuringStrategy.Always
         }
-    };
+    }
     return (
         <DndContext
-            onDragStart={handleDragStart} onDragEnd={handleDragEnd}
+            onDragStart={handleDragStart}
+            onDragEnd={handleDragEnd}
             sensors={sensors}
             collisionDetection={closestCenter}
             measuring={measuring}
@@ -82,7 +81,6 @@ export default function DragAndDropWrapper({children}) {
             <SortableContext items={list} strategy={verticalListSortingStrategy}>
                 {children}
             </SortableContext>
-
         </DndContext>
     )
 }
