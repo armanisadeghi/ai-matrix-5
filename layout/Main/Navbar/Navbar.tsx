@@ -1,6 +1,6 @@
 "use client";
 
-import { AppShell, Box, Group, NavLink, ScrollArea, useMantineTheme } from "@mantine/core";
+import { AppShell, Box, Group, NavLink, ScrollArea, useMantineColorScheme, useMantineTheme } from "@mantine/core";
 import { IconFile, IconHelp, IconMessage, IconSettings, IconShield } from "@tabler/icons-react";
 import { navItems } from "./navItems";
 import { usePathname } from "next/navigation";
@@ -22,8 +22,10 @@ export const Navbar = () => {
     const theme = useMantineTheme();
     const pathname = usePathname();
     const leftSideBarWidth = useRecoilValue(leftSidebarAtom);
+    const { colorScheme } = useMantineColorScheme();
 
     const iconSize = leftSideBarWidth <= 100 ? 24 : 16;
+    const iconColor = colorScheme === "dark" ? theme.white : theme.primaryColor;
 
     return (
         <>
@@ -37,7 +39,7 @@ export const Navbar = () => {
                                 gap={0}
                                 justify="center"
                             >
-                                <AmeIconWrapper>
+                                <AmeIconWrapper c={iconColor}>
                                     <item.icon size={iconSize} />
                                 </AmeIconWrapper>
                                 {leftSideBarWidth >= 100 && (
@@ -88,19 +90,19 @@ export const Navbar = () => {
                     gap: leftSideBarWidth < 80 ? 12 : leftSideBarWidth > 50 && leftSideBarWidth <= 150 ? 4 : 8,
                 }}
             >
-                <AmeActionIcon variant="transparent" size="sm" tooltip="Settings">
+                <AmeActionIcon variant="transparent" size="sm" tooltip="Settings" c={iconColor}>
                     <IconSettings size={iconSize} />
                 </AmeActionIcon>
-                <AmeActionIcon variant="transparent" size="sm" tooltip="Message">
+                <AmeActionIcon variant="transparent" size="sm" tooltip="Message" c={iconColor}>
                     <IconMessage size={iconSize} />
                 </AmeActionIcon>
-                <AmeActionIcon variant="transparent" size="sm" tooltip="Help">
+                <AmeActionIcon variant="transparent" size="sm" tooltip="Help" c={iconColor}>
                     <IconHelp size={iconSize} />
                 </AmeActionIcon>
-                <AmeActionIcon variant="transparent" size="sm" tooltip="Files">
+                <AmeActionIcon variant="transparent" size="sm" tooltip="Files" c={iconColor}>
                     <IconFile size={iconSize} />
                 </AmeActionIcon>
-                <AmeActionIcon variant="transparent" size="sm" tooltip="Privacy">
+                <AmeActionIcon variant="transparent" size="sm" tooltip="Privacy" c={iconColor}>
                     <IconShield size={iconSize} />
                 </AmeActionIcon>
             </AppShell.Section>

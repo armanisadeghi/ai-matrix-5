@@ -1,6 +1,6 @@
 "use client";
 
-import { AppShell, Box } from "@mantine/core";
+import { AppShell, Box, useMantineColorScheme, useMantineTheme } from "@mantine/core";
 import { ReactNode, useEffect } from "react";
 import { Navbar } from "./Navbar";
 import { Header } from "./Header";
@@ -12,7 +12,9 @@ import {
     leftSidebarAtom,
     footerAtom,
     headerAtom,
-    deviceTypeAtom, windowHeightState, windowWidthState,
+    deviceTypeAtom,
+    windowHeightState,
+    windowWidthState,
 } from "@/state/layoutAtoms";
 import useLayoutPresets from "@/hooks/layout/useLayoutPresets";
 import { useMediaQuery } from "@mantine/hooks";
@@ -36,6 +38,9 @@ export function MainLayout({ children }: Props) {
     const [windowWidth, setWindowWidth] = useRecoilState(windowWidthState);
     const [windowHeight, setWindowHeight] = useRecoilState(windowHeightState);
 
+    const { colorScheme } = useMantineColorScheme();
+    const theme = useMantineTheme();
+
     useEffect(() => {
         setWindowWidth(window.innerWidth);
         setWindowHeight(window.innerHeight);
@@ -43,11 +48,11 @@ export function MainLayout({ children }: Props) {
 
     useEffect(() => {
         if (mobileMatch) {
-            setDeviceType('mobile');
+            setDeviceType("mobile");
         } else if (tabletMatch) {
-            setDeviceType('tablet');
+            setDeviceType("tablet");
         } else if (desktopMatch) {
-            setDeviceType('desktop');
+            setDeviceType("desktop");
         }
     }, [mobileMatch, tabletMatch, desktopMatch, setDeviceType]);
 
@@ -76,11 +81,19 @@ export function MainLayout({ children }: Props) {
                 height: footerHeight,
             }}
         >
-            <AppShell.Header>
+            <AppShell.Header
+                style={{ backgroundColor: colorScheme === "dark" ? theme.colors.dark[9] : theme.colors.gray[2] }}
+            >
                 <Header />
             </AppShell.Header>
             {leftSideBarWidth !== 0 && (
-                <AppShell.Navbar pt="xs" pb="xs" pl={0} pr={0}>
+                <AppShell.Navbar
+                    pt="xs"
+                    pb="xs"
+                    pl={0}
+                    pr={0}
+                    style={{ backgroundColor: colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0] }}
+                >
                     <Navbar />
                 </AppShell.Navbar>
             )}

@@ -25,7 +25,6 @@ type Props = {
 // Lastly, if you need to, we can make the logo slightly smaller as well.
 // I also noticed the search icon doesn't work, but I wonder if maybe I messed it up. Not sure.
 
-
 export function Header({ tabletMatch }: Props) {
     const { user } = useUser();
     const [activeUser, setActiveUser] = useRecoilState(activeUserAtom);
@@ -77,14 +76,14 @@ export function Header({ tabletMatch }: Props) {
         >
             <Group style={{ flex: 1, justifyContent: "flex-start", flexShrink: 0 }}>
                 {showLeftSidebar && (
-                <AmeActionIcon
-                    variant="transparent"
-                    tooltip="toggle sidebar"
-                    size={componentSize}
-                    onClick={() => toggleSize('leftSidebar')}
-                >
-                    <IconMenu size={18} />
-                </AmeActionIcon>
+                    <AmeActionIcon
+                        variant="transparent"
+                        tooltip="toggle sidebar"
+                        size={componentSize}
+                        onClick={() => toggleSize("leftSidebar")}
+                    >
+                        <IconMenu size={16} />
+                    </AmeActionIcon>
                 )}
 
                 <div style={{ width: logoSize, flexShrink: 0 }}>
@@ -102,10 +101,10 @@ export function Header({ tabletMatch }: Props) {
                 }}
             >
                 <AmeSearchInput
-                    size={componentSize}
                     radius="md"
                     placeholder="Search anything..."
-                    leftSection={<IconSearch size={14} />}
+                    leftSection={<IconSearch size={16} />}
+                    height={26}
                     style={{ flex: "1 1 auto", minWidth: "40px", maxWidth: "450px" }}
                 />
             </Group>
@@ -113,28 +112,28 @@ export function Header({ tabletMatch }: Props) {
             {/* Right Section */}
             <Group style={{ flex: 1, justifyContent: "flex-end", flexShrink: 0 }}>
                 <AmeActionIcon variant="transparent" hiddenFrom="md" size={componentSize} tooltip="search">
-                    <IconSearch size={18} />
+                    <IconSearch size={16} />
                 </AmeActionIcon>
                 <ColorSchemeToggle size={componentSize} />
                 <AmeActionIcon variant="transparent" tooltip="notifications" size={componentSize}>
-                    <IconBell size={18} />
+                    <IconBell size={16} />
                 </AmeActionIcon>
 
                 {showRightSidebar && (
-                <AmeActionIcon
-                    variant="transparent"
-                    tooltip="toggle sidebar"
-                    size={componentSize}
-                    onClick={() => toggleSize('rightSidebar')}
-                >
-                    <IconMenu size={18} />
-                </AmeActionIcon>
+                    <AmeActionIcon
+                        variant="transparent"
+                        tooltip="toggle sidebar"
+                        size={componentSize}
+                        onClick={() => toggleSize("rightSidebar")}
+                    >
+                        <IconMenu size={16} />
+                    </AmeActionIcon>
                 )}
 
                 <AmeActionIcon variant="transparent" tooltip="apps" size={componentSize}>
-                    <IoApps size={18} />
+                    <IoApps size={16} />
                 </AmeActionIcon>
-                <UserMenu componentSize={componentSize} />
+                <UserMenu componentSize="lg" radius="50%" />
             </Group>
         </Group>
     );
