@@ -29,12 +29,13 @@ class Chat {
 
         // Update the chat in the Supabase database with the new message
         const { error } = await supabase
-            .from('chats')
+            .from("chats")
             .update({
                 messages_array: this._messages,
-                last_edited: this.last_edited
+                // OPTIMIZE: errors in the line below
+                last_edited: this.last_edited,
             })
-            .eq('chat_id', this.chat_id);
+            .eq("chat_id", this.chat_id);
 
         if (error) throw error;
     }
@@ -47,16 +48,17 @@ class Chat {
 
             // Update the chat in the Supabase database with the edited message
             const { error } = await supabase
-                .from('chats')
+                .from("chats")
                 .update({
                     messages_array: this._messages,
-                    last_edited: this.last_edited
+                    // OPTIMIZE: errors in the line below
+                    last_edited: this.last_edited,
                 })
-                .eq('chat_id', this.chat_id);
+                .eq("chat_id", this.chat_id);
 
             if (error) throw error;
         } else {
-            throw new Error('Message index out of range');
+            throw new Error("Message index out of range");
         }
     }
 
@@ -67,42 +69,44 @@ class Chat {
 
             // Update the chat in the Supabase database with the reset messages
             const { error } = await supabase
-                .from('chats')
+                .from("chats")
                 .update({
                     messages_array: this._messages,
-                    last_edited: this.last_edited
+                    // OPTIMIZE: errors in the line below
+                    last_edited: this.last_edited,
                 })
-                .eq('chat_id', this.chat_id);
+                .eq("chat_id", this.chat_id);
 
             if (error) throw error;
         } else {
-            throw new Error('Message index out of range');
+            throw new Error("Message index out of range");
         }
     }
 
     getMessages(): { role: Role; text: string }[] {
-        return this._messages.map(message => ({
+        return this._messages.map((message) => ({
             role: message.role,
-            text: message.text
+            text: message.text,
         }));
     }
 
-    getTransformedMessages(roleReplacement = 'sender', textReplacement = 'content'): Record<string, string>[] {
-        return this._messages.map(message => ({
+    getTransformedMessages(roleReplacement = "sender", textReplacement = "content"): Record<string, string>[] {
+        return this._messages.map((message) => ({
             [roleReplacement]: message.role,
-            [textReplacement]: message.text
+            [textReplacement]: message.text,
         }));
     }
 
     async loadMessagesFromDb() {
         const { data, error } = await supabase
-            .from('chats')
-            .select('messages_array')
-            .eq('chat_id', this.chat_id)
+            .from("chats")
+            .select("messages_array")
+            .eq("chat_id", this.chat_id)
             .single();
 
         if (error) throw error;
         if (data) {
+            // OPTIMIZE: errors in the line below
             this._messages = data.messages_array;
         }
     }
