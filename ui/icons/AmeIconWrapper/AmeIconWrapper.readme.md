@@ -21,9 +21,9 @@ function App() {
   return (
     <div>
       <h1>Icon Wrapper Example</h1>
-      <AmeIconWrapper size="lg" variant="filled">
+      <AmeNavLink size="lg" variant="filled">
         <IconHome />
-      </AmeIconWrapper>
+      </AmeNavLink>
     </div>
   );
 }

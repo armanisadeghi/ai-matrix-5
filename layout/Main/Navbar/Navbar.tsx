@@ -58,7 +58,6 @@ export const Navbar = () => {
                         }
                         childrenOffset={24}
                         defaultOpened={item.initiallyOpened}
-                        mb="xs"
                         style={{ borderRadius: theme.radius.sm }}
                     >
                         {leftSideBarWidth >= 100 &&

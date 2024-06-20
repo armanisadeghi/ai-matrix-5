@@ -7,6 +7,7 @@ import Link from "next/link";
 import { PATH_USER } from "@/routes";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { MantineSize } from "@mantine/core";
+import AmeText from "@/ui/typography/AmeText";
 
 type UserMenuProps = {
     componentSize: MantineSize;
@@ -29,7 +30,7 @@ export function UserMenu({ componentSize, radius }: UserMenuProps) {
     }
 
     return (
-        <Menu width={200} shadow="md" position="bottom-end" offset={17}>
+        <Menu width={200} shadow="md" position="bottom-end" offset={17} trigger="hover">
             <Menu.Target>
                 <ActionIcon title="user menu" size={componentSize} variant="transparent" radius={radius}>
                     {userPictureLink ? (
@@ -40,6 +41,11 @@ export function UserMenu({ componentSize, radius }: UserMenuProps) {
                 </ActionIcon>
             </Menu.Target>
             <Menu.Dropdown>
+                <Menu.Label>
+                    <AmeText>{user?.name}</AmeText>
+                    <AmeText>{user?.email}</AmeText>
+                </Menu.Label>
+                <Menu.Divider></Menu.Divider>
                 <Menu.Item component={Link} href={PATH_USER.tabs("personal")} leftSection={<IconSettings2 size={16} />}>
                     Settings
                 </Menu.Item>

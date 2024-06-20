@@ -1,10 +1,6 @@
 "use client";
 
-import {
-    useComputedColorScheme,
-    useMantineColorScheme,
-    MantineSize,
-} from "@mantine/core";
+import { useComputedColorScheme, useMantineColorScheme, MantineSize } from "@mantine/core";
 import { IconMoon, IconSun } from "@tabler/icons-react";
 import cx from "clsx";
 import classes from "./ColorSchemeToggle.module.scss";
@@ -15,7 +11,7 @@ interface ColorSchemeToggleProps {
 }
 
 export function ColorSchemeToggle({ size = "md" }: ColorSchemeToggleProps) {
-    const { setColorScheme } = useMantineColorScheme();
+    const { setColorScheme, colorScheme } = useMantineColorScheme();
     const computedColorScheme = useComputedColorScheme("dark", { getInitialValueInEffect: true });
 
     return (
@@ -26,8 +22,11 @@ export function ColorSchemeToggle({ size = "md" }: ColorSchemeToggleProps) {
             size={size}
             tooltip={`Switch to ${computedColorScheme === "light" ? "dark" : "light"} mode`}
         >
-            <IconSun className={cx(classes.icon, classes.light)} />
-            <IconMoon className={cx(classes.icon, classes.dark)} />
+            {colorScheme === "dark" ? (
+                <IconSun className={cx(classes.icon, classes.light)} />
+            ) : (
+                <IconMoon className={cx(classes.icon, classes.dark)} />
+            )}
         </AmeActionIcon>
     );
 }

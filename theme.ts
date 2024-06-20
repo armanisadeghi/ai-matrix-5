@@ -31,7 +31,7 @@ export const theme = createTheme({
         ActionIcon: ActionIcon.extend({
             defaultProps: {
                 variant: "light",
-                color: "gray",
+                color: "dark",
             },
         }),
         Button: Button.extend({

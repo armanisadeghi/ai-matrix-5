@@ -1,7 +1,7 @@
 import React from "react";
 import { FileButton } from "@mantine/core";
-import AmeOverComponentIcon from "@/ui/button/AmeOverComponentIcon";
-import AmeActionIcon from "@/ui/button/AmeActionIcon";
+import AmeOverComponentIcon from "@/ui/buttons/AmeOverComponentIcon";
+import AmeActionIcon from "@/ui/buttons/AmeActionIcon";
 import { MdPermMedia } from "react-icons/md";
 import useFileUpload from "@/hooks/ui/useFileUpload";
 
@@ -11,11 +11,7 @@ const AmeFileUploadOverComponent = () => {
     return (
         <FileButton onChange={handleFileUpload} accept="*/*">
             {(props) => (
-                <AmeOverComponentIcon
-                    tooltip="Upload file..."
-                    {...props}
-                    style={{ outline: 'none' }}
-                >
+                <AmeOverComponentIcon tooltip="Upload file..." {...props} style={{ outline: "none" }}>
                     <MdPermMedia />
                 </AmeOverComponentIcon>
             )}
@@ -29,11 +25,7 @@ const AmeFileUploadActionIcon = () => {
     return (
         <FileButton onChange={handleFileUpload} accept="*/*">
             {(props) => (
-                <AmeActionIcon
-                    title="Upload file..."
-                    {...props}
-                    style={{ outline: 'none' }}
-                >
+                <AmeActionIcon tooltip="Upload file..." {...props} style={{ outline: "none" }}>
                     <MdPermMedia />
                 </AmeActionIcon>
             )}
