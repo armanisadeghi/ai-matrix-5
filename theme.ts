@@ -22,9 +22,9 @@ export const theme = createTheme({
     primaryColor: "pale-blue",
     primaryShade: 6,
     defaultRadius: "md",
-    fontFamily: "Inter, sans-serif",
+    fontFamily: "Inter",
     headings: {
-        fontFamily: "Inter, sans-serif",
+        fontFamily: "Inter",
     },
     focusRing: "auto",
     components: {

@@ -1,6 +1,6 @@
 "use client";
 
-import { AppShell, Box, Group, NavLink, ScrollArea, useMantineColorScheme, useMantineTheme } from "@mantine/core";
+import { AppShell, Group, ScrollArea, useMantineColorScheme, useMantineTheme } from "@mantine/core";
 import { IconFile, IconHelp, IconMessage, IconSettings, IconShield } from "@tabler/icons-react";
 import { navItems } from "./navItems";
 import { usePathname } from "next/navigation";
@@ -9,6 +9,7 @@ import { useRecoilValue } from "recoil";
 import { leftSidebarAtom } from "@/state/layoutAtoms";
 import { AmeIconWrapper } from "@/ui/icons";
 import AmeActionIcon from "@/ui/buttons/AmeActionIcon";
+import { AmeNavLink } from "@/ui/buttons";
 
 // Kevin, I wrote these comments and then fixed most of it, but there are some minor tweaks remaining,
 // I still don't like that we don't see more of the manu words in compact mode. I think I had it where we could see the full name, but I can't remember.
@@ -31,7 +32,7 @@ export const Navbar = () => {
         <>
             <AppShell.Section grow component={ScrollArea} my="xs">
                 {navItems.map((item) => (
-                    <NavLink
+                    <AmeNavLink
                         key={item.label}
                         label={
                             <Group
@@ -62,21 +63,19 @@ export const Navbar = () => {
                     >
                         {leftSideBarWidth >= 100 &&
                             item.links.map((link, linkIndex) => (
-                                <NavLink
+                                <AmeNavLink
                                     key={linkIndex}
                                     label={link.label}
                                     component={Link}
                                     href={link.link}
-                                    mt={linkIndex === 0 ? 0 : 0}
                                     style={{
                                         borderRadius: theme.radius.sm,
-                                        backgroundColor: link.link === pathname ? theme.colors.gray[3] : "inherit",
-                                        color: link.link === pathname ? theme.colors.dark[8] : "inherit",
-                                        fontWeight: link.link === pathname ? 600 : "normal",
+                                        paddingTop: 4,
+                                        paddingBottom: 4,
                                     }}
                                 />
                             ))}
-                    </NavLink>
+                    </AmeNavLink>
                 ))}
             </AppShell.Section>
 
