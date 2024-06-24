@@ -14,7 +14,7 @@ const BrokerTest = () => {
     const brokers = useRecoilValue(brokersAtom);
 
     useEffect(() => {
-        setBrokerId(brokers.filter((broker) => value.includes(broker.name)).map(b => b.id));
+        setBrokerId(brokers.filter((broker) => value.includes(broker.displayName)).map(b => b.id));
     }, [value]);
 
     return (

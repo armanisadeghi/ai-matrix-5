@@ -3,13 +3,13 @@ import React from 'react'
 import { Button, Center, Space, Stack } from '@mantine/core'
 import Link from 'next/link'
 import { IconArrowLeft, IconArrowRight } from '@tabler/icons-react'
-import { BrokerEditForm } from '../BrokerEditForm'
+import { BrokerForm } from '@/components/Brokers/BrokerForm';
 
 const EditBrokerPage = ({ params }: { params: { id: string } }) => {
     return (
         <Stack>
             <Center>
-                <Link href="brokers">
+                <Link href="/dashboard/matrix-engine/brokers">
                     <Button
                         variant="light"
                         leftSection={<IconArrowLeft size={14} />}
@@ -18,7 +18,7 @@ const EditBrokerPage = ({ params }: { params: { id: string } }) => {
                     </Button>
                 </Link>
                 <Space w="md" />
-                <Link href="broker-test">
+                <Link href="/dashboard/matrix-engine/brokers/test">
                     <Button
                         variant="light"
                         rightSection={<IconArrowRight size={14} />}
@@ -27,7 +27,7 @@ const EditBrokerPage = ({ params }: { params: { id: string } }) => {
                     </Button>
                 </Link>
             </Center>
-            <BrokerEditForm id={params.id as string} />
+            <BrokerForm id={params.id as string} />
         </Stack>
     )
 }

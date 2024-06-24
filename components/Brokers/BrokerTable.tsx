@@ -1,16 +1,20 @@
 import { useState } from 'react';
-import { ActionIcon, Box, Group, Tooltip } from '@mantine/core';
-import { IconEdit, IconEye, IconTrash } from '@tabler/icons-react';
-import { DataTable, DataTableColumn, DataTableSortStatus, useDataTableColumns } from 'mantine-datatable';
+import { ActionIcon, Group, Tooltip } from '@mantine/core';
+import { IconEdit, IconTrash } from '@tabler/icons-react';
+import { DataTable, DataTableColumn, DataTableSortStatus } from 'mantine-datatable';
 import { Broker } from '@/types/broker';
 import { createBrokerManager } from '@/services/brokerService';
 import { Notifications } from '@mantine/notifications';
 import { useRouter } from 'next/navigation';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { filteredAndSortedDataSelector, sortingAtom } from '@/context/atoms/brokerAtoms';
 
 const PAGE_SIZE = 20;
 
-const BrokerTable = ({ brokers, setFilteredBrokers }: { brokers: Broker[], setFilteredBrokers: React.Dispatch<React.SetStateAction<Broker[]>> }) => {
+const BrokerTable = () => {
     const brokerManager = createBrokerManager();
+    const filteredAndSortedData = useRecoilValue<Broker[]>(filteredAndSortedDataSelector);
+    const setSortedData = useSetRecoilState(sortingAtom);
     const router = useRouter()
     const [page, setPage] = useState(1);
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus<Broker>>({
@@ -19,22 +23,19 @@ const BrokerTable = ({ brokers, setFilteredBrokers }: { brokers: Broker[], setFi
     });
     const key = 'resize-example';
 
-    const handleDelete = async (broker: any) => {
+    const handleDelete = async (broker: Broker) => {
         await brokerManager.deleteBroker(broker.id);
-        setFilteredBrokers(brokers.filter((broker) => broker.id !== broker.id));
         Notifications.show({
             title: 'Broker Deleted',
-            message: `${broker.name} has been deleted.`,
+            message: `${broker.displayName} has been deleted.`,
         })
     };
 
     const columns: DataTableColumn<Broker>[] = [
-        { accessor: 'name', title: 'Broker Name', sortable: true, resizable: true },
+        { accessor: 'displayName', title: 'Broker Name', sortable: true, resizable: true },
         { accessor: 'dataType', title: 'Data Type', width: 160, sortable: true, resizable: true },
-        { accessor: 'component.type', title: 'Component', width: 160, sortable: true, resizable: true },
-        { accessor: 'category', title: 'Category', width: 160, sortable: true, resizable: true },
+        { accessor: 'componentType', title: 'Component', width: 160, sortable: true, resizable: true },
         { accessor: 'description', title: 'Description', resizable: true },
-        { accessor: 'component.defaultValue', title: 'Default Value', width: 160, resizable: true },
         {
             accessor: 'actions',
             title: 'Action',
@@ -56,25 +57,26 @@ const BrokerTable = ({ brokers, setFilteredBrokers }: { brokers: Broker[], setFi
         },
     ];
 
-    const handleEdit = (broker: any) => {
+    const handleEdit = (broker: Broker) => {
         router.push(`brokers/edit/${broker.id}`)
     }
 
     const handleSortChange = (newSortStatus: DataTableSortStatus<Broker>) => {
         setSortStatus(newSortStatus);
+        setSortedData({ column: newSortStatus.columnAccessor as 'displayName' | 'dataType' | 'componentType', direction: newSortStatus.direction });
     };
 
     return (
         <DataTable
-            striped={true}
-            totalRecords={brokers.length}
+            striped
+            totalRecords={filteredAndSortedData.length}
             minHeight={400}
             maxHeight={1000}
             highlightOnHover
             page={page}
             onPageChange={setPage}
             recordsPerPage={PAGE_SIZE}
-            records={brokers}
+            records={filteredAndSortedData}
             columns={columns}
             sortStatus={sortStatus}
             onSortStatusChange={handleSortChange}

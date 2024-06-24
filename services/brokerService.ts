@@ -1,73 +1,60 @@
 import { createClient } from '@supabase/supabase-js';
-import { Broker, dataType } from "@/types/broker";
-import { brokersAtom, categoryAtom, brokerAtom } from 'context/atoms/brokerAtoms';
+import { Broker } from "@/types/broker";
+import { brokersAtom } from 'context/atoms/brokerAtoms';
 import { useSetRecoilState } from 'recoil';
-import { uuid } from 'uuidv4';
 
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,);
 
 export function createBrokerManager() {
     const setBrokersAtom = useSetRecoilState(brokersAtom);
-    const setCategoriesAtom = useSetRecoilState(categoryAtom);
-    const setBrokerAtom = (id: string) => useSetRecoilState(brokerAtom(id));
-
-    async function fetchBrokers(): Promise<Broker[]> {
+    async function fetchBrokers(): Promise<{brokers: Broker[], dataTypes: string[]}> {
         const { data, error } = await supabase
             .from('broker')
             .select('*');
 
         if (error) {
             console.error('Error fetching brokers:', error);
-            return [];
+            return {brokers: [], dataTypes: []};
         }
 
-        const brokers = data.map((broker) => ({
+        const brokers = data.map((broker: any) => ({
             ...broker,
-            name: broker.name || broker.component.label,
-            dataType: dataType[broker.data_type],
-            description: broker.description || broker.component.description,
+            displayName: broker.display_name,
+            officialName: broker.official_name,
+            dataType: broker.data_type,
+            componentType: broker.component_type,
+            validationRules: broker.validation_rules,
+            sampleEntries: broker.sample_entries,
+            tooltip: broker.tooltip
         }));
 
-        setBrokersAtom(brokers);
-        return brokers;
-    }
-
-    async function fetchCategories(): Promise<string[]> {
-        const { data, error } = await supabase
-            .from('category')
-            .select('*');
-
-        if (error) {
-            console.error('Error fetching categories:', error);
-            return [];
-        }
-        setCategoriesAtom(data.map((category) => category.name));
-
-        return data.map((category) => category.name);
+        setBrokersAtom(brokers as Broker[]);
+        const dataTypes = [...new Set(brokers.map((broker: Broker) => broker.dataType))].filter((dataType: string) => dataType).sort();
+        return {brokers, dataTypes};
     }
 
     async function createBroker(broker: Broker) {
-        const brokerId = uuid();
         const { data, error } = await supabase
             .from('broker')
             .insert({
-                user_id: '3dba9e59-fcb6-4242-b584-a4e7370df940',
-                id: brokerId,
-                name: broker.name,
+                user_id: "auth0|66703ee194d1babea158813d",
+                id: broker.id,
+                display_name: broker.displayName,
                 official_name: broker.officialName,
                 description: broker.description,
-                default_value: broker.component.defaultValue,
-                component: broker.component,
+                component_type: broker.componentType,
                 data_type: broker.dataType,
-                category: "custom",
+                validation_rules: broker.validationRules,
+                sample_entries: broker.sampleEntries,
+                tooltip: broker.tooltip
             });
 
         if (error) {
             console.error('Error creating broker:', error);
             return broker;
         }
-        setBrokersAtom((prevBrokers) => [...prevBrokers, { ...broker, id: brokerId }]);
+        setBrokersAtom((prevBrokers) => [...prevBrokers, broker]);
         return data;
     }
 
@@ -80,7 +67,6 @@ export function createBrokerManager() {
             console.error('Error fetching broker:', error);
             return null;
         }
-        setBrokerAtom(data[0].id)(data[0]);
         return data[0];
     }
 
@@ -88,13 +74,14 @@ export function createBrokerManager() {
         const { data, error } = await supabase
             .from('broker')
             .update({
-                name: broker.name,
+                display_name: broker.displayName,
                 official_name: broker.officialName,
                 description: broker.description,
-                default_value: broker.component.defaultValue,
-                component: broker.component,
+                component_type: broker.componentType,
                 data_type: broker.dataType,
-                category: "custom",
+                validation_rules: broker.validationRules,
+                sample_entries: broker.sampleEntries,
+                tooltip: broker.tooltip
             })
             .eq('id', broker.id);
 
@@ -121,5 +108,5 @@ export function createBrokerManager() {
             prevBrokers.filter((prevBroker) => prevBroker.id !== brokerId)
         );
     }
-    return { fetchBrokers, createBroker, updateBroker, deleteBroker, fetchCategories, getBrokerById };
+    return { fetchBrokers, createBroker, updateBroker, deleteBroker, getBrokerById };
 }

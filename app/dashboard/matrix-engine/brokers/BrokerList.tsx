@@ -31,7 +31,7 @@ const BrokerList = ({ brokers }: { brokers: Broker[] }) => {
         brokers.filter((broker) => broker.id !== broker.id);
         Notifications.show({
             title: "Broker Deleted",
-            message: `${broker.name} has been deleted.`,
+            message: `${broker.displayName} has been deleted.`,
         })
     };
 

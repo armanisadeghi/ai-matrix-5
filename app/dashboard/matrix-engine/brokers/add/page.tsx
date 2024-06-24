@@ -1,10 +1,14 @@
-import React from 'react'
+"use client";
+import React, { useEffect } from 'react'
 import { Button, Center, Space, Stack } from '@mantine/core'
 import Link from 'next/link'
 import { IconArrowLeft, IconArrowRight } from '@tabler/icons-react'
-import { BrokerCreateForm } from './BrokerCreateForm'
+import { BrokerForm } from '@/components/Brokers/BrokerForm'
+import { uuid } from 'uuidv4';
 
 const AddBrokerPage: React.FC = () => {
+    const id = uuid();
+
     return (
         <Stack>
             <Center>
@@ -17,7 +21,7 @@ const AddBrokerPage: React.FC = () => {
                     </Button>
                 </Link>
                 <Space w="md" />
-                <Link href="broker-test">
+                <Link href="test">
                     <Button
                         variant="light"
                         rightSection={<IconArrowRight size={14} />}
@@ -26,7 +30,7 @@ const AddBrokerPage: React.FC = () => {
                     </Button>
                 </Link>
             </Center>
-            <BrokerCreateForm />
+            <BrokerForm id={id} />
         </Stack>
     )
 }

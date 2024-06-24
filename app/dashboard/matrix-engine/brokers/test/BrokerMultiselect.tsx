@@ -1,5 +1,5 @@
 "use client";
-import { brokersAtom } from '@/context/atoms/brokerAtoms';
+import { brokersAtom } from '@/context/atoms';
 import { CheckIcon, Combobox, Group, Input, Pill, PillsInput, useCombobox } from '@mantine/core';
 import { useRecoilValue } from 'recoil';
 
@@ -29,10 +29,10 @@ export function BrokerMultiSelect({ value, setValue }: any) {
     ));
 
     const options = brokers.map((item) => (
-        <Combobox.Option value={item.name} key={item.id} active={value.includes(item.name)}>
+        <Combobox.Option value={item.displayName} key={item.id} active={value.includes(item.displayName)}>
             <Group gap="sm">
-                {value.includes(item.name) ? <CheckIcon size={12} /> : null}
-                <span>{item.name}</span>
+                {value.includes(item.displayName) ? <CheckIcon size={12} /> : null}
+                <span>{item.displayName}</span>
             </Group>
         </Combobox.Option>
     ));

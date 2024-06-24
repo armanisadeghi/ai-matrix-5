@@ -1,11 +1,11 @@
 "use client";
 
-import { Button, Center, Container, Flex, Grid, Paper, Space, Stack } from '@mantine/core';
-import BrokerComponent from '../BrokerComponent';
+import { Button, Container, Flex, Paper, Space } from '@mantine/core';
 import { Broker } from '@/types/broker';
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { brokersAtom } from '@/context/atoms/brokerAtoms';
+import BrokerComponent from '@/components/Brokers/BrokerComponent';
 
 export const BrokerFormComponent = ({ brokerIds }: { brokerIds: string[] }) => {
     const brokers = useRecoilValue(brokersAtom);
@@ -15,7 +15,6 @@ export const BrokerFormComponent = ({ brokerIds }: { brokerIds: string[] }) => {
     useEffect(() => {
         const brokerData = brokers.filter((broker) => brokerIds.includes(broker.id));
         setIdBrokers(brokerData);
-        setValues(brokerData.map(b => ({ [b.id]: b.component.defaultValue })));
     }, [brokerIds]);
 
     const handleDefaultValueChange = (value: any, broker: Broker) => {
@@ -23,10 +22,10 @@ export const BrokerFormComponent = ({ brokerIds }: { brokerIds: string[] }) => {
             const brokerIndex = prevValues.findIndex(b => b[broker.id] !== undefined);
             if (brokerIndex !== -1) {
                 const updatedValues = [...prevValues];
-                updatedValues[brokerIndex] = { [broker.id]: value ? value : broker.component.defaultValue };
+                updatedValues[brokerIndex] = { [broker.id]: value };
                 return updatedValues;
             } else {
-                return [...prevValues, { [broker.id]: value ? value : broker.component.defaultValue }];
+                return [...prevValues, { [broker.id]: value }];
             }
         });
     };
@@ -41,10 +40,8 @@ export const BrokerFormComponent = ({ brokerIds }: { brokerIds: string[] }) => {
                 {idBrokers.map((broker) => (
                     <Paper p='md' key={broker.id}>
                         <BrokerComponent
-                            currentComponent={broker.component}
-                            type={broker.component.type}
-                            handleDefaultValueChange={(value: any) => handleDefaultValueChange(value, broker)}
-                        />
+                            type={broker.componentType}
+                            handleDefaultValueChange={(value: any) => handleDefaultValueChange(value, broker)} id={broker.id} />
                     </Paper>
                 ))}
             </Paper>

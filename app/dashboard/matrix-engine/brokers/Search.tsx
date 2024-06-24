@@ -2,17 +2,14 @@ import React, { useState } from 'react';
 import { TextInput } from '@mantine/core';
 import { Broker } from '@/types/broker';
 import { IconSearch } from '@tabler/icons-react';
+import { seachQueryAtom } from '@/context/atoms';
+import { useRecoilState } from 'recoil';
 
-const SearchComponent = ({ brokersList, setFilteredBrokers }: { brokersList: Broker[], setFilteredBrokers: React.Dispatch<React.SetStateAction<Broker[]>> }) => {
-    const [value, setValue] = useState('');
+const SearchComponent = () => {
+    const [filtering, setFiltering] = useRecoilState(seachQueryAtom);
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const searchInput = e.target.value.toLowerCase();
-        setValue(searchInput);
-
-        setFilteredBrokers(brokersList.filter((broker) =>
-            broker.name.toLowerCase().includes(searchInput)
-        ))
+        setFiltering(e.target.value);
     };
 
     return (
@@ -20,7 +17,7 @@ const SearchComponent = ({ brokersList, setFilteredBrokers }: { brokersList: Bro
             w={'100%'}
             leftSection={<IconSearch size={14} />}
             placeholder="Search for name..."
-            value={value}
+            value={filtering}
             onChange={handleSearchChange}
         />
     );
