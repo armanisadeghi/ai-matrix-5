@@ -1,6 +1,7 @@
 import { Container, Title, Button, Group, Text, Transition } from "@mantine/core";
-import classes from "./heroBanner.module.css";
 import React, { useEffect, useState } from "react";
+
+import classes from "./heroBanner.module.css";
 
 const videoSrc = `${process.env.PUBLIC_URL}/assets/videos/art_of_the_possible-1080p.mp4`;
 

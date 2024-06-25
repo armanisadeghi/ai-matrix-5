@@ -1,6 +1,7 @@
 import { Box, Title, Text, Container, Button } from "@mantine/core";
+import { useScrollAnimation } from "@/hooks/annimation/useScrollAnimation";
+
 import classes from "./simpleContent.module.css";
-import { useScrollAnimation } from "../../hooks/useScrollAnimation";
 
 export function SimpleContent() {
     const elementsRef = useScrollAnimation(250);

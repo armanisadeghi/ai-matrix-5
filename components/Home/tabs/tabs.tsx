@@ -1,6 +1,7 @@
 import { Box, Container, Tabs, Title, Text, Button } from "@mantine/core";
+import { useScrollAnimation } from "@/hooks/annimation/useScrollAnimation";
+
 import classes from "./tabs.module.css";
-import { useScrollAnimation } from "../../hooks/useScrollAnimation";
 
 export function TabSection() {
     const elementsRef = useScrollAnimation(250);

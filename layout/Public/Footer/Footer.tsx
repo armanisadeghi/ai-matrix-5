@@ -1,6 +1,5 @@
 import { Container, Title, Grid, Anchor, Text } from "@mantine/core";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLinkedinIn } from "@fortawesome/free-brands-svg-icons";
+import { IconBrandLinkedin } from "@tabler/icons-react";
 import classes from "./Footer.module.css";
 
 export function Footer() {
@@ -76,7 +75,7 @@ export function Footer() {
                                             className={classes.brandsLinkidin}
                                         >
                                             {/* <i className="fab fa-linkedin-in" aria-hidden="true"></i> */}
-                                            <FontAwesomeIcon icon={faLinkedinIn} />
+                                            <IconBrandLinkedin />
                                         </Anchor>
                                     </li>
                                     <li>

@@ -1,8 +1,9 @@
 import { Box, Title } from "@mantine/core";
-import classes from "./features.module.css";
 import RightImageLeftContent from "./right-image-left-content/right-image-left-content";
 import LeftImageRightContent from "./left-image-right-content/left-image-right-content";
 import { useScrollAnimation } from "@/hooks/annimation/useScrollAnimation";
+
+import classes from "./features.module.css";
 
 const rightImgleftDataFirst = {
     content: {

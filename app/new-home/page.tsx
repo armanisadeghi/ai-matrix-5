@@ -11,6 +11,8 @@ import {
     TestimonialCarousel,
 } from "@/components";
 
+import "./styles.css";
+
 function NewHomePage() {
     return (
         <>

@@ -1,9 +1,10 @@
 import { Box, Title, Text, Container, TextInput, Button, Fieldset, Dialog, Anchor } from "@mantine/core";
 import { ChangeEvent, FormEvent, useState } from "react";
+import { useDisclosure } from "@mantine/hooks";
+import { useScrollAnimation } from "@/hooks/annimation/useScrollAnimation";
+
 import "@mantine/carousel/styles.css";
 import classes from "./contactForm.module.css";
-import { useDisclosure } from "@mantine/hooks";
-import { useScrollAnimation } from "../../hooks/useScrollAnimation";
 
 interface FormData {
     firstName: string;

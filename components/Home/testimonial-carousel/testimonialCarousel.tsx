@@ -1,8 +1,9 @@
 import { Box, Title, Text, Container, Image } from "@mantine/core";
-import classes from "./testimonialCarousel.module.css";
 import { Carousel } from "@mantine/carousel";
+import { useScrollAnimation } from "@/hooks/annimation/useScrollAnimation";
+
+import classes from "./testimonialCarousel.module.css";
 import "@mantine/carousel/styles.css";
-import { useScrollAnimation } from "../../hooks/useScrollAnimation";
 
 interface CardProps {
     image: string;

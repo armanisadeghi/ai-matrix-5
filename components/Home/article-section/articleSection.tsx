@@ -1,9 +1,10 @@
 import { Box, Title, Container, Image, Text, useMantineTheme, Anchor, Button } from "@mantine/core";
 import { Carousel } from "@mantine/carousel";
 import "@mantine/carousel/styles.css";
-import classes from "./articleSection.module.css";
 import { useMediaQuery } from "@mantine/hooks";
-import { useScrollAnimation } from "../../hooks/useScrollAnimation";
+
+import classes from "./articleSection.module.css";
+import { useScrollAnimation } from "@/hooks/annimation/useScrollAnimation";
 
 interface CardProps {
     image: string;
