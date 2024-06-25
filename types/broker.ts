@@ -78,6 +78,7 @@ export interface Component {
 
 export enum ComponentType {
     Input = 'input',
+    NumberInput = 'number-input',
     Textarea = 'textarea',
     Slider = 'slider',
     YesNo = 'yes-no',

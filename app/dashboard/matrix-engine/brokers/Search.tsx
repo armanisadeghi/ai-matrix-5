@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { TextInput } from '@mantine/core';
-import { Broker } from '@/types/broker';
 import { IconSearch } from '@tabler/icons-react';
 import { seachQueryAtom } from '@/context/atoms';
 import { useRecoilState } from 'recoil';

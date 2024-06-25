@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Fieldset, Space, TextInput, Grid, Select, Tooltip } from '@mantine/core';
+import { Button, Fieldset, Space, TextInput, Grid, Select, Tooltip, Textarea } from '@mantine/core';
 import { ComponentType, Broker } from '@/types/broker';
 import { brokersAtom, componentAtomFamily } from '@/context/atoms/brokerAtoms';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
@@ -124,7 +124,7 @@ export const BrokerForm = ({ id }: BrokerFormProps) => {
                     <Tooltip label={dataTypeOptions.find((option) => option.value === currentData!.dataType)?.tooltip}>
                         <Select label="Data type" data={dataTypeOptions} value={currentData!.dataType} onChange={(value) => handleDataTypeChange(value)} /></Tooltip>
                     <Space h="sm" />
-                    <TextInput label="Description" value={currentData.description}
+                    <Textarea resize='both' label="Description" value={currentData.description}
                         onChange={value => handleValueChange('description', value.target.value)} placeholder='Enter a description' />
                     <Space h="sm" />
                     <Select label="Type" description="Choose the type of component" placeholder="Choose the type of component" data={componentOptions} value={currentData.componentType}

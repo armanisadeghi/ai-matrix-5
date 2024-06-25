@@ -1,13 +1,15 @@
 import { createClient } from '@supabase/supabase-js';
-import { Broker } from "@/types/broker";
-import { brokersAtom } from 'context/atoms/brokerAtoms';
-import { useSetRecoilState } from 'recoil';
+import { Broker, Component } from "@/types/broker";
+import { brokersAtom, componentAtomFamily, componentsAtom, selectedComponentSelector} from 'context/atoms/brokerAtoms';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,);
 
 export function createBrokerManager() {
     const setBrokersAtom = useSetRecoilState(brokersAtom);
+    const setComponents = useSetRecoilState(componentsAtom);
+
     async function fetchBrokers(): Promise<{brokers: Broker[], dataTypes: string[]}> {
         const { data, error } = await supabase
             .from('broker')
@@ -31,6 +33,11 @@ export function createBrokerManager() {
 
         setBrokersAtom(brokers as Broker[]);
         const dataTypes = [...new Set(brokers.map((broker: Broker) => broker.dataType))].filter((dataType: string) => dataType).sort();
+
+        const validationRules = brokers.map((broker: Broker) => ({id: broker.id, label: broker.displayName, type: broker.componentType, description: broker.description, tooltip: broker.tooltip, validationRules: JSON.parse(broker.validationRules || '{}')})) as Component[]; 
+        
+        setComponents((prev) => [...prev, ...validationRules]); 
+
         return {brokers, dataTypes};
     }
 

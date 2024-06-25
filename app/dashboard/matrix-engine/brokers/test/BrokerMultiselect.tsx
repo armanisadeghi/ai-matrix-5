@@ -1,4 +1,3 @@
-"use client";
 import { brokersAtom } from '@/context/atoms';
 import { CheckIcon, Combobox, Group, Input, Pill, PillsInput, useCombobox } from '@mantine/core';
 import { useRecoilValue } from 'recoil';

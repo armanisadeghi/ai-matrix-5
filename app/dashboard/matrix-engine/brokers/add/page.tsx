@@ -1,11 +1,9 @@
-"use client";
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Button, Center, Space, Stack } from '@mantine/core'
 import Link from 'next/link'
 import { IconArrowLeft, IconArrowRight } from '@tabler/icons-react'
 import { BrokerForm } from '@/components/Brokers/BrokerForm'
-import { uuid } from 'uuidv4';
-
+import { v4 as uuid } from "uuid"
 const AddBrokerPage: React.FC = () => {
     const id = uuid();
 

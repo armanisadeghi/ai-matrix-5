@@ -1,4 +1,3 @@
-"use client";
 import React from 'react'
 import { Button, Center, Space, Stack } from '@mantine/core'
 import Link from 'next/link'

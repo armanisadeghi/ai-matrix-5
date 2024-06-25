@@ -218,6 +218,9 @@ importers:
       openai:
         specifier: ^4.50.0
         version: 4.51.0
+      pnpm:
+        specifier: ^9.4.0
+        version: 9.4.0
       postcss-import:
         specifier: ^16.1.0
         version: 16.1.0(postcss@8.4.38)
@@ -5538,6 +5541,11 @@ packages:
   pnp-webpack-plugin@1.7.0:
     resolution: {integrity: sha512-2Rb3vm+EXble/sMXNSu6eoBx8e79gKqhNq9F5ZWW6ERNCTE/Q0wQNne5541tE5vKjfM8hpNCYL+LGc1YTfI0dg==}
     engines: {node: '>=6'}
+
+  pnpm@9.4.0:
+    resolution: {integrity: sha512-9Um4pSydK4U2di+ZwHIiBe/Fr5E+d4NdvMw7CwssqefcgCK3gGLBcpHEjoh0nHDOiOtadPH6jEv14Yu0bIvYOg==}
+    engines: {node: '>=18.12'}
+    hasBin: true
 
   polished@4.3.1:
     resolution: {integrity: sha512-OBatVyC/N7SCW/FaDHrSd+vn0o5cS855TOmYi4OkdWUMSJCET/xip//ch8xGUvtr3i44X9LVyWwQlRMTN3pwSA==}
@@ -13321,6 +13329,8 @@ snapshots:
       ts-pnp: 1.2.0(typescript@5.4.5)
     transitivePeerDependencies:
       - typescript
+
+  pnpm@9.4.0: {}
 
   polished@4.3.1:
     dependencies:

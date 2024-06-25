@@ -1,5 +1,3 @@
-"use client";
-
 import { Paper, SimpleGrid, Textarea } from '@mantine/core';
 import { Broker } from '@/types/broker';
 import BrokerComponent from '@/components/Brokers/BrokerComponent';

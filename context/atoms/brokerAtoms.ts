@@ -63,6 +63,19 @@ export const filteredAndSortedDataSelector = selector({
     }
 });
 
+export const componentsAtom = atom<Component[]>({
+    key: 'ComponentsAtom',
+    default: [],
+});
+
+export const selectedComponentSelector = selectorFamily<Component, string>({
+    key: 'SelectedComponentSelector',
+    get: (id) => ({ get }) => {
+        const components = get(componentsAtom);
+        return components.find((component) => component.id === id) || componentAtomFamily(id);
+    },
+});
+
 export const componentAtomFamily = atomFamily<Component, string>({
     key: 'ComponentAtomFamily',
     default: (id) => ({
@@ -78,12 +91,4 @@ export const componentAtomFamily = atomFamily<Component, string>({
         tooltip: '',
         withArrow: false,
     }),
-});
-
-export const selectedComponentSelector = selectorFamily<Component, string>({
-    key: 'SelectedComponentSelector',
-    get: (id) => ({ get }) => {
-        const component = get(componentAtomFamily(id));
-        return component;
-    },
 });
