@@ -93,6 +93,7 @@ export function Header({ tabletMatch }: Props) {
 
             {/* Center Section */}
             <Group
+                visibleFrom="lg"
                 style={{
                     flex: 1,
                     justifyContent: "center",
