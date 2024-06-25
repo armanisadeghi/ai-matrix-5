@@ -65,18 +65,16 @@ export const unknownUser: MatrixUser = {
     last_activity: null,
 };
 
-
-
 export const guestUserProfile: MatrixUser = {
     matrix_id: null,
     auth0_id: null,
     auth0_sid: null,
-    first_name: 'Guest',
-    last_name: 'User',
+    first_name: "Guest",
+    last_name: "User",
     email: null,
     email_verified: null,
-    full_name: 'Guest User',
-    nickname: 'guest',
+    full_name: "Public User",
+    nickname: "guest",
     picture: null,
     preferred_picture: null,
     updated_at: null,

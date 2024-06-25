@@ -1,0 +1,311 @@
+.siteFooter, .colophon {
+    padding-top: 32px;
+    padding-bottom: 32px;
+    background-color: #000000;
+
+    @media (min-width: 768px) {
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
+
+    @media (min-width: 1800px) {
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+}
+
+.colophon {
+    color: #747272;
+    font-size: .9em !important;
+    text-align: center;
+
+    @media only screen and (min-width: 768px){
+        text-align: left;
+    }
+
+    @media only screen and (min-width: 768px){
+        font-size: 18px !important;
+    }
+}
+
+.myContainer {
+    padding-inline: 12px !important;
+    /* padding-inline: calc(var(--mantine-spacing-lg)* 6.25) !important; */
+    width: 100%;
+    @media (min-width: 450px) {
+      padding-inline: 24px !important;
+    }
+    @media (min-width: 576px) {
+      padding-inline: 12px !important;
+      max-width: 540px !important;
+    }
+    @media (min-width: 768px) {
+      max-width: 720px !important;
+    }
+    @media (min-width: 992px) {
+      max-width: 960px !important;
+    }
+    @media (min-width: 1200px) {
+      max-width: 1140px !important;
+    }
+    @media (min-width: 1400px) {
+      max-width: 1320px !important;
+    }
+    @media (min-width: 1800px) {
+      padding-inline: 15px !important;
+    }
+    @media (min-width: 1900px) {
+      max-width: 1700px !important;
+    }
+}
+
+.colophonRow {
+    position: relative;
+    justify-content: space-between;
+    /* display: flex;
+    flex-wrap: wrap; */
+}
+
+.colophonRow::before {
+    content: "";
+    display: block;
+    width: calc(100% - 1.5rem) !important;
+    height: .063rem;
+    position: absolute;
+    top: calc(-1* 2.5rem);
+    left: calc(1.5rem* 0.5);
+    background: #272727;
+
+    @media (min-width: 1025px) {
+        width: calc(100% - 30px) !important;
+        height: 1.2px;
+        top: calc(-1* 50px);
+        left: calc(30px* 0.5);
+    }
+}
+
+/* .row {
+    display: flex;
+    flex-wrap: wrap;
+} */
+
+.footerLinks {
+    display: flex;
+    justify-content: center;
+    gap: 4rem;
+    padding: 0 !important;
+    padding-inline: 12px !important;
+
+    @media only screen and (min-width: 768px) {
+        justify-content: flex-start;
+        flex: 0 0 auto;
+        width: 50%;
+        padding-inline: 15px !important;
+    }
+}
+
+.footerContact {
+    padding: 0 !important;
+    padding-inline: 12px !important;
+    margin-bottom: 2rem;
+
+    @media only screen and (max-width: 767px) {
+        align-items: center !important;
+        justify-content: center !important;
+        flex-basis: auto !important;
+        order: -1 !important;
+    }
+
+    @media only screen and (min-width: 768px) {
+        text-align: right;
+        margin-bottom: 0;
+        flex: 0 0 auto;
+        width: 50%;
+        padding-inline: 15px !important;
+    }
+}
+
+.footerSocials {
+    list-style: none;
+    margin: 0;
+    padding-left: 0;
+    display: flex;
+
+    font-size: 2.25rem !important;
+    gap: 2rem;
+
+    @media only screen and (min-width: 768px) {
+        justify-content: flex-end;
+    }
+
+    @media only screen and (min-width: 1025px) {
+        font-size: 45px !important;
+        gap: 40px !important;
+    }
+
+    li {
+        margin-bottom: .25em;
+
+        @media only screen and (min-width: 1025px) {
+            margin-bottom: 5px;
+        }
+    }
+
+    a {
+        color: #444444 !important;
+    }
+}
+
+.brandsX {
+    display: block !important;
+    width: 2em;
+    height: 2em;
+    @media only screen and (min-width: 1025px) {
+        width: 36px;
+        height: 36px;
+    }
+
+    svg {
+        width: 100%;
+        padding-bottom: .2em;
+        margin-top: 0.25rem;
+
+        @media only screen and (min-width: 1025px) {
+            padding-bottom: 9px;
+            margin-top: 5px;
+        }
+    }
+}
+
+.brandsLinkidin {
+    display: block !important;
+    width: 2em !important;
+    height: 2em !important;
+    @media only screen and (min-width: 1025px) {
+        width: 38px !important;
+        height: 45px !important;
+    }
+
+    svg {
+        width: 2.25em !important;
+        height: 2.25em !important;
+        padding-bottom: .2em;
+
+        @media only screen and (min-width: 1025px) {
+            padding-bottom: 9px;
+            width: 38px !important;
+            height: 45px !important;
+        }
+    }
+}
+
+.navTitle {
+    color: #b9b9b9;
+    margin-bottom: 1em !important;
+    margin-top: 2rem !important;
+    font-size: 1rem !important;
+    font-family:  var(--mantine-font-family) !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.025em;
+    clear: both;
+
+    @media only screen and (min-width: 1025px) {
+        margin-top: 40px;
+        margin-bottom: 20px;
+        font-size: 20px !important;
+    }
+}
+
+.navFooter {
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+    li {
+        line-height: 1.1 !important;
+        margin-bottom: 1em;
+        @media only screen and (min-width: 1025px) {
+            margin-bottom: 20px; 
+        }
+    }
+    li a {
+        color: #b9b9b9;
+        text-decoration: none;
+        font-size: 1rem !important;
+        font-family:  var(--mantine-font-family) !important;
+        letter-spacing: -0.025em;
+        line-height: 1.1 !important;
+        clear: both;
+        @media only screen and (min-width: 1025px) {
+            font-size: 20px !important;
+        }
+    }
+
+    a:hover {
+        text-decoration: none !important;
+        color: #ffffff !important;
+    }
+}
+
+.siteInfo {
+    padding: 0 !important;
+    padding-inline: 12px;
+    font-size: 0.9em !important;
+
+    @media (min-width: 1025px) {
+        padding-inline: 15px;
+        font-size: 18px !important;
+    }
+}
+
+.address {
+    padding: 0 !important;
+    padding-inline: 12px;
+    font-size: 0.9em !important;
+
+    @media (min-width: 1025px) {
+        padding-inline: 15px;
+        font-size: 18px !important;
+    }
+}
+
+.siteInfoTextFirst {
+    font-size: 0.9em !important;
+
+    @media (min-width: 1025px) {
+        font-size: 18px !important;
+    }
+}
+
+.siteInfoTextTwo {
+    font-size: 0.9em !important;
+    margin-bottom: 1.5em;
+
+    @media (min-width: 1025px) {
+        font-size: 18px !important;
+        margin-bottom: 30px;
+    }
+}
+
+.addressText {
+    font-size: 0.9rem !important;
+    margin-bottom: 1.5em;
+    text-align: right;
+
+    @media (min-width: 1025px) {
+        font-size: 18px !important;
+        margin-bottom: 30px;
+    }
+}
+
+@media (min-width: 1025px) {
+    .colophonRow::before {
+        /* width: calc(100% - 24px) !important; */
+        width: calc(100% + 10px) !important;
+        height: 1.2px;
+        top: calc(-1* 40px);
+        /* left: calc(20px* 0.5); */
+        left: 0;
+    }
+}

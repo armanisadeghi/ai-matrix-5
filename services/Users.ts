@@ -21,11 +21,11 @@ export interface AuthProfile {
 }
 
 export const guestUserProfile: AuthProfile = {
-    given_name: 'Guest',
+    given_name: 'Public',
     family_name: 'User',
     email: null,
     email_verified: null,
-    name: 'Guest User',
+    name: 'Public User',
     nickname: 'guest',
     picture: null,
     sub: null,

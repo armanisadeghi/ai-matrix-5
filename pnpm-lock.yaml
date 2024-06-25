@@ -185,6 +185,9 @@ importers:
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
+      embla-carousel-autoplay:
+        specifier: ^8.1.5
+        version: 8.1.5(embla-carousel@8.1.5)
       embla-carousel-react:
         specifier: ^8.1.4
         version: 8.1.5(react@18.3.1)
@@ -336,6 +339,9 @@ importers:
       postcss:
         specifier: ^8.4.38
         version: 8.4.38
+      postcss-import:
+        specifier: ^16.1.0
+        version: 16.1.0(postcss@8.4.38)
       postcss-preset-mantine:
         specifier: ^1.15.0
         version: 1.15.0(postcss@8.4.38)
@@ -3806,6 +3812,11 @@ packages:
   elliptic@6.5.5:
     resolution: {integrity: sha512-7EjbcmUm17NQFu4Pmgmq2olYMj8nwMnpcddByChSUjArp8F5DQWcIcpriwO4ZToLNAJig0yiyjswfyGNje/ixw==}
 
+  embla-carousel-autoplay@8.1.5:
+    resolution: {integrity: sha512-9pHIezRqiO9yism7wRFwmM1j/W9c9hBNX4hq3F4aTPbK84M0M57ryG8QUwhbsTGJbDoBBVTm//YEd0T6i/5YgA==}
+    peerDependencies:
+      embla-carousel: 8.1.5
+
   embla-carousel-react@8.1.5:
     resolution: {integrity: sha512-xFmfxgJd7mpWDHQ4iyK1Qs+5BTTwu4bkn+mSROKiUH9nKpPHTeilQ+rpeQDCHRrAPeshD67aBk0/p6FxWxXsng==}
     peerDependencies:
@@ -5507,6 +5518,10 @@ packages:
     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
     engines: {node: '>=8.6'}
 
+  pify@2.3.0:
+    resolution: {integrity: sha512-udgsAY+fTnvv7kI7aaxbqwWNb0AHiB0qBO89PZKPkoTmGOgdbrHDKD+0B2X4uTfJ/FT1R09r9gTsjUjNJotuog==}
+    engines: {node: '>=0.10.0'}
+
   pify@4.0.1:
     resolution: {integrity: sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g==}
     engines: {node: '>=6'}
@@ -5542,6 +5557,12 @@ packages:
   possible-typed-array-names@1.0.0:
     resolution: {integrity: sha512-d7Uw+eZoloe0EHDIYoe+bQ5WXnGMOpmiZFTuMWCwpjzzkL2nTjcKiAk4hh8TjnGye2TwWOk3UXucZ+3rbmBa8Q==}
     engines: {node: '>= 0.4'}
+
+  postcss-import@16.1.0:
+    resolution: {integrity: sha512-7hsAZ4xGXl4MW+OKEWCnF6T5jqBw80/EE9aXg1r2yyn1RsVEU8EtKXbijEODa+rg7iih4bKf7vlvTGYR4CnPNg==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      postcss: ^8.0.0
 
   postcss-js@4.0.1:
     resolution: {integrity: sha512-dDLF8pEO191hJMtlHFPRa8xsizHaM82MLfNkUHdUtVEV3tgTp5oj+8qbEqYM57SLfc74KSbw//4SeJma2LRVIw==}
@@ -5924,6 +5945,9 @@ packages:
   react@18.3.1:
     resolution: {integrity: sha512-wS+hAgJShR0KhEvPJArfuPVN1+Hz1t0Y6n5jLrGQbkb4urgPE/0Rve+1kMB1v/oWgHgm4WIcV+i7F2pTVj+2iQ==}
     engines: {node: '>=0.10.0'}
+
+  read-cache@1.0.0:
+    resolution: {integrity: sha512-Owdv/Ft7IjOgm/i0xvNDZ1LrRANRfew4b2prF3OWMQLxLfu3bS8FVhCsrSCMK4lR56Y9ya+AThoTpDCTxCmpRA==}
 
   read-pkg-up@7.0.1:
     resolution: {integrity: sha512-zK0TB7Xd6JpCLmlLmufqykGE+/TlOePD6qKClNW7hHDKFh/J7/7gCWGR7joEQEW1bKq3a3yUZSObOoWLFQ4ohg==}
@@ -11262,6 +11286,10 @@ snapshots:
       minimalistic-assert: 1.0.1
       minimalistic-crypto-utils: 1.0.1
 
+  embla-carousel-autoplay@8.1.5(embla-carousel@8.1.5):
+    dependencies:
+      embla-carousel: 8.1.5
+
   embla-carousel-react@8.1.5(react@18.3.1):
     dependencies:
       embla-carousel: 8.1.5
@@ -13281,6 +13309,8 @@ snapshots:
 
   picomatch@2.3.1: {}
 
+  pify@2.3.0: {}
+
   pify@4.0.1: {}
 
   pirates@4.0.6: {}
@@ -13312,6 +13342,13 @@ snapshots:
       '@babel/runtime': 7.24.7
 
   possible-typed-array-names@1.0.0: {}
+
+  postcss-import@16.1.0(postcss@8.4.38):
+    dependencies:
+      postcss: 8.4.38
+      postcss-value-parser: 4.2.0
+      read-cache: 1.0.0
+      resolve: 1.22.8
 
   postcss-js@4.0.1(postcss@8.4.38):
     dependencies:
@@ -13767,6 +13804,10 @@ snapshots:
   react@18.3.1:
     dependencies:
       loose-envify: 1.4.0
+
+  read-cache@1.0.0:
+    dependencies:
+      pify: 2.3.0
 
   read-pkg-up@7.0.1:
     dependencies:

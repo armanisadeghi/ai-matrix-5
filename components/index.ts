@@ -16,3 +16,4 @@ export * from "./PaymentForm";
 export * from "./UserBillingForm";
 export * from "./ColorSelectionForm";
 export * from "./TableSelectionForm";
+export * from "./Home";

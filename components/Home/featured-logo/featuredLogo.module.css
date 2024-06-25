@@ -1,0 +1,205 @@
+.sectionTitle {
+    padding-top: 64px;
+    padding-bottom: 64px;
+
+    @media (min-width: 768px) {
+        padding-top: 80px;
+        padding-bottom: 80px;
+    }
+
+    @media (min-width: 1800px) {
+        padding-top: 100px;
+        padding-bottom: 100px;
+    }
+}
+
+.myContainer {
+    padding-inline: 12px !important;
+    /* padding-inline: calc(var(--mantine-spacing-lg)* 6.25) !important; */
+    width: 100%;
+    @media (min-width: 450px) {
+      padding-inline: 24px !important;
+    }
+    @media (min-width: 576px) {
+      padding-inline: 12px !important;
+      max-width: 540px !important;
+    }
+    @media (min-width: 768px) {
+      max-width: 720px !important;
+    }
+    @media (min-width: 992px) {
+      max-width: 960px !important;
+    }
+    @media (min-width: 1200px) {
+      max-width: 1140px !important;
+    }
+    @media (min-width: 1400px) {
+      max-width: 1320px !important;
+    }
+    @media (min-width: 1800px) {
+      padding-inline: 15px !important;
+    }
+    @media (min-width: 1900px) {
+      max-width: 1700px !important;
+    }
+}
+
+.row {
+    position: relative;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.columnContent {
+    display: flex;
+    z-index: 1;
+    align-items: center;
+    flex-direction: column;
+    padding-inline: calc(1.5rem* .5);
+
+    @media (min-width: 768px) {
+        flex: 0 0 auto;
+        width: 66.66666667%;
+    }
+
+    @media (min-width: 1025px) {
+        padding-inline: 15px;
+    }
+}
+
+.titleBox {
+    width: 100%;
+    margin-bottom: 20px;
+
+    @media (min-width: 1025px) {
+        margin-bottom: 25px;
+    }
+}
+
+.title {
+    font-family:  var(--mantine-font-family) !important;
+    font-size: calc(1.075rem + 1.5vw) !important;
+    font-weight: 800 !important;
+    line-height: 1.2 !important;
+    color: var(--mantine-color-white);
+    letter-spacing: -0.025em;
+    text-align: center;
+    clear: both;
+
+    @media (min-width: 1200px) {
+        font-size: 45px !important;
+    }
+}
+
+.borderLine {
+    width: 45px;
+    height: 2.5px;
+    background: var(--mantine-color-white);
+    margin-left: 40%;
+
+    @media (min-width: 768px) {
+        margin-left: 49%;
+    }
+}
+
+/* .featuredLogo {
+    padding-top: 64px;
+    padding-bottom: 64px;
+
+    @media (min-width: 768px) {
+        padding-top: 80px;
+        padding-bottom: 80px;
+    }
+
+    @media (min-width: 1800px) {
+        padding-top: 100px;
+        padding-bottom: 100px;
+    }
+} */
+
+.item {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.imageBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 210px;
+    height: 60px;
+
+    @media only screen and (min-width: 576px) {
+        width: 174px;
+        height: 120px;
+    }
+
+    @media only screen and (min-width: 769px) {
+        width: 192px;
+        height: 120px;
+    }
+
+    @media only screen and (min-width: 1025px) {
+        width: 240px;
+        height: 150px;
+    }
+}
+
+.imageWrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+
+    img {
+        object-fit: contain !important;
+        position: absolute;
+        top: 20%;
+        left: 0;
+        width: 100%;
+        height: 60%;
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.imageWrapper::before {
+    content: "";
+    padding-top: 70%;
+    float: left;
+}
+
+/* .specialItem {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+} */
+
+@media only screen and (min-width: 576px) {
+    .specialItem::before {
+        content: "";
+        display: block;
+        background: #707070;
+        width: 0.063rem;
+        height: 5rem;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+    }
+}
+
+@media (min-width: 1025px) {
+    .specialItem::before {
+        width: 1.26px;
+        height: 100px;
+    }
+}
