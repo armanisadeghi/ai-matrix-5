@@ -8,7 +8,7 @@ const Login = () => {
     const router = useRouter();
 
     useEffect(() => {
-        if(!isAuthenticated) {
+        if (!isAuthenticated) {
             loginWithRedirect();
         } else {
             router.push('/');

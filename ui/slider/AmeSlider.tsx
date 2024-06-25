@@ -7,7 +7,7 @@ export interface AmeSliderProps {
     min?: number;
     max?: number;
     step?: number;
-    value?: number;
+    value?: number | string;
     onChange?: (value: number) => void;
     customLabels?: string[];
     showNumber?: boolean;

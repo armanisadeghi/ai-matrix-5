@@ -18,8 +18,8 @@ type Props = {
 };
 
 const LayoutContent: React.FC = () => {
-    const {user, error, isLoading} = useUser();
-    const {activeUser} = useCompleteUserProfile();
+    const { user, error, isLoading } = useUser();
+    const { activeUser } = useCompleteUserProfile();
     const [presetType, setPresetType] = useRecoilState(presetTypeAtom);
 
     useEffect(() => {
@@ -33,7 +33,7 @@ const LayoutContent: React.FC = () => {
     if (isLoading) {
         return (
             <div className="page-layout">
-                <Loading/>
+                <Loading />
             </div>
         );
     }
@@ -46,7 +46,7 @@ const LayoutContent: React.FC = () => {
     return null;
 };
 
-function Layout({children, preset}: Props) {
+function Layout({ children, preset }: Props) {
     return (
         <UserProvider>
             <ErrorBoundary>

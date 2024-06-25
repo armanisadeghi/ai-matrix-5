@@ -1,14 +1,25 @@
 
 export interface Broker {
     id: string;
-    name: string;
-    defaultValue?: string | number | boolean | string[] | number[] | File;
+    displayName: string;
     officialName: string;
-    dataType: string;
+    dataType: "str" | "int" | "float" | "bool" | "dict" | "list" | "url";
     description?: string;
-    component: Component;
-    [key: string]: any;
+    componentType: string;
+    validationRules?: string;
+    tooltip?: string;
+    sampleEntries?: string[];
 }
+
+export const dataType: { [key: string]: string } = {
+    'str': 'Text',
+    'int': 'Number without decimals',
+    'float': 'Number with decimals',
+    'bool': 'Yes/No',
+    'dict': 'Dictionary/JSON',
+    'list': 'List or Array',
+    'url': 'URL Link',
+};
 
 interface TableDataRow {
     [key: string]: any;
@@ -20,6 +31,7 @@ export type TableData = {
 };
 
 export interface Component {
+    id: string;
     type: string;
     label?: string;
     tooltip?: string;
@@ -29,7 +41,7 @@ export interface Component {
     defaultValue?: string | number | boolean | string[] | number[] | File;
     defaultChecked?: boolean;
     displayOrder?: number;
-    validation?: string;
+    validation?: boolean;
     dependencies?: string[];
     required?: boolean;
     options?: string[]
@@ -61,25 +73,28 @@ export interface Component {
     autosize?: any
     submitOnEnter?: boolean
     expandable?: boolean
+    error?: string
 }
 
 export enum ComponentType {
     Input = 'input',
+    NumberInput = 'number-input',
     Textarea = 'textarea',
     Slider = 'slider',
     YesNo = 'yes-no',
     Checkbox = 'checkbox',
     CheckboxGroup = 'checkbox-group',
+    CheckboxGroupWithOther = 'checkbox-group-with-other',
     Switch = 'switch',
     SwitchGroup = 'switch-group',
+    SwitchGroupWithOther = 'switch-group-with-other',
     Select = 'select',
-    Json = 'json',
     SelectWithOther = 'select-with-other',
+    Json = 'json',
     AttachmentsVideo = 'attachments-video',
     AttachmentsAudio = 'attachments-audio',
     AttachmentsFile = 'attachments-file',
     AttachmentsURL = 'attachments-url',
-    AttachmentsMore = 'attachments-more',
     Image = 'image-paste',
 }
 
