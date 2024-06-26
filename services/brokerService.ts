@@ -2,9 +2,12 @@ import { createClient } from '@supabase/supabase-js';
 import { Broker, Component } from "@/types/broker";
 import { brokersAtom, componentAtomFamily, componentsAtom, selectedComponentSelector} from 'context/atoms/brokerAtoms';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { userCredentialsSelector } from '@/state/userAtoms';
 
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,);
+const userid = process.env.NEXT_PUBLIC_USER_ID;
+
 
 export function createBrokerManager() {
     const setBrokersAtom = useSetRecoilState(brokersAtom);
@@ -28,7 +31,8 @@ export function createBrokerManager() {
             componentType: broker.component_type,
             validationRules: broker.validation_rules,
             sampleEntries: broker.sample_entries,
-            tooltip: broker.tooltip
+            tooltip: broker.tooltip,
+            userId: broker.user_id
         }));
 
         setBrokersAtom(brokers as Broker[]);
@@ -45,7 +49,7 @@ export function createBrokerManager() {
         const { data, error } = await supabase
             .from('broker')
             .insert({
-                user_id: "auth0|66703ee194d1babea158813d",
+                user_id: userid,
                 id: broker.id,
                 display_name: broker.displayName,
                 official_name: broker.officialName,

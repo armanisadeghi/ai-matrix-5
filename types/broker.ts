@@ -1,6 +1,7 @@
 
 export interface Broker {
     id: string;
+    userId: string;
     displayName: string;
     officialName: string;
     dataType: "str" | "int" | "float" | "bool" | "dict" | "list" | "url";
@@ -76,26 +77,31 @@ export interface Component {
     error?: string
 }
 
-export enum ComponentType {
-    Input = 'input',
-    NumberInput = 'number-input',
-    Textarea = 'textarea',
-    Slider = 'slider',
-    YesNo = 'yes-no',
-    Checkbox = 'checkbox',
-    CheckboxGroup = 'checkbox-group',
-    CheckboxGroupWithOther = 'checkbox-group-with-other',
-    Switch = 'switch',
-    SwitchGroup = 'switch-group',
-    SwitchGroupWithOther = 'switch-group-with-other',
-    Select = 'select',
-    SelectWithOther = 'select-with-other',
-    Json = 'json',
-    AttachmentsVideo = 'attachments-video',
-    AttachmentsAudio = 'attachments-audio',
-    AttachmentsFile = 'attachments-file',
-    AttachmentsURL = 'attachments-url',
-    Image = 'image-paste',
-}
+export type ComponentTypeInfo = {
+    type: string;
+    label: string;
+};
+
+export const ComponentType: Record<string, ComponentTypeInfo> = {
+    Input: { type: 'str', label: 'Input' },
+    NumberInput: { type: 'int', label: 'Number Input' },
+    Textarea: { type: 'str', label: 'Textarea' },
+    Slider: { type: 'float', label: 'Slider' },
+    YesNo: { type: 'bool', label: 'Yes/No' },
+    Checkbox: { type: 'bool', label: 'Checkbox' },
+    CheckboxGroup: { type: 'list', label: 'Checkbox Group' },
+    CheckboxGroupWithOther: { type: 'list', label: 'Checkbox Group with Other' },
+    Switch: { type: 'bool', label: 'Switch' },
+    SwitchGroup: { type: 'list', label: 'Switch Group' },
+    SwitchGroupWithOther: { type: 'list', label: 'Switch Group with Other' },
+    Select: { type: 'list', label: 'Select' },
+    SelectWithOther: { type: 'list', label: 'Select with Other' },
+    Json: { type: 'json', label: 'JSON' },
+    AttachmentsVideo: { type: 'url', label: 'Attachments (Video)' },
+    AttachmentsAudio: { type: 'url', label: 'Attachments (Audio)' },
+    AttachmentsFile: { type: 'url', label: 'Attachments (File)' },
+    AttachmentsURL: { type: 'url', label: 'Attachments (URL)' },
+    Image: { type: 'url', label: 'Image' },
+};
 
 export type BrokerData = Record<string, string | number | string[] | undefined>;

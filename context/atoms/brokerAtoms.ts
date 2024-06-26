@@ -1,5 +1,5 @@
 import { Broker, Component } from '@/types/broker';
-import { RecoilState, atom, atomFamily, selector, selectorFamily, useRecoilValue } from 'recoil';
+import { atom, atomFamily, selector, selectorFamily } from 'recoil';
 
 export const brokersAtom = atom<Broker[]>({
     key: 'brokersAtom',
@@ -44,9 +44,12 @@ export const filteredAndSortedDataSelector = selector({
 
     if (filtering !== 'All') {
       filteredData = data.filter((item) =>
-        item.dataType.toLowerCase().includes(filtering.toLowerCase()) &&
-        item.displayName.toLowerCase().includes(searchQuery.toLowerCase())
+        item.dataType.toLowerCase().includes(filtering.toLowerCase()) 
       );
+    } 
+
+    if (searchQuery !== '') {
+        filteredData = data.filter((item) => item.displayName.toLowerCase().includes(searchQuery.toLowerCase()));
     }
 
     const sortedData = [...filteredData].sort((a, b) => {

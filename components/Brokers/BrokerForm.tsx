@@ -1,7 +1,7 @@
 "use client";
 
-import { Button, Fieldset, Space, TextInput, Grid, Select, Tooltip, Textarea } from '@mantine/core';
-import { ComponentType, Broker } from '@/types/broker';
+import { Button, Fieldset, Space, TextInput, Grid, Select, Tooltip, Textarea, Group, Text, useCombobox, Combobox, Input, InputBase } from '@mantine/core';
+import { ComponentType, Broker, ComponentTypeInfo } from '@/types/broker';
 import { brokersAtom, componentAtomFamily } from '@/context/atoms/brokerAtoms';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { createBrokerManager } from '@/services/brokerService';
@@ -10,6 +10,23 @@ import { Notifications } from "@mantine/notifications";
 import { IconCheck } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import BrokerComponent from './BrokerComponent';
+
+interface Item {
+    value: string;
+    label: string;
+    description: string;
+}
+
+
+const dataTypeOptions: Item[] = [
+    { value: 'str', label: 'Text', description: 'Simple words, sentences and paragraphs of any type of text (Very Flexible).' },
+    { value: 'int', label: 'Whole Number', description: 'Numbers without decimals, like 1, 2, 3.' },
+    { value: 'float', label: 'Number with decimals', description: 'Numbers with fractions, like 1.5, 2.75.' },
+    { value: 'bool', label: 'Yes/No', description: 'A simple choice between Yes or No.' },
+    { value: 'json', label: 'Dictionary/JSON', description: 'Structured data with keys and values, like an address book where each contact has a name, address, and phone number.' },
+    { value: 'list', label: 'Comma Separated List or Array', description: 'A collection of items, like a shopping list separated by commas.' },
+    { value: 'url', label: 'URL Link', description: 'A web address, like https://example.com.' },
+];
 
 interface BrokerFormProps {
     id: string;
@@ -21,6 +38,10 @@ export const BrokerForm = ({ id }: BrokerFormProps) => {
     const brokers = useRecoilValue(brokersAtom);
     const currentBroker = brokers.find((broker: Broker) => broker.id === id);
     const [currentData, setCurrentData] = useState<Broker>({} as Broker);
+    const [componentOptions, setComponentOptions] = useState(Object.entries(ComponentType).map(([key, value]) => ({
+        value: key,
+        label: value.label,
+    })));
 
     useEffect(() => {
         if (!currentBroker) {
@@ -32,6 +53,7 @@ export const BrokerForm = ({ id }: BrokerFormProps) => {
                 componentType: 'Input',
                 dataType: 'str',
                 tooltip: '',
+                userId: process.env.NEXT_PUBLIC_USER_ID || '',
             };
 
             setCurrentData(newBroker as Broker);
@@ -43,22 +65,24 @@ export const BrokerForm = ({ id }: BrokerFormProps) => {
 
     }, []);
 
+    function SelectOption({ value, label, description }: Item) {
+        return (
+            <Group>
+                <div>
+                    <Text fz="sm" fw={500}>
+                        {label}
+                    </Text>
+                    <Text fz="xs" opacity={0.6}>
+                        {description}
+                    </Text>
+                </div>
+            </Group>
+        );
+    }
 
-    const componentOptions = Object.keys(ComponentType).map((key) => ({
-        key: key,
-        value: key,
-        label: key,
-    })) as { value: string; label: string }[];
-
-    const dataTypeOptions = [
-        { value: 'str', label: 'Text', tooltip: 'Simple words, sentences and paragraphs of any type of text (Very Flexible).' },
-        { value: 'int', label: 'Whole Number', tooltip: 'Numbers without decimals, like 1, 2, 3.' },
-        { value: 'float', label: 'Number with decimals', tooltip: 'Numbers with fractions, like 1.5, 2.75.' },
-        { value: 'bool', label: 'Yes/No', tooltip: 'A simple choice between Yes or No.' },
-        { value: 'json', label: 'Dictionary/JSON', tooltip: 'Structured data with keys and values, like an address book where each contact has a name, address, and phone number.' },
-        { value: 'list', label: 'Comma Separated List or Array', tooltip: 'A collection of items, like a shopping list separated by commas.' },
-        { value: 'url', label: 'URL Link', tooltip: 'A web address, like https://example.com.' },
-    ];
+    const combobox = useCombobox({
+        onDropdownClose: () => combobox.resetSelectedOption(),
+    });
 
     const handleEditBroker = () => {
         try {
@@ -102,13 +126,32 @@ export const BrokerForm = ({ id }: BrokerFormProps) => {
             currentComponent && setCurrentComponent({ ...currentComponent, tooltip: value as string });
         }
         if (data === "componentType") {
-            currentComponent && setCurrentComponent({ ...currentComponent, type: value as ComponentType });
+            currentComponent && setCurrentComponent({ ...currentComponent, type: value as ComponentTypeInfo['type'] });
         }
     }
 
+    const selectedOption = dataTypeOptions.find((item) => item.value === currentData.dataType);
+
     const handleDataTypeChange = (value: string | null) => {
-        currentData && setCurrentData({ ...currentData, dataType: value as typeof currentData['dataType'] });
-    }
+        const filteredType = Object.entries(ComponentType).filter(([key, item]) => item.type === value);
+        setCurrentData({ ...currentData, dataType: value as typeof currentData['dataType'], componentType: filteredType[0][0] });
+    };
+
+    const options = dataTypeOptions.map((item) => (
+        <Combobox.Option value={item.value} key={item.value}>
+            <SelectOption {...item} />
+        </Combobox.Option>
+    ));
+
+    useEffect(() => {
+        if (currentData.componentType) {
+            const inputType = Object.entries(ComponentType).filter(([key, value]) => key === currentData.componentType)[0][1].type;
+            setComponentOptions(Object.entries(ComponentType).filter(([key, value]) => value.type === inputType).map(([key, value]) => ({
+                value: key,
+                label: value.label,
+            })));
+        }
+    }, [currentData.dataType]);
 
     return (
         <Grid>
@@ -121,8 +164,37 @@ export const BrokerForm = ({ id }: BrokerFormProps) => {
                         placeholder='Enter a name'
                     />
                     <Space h="sm" />
-                    <Tooltip label={dataTypeOptions.find((option) => option.value === currentData!.dataType)?.tooltip}>
-                        <Select label="Data type" data={dataTypeOptions} value={currentData!.dataType} onChange={(value) => handleDataTypeChange(value)} /></Tooltip>
+                    <Combobox
+                        store={combobox}
+                        withinPortal={false}
+                        onOptionSubmit={(value) => {
+                            handleDataTypeChange(value)
+                            combobox.closeDropdown();
+                        }}
+                    >
+                        <Combobox.Target>
+                            <InputBase
+                                label="Data Type"
+                                component="button"
+                                type="button"
+                                pointer
+                                rightSection={<Combobox.Chevron />}
+                                onClick={() => combobox.toggleDropdown()}
+                                rightSectionPointerEvents="none"
+                                multiline
+                            >
+                                {selectedOption ? (
+                                    <SelectOption {...selectedOption} />
+                                ) : (
+                                    <Input.Placeholder>Pick value</Input.Placeholder>
+                                )}
+                            </InputBase>
+                        </Combobox.Target>
+
+                        <Combobox.Dropdown>
+                            <Combobox.Options>{options}</Combobox.Options>
+                        </Combobox.Dropdown>
+                    </Combobox>
                     <Space h="sm" />
                     <Textarea resize='both' label="Description" value={currentData.description}
                         onChange={value => handleValueChange('description', value.target.value)} placeholder='Enter a description' />

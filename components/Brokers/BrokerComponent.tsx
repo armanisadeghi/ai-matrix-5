@@ -6,7 +6,7 @@ import BrokerRadioGroup from '@/components/Brokers/BrokerRadioGroup';
 import NextImage from 'next/image';
 import image from 'next/image';
 import { useRecoilValue } from 'recoil';
-import { brokersAtom, selectedComponentSelector } from '@/context/atoms/brokerAtoms';
+import { brokersAtom } from '@/context/atoms/brokerAtoms';
 
 interface BrokerComponentProps {
     id: string;
@@ -15,9 +15,9 @@ interface BrokerComponentProps {
 }
 
 const BrokerComponent: React.FC<BrokerComponentProps> = ({ type, id, handleDefaultValueChange }) => {
-    const currentComponent = useRecoilValue(selectedComponentSelector(id));
     const brokers = useRecoilValue(brokersAtom);
     const currentBroker = brokers.find((broker: Broker) => broker.id === id);
+    const currentComponent = currentBroker?.validationRules ? JSON.parse(currentBroker.validationRules) : [];
     const { displayName, description, tooltip } = currentBroker as Broker || "test";
     const { withAsterisk, maxRows, resize, autosize, withArrow, position, maxLength, minRows, tableData, src, alt, radius, h, w, fit, options, groupOptions, label, placeholder, defaultValue, displayOrder, validation, dependencies, required, size, color, exampleInputs, group, min, max, step, value, onChange, marks } = currentComponent as Component
     const [otherCheck, setOtherCheck] = useState(false)
@@ -185,8 +185,17 @@ const BrokerComponent: React.FC<BrokerComponentProps> = ({ type, id, handleDefau
             case "SelectWithOther":
                 return <><Tooltip label={tooltip || "Select With Other Option"} withArrow={withArrow} position={position}>
                     <Select
-                        defaultValue={defaultValue as string}
-                        label={label || displayName || "Select With Other Option"} data={[...(options || []), { value: "Other", label: "Other" }]} required={required} size={size} color={color} onChange={(value) => { if (value === "Other") { setOtherSelect(true) } handleDefaultValueChange(value as string) }} />
+                        defaultValue={(options || [])[0] || ""}
+                        label={label || displayName || "Select With Other Option"}
+                        data={[...(options || []), { value: "Other", label: "Other" }]}
+                        required={required} size={size} color={color}
+                        onChange={(value) => {
+                            if (value === "Other") {
+                                setOtherSelect(true);
+                            } else {
+                                handleDefaultValueChange(value as string);
+                            }
+                        }} />
                 </Tooltip>
                     <Space h="md" />
                     {otherSelect && <TextInput onChange={(value) => handleDefaultValueChange(value.target.value)} />}

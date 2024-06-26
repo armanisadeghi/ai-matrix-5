@@ -6,7 +6,7 @@ import { Broker } from '@/types/broker';
 import { createBrokerManager } from '@/services/brokerService';
 import { Notifications } from '@mantine/notifications';
 import { useRouter } from 'next/navigation';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { filteredAndSortedDataSelector, sortingAtom } from '@/context/atoms/brokerAtoms';
 
 const PAGE_SIZE = 20;
@@ -21,6 +21,7 @@ const BrokerTable = () => {
         columnAccessor: 'name',
         direction: 'asc',
     });
+    const userid = process.env.NEXT_PUBLIC_USER_ID;
     const key = 'resize-example';
 
     const handleDelete = async (broker: Broker) => {
@@ -42,11 +43,13 @@ const BrokerTable = () => {
             textAlign: 'left',
             render: (broker: Broker) => (
                 <Group wrap="nowrap">
-                    <Tooltip label="Edit broker">
-                        <ActionIcon onClick={() => handleEdit(broker)}>
-                            <IconEdit size={14} />
-                        </ActionIcon>
-                    </Tooltip>
+                    {userid === broker.userId &&
+                        <Tooltip label="Edit broker">
+                            <ActionIcon onClick={() => handleEdit(broker)}>
+                                <IconEdit size={14} />
+                            </ActionIcon>
+                        </Tooltip>
+                    }
                     <Tooltip label="Delete broker">
                         <ActionIcon onClick={() => handleDelete(broker)}>
                             <IconTrash size={14} />
