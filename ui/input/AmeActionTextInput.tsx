@@ -1,3 +1,5 @@
+"use client";
+
 // app/samples/chat-sidebar/AmeActionTextInput.tsx
 
 import React, { useState, useRef, FocusEvent, ChangeEvent } from "react";
@@ -11,7 +13,12 @@ interface AmeActionTextInputProps extends TextInputProps {
     highlightOnClick?: boolean;
 }
 
-const AmeActionTextInput: React.FC<AmeActionTextInputProps> = ({ initialValue, editable = true, highlightOnClick = true, ...others }) => {
+const AmeActionTextInput: React.FC<AmeActionTextInputProps> = ({
+    initialValue,
+    editable = true,
+    highlightOnClick = true,
+    ...others
+}) => {
     const [value, setValue] = useState(initialValue);
     const inputRef = useRef<HTMLInputElement>(null);
     const { getModerateTextColor } = useColorUtils();

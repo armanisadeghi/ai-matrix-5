@@ -2,7 +2,7 @@
 
 "use client";
 
-import { ActionIcon, Button, createTheme, MantineColorsTuple } from "@mantine/core";
+import { ActionIcon, Button, createTheme, MantineColorsTuple, TextInput } from "@mantine/core";
 
 const myColor: MantineColorsTuple = [
     "#eef3ff",
@@ -38,6 +38,13 @@ export const theme = createTheme({
             defaultProps: {
                 variant: "light",
                 color: "gray",
+            },
+        }),
+        TextInput: TextInput.extend({
+            defaultProps: {
+                classNames: {
+                    input: "text-input",
+                },
             },
         }),
     },

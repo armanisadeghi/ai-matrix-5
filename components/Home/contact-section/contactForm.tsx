@@ -1,3 +1,5 @@
+"use client";
+
 import { Box, Title, Text, Container, TextInput, Button, Fieldset, Dialog, Anchor } from "@mantine/core";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useDisclosure } from "@mantine/hooks";

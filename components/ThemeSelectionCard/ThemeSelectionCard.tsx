@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { Flex, Grid, PaperProps, Radio, rem } from "@mantine/core";
 import { IconDeviceDesktop, IconDeviceFloppy, IconMoon, IconSun } from "@tabler/icons-react";

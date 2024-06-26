@@ -1,3 +1,5 @@
+"use client";
+
 /* import { useEffect, useRef } from 'react';
 
 export const useScrollAnimation = (delay: number = 500) => {
@@ -32,25 +34,25 @@ export const useScrollAnimation = (delay: number = 500) => {
 };
  */
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
 export const useScrollAnimation = (delay: number = 500) => {
     const elementsRef = useRef<(HTMLElement | null)[]>([]);
 
     useEffect(() => {
         const observer = new IntersectionObserver(
-        (entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    const element = entry.target as HTMLElement;
-                    setTimeout(() => {
-                        element.classList.add('visible');
-                    }, delay);
-                    observer.unobserve(element);
-                }
-            });
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        const element = entry.target as HTMLElement;
+                        setTimeout(() => {
+                            element.classList.add("visible");
+                        }, delay);
+                        observer.unobserve(element);
+                    }
+                });
             },
-            { threshold: 0.1 }
+            { threshold: 0.1 },
         );
 
         elementsRef.current.forEach((element) => {

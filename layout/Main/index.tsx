@@ -80,6 +80,7 @@ export function MainLayout({ children }: Props) {
             footer={{
                 height: footerHeight,
             }}
+            padding="md"
         >
             <AppShell.Header
                 style={{ backgroundColor: colorScheme === "dark" ? theme.colors.dark[9] : theme.colors.gray[2] }}

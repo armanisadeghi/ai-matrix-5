@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import AmePaper from "@/ui/surfaces/AmePaper";
 import { Flex, Grid, PaperProps, Radio } from "@mantine/core";

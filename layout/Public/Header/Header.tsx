@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 import { Container, Group, Burger, Box, Drawer, Anchor, Image, Button } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";

@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import { DataTable, DataTableProps } from "mantine-datatable";
 import { Button } from "@mantine/core";

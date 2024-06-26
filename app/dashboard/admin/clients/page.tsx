@@ -7,6 +7,7 @@ import Link from "next/link";
 import clients from "../../../data/clients.json";
 import AmeSearchInput from "@/ui/input/AmeSearchInput";
 import { PATH_ADMIN } from "@/routes";
+import AmeButton from "@/ui/buttons/AmeButton";
 
 const ClientsPage = () => {
     return (
@@ -18,12 +19,18 @@ const ClientsPage = () => {
                 <Flex justify="space-between" mb="md">
                     <AmeSearchInput placeholder="search" />
                     <Group gap="xs">
-                        <Button variant="default" leftSection={<IconTableExport />}>
+                        <AmeButton leftSection={<IconTableExport />} title="Export">
                             Export
-                        </Button>
-                        <Button leftSection={<IconPlus />} component={Link} href={PATH_ADMIN.clients.add}>
+                        </AmeButton>
+                        <AmeButton
+                            leftSection={<IconPlus />}
+                            component={Link}
+                            href={PATH_ADMIN.clients.add}
+                            title="Add client"
+                            primary
+                        >
                             Add client
-                        </Button>
+                        </AmeButton>
                     </Group>
                 </Flex>
                 <ClientsTable data={clients} />

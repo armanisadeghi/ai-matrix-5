@@ -1,4 +1,6 @@
-import { Button, Flex, Paper, PaperProps, rem, Title } from "@mantine/core";
+"use client";
+
+import { Flex, Paper, PaperProps, rem } from "@mantine/core";
 import { NotesItem } from "@/components/NotesCard/NotesItem";
 import { useState } from "react";
 import { IconPlus } from "@tabler/icons-react";
