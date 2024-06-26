@@ -1,5 +1,7 @@
 import { Flex, Radio, RadioCardProps, Text } from "@mantine/core";
 import classes from "./AmeRadioCard.module.css";
+import { useRecoilState } from "recoil";
+import { iconSizesAtom } from "@/state/IconAtoms";
 
 interface AmeRadioCardProps extends Partial<RadioCardProps> {
     description?: string;
@@ -8,10 +10,12 @@ interface AmeRadioCardProps extends Partial<RadioCardProps> {
 }
 
 function AmeRadioCard({ description, icon: Icon, ...others }: AmeRadioCardProps) {
+    const [iconSize] = useRecoilState(iconSizesAtom);
+
     return (
         <Radio.Card className={classes.root} radius="md" {...others}>
             <Flex wrap="nowrap" align="center" gap="md">
-                {Icon && <Icon />}
+                {Icon && <Icon size={iconSize} />}
                 <div>
                     <Text className={classes.label} aria-label={others.name}>
                         {others.name}
