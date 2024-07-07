@@ -1,8 +1,8 @@
 "use client";
 
 import { Button, Fieldset, Space, TextInput, Grid, Select, Tooltip, Textarea, Group, Text, useCombobox, Combobox, Input, InputBase } from '@mantine/core';
-import { ComponentType, Broker, ComponentTypeInfo } from '@/types/broker';
-import { brokersAtom, componentAtomFamily } from '@/context/atoms/brokerAtoms';
+import { ComponentType, Broker, ComponentTypeInfo, Component } from '@/types/broker';
+import { brokersAtom, componentAtomFamily, componentsAtom, selectedComponentSelector } from '@/context/atoms/brokerAtoms';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { createBrokerManager } from '@/services/brokerService';
 import { BrokerEdit } from '../../app/dashboard/matrix-engine/brokers/add/BrokerEdit';
@@ -10,6 +10,7 @@ import { Notifications } from "@mantine/notifications";
 import { IconCheck } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import BrokerComponent from './BrokerComponent';
+import { useCompleteUserProfile } from '@/hooks/users/useMatrixUser';
 
 interface Item {
     value: string;
@@ -34,17 +35,19 @@ interface BrokerFormProps {
 
 export const BrokerForm = ({ id }: BrokerFormProps) => {
     const brokerManager = createBrokerManager();
-    const [currentComponent, setCurrentComponent] = useRecoilState(componentAtomFamily(id));
-    const brokers = useRecoilValue(brokersAtom);
-    const currentBroker = brokers.find((broker: Broker) => broker.id === id);
-    const [currentData, setCurrentData] = useState<Broker>({} as Broker);
+    const [brokers, setBrokers] = useRecoilState(brokersAtom);
+    const currentComponent = useRecoilValue(selectedComponentSelector(id));
+    const setCurrentComponent = useSetRecoilState(componentsAtom);
+    const [currentData, setCurrentData] = useState<Broker>(brokers.filter((broker: Broker) => broker.id === id)[0] || {});
     const [componentOptions, setComponentOptions] = useState(Object.entries(ComponentType).map(([key, value]) => ({
         value: key,
         label: value.label,
     })));
+    const { activeUser } = useCompleteUserProfile();
+
 
     useEffect(() => {
-        if (!currentBroker) {
+        if (!currentData) {
             const newBroker: Broker = {
                 id: id,
                 displayName: '',
@@ -53,18 +56,24 @@ export const BrokerForm = ({ id }: BrokerFormProps) => {
                 componentType: 'Input',
                 dataType: 'str',
                 tooltip: '',
-                userId: process.env.NEXT_PUBLIC_USER_ID || '',
+                userId: '',
+                matrixId: activeUser.matrix_id || '',
+                validationRules: '{}',
             };
 
-            setCurrentData(newBroker as Broker);
+            setBrokers((prev: Broker[]) => ([...prev, newBroker as Broker]));
+            setCurrentComponent((prev) => ([...prev, { id: id, label: '', type: 'Input', description: '', tooltip: '' }]));
+            return () => {
+                setBrokers((prev: Broker[]) => prev.filter((broker) => broker.id !== newBroker.id));
+                setCurrentComponent((prev) => prev.filter((component) => component.id !== newBroker.id));
+            };
         } else {
-            setCurrentData(currentBroker);
-            const componentProperties = JSON.parse(currentBroker.validationRules || '{}');
-            setCurrentComponent((prev) => ({ ...prev, label: currentBroker.displayName, description: currentBroker.description, tooltip: currentBroker.tooltip, ...componentProperties } as any));
+            const componentProperties = JSON.parse(currentData.validationRules || '{}');
+            setCurrentComponent((prev) => ([...prev, { id: id, label: currentData.displayName, type: currentData.componentType, description: currentData.description, tooltip: currentData.tooltip }]));
+            setCurrentData((prev) => ({ ...prev, validationRules: JSON.stringify(componentProperties) }));
         }
 
     }, []);
-
     function SelectOption({ value, label, description }: Item) {
         return (
             <Group>
@@ -93,21 +102,21 @@ export const BrokerForm = ({ id }: BrokerFormProps) => {
                 dataType: currentData?.dataType,
                 officialName: `${currentData?.displayName.toUpperCase().replace(/\s/g, '_')}_1001`,
                 componentType: currentData?.componentType,
-                tooltip: currentComponent?.tooltip,
+                tooltip: currentData?.tooltip,
                 sampleEntries: currentData?.sampleEntries,
                 validationRules: JSON.stringify(currentComponent)
             }
-            currentBroker ? brokerManager.updateBroker(broker as Broker) : brokerManager.createBroker(broker as Broker);
+            currentData ? brokerManager.updateBroker(broker as Broker) : brokerManager.createBroker(broker as Broker);
             Notifications.show({
-                title: `${currentBroker ? 'Broker updated' : 'Broker created'}`,
-                message: `${currentBroker ? 'Broker updated' : 'Broker created'} successfully`,
+                title: `${currentData ? 'Broker updated' : 'Broker created'}`,
+                message: `${currentData ? 'Broker updated' : 'Broker created'} successfully`,
                 autoClose: true,
                 color: 'teal',
             })
         } catch (error) {
             Notifications.show({
-                title: `Broker ${currentBroker ? 'update' : 'creation'} failed`,
-                message: `Broker ${currentBroker ? 'update' : 'creation'} failed`,
+                title: `Broker ${currentData ? 'update' : 'creation'} failed`,
+                message: `Broker ${currentData ? 'update' : 'creation'} failed`,
                 autoClose: true,
                 color: 'red',
             })
@@ -116,18 +125,19 @@ export const BrokerForm = ({ id }: BrokerFormProps) => {
 
     const handleValueChange = (data: string, value: string | number | boolean) => {
         currentData && setCurrentData({ ...currentData, [data]: value });
+        const updatedComponent = { ...currentComponent };
         if (data === 'displayName') {
-            currentComponent && setCurrentComponent({ ...currentComponent, label: value as string });
+            updatedComponent.label = value as string;
+        } else if (data === 'description') {
+            updatedComponent.description = value as string;
+        } else if (data === 'tooltip') {
+            updatedComponent.tooltip = value as string;
+        } else if (data === 'componentType') {
+            updatedComponent.type = value as ComponentTypeInfo['type'];
         }
-        if (data === 'description') {
-            currentComponent && setCurrentComponent({ ...currentComponent, description: value as string });
-        }
-        if (data === 'tooltip') {
-            currentComponent && setCurrentComponent({ ...currentComponent, tooltip: value as string });
-        }
-        if (data === "componentType") {
-            currentComponent && setCurrentComponent({ ...currentComponent, type: value as ComponentTypeInfo['type'] });
-        }
+        setCurrentComponent((prev: Component[]) => {
+            return [...prev.filter((component: Component) => component.id !== currentData.id), updatedComponent]
+        });
     }
 
     const selectedOption = dataTypeOptions.find((item) => item.value === currentData.dataType);
@@ -160,7 +170,7 @@ export const BrokerForm = ({ id }: BrokerFormProps) => {
                     <TextInput
                         label="Name"
                         onChange={(value) => handleValueChange('displayName', value.target.value)}
-                        value={currentData.displayName}
+                        value={currentData.displayName || ''}
                         placeholder='Enter a name'
                     />
                     <Space h="sm" />
@@ -196,16 +206,16 @@ export const BrokerForm = ({ id }: BrokerFormProps) => {
                         </Combobox.Dropdown>
                     </Combobox>
                     <Space h="sm" />
-                    <Textarea resize='both' label="Description" value={currentData.description}
+                    <Textarea resize='both' label="Description" value={currentData.description || ''}
                         onChange={value => handleValueChange('description', value.target.value)} placeholder='Enter a description' />
                     <Space h="sm" />
-                    <Select label="Type" description="Choose the type of component" placeholder="Choose the type of component" data={componentOptions} value={currentData.componentType}
+                    <Select label="Component" description="Choose the type of component" placeholder="Choose the type of component" data={componentOptions} value={currentData.componentType}
                         onChange={value => handleValueChange('componentType', value as string)} />
                 </Fieldset>
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 6 }}>
                 <Fieldset legend="Preview" radius="md">
-                    <BrokerComponent id={currentData!.id} type={currentData.componentType} handleDefaultValueChange={(value: any) => setCurrentComponent({ ...currentComponent, defaultValue: value })} />
+                    <BrokerComponent id={currentData!.id} type={currentData.componentType} handleDefaultValueChange={(value: any) => setCurrentComponent(prev => [...prev, { ...currentComponent, defaultValue: value }])} />
                 </Fieldset>
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 12 }}>

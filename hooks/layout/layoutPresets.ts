@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { LayoutPreset, ModulePreset, PagePreset, PresetType, PresetValue } from "@/types/layout";
 
 const moduleToLayoutType: Record<ModulePreset, LayoutPreset> = {
-    dashboard: 'standard',
+    dashboard: 'focusRight',
     intelligence: 'focusRight',
     samples: 'noSidebars',
     public: 'onlyHeader',

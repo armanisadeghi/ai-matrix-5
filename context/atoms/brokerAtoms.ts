@@ -6,6 +6,14 @@ export const brokersAtom = atom<Broker[]>({
     default: [],
 });
 
+export const brokerByIdSelector = selector({
+  key: 'brokerByIdSelector',
+  get: ({ get }) => (id: string) => {
+    const brokers = get(brokersAtom);
+    return brokers.find((broker: Broker) => broker.id === id);
+  },
+});
+
 export const brokerDataTypesAtom = atom<string[]>({
     key: 'brokerDataTypesAtom',
     default: [],

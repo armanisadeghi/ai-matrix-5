@@ -2,9 +2,10 @@
 export interface Broker {
     id: string;
     userId: string;
+    matrixId: string;
     displayName: string;
     officialName: string;
-    dataType: "str" | "int" | "float" | "bool" | "dict" | "list" | "url";
+    dataType: string;
     description?: string;
     componentType: string;
     validationRules?: string;

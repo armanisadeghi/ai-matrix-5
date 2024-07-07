@@ -10,7 +10,7 @@ import { PresetType } from "@/context/atoms/layoutAtoms";
 import { useCompleteUserProfile } from "@/hooks/users/useMatrixUser";
 import { LayoutProvider } from "@/context/LayoutContext";
 import { SidebarProvider } from "@/context/SidebarContext";
-import { presetTypeAtom } from "@/state/layoutAtoms";
+import { overrideFlagAtom, presetTypeAtom } from "@/state/layoutAtoms";
 
 type Props = {
     children: ReactNode;
@@ -21,14 +21,17 @@ const LayoutContent: React.FC = () => {
     const { user, error, isLoading } = useUser();
     const { activeUser } = useCompleteUserProfile();
     const [presetType, setPresetType] = useRecoilState(presetTypeAtom);
+    // const [override, setOverride] = useRecoilState(overrideFlagAtom);
 
     useEffect(() => {
         setPresetType('dashboard');
+        // setOverride(true);
         if (isLoading) {
             return;
         } else if (user) {
+
         }
-    }, [user, isLoading, activeUser]);
+    }, [user, isLoading, activeUser, presetType]);
 
     if (isLoading) {
         return (

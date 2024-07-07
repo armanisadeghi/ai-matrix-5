@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Checkbox, FileInput, Group, JsonInput, Select, Switch, TextInput, Textarea, Tooltip, Image, NumberInput, Space } from '@mantine/core';
 import { Component, Broker } from '@/types/broker';
 import { BrokerSlider } from "@/components/Brokers/BrokerSlider";
 import BrokerRadioGroup from '@/components/Brokers/BrokerRadioGroup';
 import NextImage from 'next/image';
 import image from 'next/image';
-import { useRecoilValue } from 'recoil';
-import { brokersAtom } from '@/context/atoms/brokerAtoms';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { brokersAtom, componentAtomFamily, brokerByIdSelector, selectedComponentSelector } from '@/context/atoms/brokerAtoms';
+import { createBrokerManager } from '@/services/brokerService';
 
 interface BrokerComponentProps {
     id: string;
@@ -15,14 +16,16 @@ interface BrokerComponentProps {
 }
 
 const BrokerComponent: React.FC<BrokerComponentProps> = ({ type, id, handleDefaultValueChange }) => {
-    const brokers = useRecoilValue(brokersAtom);
-    const currentBroker = brokers.find((broker: Broker) => broker.id === id);
-    const currentComponent = currentBroker?.validationRules ? JSON.parse(currentBroker.validationRules) : [];
-    const { displayName, description, tooltip } = currentBroker as Broker || "test";
+    const getBrokerById = useRecoilValue(brokerByIdSelector);
+    const currentBroker = getBrokerById(id);
+    const currentComponent = useRecoilValue(selectedComponentSelector(id));
+    const { displayName } = currentBroker as Broker || "test";
+    const { tooltip, description } = currentComponent as Component || currentBroker as Broker || "test";
     const { withAsterisk, maxRows, resize, autosize, withArrow, position, maxLength, minRows, tableData, src, alt, radius, h, w, fit, options, groupOptions, label, placeholder, defaultValue, displayOrder, validation, dependencies, required, size, color, exampleInputs, group, min, max, step, value, onChange, marks } = currentComponent as Component
     const [otherCheck, setOtherCheck] = useState(false)
     const [otherSwitch, setOtherSwitch] = useState(false)
     const [otherSelect, setOtherSelect] = useState(false)
+    console.log(`broker`, currentBroker, `comp`, currentComponent)
 
     if (type) {
         switch (type) {
@@ -193,6 +196,7 @@ const BrokerComponent: React.FC<BrokerComponentProps> = ({ type, id, handleDefau
                             if (value === "Other") {
                                 setOtherSelect(true);
                             } else {
+                                setOtherSelect(false);
                                 handleDefaultValueChange(value as string);
                             }
                         }} />
