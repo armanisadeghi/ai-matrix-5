@@ -2,8 +2,8 @@
 import { useEffect, useState } from 'react';
 import { Fieldset, Space, Switch, TextInput, Group, FileInput, Grid, NumberInput, Flex, ColorPicker } from '@mantine/core';
 import AmeSlider from '@/ui/slider/AmeSlider';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { componentsAtom, selectedComponentSelector } from '@/context/atoms';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { componentAtom, componentsAtom, componentSelector } from '@/context/atoms';
 
 type Size = "xs" | "sm" | "md" | "lg" | "xl";
 
@@ -12,8 +12,8 @@ interface BrokerEditProps {
 }
 
 export const BrokerEdit = ({ id }: BrokerEditProps) => {
-    const currentComponent = useRecoilValue(selectedComponentSelector(id));
-    const setCurrentComponent = useSetRecoilState(componentsAtom);
+    const [components, setComponents] = useRecoilState(componentsAtom);
+    const [currentComponent, setCurrentComponent] = useRecoilState(componentAtom);
     const [imageUploaded, setImageUploaded] = useState(false);
     const [fileUploaded, setFileUploaded] = useState(false);
     const [imageSrc, setImageSrc] = useState('');
@@ -25,10 +25,10 @@ export const BrokerEdit = ({ id }: BrokerEditProps) => {
         size: "xs" as Size,
         radius: "xs" as Size
     };
-    console.log(`edit`, currentComponent);
 
     const handleChange = (property: string, value: any) => {
-        setCurrentComponent(prev => [...prev.filter(comp => comp.id !== id), { ...currentComponent, [property]: value }]);
+        setCurrentComponent({ ...currentComponent, [property]: value });
+        setComponents([...components.filter(comp => comp.id !== id), { ...currentComponent, [property]: value }]);
     };
 
     useEffect(() => {
@@ -49,7 +49,8 @@ export const BrokerEdit = ({ id }: BrokerEditProps) => {
     };
 
     useEffect(() => {
-        setCurrentComponent((prev) => ([...prev.filter(comp => comp.id !== id), { ...currentComponent, src: imageSrc, file: fileSrc }]));
+        const prevComponents = components.filter(comp => comp.id !== id);
+        setCurrentComponent({ ...currentComponent, src: imageSrc, file: fileSrc });
     }, [imageSrc, fileSrc]);
 
     return (
@@ -88,7 +89,6 @@ export const BrokerEdit = ({ id }: BrokerEditProps) => {
                         <Space h="sm" />
                     </Flex>}
                     {currentComponent.options && <TextInput size="xs" label="Options" placeholder="Option 1, Option 2, Option 3" description="Separate options with commas" onChange={(e) => handleChange("options", (e.target.value).split(","))} value={currentComponent.options || []} />}
-                    <Space h="sm" />
                     <TextInput size="xs" label="Tooltip" placeholder="Tooltip" onChange={(e) => handleChange("tooltip", e.target.value)} value={currentComponent.tooltip || ""} />
                     <Space h="sm" />
                     <Switch size="xs" label="With Arrow" onChange={(e) => handleChange("withArrow", e.target.checked)} checked={currentComponent.withArrow || false} />

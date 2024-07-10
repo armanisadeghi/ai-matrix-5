@@ -26,7 +26,7 @@ const EditBrokerPage = ({ params }: { params: { id: string } }) => {
                     </Button>
                 </Link>
             </Center>
-            <BrokerForm id={params.id as string} />
+            <BrokerForm id={params.id as string} newBroker={false} />
         </Stack>
     )
 }

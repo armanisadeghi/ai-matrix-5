@@ -1,14 +1,19 @@
 import { Broker, Component } from '@/types/broker';
-import { atom, atomFamily, selector, selectorFamily } from 'recoil';
+import { atom, selector, selectorFamily } from 'recoil';
 
 export const brokersAtom = atom<Broker[]>({
     key: 'brokersAtom',
     default: [],
 });
 
-export const brokerByIdSelector = selector({
+export const selectedBroker = atom<Broker>({
+    key: 'selectedBroker',
+    default: {} as Broker
+})
+
+export const brokerByIdSelector = selectorFamily<Broker | undefined, string>({
   key: 'brokerByIdSelector',
-  get: ({ get }) => (id: string) => {
+  get: (id: string) => ({ get }) => {
     const brokers = get(brokersAtom);
     return brokers.find((broker: Broker) => broker.id === id);
   },
@@ -74,32 +79,20 @@ export const filteredAndSortedDataSelector = selector({
     }
 });
 
-export const componentsAtom = atom<Component[]>({
+export const componentsAtom = atom<Component[] | []>({
     key: 'ComponentsAtom',
     default: [],
 });
 
-export const selectedComponentSelector = selectorFamily<Component, string>({
-    key: 'SelectedComponentSelector',
-    get: (id) => ({ get }) => {
-        const components = get(componentsAtom);
-        return components.find((component) => component.id === id) || componentAtomFamily(id);
-    },
+export const componentAtom = atom<Component>({
+  key: 'componentAtom',
+  default: {} as Component
 });
 
-export const componentAtomFamily = atomFamily<Component, string>({
-    key: 'ComponentAtomFamily',
-    default: (id) => ({
-        id: id,
-        type: 'input',
-        defaultValue: '',
-        description: '',
-        options: [],
-        placeholder: '',
-        label: '',
-        required: false,
-        validation: false,
-        tooltip: '',
-        withArrow: false,
-    }),
+export const componentSelector = selectorFamily({
+  key: 'componentSelector',
+  get: (id: string) => ({ get }) => {
+    const components = get(componentsAtom);
+    return components.find((component: Component) => component.id === id);
+  },
 });

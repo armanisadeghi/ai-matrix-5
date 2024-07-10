@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { Broker, Component } from "@/types/broker";
-import { brokersAtom, componentAtomFamily, componentsAtom, selectedComponentSelector} from 'context/atoms/brokerAtoms';
+import { brokersAtom, componentsAtom} from 'context/atoms/brokerAtoms';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { userCredentialsSelector } from '@/state/userAtoms';
 import { useCompleteUserProfile } from '@/hooks/users/useMatrixUser';
@@ -51,8 +51,7 @@ export function createBrokerManager() {
         };
         }) as Component[];
         
-        setComponents((prev) => [...prev, ...components]);
-        console.log(`service components`, components);
+        setComponents(components);
 
         return {brokers, dataTypes, components};
     }

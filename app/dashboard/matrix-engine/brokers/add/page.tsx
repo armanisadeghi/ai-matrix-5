@@ -28,7 +28,7 @@ const AddBrokerPage: React.FC = () => {
                     </Button>
                 </Link>
             </Center>
-            <BrokerForm id={id} />
+            <BrokerForm id={id} newBroker={true} />
         </Stack>
     )
 }
