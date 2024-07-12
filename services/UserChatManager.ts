@@ -1,7 +1,7 @@
 // services/UserChatManager.ts
 
-import Chat from './Chat';
-import { Role } from '@/types/chat';
+
+
 import supabase from "@/utils/supabase/client";
 import { v4 as uuidv4 } from 'uuid';
 

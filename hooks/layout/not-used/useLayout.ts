@@ -1,5 +1,5 @@
 /*
-// hooks/useLayout.ts
+// hooks43/useLayout.ts
 import { useRecoilState, RecoilState } from 'recoil';
 import { rightSidebarAtom, leftSidebarAtom, footerAtom, headerAtom } from '@/state/layoutAtoms';
 import { LayoutState, getSize, sidebarWidthMap, footerHeightMap, headerHeightMap } from '@/state/layoutAtoms';

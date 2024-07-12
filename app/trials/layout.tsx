@@ -1,20 +1,22 @@
-// app/trials/layout.tsx
-'use client'
+// app/dashboard/layout.tsx
 
-import React, { useEffect } from 'react';
-import { ReactNode } from 'react';
-import { RecoilRoot } from 'recoil';
+import { MainLayout } from '@/layout';
+import React, { ReactNode } from 'react';
+import { UserProvider } from '@auth0/nextjs-auth0/client';
+import ClientLayoutLogic from './ClientLayoutLogic';
 
-type LayoutProps = {
+type Props = {
     children: ReactNode;
 };
 
-const Layout: React.FC<LayoutProps> = ({ children }) => (
-        <RecoilRoot>
-            <React.Suspense fallback={<div>Loading...</div>}>
-                                {children}
-            </React.Suspense>
-        </RecoilRoot>
-);
-
-export default Layout;
+export default function Layout({ children }: Props) {
+    return (
+        <UserProvider>
+            <ClientLayoutLogic>
+                <MainLayout>
+                    {children}
+                </MainLayout>
+            </ClientLayoutLogic>
+        </UserProvider>
+    );
+}

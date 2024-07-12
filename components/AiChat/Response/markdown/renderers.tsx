@@ -1,6 +1,6 @@
 // renderers.tsx
+import AmeCodeHighlight from '@/ui/highlight/AmeCodeHighlight';
 import React, { ReactNode } from 'react';
-import AmeCodeHighlight from "@/ui/highlight/AmeCodeHighlight";
 import { CustomTable, CustomTableHead, CustomTableBody, CustomTableRow, CustomTableCell, CustomTableHeaderCell } from './CustomTable';
 import { Code } from '@mantine/core';
 
@@ -23,7 +23,7 @@ interface RendererProps {
 }
 
 const renderers = {
-    code: ({ node, className, children, ...props }: RendererProps) => {
+    code: React.memo(({ node, className, children, ...props }: RendererProps) => {
         const match = /language-(\w+)/.exec(className ?? "");
 
         return match ? (
@@ -36,7 +36,8 @@ const renderers = {
         ) : (
             <Code color="var(--mantine-color-blue-light)">{children}</Code>
         );
-    },
+    }),
+
     table: ({ children }: { children: ReactNode }) => <CustomTable>{children}</CustomTable>,
     thead: ({ children }: { children: ReactNode }) => <CustomTableHead>{children}</CustomTableHead>,
     tbody: ({ children }: { children: ReactNode }) => <CustomTableBody>{children}</CustomTableBody>,

@@ -1,14 +1,27 @@
 
 export interface Broker {
     id: string;
-    name: string;
-    defaultValue?: string | number | boolean | string[] | number[] | File;
+    userId: string;
+    matrixId: string;
+    displayName: string;
     officialName: string;
     dataType: string;
     description?: string;
-    component: Component;
-    [key: string]: any;
+    componentType: string;
+    validationRules?: string;
+    tooltip?: string;
+    sampleEntries?: string[];
 }
+
+export const dataType: { [key: string]: string } = {
+    'str': 'Text',
+    'int': 'Number without decimals',
+    'float': 'Number with decimals',
+    'bool': 'Yes/No',
+    'dict': 'Dictionary/JSON',
+    'list': 'List or Array',
+    'url': 'URL Link',
+};
 
 interface TableDataRow {
     [key: string]: any;
@@ -20,6 +33,7 @@ export type TableData = {
 };
 
 export interface Component {
+    id: string;
     type: string;
     label?: string;
     tooltip?: string;
@@ -29,7 +43,7 @@ export interface Component {
     defaultValue?: string | number | boolean | string[] | number[] | File;
     defaultChecked?: boolean;
     displayOrder?: number;
-    validation?: string;
+    validation?: boolean;
     dependencies?: string[];
     required?: boolean;
     options?: string[]
@@ -61,26 +75,34 @@ export interface Component {
     autosize?: any
     submitOnEnter?: boolean
     expandable?: boolean
+    error?: string
 }
 
-export enum ComponentType {
-    Input = 'input',
-    Textarea = 'textarea',
-    Slider = 'slider',
-    YesNo = 'yes-no',
-    Checkbox = 'checkbox',
-    CheckboxGroup = 'checkbox-group',
-    Switch = 'switch',
-    SwitchGroup = 'switch-group',
-    Select = 'select',
-    Json = 'json',
-    SelectWithOther = 'select-with-other',
-    AttachmentsVideo = 'attachments-video',
-    AttachmentsAudio = 'attachments-audio',
-    AttachmentsFile = 'attachments-file',
-    AttachmentsURL = 'attachments-url',
-    AttachmentsMore = 'attachments-more',
-    Image = 'image-paste',
-}
+export type ComponentTypeInfo = {
+    type: string;
+    label: string;
+};
+
+export const ComponentType: Record<string, ComponentTypeInfo> = {
+    Input: { type: 'str', label: 'Input' },
+    NumberInput: { type: 'int', label: 'Number Input' },
+    Textarea: { type: 'str', label: 'Textarea' },
+    Slider: { type: 'float', label: 'Slider' },
+    YesNo: { type: 'bool', label: 'Yes/No' },
+    Checkbox: { type: 'bool', label: 'Checkbox' },
+    CheckboxGroup: { type: 'list', label: 'Checkbox Group' },
+    CheckboxGroupWithOther: { type: 'list', label: 'Checkbox Group with Other' },
+    Switch: { type: 'bool', label: 'Switch' },
+    SwitchGroup: { type: 'list', label: 'Switch Group' },
+    SwitchGroupWithOther: { type: 'list', label: 'Switch Group with Other' },
+    Select: { type: 'list', label: 'Select' },
+    SelectWithOther: { type: 'list', label: 'Select with Other' },
+    Json: { type: 'json', label: 'JSON' },
+    AttachmentsVideo: { type: 'url', label: 'Attachments (Video)' },
+    AttachmentsAudio: { type: 'url', label: 'Attachments (Audio)' },
+    AttachmentsFile: { type: 'url', label: 'Attachments (File)' },
+    AttachmentsURL: { type: 'url', label: 'Attachments (URL)' },
+    Image: { type: 'url', label: 'Image' },
+};
 
 export type BrokerData = Record<string, string | number | string[] | undefined>;

@@ -1,6 +1,24 @@
 // chat-app/utils/chatDefaults.ts
-import { ChatRequest } from '../../types/chat';
-import { ChatSettings, RequestSettings } from '../../types/settings';
+import { BrokerData } from '@/types/broker';
+import { ChatSettings, RequestSettings, VariablesData } from 'types/settings.types';
+
+export interface ChatRequest {
+    eventName: string;
+    userToken: string;
+    task: string;
+    requestMetadata: string;
+    recipeId: string;
+    promptData: PromptData[];
+    formResponses: FormResponse[];
+    customInputs: CustomInput[];
+    settings: RequestSettings;
+    variablesData: VariablesData;
+    responseData: string;
+    brokerData: BrokerData;
+    modelData: AIModelSettings;
+    controls: ControlSettings;
+    activeChatId: string | null;
+}
 
 
 export const aiPreferencesMainDefault = "direct_chat"

@@ -56,6 +56,19 @@ const RunPage = () => {
                         </Group>
                     </Checkbox.Group>
                 </div>
+                <div>
+                    <p>This is section 3.</p>
+                    <Checkbox.Group
+                        defaultValue={['aimatrix']}
+                        label="Select your favorite Artificial Intelligence Frameworks"
+                        description="Choose one or more of the following options:"
+                    >
+                        <Group mt="xs">
+                            <AmeCheckbox value="aimatrix" label="AI Matrix"/>
+                            <AmeCheckbox value="autogen" label="Microsoft Autogen"/>
+                        </Group>
+                    </Checkbox.Group>
+                </div>
 
             </HorizontalSplitter>
         </div>

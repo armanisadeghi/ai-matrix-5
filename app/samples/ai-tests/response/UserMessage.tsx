@@ -5,21 +5,22 @@ import { Paper, Textarea, Button, ActionIcon } from '@mantine/core';
 import { IconEdit } from '@tabler/icons-react';
 import { useResponses } from './ResponseContext';
 
+// made a bunch of changes and removed message.content and all of that and changed it to text.
+// Also had logic for editing that I removed. That part, we should put back, but it wasn't set up right anyways.
+
 interface UserMessageProps {
-    message: { id: string; content: string };
+    text: string;
 }
 
-const UserMessage: React.FC<UserMessageProps> = ({ message }) => {
+const UserMessage: React.FC<UserMessageProps> = ({ text }) => {
     const { updateMessage } = useResponses();
     const [isEditing, setIsEditing] = useState(false);
-    const [content, setContent] = useState(message.content);
 
     const handleEdit = () => {
         setIsEditing(true);
     };
 
     const handleSave = () => {
-        updateMessage(message.id, content);
         setIsEditing(false);
     };
 
@@ -42,14 +43,13 @@ const UserMessage: React.FC<UserMessageProps> = ({ message }) => {
                 <>
                     <Textarea
                         minRows={4}
-                        value={content}
-                        onChange={(e) => setContent(e.target.value)}
+                        value={text}
                     />
                     <Button onClick={handleSave}>Ask Again</Button>
                 </>
             ) : (
                 <>
-                    <Textarea minRows={4} readOnly value={message.content} />
+                    <Textarea minRows={4} readOnly value={text} />
                     <ActionIcon
                         variant="transparent"
                         style={{ position: 'absolute', top: 10, right: 10 }}

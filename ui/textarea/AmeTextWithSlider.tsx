@@ -1,4 +1,6 @@
-import React, { forwardRef, useState, useEffect, useRef } from 'react';
+'use client';
+
+import React, { forwardRef, useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { Textarea, ActionIcon, Group, Box, Modal, useMantineTheme, useMantineColorScheme } from '@mantine/core';
 import { RiDeleteBin3Line, RiSettings2Line } from "react-icons/ri";
 import { FaExpandArrowsAlt } from "react-icons/fa";
@@ -10,7 +12,6 @@ import AmeSettingsModal from '@/ui/modal/AmeSettingsModal';
 import { AtomName, matrixLevelSetting } from "@/state/aiAtoms/settingsAtoms";
 import AmeResponsiveSlider from "@/ui/slider/AmeResponsiveSlider";
 
-
 export interface AmeTextWithSliderProps {
     label?: string;
     placeholder?: string;
@@ -20,10 +21,40 @@ export interface AmeTextWithSliderProps {
     customModal?: React.ReactNode;
     fileUploadEnabled?: boolean;
     onSubmit?: (text: string) => void;
+    clearInput?: boolean;
+    onInputCleared?: () => void;
 }
 
-const AmeTextWithSlider = forwardRef<HTMLDivElement, AmeTextWithSliderProps>((
-    {
+
+interface ActionButtonsProps {
+    modalType: 'none' | 'custom' | 'default';
+    fileUploadEnabled: boolean;
+    onSettingsClick: () => void;
+    onDelete: () => void;
+    onToggle: (event: React.MouseEvent<HTMLButtonElement>) => void;
+}
+
+const ActionButtons: React.FC<ActionButtonsProps> = React.memo(({ modalType, fileUploadEnabled, onSettingsClick, onDelete, onToggle }) => (
+    <ActionIcon.Group>
+        {modalType !== 'none' && (
+            <AmeOverComponentIcon tooltip="Chat settings" onClick={onSettingsClick} className={styles['amefancy-action-icon']}>
+                <RiSettings2Line/>
+            </AmeOverComponentIcon>
+        )}
+        {fileUploadEnabled && <AmeFileUploadOverComponent/>}
+        <AmeOverComponentIcon tooltip="Clear all text" onClick={onDelete} className={styles['amefancy-action-icon']}>
+            <RiDeleteBin3Line/>
+        </AmeOverComponentIcon>
+        <AmeOverComponentIcon tooltip="Expand or collapse without impacting the text content" onClick={onToggle} className={styles['amefancy-action-icon']}>
+            <FaExpandArrowsAlt/>
+        </AmeOverComponentIcon>
+    </ActionIcon.Group>
+));
+
+ActionButtons.displayName = 'ActionButtons';
+
+const AmeTextWithSlider = forwardRef<HTMLDivElement, AmeTextWithSliderProps>((props, ref) => {
+    const {
         label,
         placeholder,
         className,
@@ -31,8 +62,10 @@ const AmeTextWithSlider = forwardRef<HTMLDivElement, AmeTextWithSliderProps>((
         modalType = 'default',
         customModal,
         fileUploadEnabled = true,
-        onSubmit
-    }, ref) => {
+        onSubmit,
+        clearInput = false,
+        onInputCleared
+    } = props;
 
     const [userInput, setUserInput] = useState('');
     const [settingsModalOpened, setSettingsModalOpened] = useState(false);
@@ -50,35 +83,46 @@ const AmeTextWithSlider = forwardRef<HTMLDivElement, AmeTextWithSliderProps>((
         };
     }, []);
 
-    const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setUserInput(event.target.value);
-    };
+    useEffect(() => {
+        if (clearInput) {
+            setUserInput('');
+            if (onInputCleared) {
+                onInputCleared();
+            }
+        }
+    }, [clearInput, onInputCleared]);
 
-    const handleSubmitMessage = () => {
+    const handleInputChange = useCallback((event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setUserInput(event.target.value);
+    }, []);
+
+    const handleSubmitMessage = useCallback(() => {
         const text = textareaRef.current?.value || '';
+        if (text.trim().length === 0) return;
+
         if (onSubmit) {
             onSubmit(text);
         } else {
             setDefaultModalOpened(true);
         }
-    };
+    }, [onSubmit]);
 
-    const handleKeyDown = useKeyDownHandler(() => handleSubmitMessage());
+    const handleKeyDown = useKeyDownHandler(handleSubmitMessage);
 
-    const handleToggle = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleToggle = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation();
-        setCollapsed(!collapsed);
-    };
+        setCollapsed(prev => !prev);
+    }, []);
 
-    const handleBoxClick = () => {
+    const handleBoxClick = useCallback(() => {
         if (collapsed) {
             setCollapsed(false);
         }
         textareaRef.current?.focus();
-    };
+    }, [collapsed]);
 
-    const handleFocus = () => setIsFocused(true);
-    const handleBlur = () => setIsFocused(false);
+    const handleFocus = useCallback(() => setIsFocused(true), []);
+    const handleBlur = useCallback(() => setIsFocused(false), []);
 
     useEffect(() => {
         const textArea = textareaRef.current;
@@ -89,55 +133,45 @@ const AmeTextWithSlider = forwardRef<HTMLDivElement, AmeTextWithSliderProps>((
             textArea?.removeEventListener('focus', handleFocus);
             textArea?.removeEventListener('blur', handleBlur);
         };
-    }, []);
+    }, [handleFocus, handleBlur]);
 
-    const openSettingsModal = () => setSettingsModalOpened(true);
-    const closeSettingsModal = () => setSettingsModalOpened(false);
-    const handleDelete = () => setUserInput('');
+    const openSettingsModal = useCallback(() => setSettingsModalOpened(true), []);
+    const closeSettingsModal = useCallback(() => setSettingsModalOpened(false), []);
+    const handleDelete = useCallback(() => setUserInput(''), []);
+
+    const boxStyle = useMemo(() => ({
+        bg: colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
+        className: `${className || ''} ${styles['amefancy-container']} ${isFocused ? styles['amefancy-focused'] : ''}`
+    }), [colorScheme, theme.colors, className, isFocused]);
+
+    const textareaProps = useMemo(() => ({
+        autosize: true,
+        minRows: 3,
+        maxRows: collapsed ? 2 : 40,
+        placeholder,
+        size: "sm" as const,
+        variant: "unstyled" as const,
+        className: styles['amefancy-textarea'],
+    }), [collapsed, placeholder]);
 
     return (
-        <Box
-            ref={ref}
-            bg={colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]}
-            className={`${className || ''} ${styles['amefancy-container']} ${isFocused ? styles['amefancy-focused'] : ''}`}
-            onClick={handleBoxClick}
-            tabIndex={-1}>
+        <Box ref={ref} {...boxStyle} onClick={handleBoxClick} tabIndex={-1}>
             <Group justify='space-between' className={styles['amefancy-group']}>
-                <div className={styles['amefancy-label']}>
-                    {label}
-                </div>
-                <div>
-                    <ActionIcon.Group>
-                        {modalType !== 'none' && (
-                            <AmeOverComponentIcon tooltip="Chat settings" onClick={openSettingsModal}
-                                                  className={styles['amefancy-action-icon']}>
-                                <RiSettings2Line/>
-                            </AmeOverComponentIcon>
-                        )}
-                        {fileUploadEnabled && <AmeFileUploadOverComponent/>}
-                        <AmeOverComponentIcon tooltip="Clear all text" onClick={handleDelete}
-                                              className={styles['amefancy-action-icon']}>
-                            <RiDeleteBin3Line/>
-                        </AmeOverComponentIcon>
-                        <AmeOverComponentIcon tooltip="Expand or collapse without impacting the text content"
-                                              onClick={handleToggle} className={styles['amefancy-action-icon']}>
-                            <FaExpandArrowsAlt/>
-                        </AmeOverComponentIcon>
-                    </ActionIcon.Group>
-                </div>
+                <div className={styles['amefancy-label']}>{label}</div>
+                <ActionButtons
+                    modalType={modalType}
+                    fileUploadEnabled={fileUploadEnabled}
+                    onSettingsClick={openSettingsModal}
+                    onDelete={handleDelete}
+                    onToggle={handleToggle}
+                />
             </Group>
             <Textarea
                 ref={textareaRef}
                 value={userInput}
                 onChange={handleInputChange}
-                autosize
-                minRows={3}
-                maxRows={collapsed ? 2 : undefined}
-                placeholder={placeholder}
-                size="sm"
-                variant="unstyled"
-                className={styles['amefancy-textarea']}
                 onKeyDown={handleKeyDown}
+                {...textareaProps}
             />
             <AmeResponsiveSlider setting={matrixLevelSetting}/>
             {modalType === 'default' && (
@@ -156,10 +190,9 @@ const AmeTextWithSlider = forwardRef<HTMLDivElement, AmeTextWithSliderProps>((
                 {textareaRef.current?.value}
             </Modal>
         </Box>
-
     );
 });
 
 AmeTextWithSlider.displayName = 'AmeTextWithSlider';
 
-export default AmeTextWithSlider;
+export default React.memo(AmeTextWithSlider);

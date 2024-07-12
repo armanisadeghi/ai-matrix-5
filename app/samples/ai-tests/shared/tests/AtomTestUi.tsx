@@ -1,15 +1,10 @@
+/*
 // TestingUI.tsx
+import { activeChatMessagesArrayAtom, chatMessagesSelector, chatSummariesAtom, systemMessageAtom } from '@/state/aiAtoms/aiChatAtoms';
 import React, { useRef, useState } from 'react';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
 import { Button, Divider, Space } from "@mantine/core";
 import AmeJsonInput from '@/ui/json/AmeJsonInput';
-import {
-    activeChatIdAtom,
-    activeChatMessagesArrayAtom,
-    detailsForAllChatsAtom,
-    chatTitlesAndIdsAtom,
-    allChatsAtom, systemMessagesAtom
-} from "@/state/aiAtoms/chatAtoms";
 
 
 
@@ -27,11 +22,10 @@ const TestingUI: React.FC<TestingUIProps> = ({ currentChatId, setCurrentChatId, 
     const [atomValue, setAtomValue] = useState('');
     const [editTitle, setEditTitle] = useState('');
 
-    const setSystemMessages = useSetRecoilState(systemMessagesAtom);
-    const systemMessages = useRecoilValue(systemMessagesAtom);
+    const [systemMessages, setSystemMessages] = useRecoilState(systemMessageAtom);
     const [activeUser] = useRecoilState(activeUserAtom);
-    const [detailsForAllChats, setDetailsForAllChats] = useRecoilState(detailsForAllChatsAtom);
-    const [allChats, setAllChats] = useRecoilState(allChatsAtom);
+    const chatMessagesLoadable = useRecoilValueLoadable(chatMessagesSelector);
+    const [chatSummaries, setSetChatSummaries] = useRecoilState(chatSummariesAtom);
     const [currentChatMessages, setCurrentChatMessages] = useRecoilState(activeChatMessagesArrayAtom);
 
 
@@ -45,7 +39,7 @@ const TestingUI: React.FC<TestingUIProps> = ({ currentChatId, setCurrentChatId, 
     const getAtomValue = (atomName: string) => {
         switch (atomName) {
             case 'allChatsAtom':
-                return JSON.stringify(allChats, null, 2);
+                return JSON.stringify(chatMessagesLoadable, null, 2);
             case 'activeChatIdAtom':
                 return JSON.stringify(currentChatId, null, 2);
             case 'activeChatMessagesArrayAtom':
@@ -55,7 +49,7 @@ const TestingUI: React.FC<TestingUIProps> = ({ currentChatId, setCurrentChatId, 
             case 'systemMessagesAtom':
                 return JSON.stringify(systemMessages, null, 2);
             case 'detailsForAllChatsAtom':
-                return JSON.stringify(detailsForAllChats, null, 2);
+                return JSON.stringify(chatSummaries, null, 2);
             case 'chatTitlesAndIdsAtom':
                 return JSON.stringify(chatTitlesAndIdsAtom, null, 2);
             default:
@@ -89,7 +83,7 @@ const TestingUI: React.FC<TestingUIProps> = ({ currentChatId, setCurrentChatId, 
         <div>
             <Space h="xl"/>
             <Divider my="xs" label="Testing Center" labelPosition="center"/>
-            <Button variant="filled" size="xs" radius="md" onClick={handleSaveAndNewChat}>Save and New</Button>
+            <Button variant="filled" size="xs" radius="md" onClick={console.log}>Save and New</Button>
             <Space h="md"/>
             <div>
                 <h3> Used to be current Chat ID</h3>
@@ -99,10 +93,10 @@ const TestingUI: React.FC<TestingUIProps> = ({ currentChatId, setCurrentChatId, 
                 <input
                     type="text"
                     value={editTitle}
-                    onChange={handleTitleChange}
+                    onChange={console.log}
                     placeholder="Edit chat title"
                 />
-                <Button variant="filled" size="xs" radius="md" onClick={handleSaveTitle}>Save Title</Button>
+                <Button variant="filled" size="xs" radius="md" onClick={console.log}>Save Title</Button>
             </div>
             <Space h="md"/>
             <div style={{marginTop: '20px'}}>
@@ -125,3 +119,4 @@ const TestingUI: React.FC<TestingUIProps> = ({ currentChatId, setCurrentChatId, 
 };
 
 export default TestingUI;
+*/

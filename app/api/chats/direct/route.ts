@@ -1,3 +1,4 @@
+/*
 import 'server-only';
 import { NextRequest, NextResponse } from 'next/server';
 import supabase from "@/utils/supabase/client";
@@ -199,3 +200,4 @@ export async function OPTIONS(req: NextRequest) {
     headers.set('Allow', 'GET, POST, DELETE, PATCH');
     return new NextResponse(null, { headers });
 }
+*/

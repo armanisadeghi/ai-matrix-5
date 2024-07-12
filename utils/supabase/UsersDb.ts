@@ -1,10 +1,12 @@
 // utils/supabase/UsersDb.ts
 import supabase from './client';
-import { Database } from '@/types/supabase';
+import { Database } from '@/types/database.types';
 import { v4 as uuidv4 } from 'uuid';
 
 export type MatrixUser = Database['public']['Tables']['user']['Row'];
-export type MatrixUserInsert = Database['public']['Tables']['user']['Insert'];
+export type MatrixUserInsert = Omit<Database['public']['Tables']['user']['Insert'], 'matrix_id'> & {
+    matrix_id?: string | undefined;
+};
 
 export class UsersDb {
     static async getMatrixUserWithAuth(matrixUser: MatrixUserInsert): Promise<MatrixUser | null> {
@@ -12,6 +14,7 @@ export class UsersDb {
             const existingUser = await this.getUserByAuth0Id(matrixUser.auth0_id!);
             if (existingUser) {
                 const mergedUser = this.mergeUserData(existingUser, matrixUser);
+                console.log('Merged user:', mergedUser);
                 const { data, error } = await supabase
                     .from('user')
                     .upsert(mergedUser, {
@@ -23,6 +26,7 @@ export class UsersDb {
                     console.error('Error upserting user:', error);
                     return null;
                 }
+                console.log('Upserted user:', data);
 
                 return data ? data[0] as MatrixUser : null;
             } else {
@@ -170,7 +174,7 @@ export class UsersDb {
         for (const key in newUser) {
             const value = newUser[key as keyof MatrixUserInsert];
             if (value !== null && value !== undefined) {
-                mergedUser[key as keyof MatrixUserInsert] = value as any;
+                mergedUser[key as keyof MatrixUserInsert] = value as never;
             }
         }
         return mergedUser;

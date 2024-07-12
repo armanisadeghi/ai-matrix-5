@@ -1,28 +1,39 @@
-import React from 'react';
-import { Grid, Text } from '@mantine/core';
-import { GiArtificialHive } from "react-icons/gi";
-import styles from "./ResponseArea.module.css";
-import MarkdownRenderer from "./markdown/MarkdownRenderer";
+import MarkdownRendererFast from '@/components/AiChat/Response/markdown/tests/MarkdownNew/MarkdownRendererFast';
+import ResponseSaveRow from '@/components/AiChat/Response/ResponseSaveRow/ActionButtonRow';
+import React, { useRef } from 'react';
+import { Grid, Space } from '@mantine/core';
+import { GiArtificialHive } from 'react-icons/gi';
+import styles from './ResponseArea.module.css';
+import MarkdownRenderer from './markdown/MarkdownRenderer';
+
 
 interface AssistantMessageProps {
     text?: string;
 }
 
-const AssistantMessage: React.FC<AssistantMessageProps> = ({ text }) => {
+const AssistantMessage: React.FC<AssistantMessageProps> = ({text}) => {
+    const textRef = useRef<string | null>(null);
+
     if (!text) {
         return null;
     }
 
+    // Update the ref value
+    textRef.current = text;
+
     return (
         <Grid>
-            <Grid.Col span={2} style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-                <GiArtificialHive size={22} style={{ color: 'gray' }} />
+            <Grid.Col span={0.6}>
+                <GiArtificialHive size={22} style={{color: 'gray'}}/>
             </Grid.Col>
 
-            <Grid.Col span={10} style={{ display: 'flex', alignItems: 'center' }}>
-                <Text className={styles.responseTextArea} style={{ marginLeft: '10px' }}>
-                    <MarkdownRenderer content={text} />
-                </Text>
+            <Grid.Col span={11.4}>
+                <div className={styles.assistantResponseText}>
+                    {/*<MarkdownRenderer content={text} />*/}
+                    <MarkdownRendererFast content={text}/>
+                    <Space h="xs"/>
+                    <ResponseSaveRow textRef={textRef}/>
+                </div>
             </Grid.Col>
         </Grid>
     );

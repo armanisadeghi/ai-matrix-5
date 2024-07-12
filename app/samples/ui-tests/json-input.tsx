@@ -1,4 +1,4 @@
-// app/samples/AmeJsonInput/page.tsx
+// app/samples/AmeJsonInput/OptionalStarterPage.tsx
 'use client';
 
 import React, { useState } from 'react';

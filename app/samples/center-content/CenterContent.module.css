@@ -1,23 +1,23 @@
 /* PageLayout.module.css */
 :root {
-    .container {
-        --header-height: 80px;
-        --layout-padding: 20px;
+    .ame-centerContent-container {
+        --header-height: 60px;
+        --layout-padding: 0px;
         --center-column-max-width: 768px;
     }
 }
 
-.container {
+.ame-centerContent-container {
     display: flex;
     justify-content: center;
     height: calc(100vh - var(--header-height) - var(--layout-padding));
 }
 
-.leftGapColumn, .rightGapColumn {
+.ame-centerContent-leftGapColumn, .rightGapColumn {
     flex-shrink: 1;
 }
 
-.centerColumn {
+.ame-centerContent-centerColumn {
     max-width: var(--center-column-max-width);
     justify-content: center;
     flex: 1;
@@ -27,15 +27,23 @@
     overflow: hidden;
 }
 
-.mainContent {
+.ame-centerContent-mainContent {
     overflow: hidden;
     flex-grow: 1;
 
 }
 
-.bottomSection {
+.ame-centerContent-topSection {
     position: absolute;
-    bottom: 0;
+    top: 20px;
+    left: 0;
+    right: 0;
+}
+
+
+.ame-centerContent-bottomSection {
+    position: absolute;
+    bottom: 18px;
     left: 0;
     right: 0;
 }

@@ -17,7 +17,7 @@ const nextConfig = {
         ignoreDuringBuilds: true,
     },
     experimental: {
-        optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
+        optimizePackageImports: ['@mantine/core', '@mantine/hooks43'],
     },
     webpack(config, { isServer }) {
         config.resolve.alias['@'] = path.resolve(__dirname);

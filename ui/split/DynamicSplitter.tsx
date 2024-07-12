@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 import VerticalSplitter from './VerticalSplitter';
 import HorizontalSplitter from './HorizontalSplitter';
 
+
 interface SectionContent {
     title: string;
     content: ReactNode;
@@ -15,13 +16,14 @@ interface SplitterProps {
     horizontalSections?: SectionContent[];
 }
 
-const DynamicSplitter: React.FC<SplitterProps> = ({
-                                                      verticalSections,
-                                                      horizontalSectionIndex,
-                                                      initialVerticalSizes,
-                                                      initialHorizontalSizes,
-                                                      horizontalSections
-                                                  }) => {
+const DynamicSplitter: React.FC<SplitterProps> = (
+    {
+        verticalSections,
+        horizontalSectionIndex,
+        initialVerticalSizes,
+        initialHorizontalSizes,
+        horizontalSections
+    }) => {
     return (
         <VerticalSplitter initialSizes={initialVerticalSizes || Array(verticalSections.length).fill(100 / verticalSections.length)}>
             {verticalSections.map((section, index) => {

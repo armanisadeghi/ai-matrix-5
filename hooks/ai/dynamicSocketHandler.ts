@@ -1,26 +1,35 @@
+import { activeChatIdAtom, activeChatMessagesArrayAtom } from '@/state/aiAtoms/aiChatAtoms';
+import { activeUserAtom } from '@/state/userAtoms';
 import { initializeSocket, emitEvent, waitForEvent, closeSocket } from '@/utils/socketio/socket';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { atom, useRecoilValue, useSetRecoilState } from 'recoil';
 import { quickChatSettingsState } from "@/state/aiAtoms/settingsAtoms";
 import { requestEventTaskAtom, requestSocketEventAtom, requestIndexAtom } from '@/state/aiAtoms/metadataAtoms';
 import { realTimeDataState, streamBufferState } from '@/state/socketAtoms';
-import { userIdSelector, userTokenSelector } from "@/state/userAtoms";
-import {
-    activeChatIdAtom,
-    activeChatMessagesArrayAtom,
-    customInputsAtom,
-    formResponsesAtom
-} from "@/state/aiAtoms/chatAtoms";
+
 
 type SocketEventType = "matrix_chat" | "playground_stream" | "run_recipe" | "validation" | "workflow" | null;
+
+// Added here because they were commented out in the original file and wanted to save them somewhere and stop Type errors
+
+export const formResponsesAtom = atom<{ [key: string]: string }>({
+    key: 'formResponsesAtom',
+    default: {},
+});
+
+export const customInputsAtom = atom<string[]>({
+    key: 'customInputsAtom',
+    default: [],
+});
+
+
 
 export const useDynamicSocketHandler = (callback?: (data: any) => void, onStreamEndCallback?: (streamBuffer: string) => void) => {
     const eventTask = useRecoilValue(requestEventTaskAtom);
     const socketEvent = useRecoilValue<SocketEventType>(requestSocketEventAtom);
-    const userId = useRecoilValue(userIdSelector);
-    const userToken = useRecoilValue(userTokenSelector);
+    const activeUser = useRecoilValue(activeUserAtom);
 
     const chatId = useRecoilValue(activeChatIdAtom);
-    const activeChatMessagesArray = useRecoilValue(activeChatMessagesArrayAtom);
+    const activeChatMessages = useRecoilValue(activeChatMessagesArrayAtom);
     const formResponses = useRecoilValue(formResponsesAtom);
     const customInputs = useRecoilValue(customInputsAtom);
     const requestIndex = useRecoilValue(requestIndexAtom);
@@ -30,7 +39,7 @@ export const useDynamicSocketHandler = (callback?: (data: any) => void, onStream
 
     const handleDynamicElements = async () => {
         // Initialize the socket connection with token, which is a string
-        initializeSocket(userToken as string);
+        initializeSocket(activeUser.auth0Sid as string);
 
         // Form the request object
         const requestObject = {
@@ -45,13 +54,13 @@ export const useDynamicSocketHandler = (callback?: (data: any) => void, onStream
                     channel: ''
                 },
                 user: {
-                    id: userId,
-                    token: userToken
+                    id: activeUser.matrixId,
+                    token: activeUser.auth0Sid
                 },
                 recipe: {},
                 chatData: {
                     chat_id: chatId,
-                    activeChatMessagesArray,
+                    activeChatMessages,
                     formResponses,
                     customInputs
                 }

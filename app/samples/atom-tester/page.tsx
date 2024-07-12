@@ -1,4 +1,4 @@
-// app/samples/atom-tester/page.tsx
+// app/samples/atom-tester/OptionalStarterPage.tsx
 'use client';
 
 

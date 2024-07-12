@@ -1,6 +1,5 @@
-// hooks/useToggleSizes.ts
 import { useState, useEffect } from "react";
-import { useRecoilState, RecoilState } from "recoil";
+import { useRecoilState, RecoilState, useRecoilValue } from 'recoil';
 import {
     rightSidebarAtom,
     leftSidebarAtom,
@@ -9,8 +8,8 @@ import {
     rightSidebarToggleOptionsAtom,
     leftSidebarToggleOptionsAtom,
     footerToggleOptionsAtom,
-    headerToggleOptionsAtom,
-} from "@/state/layoutAtoms";
+    headerToggleOptionsAtom, deviceTypeAtom, leftSidebarMobileToggleOptionsAtom,
+} from '@/state/layoutAtoms';
 
 // Configuration for animation
 const INTERVAL_TIME = 3; // Interval time in milliseconds
@@ -21,6 +20,8 @@ const useToggleSizes = () => {
     const [rightSidebarWidth, setRightSidebarWidth] = useRecoilState(rightSidebarAtom);
     const [headerHeight, setHeaderHeight] = useRecoilState(headerAtom);
     const [footerHeight, setFooterHeight] = useRecoilState(footerAtom);
+    const deviceType = useRecoilValue(deviceTypeAtom);
+    const [leftSidebarMobileOptions] = useRecoilState(leftSidebarMobileToggleOptionsAtom);
 
     const [leftSidebarOptions] = useRecoilState(leftSidebarToggleOptionsAtom);
     const [rightSidebarOptions] = useRecoilState(rightSidebarToggleOptionsAtom);
@@ -64,7 +65,8 @@ const useToggleSizes = () => {
 
         switch (element) {
             case 'leftSidebar':
-                animateSizeChange(leftSidebarWidth, setLeftSidebarWidth, getNextSize(leftSidebarWidth, leftSidebarOptions), rate);
+                const options = deviceType === 'mobile' ? leftSidebarMobileOptions : leftSidebarOptions;
+                animateSizeChange(leftSidebarWidth, setLeftSidebarWidth, getNextSize(leftSidebarWidth, options), rate);
                 break;
             case 'rightSidebar':
                 animateSizeChange(rightSidebarWidth, setRightSidebarWidth, getNextSize(rightSidebarWidth, rightSidebarOptions), rate);

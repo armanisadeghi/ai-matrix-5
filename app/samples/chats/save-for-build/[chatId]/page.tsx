@@ -3,7 +3,7 @@
 
 import { activeUserAtom } from "@/state/userAtoms";
 
-console.log('app/samples/chats/[chatId]/page.tsx');
+console.log('app/samples/chats/[chatId]/OptionalStarterPage.tsx');
 
 import React, { useEffect } from 'react';
 import ChatDetail from '../components/ChatDetail';

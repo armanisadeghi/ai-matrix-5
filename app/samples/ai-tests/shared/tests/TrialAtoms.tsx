@@ -2,7 +2,7 @@
 
 
 import { atom } from 'recoil';
-import { MessageEntry } from '@/types/chat';
+import { MessageEntry } from '@/types/chat.ts';
 
 export const messageChunksAtom = atom<MessageEntry[]>({
     key: 'messageChunksAtom',

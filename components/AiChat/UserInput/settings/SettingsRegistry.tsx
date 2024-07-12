@@ -1,14 +1,15 @@
 // chat-app/nice-working/settings/SettingsRegistry.tsx
 
-import SimpleChatSettings from './simpleChatSettings';
+import SimpleChatSettingsModal from './SimpleChatSettingsModal';
 // import PlaygroundChatSettings from './playgroundChatSettings';
 // import BusinessChatSettings from './businessChatSettings';
 // import SidebarChatSettings from './sidebarChatSettings';
 // import CustomChatSettings from './customChatSettings';
 // import MatrixAppsChatSettings from './matrixAppsChatSettings';
+ import AmeSettingsModal from '@/ui/modal/AmeSettingsModal';
 
 const settingsComponents = {
-    simpleChat: SimpleChatSettings,
+    simpleChat: SimpleChatSettingsModal,
     // playground: PlaygroundChatSettings,
     // business: BusinessChatSettings,
     // sidebar: SidebarChatSettings,

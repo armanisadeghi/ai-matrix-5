@@ -33,5 +33,5 @@ export const sidebarWidthDirectAtom = atom<number | null>({
 });
 
 
-// Some of the selectors and atoms were slightly modified and moved to state\layoutAtoms.ts
+// Some of the selectors and atoms were slightly modified and moved to state\centerLayoutAtoms.ts
 

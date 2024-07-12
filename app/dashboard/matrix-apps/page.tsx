@@ -1,4 +1,4 @@
-// matrix-apps/page.tsx
+// matrix-apps/OptionalStarterPage.tsx
 
 "use client";
 
