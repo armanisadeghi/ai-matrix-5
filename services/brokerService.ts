@@ -2,6 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 import { Broker, Component } from "@/types/broker";
 import { brokersAtom, componentAtomFamily, componentsAtom, selectedComponentSelector} from 'context/atoms/brokerAtoms';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { activeUserAtom } from '@/state/userAtoms';
 
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,);
@@ -9,15 +10,16 @@ const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,
 export function createBrokerManager() {
     const setBrokersAtom = useSetRecoilState(brokersAtom);
     const setComponents = useSetRecoilState(componentsAtom);
+    const activeUser = useRecoilValue(activeUserAtom);
 
-    async function fetchBrokers(): Promise<{brokers: Broker[], dataTypes: string[]}> {
+    async function fetchBrokers(): Promise<{brokers: Broker[], dataTypes: string[], components: Component[]}> {
         const { data, error } = await supabase
             .from('broker')
             .select('*');
 
         if (error) {
             console.error('Error fetching brokers:', error);
-            return {brokers: [], dataTypes: []};
+            return {brokers: [], dataTypes: [], components: []};
         }
 
         const brokers = data.map((broker: any) => ({
@@ -28,24 +30,38 @@ export function createBrokerManager() {
             componentType: broker.component_type,
             validationRules: broker.validation_rules,
             sampleEntries: broker.sample_entries,
-            tooltip: broker.tooltip
+            tooltip: broker.tooltip,
+            userId: broker.user_id,
+            matrixId: broker.matrix_id
         }));
 
         setBrokersAtom(brokers as Broker[]);
         const dataTypes = [...new Set(brokers.map((broker: Broker) => broker.dataType))].filter((dataType: string) => dataType).sort();
 
-        const validationRules = brokers.map((broker: Broker) => ({id: broker.id, label: broker.displayName, type: broker.componentType, description: broker.description, tooltip: broker.tooltip, validationRules: JSON.parse(broker.validationRules || '{}')})) as Component[]; 
-        
-        setComponents((prev) => [...prev, ...validationRules]); 
+        const components = brokers.map((broker: Broker) => {
+        const validationRules = JSON.parse(broker.validationRules || '{}');
+        return {
+            id: broker.id,
+            label: broker.displayName,
+            type: broker.componentType,
+            description: broker.description,
+            tooltip: broker.tooltip,
+            ...validationRules,
+        };
+        }) as Component[];
 
-        return {brokers, dataTypes};
+        setComponents((prev) => [...prev, ...components]);
+        console.log(`service components`, components);
+
+        return {brokers, dataTypes, components};
     }
 
     async function createBroker(broker: Broker) {
         const { data, error } = await supabase
             .from('broker')
             .insert({
-                user_id: "auth0|66703ee194d1babea158813d",
+                user_id: broker.userId,
+                matrix_id: activeUser.matrixId,
                 id: broker.id,
                 display_name: broker.displayName,
                 official_name: broker.officialName,
@@ -74,6 +90,7 @@ export function createBrokerManager() {
             console.error('Error fetching broker:', error);
             return null;
         }
+        setComponents((prev) => prev.map((prevComponent) => (prevComponent.id === id ? { ...prevComponent, ...data[0] } : prevComponent)));
         return data[0];
     }
 

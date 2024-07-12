@@ -120,7 +120,7 @@ export default ChatHistory;
 You can now use the `ChatHistory` component in any page or another component by passing the `userId` prop.
 
 ```typescript
-// app/dashboard/page.tsx
+// app/dashboard/OptionalStarterPage.tsx
 import ChatHistory from '@/components/ChatHistory';
 
 const DashboardPage = () => {

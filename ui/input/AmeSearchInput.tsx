@@ -1,48 +1,17 @@
-import React, { useState, useEffect, CSSProperties } from "react";
-import { rem, TextInput, TextInputProps } from "@mantine/core";
-import { IconSearch } from "@tabler/icons-react";
+// components/AmeSearchInput/AmeSearchInput.tsx
+
+import React from 'react';
+import { TextInputProps } from '@mantine/core';
+import AmeSearchInputClient from './AmeSearchInputClient';
 
 interface AmeSearchInputProps extends Partial<TextInputProps> {
     width?: number | string;
     height?: number | string;
-    otherStyles?: CSSProperties;
+    otherStyles?: React.CSSProperties;
 }
 
-const AmeSearchInput: React.FC<AmeSearchInputProps> = (
-    {
-        width = 450,
-        height = 30,
-        value,
-        onChange,
-        otherStyles,
-        ...others
-    }: AmeSearchInputProps) => {
-    const [internalValue, setInternalValue] = useState<string>(value ? String(value) : "");
-    const icon = <IconSearch style={{width: rem(16), height: rem(16)}} stroke={1.5}/>;
-
-    useEffect(() => {
-        setInternalValue(value ? String(value) : "");
-    }, [value]);
-
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const newValue = event.target.value;
-        setInternalValue(newValue);
-        onChange?.(event);
-    };
-
-    return (
-        <TextInput
-            placeholder="search"
-            radius="md"
-            size="xs"
-            leftSection={icon}
-            value={internalValue}
-            onChange={handleChange}
-            aria-label={others.placeholder}
-            style={{width, height, ...otherStyles}}
-            {...others}
-        />
-    );
+const AmeSearchInput: React.FC<AmeSearchInputProps> = (props) => {
+    return <AmeSearchInputClient {...props} />;
 };
 
 export default AmeSearchInput;

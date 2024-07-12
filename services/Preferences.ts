@@ -1,4 +1,4 @@
-import { MatrixUser } from "@/types/user";
+import { MatrixUser } from "@/types/user.types";
 
 export class Preferences {
     user: MatrixUser;
@@ -63,17 +63,17 @@ export class UserPreferences {
     }
 
     setUserPreference(user: MatrixUser, key: string, value: any) {
-        if (user.matrix_id) {
-            if (!this.preferences[user.matrix_id]) {
-                this.preferences[user.matrix_id] = {};
+        if (user.matrixId) {
+            if (!this.preferences[user.matrixId]) {
+                this.preferences[user.matrixId] = {};
             }
-            this.preferences[user.matrix_id][key] = value;
+            this.preferences[user.matrixId][key] = value;
         } else {
-            console.error("User matrix_id is undefined or null");
+            console.error("User matrixId is undefined or null");
         }
     }
 
     getUserPreference(user: MatrixUser, key: string): any {
-        return user.matrix_id ? this.preferences[user.matrix_id]?.[key] : undefined;
+        return user.matrixId ? this.preferences[user.matrixId]?.[key] : undefined;
     }
 }

@@ -1,26 +1,113 @@
+/*
 // /types/chat.ts
+import { MessageType } from '@/types/chat.types';
+import { Json } from '@/types/database.types';
+import { string } from '@recoiljs/refine';
 import { ReactNode } from 'react';
-import {
-    AIModelSettings,
-    BrokerData,
-    ControlSettings,
-    RequestSettings,
-    ResponseData,
-    VariablesData,
-    ChatSettings
-} from "./settings";
-
+import { AIModelSettings, BrokerData, ControlSettings, RequestSettings, ResponseData, VariablesData, ChatSettings } from "types/settings.types";
 
 export type ChatId = string;
 export type CreatedAt= string;
 export type UserId= string;
 export type ChatTitle= string;
 export type LastEdited= string;
-export type Metadata = Record<string, any>;
+type Metadata = Record<string, any>;
 
 export type MessageIndex= number;
 export type Role = string;
 export type MessageText= string;
+
+
+
+
+
+// Existing Chat type, unchanged, since it's already defined with optional properties
+export interface Chat {
+    chatId: string;
+    chatTitle: string;
+    createdAt: string;
+    lastEdited: string;
+    matrixId: string;
+    metadata: Json;
+}
+
+export interface ChatWithJsons {
+    chatId: string;
+    chatTitle: string;
+    createdAt: string;
+    lastEdited: string;
+    matrixId: string;
+    metadata: Json;
+    messages: Json
+}
+
+export interface ChatWithMessages {
+    chatId: string;
+    chatTitle: string;
+    createdAt: string;
+    lastEdited: string;
+    matrixId: string;
+    metadata: Json;
+    messages: Message[];
+}
+
+
+// Updating Message type to fit the new requirements and existing usage patterns
+export interface Message {
+    chatId?: string | null;
+    createdAt?: string;
+    id?: string;
+    index: number | null;
+    text: string | null;
+    role: string | null;
+}
+
+export type MessagesArray = Message[];
+
+// New type extending Chat to include messages property
+export interface ChatWithJsonMessages extends Chat {
+    chatId: string;
+    messages: Json;
+}
+
+// Keeping the FullChatWithMessages interface
+export interface FullChatWithMessages {
+    chatId: string;
+    messages: MessagesArray;
+}
+
+// Creating a new simplified message type specifically for the streamlined data you described
+export interface SimpleMessage {
+    index: number;
+    text: string;
+    role: string;
+}
+
+
+export interface NewChatEntry {
+    userId: string,
+    systemMessage: string,
+    userMessage: string
+}
+
+
+export interface ChatMessagesResponse {
+    chatId: string;
+    messages: Message[];
+}
+
+
+
+
+// TypeScript type for chat_messages_response_type
+export type ChatMessagesResponseType = {
+    chatId: string;
+    messages: MessageType[];
+};
+
+
+
+
 
 export interface MatrixMessage {
     index: MessageIndex;
@@ -30,6 +117,7 @@ export interface MatrixMessage {
 
 export type ChatMessagesArray = MatrixMessage[];
 
+/!*
 
 export interface Chat {
     chatId: ChatId;
@@ -40,6 +128,7 @@ export interface Chat {
     lastEdited: LastEdited;
     metadata: Metadata;
 }
+*!/
 
 export type ChatSummary = {
     chatId: string;
@@ -254,3 +343,4 @@ export type RespondData = {
 
 
 
+*/

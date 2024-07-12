@@ -1,0 +1,54 @@
+[
+  {
+    "routine_name": "set_message_index",
+    "routine_definition": "\r\nBEGIN\r\n  NEW.index := (SELECT COALESCE(MAX(index), 0) + 1 FROM messages WHERE chat_id = NEW.chat_id);\r\n  RETURN NEW;\r\nEND;\r\n"
+  },
+  {
+    "routine_name": "add_system_message",
+    "routine_definition": "\r\nBEGIN\r\n  INSERT INTO messages (chat_id, role, message)\r\n  VALUES (chat_id, 'system', message);\r\nEND;\r\n"
+  },
+  {
+    "routine_name": "add_user_message",
+    "routine_definition": "\r\nBEGIN\r\n  INSERT INTO messages (chat_id, role, message)\r\n  VALUES (chat_id, 'user', message);\r\nEND;\r\n"
+  },
+  {
+    "routine_name": "add_assistant_message",
+    "routine_definition": "\r\nBEGIN\r\n  INSERT INTO messages (chat_id, role, message)\r\n  VALUES (chat_id, 'assistant', message);\r\nEND;\r\n"
+  },
+  {
+    "routine_name": "add_custom_message",
+    "routine_definition": "\r\nBEGIN\r\n  IF message_index IS NULL THEN\r\n    message_index := (SELECT COALESCE(MAX(index), 0) + 1 FROM messages WHERE chat_id = chat_id);\r\n  END IF;\r\n\r\n  INSERT INTO messages (chat_id, role, message, index, created_at)\r\n  VALUES (chat_id, role, message, message_index, message_created_at);\r\nEND;\r\n"
+  },
+  {
+    "routine_name": "sync_chats_insert",
+    "routine_definition": "\r\nBEGIN\r\n  INSERT INTO chats_copy (chat_id, chat_title, created_at, last_edited, matrix_id, metadata)\r\n  VALUES (NEW.chat_id, NEW.chat_title, NEW.created_at, NEW.last_edited, NEW.matrix_id, NEW.metadata);\r\n  RETURN NEW;\r\nEND;\r\n"
+  },
+  {
+    "routine_name": "sync_chats_update",
+    "routine_definition": "\r\nBEGIN\r\n  UPDATE chats_copy\r\n  SET chat_title = NEW.chat_title,\r\n      created_at = NEW.created_at,\r\n      last_edited = NEW.last_edited,\r\n      matrix_id = NEW.matrix_id,\r\n      metadata = NEW.metadata\r\n  WHERE chat_id = NEW.chat_id;\r\n  RETURN NEW;\r\nEND;\r\n"
+  },
+  {
+    "routine_name": "sync_chats_delete",
+    "routine_definition": "\r\nBEGIN\r\n  DELETE FROM chats_copy WHERE chat_id = OLD.chat_id;\r\n  RETURN OLD;\r\nEND;\r\n"
+  },
+  {
+    "routine_name": "fetch_chat_messages",
+    "routine_definition": "\r\nBEGIN\r\n  RETURN QUERY\r\n  SELECT\r\n    chats.chat_id AS chatId,\r\n    chats.chat_title AS chatTitle,\r\n    chats.created_at AS chatCreatedAt,\r\n    chats.last_edited AS lastEdited,\r\n    chats.matrix_id AS matrixId,\r\n    chats.metadata,\r\n    messages.id AS messageId,\r\n    messages.role,\r\n    messages.message,\r\n    messages.created_at AS messageCreatedAt,\r\n    messages.index AS messageIndex\r\n  FROM chats\r\n  JOIN messages ON chats.chat_id = messages.chat_id\r\n  WHERE chats.chat_id = p_chat_id\r\n  ORDER BY messages.index ASC;\r\nEND;\r\n"
+  },
+  {
+    "routine_name": "fetch_user_chats",
+    "routine_definition": "\r\nBEGIN\r\n  RETURN QUERY\r\n  SELECT\r\n    chat_id AS chatId,\r\n    chat_title AS chatTitle,\r\n    created_at AS chatCreatedAt,\r\n    last_edited AS lastEdited,\r\n    matrix_id AS matrixId,\r\n    metadata\r\n  FROM chats\r\n  WHERE matrix_id = user_matrix_id;\r\nEND;\r\n"
+  },
+  {
+    "routine_name": "start_new_chat",
+    "routine_definition": "\r\nDECLARE\r\n  new_chat_id uuid;\r\n  chat_title text;\r\nBEGIN\r\n  -- Set chat title to the first 25 characters of the user message\r\n  chat_title := LEFT(user_message, 25);\r\n  \r\n  -- Insert new chat\r\n  INSERT INTO chats (matrix_id, chat_title, created_at, last_edited, metadata)\r\n  VALUES (user_matrix_id, chat_title, NOW(), NOW(), NULL)\r\n  RETURNING chat_id INTO new_chat_id;\r\n  \r\n  -- Insert system message\r\n  INSERT INTO messages (chat_id, role, message, index, created_at)\r\n  VALUES (new_chat_id, 'system', system_message, 0, NOW());\r\n  \r\n  -- Insert user message\r\n  INSERT INTO messages (chat_id, role, message, index, created_at)\r\n  VALUES (new_chat_id, 'user', user_message, 1, NOW());\r\n  \r\n  -- Return the full chat with messages\r\n  RETURN QUERY\r\n  SELECT\r\n    chats.chat_id AS chatId,\r\n    chats.chat_title AS chatTitle,\r\n    chats.created_at AS chatCreatedAt,\r\n    chats.last_edited AS lastEdited,\r\n    chats.matrix_id AS matrixId,\r\n    chats.metadata,\r\n    messages.id AS messageId,\r\n    messages.role,\r\n    messages.message,\r\n    messages.created_at AS messageCreatedAt,\r\n    messages.index AS messageIndex\r\n  FROM chats\r\n  JOIN messages ON chats.chat_id = messages.chat_id\r\n  WHERE chats.chat_id = new_chat_id\r\n  ORDER BY messages.index ASC;\r\nEND;\r\n"
+  },
+  {
+    "routine_name": "clone_chat",
+    "routine_definition": "\r\nDECLARE\r\n  new_chat_id uuid;\r\nBEGIN\r\n  -- Insert new chat by cloning the original chat\r\n  INSERT INTO chats (chat_title, created_at, last_edited, matrix_id, metadata)\r\n  SELECT chat_title, NOW(), NOW(), matrix_id, metadata\r\n  FROM chats\r\n  WHERE chat_id = original_chat_id\r\n  RETURNING chat_id INTO new_chat_id;\r\n  \r\n  -- Insert all messages by cloning the messages from the original chat\r\n  INSERT INTO messages (chat_id, role, message, index, created_at)\r\n  SELECT new_chat_id, role, message, index, NOW()\r\n  FROM messages\r\n  WHERE chat_id = original_chat_id;\r\n\r\n  -- Return the full cloned chat with messages\r\n  RETURN QUERY\r\n  SELECT\r\n    chats.chat_id AS chatId,\r\n    chats.chat_title AS chatTitle,\r\n    chats.created_at AS chatCreatedAt,\r\n    chats.last_edited AS lastEdited,\r\n    chats.matrix_id AS matrixId,\r\n    chats.metadata,\r\n    messages.id AS messageId,\r\n    messages.role,\r\n    messages.message,\r\n    messages.created_at AS messageCreatedAt,\r\n    messages.index AS messageIndex\r\n  FROM chats\r\n  JOIN messages ON chats.chat_id = messages.chat_id\r\n  WHERE chats.chat_id = new_chat_id\r\n  ORDER BY messages.index ASC;\r\nEND;\r\n"
+  },
+  {
+    "routine_name": "clone_and_edit_chat",
+    "routine_definition": "\r\nDECLARE\r\n  new_chat_id uuid;\r\nBEGIN\r\n  -- Clone the original chat\r\n  PERFORM clone_chat(original_chat_id);\r\n  \r\n  -- Insert new chat up to the edited point\r\n  INSERT INTO chats (chat_title, created_at, last_edited, matrix_id, metadata)\r\n  SELECT chat_title, NOW(), NOW(), matrix_id, metadata\r\n  FROM chats\r\n  WHERE chat_id = original_chat_id\r\n  RETURNING chat_id INTO new_chat_id;\r\n\r\n  -- Insert messages up to the edited point\r\n  INSERT INTO messages (chat_id, role, message, index, created_at)\r\n  SELECT new_chat_id, role, message, index, NOW()\r\n  FROM messages\r\n  WHERE chat_id = original_chat_id AND index <= edited_index;\r\n  \r\n  -- Insert the edited message\r\n  INSERT INTO messages (chat_id, role, message, index, created_at)\r\n  VALUES (new_chat_id, new_message_role, new_message, edited_index, NOW());\r\n\r\n  -- Return the full new chat with messages\r\n  RETURN QUERY\r\n  SELECT\r\n    chats.chat_id AS chatId,\r\n    chats.chat_title AS chatTitle,\r\n    chats.created_at AS chatCreatedAt,\r\n    chats.last_edited AS lastEdited,\r\n    chats.matrix_id AS matrixId,\r\n    chats.metadata,\r\n    messages.id AS messageId,\r\n    messages.role,\r\n    messages.message,\r\n    messages.created_at AS messageCreatedAt,\r\n    messages.index AS messageIndex\r\n  FROM chats\r\n  JOIN messages ON chats.chat_id = messages.chat_id\r\n  WHERE chats.chat_id = new_chat_id\r\n  ORDER BY messages.index ASC;\r\nEND;\r\n"
+  }
+]

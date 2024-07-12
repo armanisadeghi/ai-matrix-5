@@ -1,27 +1,35 @@
-import React from 'react';
-import { ChatHistoryChat } from '@/types/chat';
-import AmeChatHistoryEntry from '@/components/AiChat/Sidebar/AmeChatHistoryEntry';
-import { Space, Stack, Text, Container, LoadingOverlay } from '@mantine/core';
+import { useChatSummaries } from '@/app/trials/core-chat-trial/hooks/useChatSummaries';
+import React, { useEffect } from 'react';
+import AmeChatHistoryEntry from '@/components/AiChat/Sidebar/ChatSummaryEntry';
+import { Space, Stack, Text, Skeleton } from '@mantine/core';
 
 interface ChatSidebarProps {
-    chatHistory?: Record<string, ChatHistoryChat[]>,
     isLoading?: boolean,
-    user_id?: string
 }
 
 const ChatSidebar: React.FC<ChatSidebarProps> = (
     {
-        chatHistory = {},
         isLoading = false,
-        user_id
     }) => {
-    if (isLoading) {
+    const chatSummaries = useChatSummaries();
+
+    useEffect(() => {
+        if (chatSummaries && chatSummaries !== 'loading' && chatSummaries.length > 0) {
+            console.log('Chat summaries updated:', chatSummaries);
+        }
+    }, [chatSummaries]);
+
+    if (isLoading || chatSummaries === 'loading') {
         console.log('Loading overlay is visible');
         return (
-            <div>
-                Chat Sidebar is loading...
-            </div>
-        )
+            <Stack align="stretch" justify="center" gap="xs">
+                <Skeleton height={40} radius="md" />
+                <Skeleton height={40} radius="md" />
+                <Skeleton height={40} radius="md" />
+                <Skeleton height={40} radius="md" />
+                <Skeleton height={40} radius="md" />
+            </Stack>
+        );
     }
 
     return (
@@ -35,14 +43,11 @@ const ChatSidebar: React.FC<ChatSidebarProps> = (
                 justify="flex-start"
                 gap="xs"
             >
-                {Object.keys(chatHistory).map((chatId) => {
-                    const chatEntries = chatHistory[chatId];
-
-                    if (chatEntries && chatEntries.length > 0) {
-                        const firstEntry = chatEntries[0];
-                        const truncatedContent = firstEntry.content.length > 100
-                            ? firstEntry.content.substring(0, 100) + '...'
-                            : firstEntry.content;
+                {chatSummaries && chatSummaries.length > 0 ? (
+                    chatSummaries.map(({ chatId, chatTitle }) => {
+                        const truncatedContent = chatTitle.length > 100
+                            ? chatTitle.substring(0, 100) + '...'
+                            : chatTitle;
 
                         return (
                             <AmeChatHistoryEntry
@@ -51,11 +56,10 @@ const ChatSidebar: React.FC<ChatSidebarProps> = (
                                 initialValue={truncatedContent}
                             />
                         );
-                    } else {
-                        console.log('No chat history found for chat ID:', chatId);
-                        return null;
-                    }
-                })}
+                    })
+                ) : (
+                    <Text size="sm">No Chats Found</Text>
+                )}
             </Stack>
         </>
     );

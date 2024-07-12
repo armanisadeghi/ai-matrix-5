@@ -1,12 +1,6 @@
-import React, { ReactNode, useEffect } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { PreciseSplitter, PreciseSplitterProps } from "@/ui/split/PreciseVerticalSplitter";
-import {
-    availableHeightSelector,
-    availableWidthSelector,
-    windowHeightState,
-    windowWidthState
-} from "@/context/atoms/layoutAtoms";
+import React, { ReactNode } from 'react';
+import { PreciseSplitter } from "@/ui/split/PreciseVerticalSplitter";
+import useDynamicDimensions from '@/hooks/layout/useDynamicDimensions';
 
 interface ParentSplitterContainerProps {
     children: ReactNode[];
@@ -14,27 +8,18 @@ interface ParentSplitterContainerProps {
 }
 
 const AmeSplitter: React.FC<ParentSplitterContainerProps> = ({ children, initialSizes }) => {
-    const setWindowWidth = useSetRecoilState(windowWidthState);
-    const setWindowHeight = useSetRecoilState(windowHeightState);
+    const [ref, dimensions] = useDynamicDimensions();
 
-    useEffect(() => {
-        setWindowWidth(window.innerWidth);
-        setWindowHeight(window.innerHeight);
-    }, [setWindowWidth, setWindowHeight]);
-
-    const availableWidth = useRecoilValue(availableWidthSelector);
-    const availableHeight = useRecoilValue(availableHeightSelector);
-
-    console.log('VerticalSplitter availableWidth', availableWidth);
-    console.log('VerticalSplitter availableHeight', availableHeight);
+    console.log('VerticalSplitter availableWidth', dimensions.availableWidth);
+    console.log('VerticalSplitter availableHeight', dimensions.availableHeight);
 
     return (
-        <div>
+        <div ref={ref} style={{ height: '100%', width: '100%' }}>
             <PreciseSplitter
                 children={children}
                 initialSizes={initialSizes}
-                initialWidth={availableWidth.width}
-                initialHeight={availableHeight.height}
+                initialWidth={dimensions.availableWidth}
+                initialHeight={dimensions.availableHeight}
             />
         </div>
     );

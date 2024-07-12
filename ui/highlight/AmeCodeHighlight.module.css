@@ -5,20 +5,76 @@
     .codeSection :global(.m_1f5e827e) {
         --code-text-color: #ffffff; /* Bright white for general text */
         --code-background: #000000; /* Jet black for background */
-        --code-comment-color: #6272a4; /* Dim gray for comments */
-        --code-keyword-color: #188cff; /* Bright blue for keywords eg. 'def' */
-        --code-tag-color: #da10b2; /* Bright pink for tags */
-        --code-literal-color: #ab54f3; /* Bright purple for literals */
-        --code-string-color: #0fe12b; /* Bright green for strings eg. 'imports and dict keys' */
-        --code-variable-color: #2accef; /* Bright cyan for variables */
-        --code-class-color: #fa1414; /* Bright red for classes ex. 'function name' */
+    --code-fade-color: #333;    /* Dark gray for fade */
+    }
+
+    .header {
+        background-color: #494747; /* Dark gray for background */
+        color: #f0f0f0; /* Light color for text */
+    }
+
+    .expandButton {
+        color: #f0f0f0;
+    }
+
+    .expandButton:hover {
+        color: #ffffff; /* Brighter color on hover */
+    }
+
+    .fadeOverlay {
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 1) 0%,          /* Solid black */
+      rgba(0, 0, 0, 0.8) 20%,       /* Fade quickly at the top */
+      rgba(0, 0, 0, 0.6) 40%,       /* Fade fast */
+      rgba(0, 0, 0, 0.4) 60%,       /* Fade at medium speed */
+      rgba(0, 0, 0, 0.2) 80%,       /* Fade slowly */
+      rgba(51, 51, 51, 0) 100%      /* Fade to grey */
+    );
+    }
+
+    .codeSection :global(.mantine-CodeHighlight-pre::-webkit-scrollbar-track),
+    .codeSection :global(.mantine-CodeHighlightTabs-pre::-webkit-scrollbar-track) {
+        background: #2c2c2c; /* Darker track color */
     }
 }
 
+/* Global styles for light mode */
 :global([data-mantine-color-scheme='light']) {
     .codeSection :global(.m_1f5e827e) {
         --code-background: #e1e1e1; /* Slightly darker gray */
         --code-text-color: #000000; /* Black for general text */
+    --code-fade-color: #ececec; /* Light gray for fade */
+    }
+
+    .header {
+        background-color: #322f2f; /* Light background */
+        color: #ffffff; /* Darker text */
+    }
+
+    .expandButton {
+        color: #ffffff;
+    }
+
+    .expandButton:hover {
+        color: #c1c1c1; /* Darker color on hover */
+    }
+
+    .fadeOverlay {
+    background: linear-gradient(
+      to bottom,
+      rgba(225, 225, 225, 1) 0%,    /* Solid light gray */
+      rgba(225, 225, 225, 0.8) 20%, /* Fade quickly at the top */
+      rgba(225, 225, 225, 0.6) 40%, /* Fade fast */
+      rgba(225, 225, 225, 0.4) 60%, /* Fade at medium speed */
+      rgba(225, 225, 225, 0.2) 80%, /* Fade slowly */
+      rgba(236, 236, 236, 0) 100%   /* Fade to very light gray */
+    );
+    }
+
+    .codeSection :global(.mantine-CodeHighlight-pre::-webkit-scrollbar-track),
+    .codeSection :global(.mantine-CodeHighlightTabs-pre::-webkit-scrollbar-track) {
+        background: #f1f1f1; /* Light track color */
     }
 }
 
@@ -27,26 +83,21 @@
     background-color: var(--code-background);
     color: var(--code-text-color);
     border-radius: 4px;
-    padding: 20px;
+    padding: 10px;
     overflow-x: auto; /* Enable horizontal scrolling */
-    max-width: 800px; /* Set maximum width */
+    max-width: 712px; /* Set maximum width */
 }
 
 .codeSection :global(.mantine-CodeHighlight-code),
 .codeSection :global(.mantine-CodeHighlightTabs-code) {
-    font-family: 'Fira Code', monospace;
-    font-size: 16px;
+    font-family: 'ui-monospace', monospace;
+    font-size: 12px;
 }
 
-/* Custom scrollbar styles */
+/* TODO: Need to find out why there are two scroll bars. For now, I put one with height 0 (Used to be 6px) Custom scrollbar styles */
 .codeSection :global(.mantine-CodeHighlight-pre::-webkit-scrollbar),
 .codeSection :global(.mantine-CodeHighlightTabs-pre::-webkit-scrollbar) {
-    height: 6px; /* Height of the scrollbar */
-}
-
-.codeSection :global(.mantine-CodeHighlight-pre::-webkit-scrollbar-track),
-.codeSection :global(.mantine-CodeHighlightTabs-pre::-webkit-scrollbar-track) {
-    background: #f1f1f1; /* Track color */
+    height: 0; /* Height of the scrollbar */
 }
 
 .codeSection :global(.mantine-CodeHighlight-pre::-webkit-scrollbar-thumb),
@@ -62,8 +113,6 @@
 
 /* Local styles for the header */
 .header {
-    background-color: #555555; /* Dark gray for background */
-    color: #f0f0f0; /* Light color for text */
     padding: 4px 10px;
     font-size: 14px;
     border-top-left-radius: 8px; /* More rounded corners */
@@ -78,14 +127,9 @@
 .expandButton {
     background: none;
     border: none;
-    color: #f0f0f0;
     cursor: pointer;
     font-size: 12px;
     margin-left: 10px;
-}
-
-.expandButton:hover {
-    color: #ffffff; /* Brighter color on hover */
 }
 
 /* Local styles for the code section */
@@ -93,4 +137,26 @@
     position: relative;
     max-width: 800px;
     margin: auto; /* Center the code section */
+}
+
+/* Styles for the code preview */
+.codePreviewWrapper {
+    position: relative;
+    max-height: 250px;
+    overflow: hidden;
+}
+
+.codePreview {
+    overflow: hidden;
+    position: relative; /* Ensure it positions correctly inside its wrapper */
+}
+
+/* Styles for the fade effect */
+.fadeOverlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px; /* Make the effect more noticeable */
+    pointer-events: none; /* Ensure it doesn't interfere with user clicks */
 }

@@ -1,7 +1,7 @@
-// hooks/redis/useWebSocketText.ts
+// hooks43/redis/useWebSocketText.ts
 'use client';
 
-import { RequestPayload, WebSocketResponse } from '@/types/requests';
+import { RequestPayload, WebSocketResponse } from '@/types/requests.types';
 import { useWebSocket } from './useWebSocket';
 
 export const useWebSocketText = (initialRequest: RequestPayload): [WebSocketResponse | null, (message: string) => void] => {

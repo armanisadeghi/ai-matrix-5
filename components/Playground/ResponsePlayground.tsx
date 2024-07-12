@@ -1,11 +1,12 @@
-import {useState} from "react";
-import {Button, Flex, Group, Paper, Select, Text, Textarea} from "@mantine/core";
+import { useState } from 'react';
+import { Button, Flex, Group, Paper, Select, Text, Textarea } from '@mantine/core';
 import {
     IconArrowsDiagonal,
     IconArrowsDiagonalMinimize2,
     IconSquareRoundedArrowLeft,
     IconTrash
-} from "@tabler/icons-react";
+} from '@tabler/icons-react';
+
 
 const ResponsePlayground = () => {
     const [minimize, setMinimize] = useState(true)
@@ -24,15 +25,14 @@ const ResponsePlayground = () => {
 
             {
                 minimize ?
-                    <div style={{maxHeight: 80, overflow: 'hidden'}}><Text size={'xs'}
-                                                                           onClick={() => setMinimize(false)}>Lorem
-                        ipsum dolor sit amet, consectetur adipisicing elit. Ad culpa dolorum eveniet illo in itaque
-                        molestiae nemo, quae reiciendis rem? Beatae dolorum expedita illum ipsa optio quidem reiciendis,
-                        temporibus tenetur?</Text>
+                    <div style={{maxHeight: 80, overflow: 'hidden'}}>
+                        <Text size={'xs'}
+                              onClick={() => setMinimize(false)}>
+                        </Text>
                     </div> :
                     (
                         <Textarea autosize={true} variant="unstyled" size={'xs'}
-                                  defaultValue={'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad culpa dolorum eveniet illo in itaque molestiae nemo, quae reiciendis rem? Beatae dolorum expedita illum ipsa optio quidem reiciendis, temporibus tenetur?'}/>
+                                  defaultValue={''}/>
                     )
             }
 
@@ -41,7 +41,7 @@ const ResponsePlayground = () => {
                     size={'xs'}
                     placeholder="Pick a type"
                     data={['Text', 'Markdown', 'Form', 'Table', 'JSON']}
-                    defaultValue='Text'
+                    defaultValue="Text"
                 />
 
 

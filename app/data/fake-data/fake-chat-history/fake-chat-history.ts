@@ -1,5 +1,6 @@
+/*
 // app/data/fake-data/fake-chat-history/fake-chat-history.ts
-import { Role } from "@/types/chat";
+import { Role } from "@/types/chat.ts";
 import { readMultipleFiles } from '../utils/serverUtils';
 
 const sampleFiles = [
@@ -92,3 +93,4 @@ async function loadChatHistory(): Promise<ChatHistory[]> {
 }
 
 export default loadChatHistory;
+*/

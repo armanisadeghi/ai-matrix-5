@@ -1,18 +1,20 @@
+import { activeUserAtom } from '@/state/userAtoms';
 import { useState } from 'react';
 import { ActionIcon, Group, Tooltip } from '@mantine/core';
 import { IconEdit, IconTrash } from '@tabler/icons-react';
 import { DataTable, DataTableColumn, DataTableSortStatus } from 'mantine-datatable';
-import { Broker } from '@/types/broker';
+import { Broker, dataType } from '@/types/broker';
 import { createBrokerManager } from '@/services/brokerService';
 import { Notifications } from '@mantine/notifications';
 import { useRouter } from 'next/navigation';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { filteredAndSortedDataSelector, sortingAtom } from '@/context/atoms/brokerAtoms';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { brokersAtom, filteredAndSortedDataSelector, sortingAtom } from '@/context/atoms/brokerAtoms';
 
 const PAGE_SIZE = 20;
 
 const BrokerTable = () => {
     const brokerManager = createBrokerManager();
+    const setBrokers = useSetRecoilState(brokersAtom);
     const filteredAndSortedData = useRecoilValue<Broker[]>(filteredAndSortedDataSelector);
     const setSortedData = useSetRecoilState(sortingAtom);
     const router = useRouter()
@@ -21,14 +23,17 @@ const BrokerTable = () => {
         columnAccessor: 'name',
         direction: 'asc',
     });
+    const activeUser = useRecoilValue(activeUserAtom);
     const key = 'resize-example';
 
     const handleDelete = async (broker: Broker) => {
         await brokerManager.deleteBroker(broker.id);
+        setBrokers((prev: Broker[]) => prev.filter((item) => item.id !== broker.id));
         Notifications.show({
             title: 'Broker Deleted',
             message: `${broker.displayName} has been deleted.`,
         })
+
     };
 
     const columns: DataTableColumn<Broker>[] = [
@@ -42,16 +47,18 @@ const BrokerTable = () => {
             textAlign: 'left',
             render: (broker: Broker) => (
                 <Group wrap="nowrap">
-                    <Tooltip label="Edit broker">
-                        <ActionIcon onClick={() => handleEdit(broker)}>
-                            <IconEdit size={14} />
-                        </ActionIcon>
-                    </Tooltip>
                     <Tooltip label="Delete broker">
                         <ActionIcon onClick={() => handleDelete(broker)}>
                             <IconTrash size={14} />
                         </ActionIcon>
                     </Tooltip>
+                    {activeUser.matrixId === broker.matrixId &&
+                        <Tooltip label="Edit broker">
+                            <ActionIcon onClick={() => handleEdit(broker)}>
+                                <IconEdit size={14} />
+                            </ActionIcon>
+                        </Tooltip>
+                    }
                 </Group>
             ),
         },
@@ -76,7 +83,9 @@ const BrokerTable = () => {
             page={page}
             onPageChange={setPage}
             recordsPerPage={PAGE_SIZE}
-            records={filteredAndSortedData}
+            records={filteredAndSortedData.map((broker) => ({
+                ...broker, dataType: dataType[broker.dataType as keyof typeof dataType],
+            }))}
             columns={columns}
             sortStatus={sortStatus}
             onSortStatusChange={handleSortChange}

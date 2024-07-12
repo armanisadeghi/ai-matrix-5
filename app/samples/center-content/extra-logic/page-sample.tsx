@@ -1,10 +1,10 @@
 // Updated PageLayout component
 'use client';
 
+import { bottomSectionStateAtom, windowSizeStateAtom, autoscrollStateAtom } from '@/state/layoutAtoms';
 import React, { useEffect, useRef, ReactNode } from 'react';
 import { Box, Container, useMantineTheme } from '@mantine/core';
 import { useRecoilState } from 'recoil';
-import { autoscrollStateAtom, bottomSectionStateAtom, windowSizeStateAtom,} from '../layoutAtoms';
 import styles from './PageLayout.module.css';
 
 interface PageLayoutProps {
@@ -21,7 +21,7 @@ interface PageLayoutProps {
 
 const defaultProps: PageLayoutProps = {
     bottomSection: false,
-    centerColumnMaxWidth: 768,
+    centerColumnMaxWidth: 775,
     gapColumnsMinWidth: 0,
     orderOfImportance: ['Gap Columns', 'Navbar', 'Sidebar'],
     autoscroll: true,
@@ -44,8 +44,8 @@ const PageLayout: React.FC<PageLayoutProps> = (props) => {
 
     const theme = useMantineTheme();
     const [windowSize, setWindowSize] = useRecoilState(windowSizeStateAtom);
-    const [isAutoscroll, setIsAutoscroll] = useRecoilState(autoscrollStateAtom);
     const [bottomSectionState, setBottomSectionState] = useRecoilState(bottomSectionStateAtom);
+    const [isAutoscroll, setIsAutoscroll] = useRecoilState(autoscrollStateAtom);
     const contentRef = useRef<HTMLDivElement>(null);
 
     // Update window size state on resize

@@ -1,10 +1,9 @@
 'use client';
 
+import { autoscrollStateAtom } from '@/state/layoutAtoms';
 import React, { useRef, useEffect, useCallback } from 'react';
 import { useRecoilState } from 'recoil';
-import { autoscrollStateAtom } from './layoutAtoms';
 import CenterContent from './CenterContent';
-import styles from './CenterContent.module.css';
 import AmeTextWithSlider, { AmeTextWithSliderProps } from '@/ui/textarea/AmeTextWithSlider';
 import textareaStyles from '@/components/AiChat/UserInput/DynamicTextarea.module.css';
 import { simpleChatSettingsList } from '@/state/aiAtoms/settingsAtoms';

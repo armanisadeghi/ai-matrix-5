@@ -1,5 +1,4 @@
 import React, { createContext, ReactNode, useContext, useState } from "react";
-import { useLocalStorage } from "@mantine/hooks";
 
 interface HeaderContextProps {
     setContent: (content: ReactNode) => void;

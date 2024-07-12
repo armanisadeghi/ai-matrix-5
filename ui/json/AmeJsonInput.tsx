@@ -7,7 +7,7 @@ import { JsonInput, JsonInputProps, Button, Space } from '@mantine/core';
 interface AmeJsonInputProps extends Omit<JsonInputProps, 'size' | 'radius' | 'label' | 'placeholder' | 'value' | 'onChange' | 'error'> {
     enabled?: boolean;
     errorMessage?: string;
-    label: string;
+    label?: string;
     value: any;
     onChange?: (value: string) => void;
     showButton?: boolean;

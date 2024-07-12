@@ -1,68 +1,79 @@
-import React, { useEffect } from "react";
-import { useRecoilState, useRecoilValue, useRecoilValueLoadable, useSetRecoilState } from "recoil";
-import AmeChatHistoryEntry from "@/components/AiChat/Sidebar/AmeChatHistoryEntry";
-import { Stack, Text } from "@mantine/core";
-import {
-    activeChatMessagesArrayAtom,
-    chatDetailsSelector,
-    ChatSidebarListAtom,
-    chatSummariesSelector,
-    activeChatIdAtom,
-    selectedChatMessagesSelector,
-    useFetchAndStoreChatDetails,
-} from "@/state/aiAtoms/chatAtoms";
-import AmeActionIcon from "@/ui/buttons/AmeActionIcon";
-import { ChatSummary } from "@/types";
-import { activeUserAtom } from "@/state/userAtoms";
-import { IoCreateOutline } from "react-icons/io5";
+'use client';
 
-const ChatSidebar = () => {
-    const [chats, setChats] = useRecoilState(ChatSidebarListAtom);
-    const setActiveChatMessages = useSetRecoilState(activeChatMessagesArrayAtom);
-    const [activeUser, setActiveUser] = useRecoilState(activeUserAtom);
-    const chatSummariesLoadable = useRecoilValueLoadable(chatSummariesSelector);
-    const chatDetailsLoadable = useRecoilValueLoadable(chatDetailsSelector);
-    const [activeChatId, setSelectedChatId] = useRecoilState(activeChatIdAtom);
-    const chatMessages = useRecoilValue(selectedChatMessagesSelector(activeChatId || ""));
-    const userId = activeUser?.matrix_id ?? "";
-    const fetchAndStoreChatDetails = useFetchAndStoreChatDetails();
+import React, { useCallback, useMemo, useState } from 'react';
+import { activeChatIdAtom, chatSummariesAtom, chatTransitionAtom, isNewChatAtom } from '@/state/aiAtoms/aiChatAtoms';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { Stack, Text, ScrollArea } from '@mantine/core';
+import { IoCreateOutline } from 'react-icons/io5';
+import ChatSummaryEntry from '@/components/AiChat/Sidebar/ChatSummaryEntry';
+import AmeActionIcon from '@/ui/button/AmeActionIcon';
+import Link from 'next/link';
+import SidebarAdmin from '@/components/AiChat/Sidebar/SidebarAdmin';
 
-    const handleChatSelect = async (chatId: string) => {
-        setSelectedChatId(chatId);
-        await fetchAndStoreChatDetails(chatId);
-    };
 
-    const handleNewChat = () => {
-        // Clear the page of the current chat to start a new one
-        setActiveChatMessages([]);
-        // Additional logic to prepare for a new chat can be added here
-    };
+const ChatSidebar: React.FC = () => {
+    const [activeChatId, setActiveChatId] = useRecoilState(activeChatIdAtom);
+    const [, setIsNewChat] = useRecoilState(isNewChatAtom);
+    const [chatSelectCount, setChatSelectCount] = useState(0);
+    const [newChatCount, setNewChatCount] = useState(0);
+    const chatSummaries = useRecoilValue(chatSummariesAtom);
+    const setTransitionState = useSetRecoilState(chatTransitionAtom);
+
+    const handleChatSelect = useCallback(
+        (chatId: string, chatTitle: string) => {
+            setChatSelectCount(prevCount => prevCount + 1);
+            setIsNewChat(false);
+            setActiveChatId(chatId);
+            setTransitionState('idle')
+        },
+        [setIsNewChat, setActiveChatId]
+    );
+
+    const handleNewChat = useCallback(() => {
+        setNewChatCount(prevCount => prevCount + 1);
+        setIsNewChat(true);
+    }, [setIsNewChat, setActiveChatId]);
+
+    const memoizedChatEntries = useMemo(() => {
+        return chatSummaries.map((chat) => (
+            <Link
+                key={chat.chatId}
+                href={`/dashboard/intelligence/ai-chat/${encodeURIComponent(chat.chatId)}?chatTitle=${encodeURIComponent(chat.chatTitle)}`}
+                prefetch={false}
+                style={{ textDecoration: 'none' }}
+            >
+                <ChatSummaryEntry
+                    chatId={chat.chatId}
+                    chatTitle={chat.chatTitle}
+                    isActive={chat.chatId === activeChatId}
+                    onClick={() => handleChatSelect(chat.chatId, chat.chatTitle)}
+                />
+            </Link>
+        ));
+    }, [chatSummaries, activeChatId, handleChatSelect]);
+
 
     return (
-        <>
-            <div style={{ display: "flex", justifyContent: "flex-end", paddingRight: "10px" }}>
-                <AmeActionIcon tooltip="New Chat" onClick={handleNewChat}>
-                    <IoCreateOutline size={18} />
-                </AmeActionIcon>
+        <Stack bg="var(--mantine-color-body)" align="stretch" justify="flex-start" gap="0">
+            <div style={{display: 'flex', justifyContent: 'flex-end', paddingRight: '10px'}}>
+                <Link href="/dashboard/intelligence/ai-chat/matrix-ai" passHref>
+                    <AmeActionIcon title="New Chat" onClick={handleNewChat}>
+                        <IoCreateOutline size={18}/>
+                    </AmeActionIcon>
+                </Link>
             </div>
-
-            <Text
-                size="xs"
-                fw={700}
-                style={{
-                    marginLeft: "5px",
-                    marginTop: "5px",
-                }}
-            >
-                Recent Chats
-            </Text>
-            <Stack h={300} bg="var(--mantine-color-body)" align="stretch" justify="flex-start" gap="xs">
-                {chatSummariesLoadable.state === "hasValue" &&
-                    chatSummariesLoadable.contents.map(({ chatId, chatTitle }) => (
-                        <AmeChatHistoryEntry key={chatId} keyProp={chatId} initialValue={chatTitle} />
-                    ))}
-            </Stack>
-        </>
+            <div style={{position: 'relative', height: '100%'}}>
+                <Text size="xs" fw={700} style={{marginLeft: '0px', marginTop: '5px'}}>Recent Chats</Text>
+                <ScrollArea h={500} scrollbarSize={4} scrollHideDelay={500}>
+                    <Stack bg="var(--mantine-color-body)" align="stretch" justify="flex-start" gap="0">
+                        {memoizedChatEntries}
+                    </Stack>
+                </ScrollArea>
+                <ScrollArea h={500} scrollbarSize={4} scrollHideDelay={500}>
+                    <SidebarAdmin chatSelectCount={chatSelectCount} newChatCount={newChatCount}/>
+                </ScrollArea>
+            </div>
+        </Stack>
     );
 };
 

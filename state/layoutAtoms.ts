@@ -1,8 +1,7 @@
-// state/layoutAtoms.ts
-import { atom, selector, selectorFamily, waitForAll } from 'recoil';
-import { PresetMethod, DeviceType } from '@/types/layout';
-import { CustomPresets } from "@/hooks/layout/layoutPresets";
-
+// state/centerLayoutAtoms.ts
+import { atom, selector, waitForAll } from 'recoil';
+import { PresetMethod, DeviceType } from '@/types/layout.types';
+import { CustomPresets } from '@/hooks/layout/layoutPresets';
 
 // Atoms holding the size directly
 export const rightSidebarAtom = atom<number>({
@@ -26,29 +25,44 @@ export const headerAtom = atom<number>({
 });
 
 export const loadingStateAtom = atom<boolean>({
-    key: "loadingStateAtom",
+    key: 'loadingStateAtom',
     default: true,
 });
 
 export const presetMethodAtom = atom<PresetMethod>({
-    key: "presetMethodAtom",
-    default: "none",
+    key: 'presetMethodAtom',
+    default: 'none',
 });
 
 export const deviceTypeAtom = atom<DeviceType>({
-    key: "deviceTypeAtom",
-    default: "desktop",
+    key: 'deviceTypeAtom',
+    default: 'desktop',
 });
 
 export const rightSidebarToggleOptionsAtom = atom<number[]>({
     key: 'rightSidebarToggleOptionsAtom',
-    default: [250, 150, 70, 0],
+    default: [250, 150, 50, 0],
 });
 
 export const leftSidebarToggleOptionsAtom = atom<number[]>({
     key: 'leftSidebarToggleOptionsAtom',
-    default: [250, 150, 70, 0],
+    default: [220, 150, 50, 0],
 });
+
+export const leftSidebarMobileToggleOptionsAtom = atom<number[]>({
+    key: 'leftSidebarMobileToggleOptionsAtom',
+    default: [200, 0],
+});
+
+export const rememberedLeftSidebarSizeAtom = atom({
+    key: 'rememberedLeftSidebarSizeAtom',
+    default: {
+        mobile: 0,
+        tablet: 200,
+        desktop: 250,
+    },
+});
+
 
 export const footerToggleOptionsAtom = atom<number[]>({
     key: 'footerToggleOptionsAtom',
@@ -85,6 +99,14 @@ export const presetTypeAtom = atom<string>({
     default: 'standard',
 });
 
+export const priorityLevelAtom = atom<number>({
+    key: 'priorityLevelAtom',
+    default: 0,
+});
+
+
+
+
 export const customValuesAtom = atom<CustomPresets>({
     key: 'customValuesAtom',
     default: {},
@@ -96,47 +118,82 @@ export const overrideFlagAtom = atom<boolean>({
 });
 
 export const windowWidthState = atom<number | null>({
-    key: "windowWidthState",
+    key: 'windowWidthState',
     default: null,
 });
 
 export const windowHeightState = atom<number | null>({
-    key: "windowHeightState",
+    key: 'windowHeightState',
     default: null,
 });
 
-
-
-export const availableWidthSelector = selector<number>({
+export const availableWidthSelector = selector<number | null>({
     key: 'availableWidthSelector',
-    get: ({ get }) => {
-        const { leftSidebarWidth, rightSidebarWidth, windowWidth } = get(waitForAll({
-                leftSidebarWidth: leftSidebarAtom,
-                rightSidebarWidth: rightSidebarAtom,
-                windowWidth: windowWidthState,
-            }));
+    get: ({get}) => {
+        const {leftSidebarWidth, rightSidebarWidth, windowWidth} = get(waitForAll({
+            leftSidebarWidth: leftSidebarAtom,
+            rightSidebarWidth: rightSidebarAtom,
+            windowWidth: windowWidthState,
+        }));
 
-        const availableWidth = windowWidth - leftSidebarWidth - rightSidebarWidth;
-        console.log('Available Width:', availableWidth);
-        return availableWidth;
+        if (leftSidebarWidth !== null && rightSidebarWidth !== null && windowWidth !== null) {
+            const availableWidth = windowWidth - leftSidebarWidth - rightSidebarWidth;
+            console.log('Available Width:', availableWidth);
+            return availableWidth;
+        }
+        return null;
+    },
+});
+
+export const availableHeightSelector = selector<number | null>({
+    key: 'availableHeightSelector',
+    get: ({get}) => {
+        const {headerHeight, footerHeight, windowHeight} = get(waitForAll({
+            headerHeight: headerAtom,
+            footerHeight: footerAtom,
+            windowHeight: windowHeightState,
+        }));
+
+        if (headerHeight !== null && footerHeight !== null && windowHeight !== null) {
+            const availableHeight = windowHeight - (headerHeight ?? 0) - (footerHeight ?? 0);
+            console.log('Available Height:', availableHeight);
+            return availableHeight;
+        }
+        return null;
     },
 });
 
 
-export const availableHeightSelector = selector<number>({
-    key: "availableHeightSelector",
-    get: ({ get }) => {
-        const { headerHeight, footerHeight, windowHeight } = get(waitForAll({
-                headerHeight: headerAtom,
-                footerHeight: footerAtom,
-                windowHeight: windowHeightState,
-            }));
+export interface WindowSize {
+    width: number;
+    height: number;
+}
 
-        const availableHeight = windowHeight - (headerHeight ?? 0) - (footerHeight ?? 0);
-        console.log("Available Height:", availableHeight);
+export interface BottomSectionState {
+    isVisible: boolean;
+    offset: number;
+}
 
-        return availableHeight;
+// State for tracking window size
+export const windowSizeStateAtom = atom<WindowSize>({
+    key: 'windowSizeStateAtom',
+    default: {
+        width: typeof window !== 'undefined' ? window.innerWidth : 1024,
+        height: typeof window !== 'undefined' ? window.innerHeight : 770,
     },
 });
 
+// State for managing autoscroll
+export const autoscrollStateAtom = atom<boolean>({
+    key: 'autoscrollStateAtom',
+    default: true,
+});
 
+// State for managing bottom section visibility and offset
+export const bottomSectionStateAtom = atom<BottomSectionState>({
+    key: 'bottomSectionStateAtom',
+    default: {
+        isVisible: false,
+        offset: 15,
+    },
+});

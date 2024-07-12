@@ -1,0 +1,74 @@
+.layout {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.header {
+    height: 50px;
+}
+
+.content {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.sidebar {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-section {
+    overflow: auto;
+}
+
+
+.resizer {
+    cursor: col-resize;
+
+}
+
+.main {
+    flex: 1;
+    overflow: auto;
+}
+
+
+
+
+
+
+.resizer.horizontal {
+    background-color: #188cff;
+    position: absolute;
+    top: 0;
+    width: 10px;
+    height: 100%;
+}
+
+.resizer.vertical {
+    background-color: #0fe12b;
+
+    width: 100%;
+    height: 10px;
+    cursor: row-resize;
+}
+
+.resizer.left {
+    background-color: #fa1414;
+    right: 0;
+}
+
+.resizer.right {
+    background-color: rgba(128, 128, 128, 0.62);
+    left: 0;
+}
+
+
+.sidebar.resizing {
+    background-color: #b351bd;
+
+    transition: none;
+}

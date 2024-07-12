@@ -1,4 +1,3 @@
-const apiKey='';
 
 import OpenAI from "openai";
 

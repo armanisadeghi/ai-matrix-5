@@ -1,6 +1,6 @@
 import { useRecoilState, useRecoilValue } from "recoil";
 import { requestEventTaskAtom, requestSocketEventAtom } from "@/state/aiAtoms/metadataAtoms";
-import { activeChatMessagesArrayAtom } from "@/state/aiAtoms/chatAtoms";
+import { activeChatMessagesArrayAtom } from "@/state/aiAtoms/old/chatAtoms";
 
 import { EVENT_TASKS, SOCKET_EVENTS } from "@/utils/config/aiRequestOptions";
 import apiHandlers from "./aiCallRouter";

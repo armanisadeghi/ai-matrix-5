@@ -1,0 +1,31 @@
+-- Drop existing function if it exists
+DROP FUNCTION IF EXISTS fetch_messages (UUID);
+
+-- Create or replace the function
+CREATE OR REPLACE FUNCTION fetch_messages (pChatId UUID) RETURNS TABLE (
+  "chatId" UUID,
+  "createdAt" TIMESTAMP WITH TIME ZONE,
+  "id" UUID,
+  "index" INTEGER,
+  "text" TEXT,
+  "role" CHARACTER VARYING
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT
+        m.chat_id AS "chatId",
+        m.created_at AS "createdAt",
+        m.id AS "id",
+        m.index AS "index",
+        m.text AS "text",
+        m.role AS "role"
+    FROM chats c
+    LEFT JOIN messages m ON c.chat_id = m.chat_id
+    WHERE c.chat_id = pChatId
+    ORDER BY m.index ASC;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Test the function
+SELECT *
+FROM fetch_messages('913fb999-4073-43f0-9824-db6b39cf2d99');

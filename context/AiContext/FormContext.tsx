@@ -1,6 +1,6 @@
 'use client';
 import React, { createContext, useContext, useState } from 'react';
-import { FormData, FormContextProps, FormProviderProps } from '@/types/chat';
+import { FormData, FormContextProps, FormProviderProps } from '@/types/chat.ts';
 
 // Initial default data setup
 const defaultFormData: FormData = {

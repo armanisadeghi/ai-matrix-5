@@ -1,0 +1,93 @@
+.layout {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    --resizer-size: 10px;
+    --resizer-line-size: 1px;
+    --min-section-size: 50px;
+}
+
+.header {
+    height: 50px;
+}
+
+.content {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.sidebar {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.main {
+    flex: 1;
+    overflow: auto;
+}
+
+.resizer {
+    position: relative;
+    background-color: transparent;
+    z-index: 1;
+}
+
+.resizer::after {
+    content: '';
+    position: absolute;
+}
+
+.resizer.horizontal {
+    top: 0;
+    bottom: 0;
+    width: var(--resizer-size);
+    cursor: col-resize;
+    background-color: #fa1414;
+}
+
+.resizer.horizontal::after {
+    background-color: #fa1414;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: var(--resizer-line-size);
+    transform: translateX(-50%);
+}
+
+
+.resizer.vertical {
+    height: var(--resizer-size);
+    cursor: row-resize;
+    background-color: #459e50;
+
+}
+
+.resizer.vertical::after {
+    background-color: #0fe12b;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: var(--resizer-line-size);
+    transform: translateY(-50%);
+}
+
+.resizer.left {
+    right: calc(var(--resizer-size) / -10);
+    background-color: #fa1414;
+}
+
+.resizer.right {
+    left: calc(var(--resizer-size) / -2);
+}
+
+.sidebar-section {
+    overflow: auto;
+    min-height: var(--min-section-size);
+    word-wrap: break-word;
+}
+
+.sidebar.resizing {
+    transition: none;
+}

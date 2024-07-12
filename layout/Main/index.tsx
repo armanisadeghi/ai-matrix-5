@@ -1,45 +1,65 @@
 "use client";
 
-import { AppShell, Box, useMantineColorScheme, useMantineTheme } from "@mantine/core";
-import { ReactNode, useEffect } from "react";
+import { AppShell, Box } from "@mantine/core";
+import React, { ReactNode, useEffect, useMemo } from 'react';
 import { Navbar } from "./Navbar";
 import { Header } from "./Header";
 import { Sidebar } from "./Sidebar";
 import { Footer } from "@/layout/Main/Footer";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
     rightSidebarAtom,
     leftSidebarAtom,
     footerAtom,
     headerAtom,
-    deviceTypeAtom,
-    windowHeightState,
-    windowWidthState,
-} from "@/state/layoutAtoms";
+    deviceTypeAtom, windowHeightState, windowWidthState, rememberedLeftSidebarSizeAtom,
+} from '@/state/layoutAtoms';
 import useLayoutPresets from "@/hooks/layout/useLayoutPresets";
 import { useMediaQuery } from "@mantine/hooks";
-import { PresetType } from "@/types/layout";
 
 type Props = {
     children: ReactNode;
 };
 
-export function MainLayout({ children }: Props) {
+export const MainLayout = React.memo(function MainLayout({ children }: Props) {
     const rightSideBarWidth = useRecoilValue(rightSidebarAtom);
-    const leftSideBarWidth = useRecoilValue(leftSidebarAtom);
+    const [leftSideBarWidth, setLeftSideBarWidth] = useRecoilState(leftSidebarAtom);
     const footerHeight = useRecoilValue(footerAtom);
     const headerHeight = useRecoilValue(headerAtom);
-    const [deviceType, setDeviceType] = useRecoilState(deviceTypeAtom);
 
-    const mobileMatch = useMediaQuery("(max-width: 768px)");
-    const tabletMatch = useMediaQuery("(min-width: 769px) and (max-width: 1024px)");
+    const mobileMatch = useMediaQuery("(max-width: 430px)");
+    const tabletMatch = useMediaQuery("(min-width: 431px) and (max-width: 1024px)");
     const desktopMatch = useMediaQuery("(min-width: 1025px)");
 
-    const [windowWidth, setWindowWidth] = useRecoilState(windowWidthState);
-    const [windowHeight, setWindowHeight] = useRecoilState(windowHeightState);
+    const [, setWindowWidth] = useRecoilState(windowWidthState);
+    const [, setWindowHeight] = useRecoilState(windowHeightState);
+    const [deviceType, setDeviceType] = useRecoilState(deviceTypeAtom);
+    const [rememberedLeftSidebarSize, setRememberedLeftSidebarSize] = useRecoilState(rememberedLeftSidebarSizeAtom);
 
-    const { colorScheme } = useMantineColorScheme();
-    const theme = useMantineTheme();
+    useEffect(() => {
+        if (deviceType === 'mobile' && leftSideBarWidth !== 0) {
+            setRememberedLeftSidebarSize((prevSize) => ({
+                ...prevSize,
+                tablet: leftSideBarWidth,
+            }));
+            setLeftSideBarWidth(rememberedLeftSidebarSize.mobile);
+        }
+        if (deviceType === 'tablet' && leftSideBarWidth > 200) {
+            setRememberedLeftSidebarSize((prevSize) => ({
+                ...prevSize,
+                desktop: leftSideBarWidth,
+            }));
+            setLeftSideBarWidth(rememberedLeftSidebarSize.tablet);
+        }
+        if (deviceType === 'desktop' && leftSideBarWidth > 200) {
+            setRememberedLeftSidebarSize((prevSize) => ({
+                ...prevSize,
+                tablet: leftSideBarWidth,
+            }));
+            setLeftSideBarWidth(rememberedLeftSidebarSize.desktop);
+        }
+    }, [deviceType]);
+
 
     useEffect(() => {
         setWindowWidth(window.innerWidth);
@@ -48,17 +68,17 @@ export function MainLayout({ children }: Props) {
 
     useEffect(() => {
         if (mobileMatch) {
-            setDeviceType("mobile");
+            setDeviceType('mobile');
         } else if (tabletMatch) {
-            setDeviceType("tablet");
+            setDeviceType('tablet');
         } else if (desktopMatch) {
-            setDeviceType("desktop");
+            setDeviceType('desktop');
         }
     }, [mobileMatch, tabletMatch, desktopMatch, setDeviceType]);
 
     useLayoutPresets();
 
-    return (
+    const layoutContent = useMemo(() => (
         <AppShell
             layout="default"
             header={{
@@ -66,35 +86,21 @@ export function MainLayout({ children }: Props) {
             }}
             navbar={{
                 width: leftSideBarWidth,
-                breakpoint: "sm",
-                collapsed: { mobile: leftSideBarWidth === 0 },
+                breakpoint: 0,
             }}
             aside={{
                 width: rightSideBarWidth,
-                breakpoint: "md",
-                collapsed: {
-                    desktop: false,
-                    mobile: true,
-                },
+                breakpoint: 0,
             }}
             footer={{
                 height: footerHeight,
             }}
-            padding="md"
         >
-            <AppShell.Header
-                style={{ backgroundColor: colorScheme === "dark" ? theme.colors.dark[9] : theme.colors.gray[2] }}
-            >
+            <AppShell.Header>
                 <Header />
             </AppShell.Header>
             {leftSideBarWidth !== 0 && (
-                <AppShell.Navbar
-                    pt="xs"
-                    pb="xs"
-                    pl={0}
-                    pr={0}
-                    style={{ backgroundColor: colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0] }}
-                >
+                <AppShell.Navbar pt="xs" pb="xs" pl={0} pr={0}>
                     <Navbar />
                 </AppShell.Navbar>
             )}
@@ -112,5 +118,7 @@ export function MainLayout({ children }: Props) {
                 </AppShell.Footer>
             )}
         </AppShell>
-    );
-}
+    ), [headerHeight, leftSideBarWidth, rightSideBarWidth, footerHeight, children]);
+
+    return layoutContent;
+});

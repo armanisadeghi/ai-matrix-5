@@ -2,7 +2,7 @@ import React from 'react';
 import { useRecoilState } from 'recoil';
 import { requestEventTaskAtom, requestSocketEventAtom } from "@/state/aiAtoms/metadataAtoms";
 import { useRequestManager } from '@/services/chat-services/underTesting/RequestManager';
-import { MessageEntry } from '@/types/chat';
+import { MessageEntry } from '@/types/chat.ts';
 
 const YourComponent = () => {
     const [eventTask, setEventTask] = useRecoilState(requestEventTaskAtom);

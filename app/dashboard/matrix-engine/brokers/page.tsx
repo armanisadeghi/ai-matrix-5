@@ -8,16 +8,17 @@ import Search from './Search';
 import VerticalSplitter from '@/ui/split/VerticalSplitter';
 import BrokerTable from '@/components/Brokers/BrokerTable';
 import { useMediaQuery } from '@mantine/hooks';
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { overrideFlagAtom, presetTypeAtom } from "@/state/layoutAtoms";
-import { brokerDataTypesAtom, filteringAtom } from '@/context/atoms/brokerAtoms';
+import { brokerDataTypesAtom, brokersAtom, componentsAtom, filteringAtom } from '@/context/atoms/brokerAtoms';
 import { useEffect } from 'react';
 
 const BrokersPage: React.FC = (): JSX.Element => {
     const [dataTypes, setDataTypes] = useRecoilState(brokerDataTypesAtom);
     const [filtering, setFiltering] = useRecoilState(filteringAtom);
     const brokerManager = createBrokerManager();
-
+    const fetchedBrokers = useRecoilValue(brokersAtom);
+    const fetchedComponents = useRecoilValue(componentsAtom);
     const isTablet = useMediaQuery('(max-width: 768px)');
     const isMobile = useMediaQuery('(max-width: 480px)');
     const [presetType, setPresetType] = useRecoilState(presetTypeAtom);
@@ -36,7 +37,6 @@ const BrokersPage: React.FC = (): JSX.Element => {
         setPresetType('iconsNoAside');
 
         fetchData();
-
     }, []);
 
     const handleDataTypeChange = (selectedDataType: string) => {

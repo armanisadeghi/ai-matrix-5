@@ -1,20 +1,24 @@
 // recoil/aiAtoms/userAtoms.ts
 import { atom, selector } from 'recoil';
-import { MatrixUser, unknownUser } from '@/types/user';
+import { MatrixUser } from '@/types/user.types';
 import { combinedSettingsState } from '@/state/aiAtoms/settingsAtoms';
 
 export const activeUserAtom = atom<MatrixUser>({
     key: 'activeUserAtom',
-    default: unknownUser,
+    default: undefined,
 });
 
+export const userProcessedAtom = atom({
+    key: 'userProcessed',
+    default: false,
+});
 
 export const userCredentialsSelector = selector<{ userid: string | null; token: string | null }>({
     key: 'userCredentialsSelector',
     get: ({ get }) => {
         const activeUser = get(activeUserAtom);
-        const userid = activeUser.matrix_id || null;
-        const token = activeUser.auth0_sid || null;
+        const userid = activeUser.matrixId || null;
+        const token = activeUser.auth0Id || null;
         return { userid, token };
     },
 });

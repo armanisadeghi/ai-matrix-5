@@ -2,7 +2,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { RespondData } from '@/types/chat';
+import { RespondData } from '@/types/chat.ts';
 
 interface AiResponseContextType {
     respondData: RespondData | null;

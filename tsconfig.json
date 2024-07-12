@@ -5,7 +5,9 @@
             "jest",
             "@testing-library/jest-dom"
         ],
-        "target": "esnext", // Use the latest ECMAScript target
+        "target": "esnext",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
         "lib": [
             "dom",
             "dom.iterable",

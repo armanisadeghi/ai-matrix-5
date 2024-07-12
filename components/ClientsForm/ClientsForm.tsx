@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import { Grid, Paper, PaperProps } from "@mantine/core";
-import AmeSelect from "@/ui/select/AmeSelect";
+import AmeSelect from "@/ui/select/AmeSelect/AmeSelect";
 import { IconDeviceFloppy } from "@tabler/icons-react";
 import { useForm } from "@mantine/form";
 import AmeActionTextInput from "@/ui/input/AmeActionTextInput";

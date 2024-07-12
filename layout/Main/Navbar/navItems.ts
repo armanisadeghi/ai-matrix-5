@@ -1,4 +1,4 @@
-// layout/Dual/Navbar/navItems.ts
+// layout/Main/Navbar/navItems.ts
 
 import {
     IconAi,
@@ -9,6 +9,9 @@ import {
     IconLayersIntersect, IconPresentationAnalytics, IconSettings, IconSettingsCog,
     IconTools
 } from "@tabler/icons-react";
+import { GrTest } from "react-icons/gr";
+import { VscWorkspaceTrusted } from "react-icons/vsc";
+
 import { PATH_ADMIN, PATH_AGENCY } from "@/routes";
 
 export const navItems = [
@@ -19,15 +22,15 @@ export const navItems = [
         links: [
             {
                 label: "AI Chat",
-                link: "/chat"
+                link: "/dashboard/intelligence/ai-chat"
             },
             {
                 label: "Custom Bots",
-                link: "/"
+                link: "/dashboard/intelligence/ai-chat/custom"
             },
             {
                 label: "Bot Builder",
-                link: "/"
+                link: "/dashboard/intelligence/ai-chat/build"
             },
         ],
     },
@@ -37,43 +40,43 @@ export const navItems = [
         links: [
             {
                 label: "Legal",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Medical",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Marketing",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "SEO",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Kids",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "School",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Fun",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Image",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Video",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Others",
-                link: "/"
+                link: "/dashboard"
             },
         ],
     },
@@ -83,23 +86,23 @@ export const navItems = [
         links: [
             {
                 label: "Messenger",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Email",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Task Manager",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Calendar",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Meetings",
-                link: "/"
+                link: "/dashboard"
             },
         ],
     },
@@ -109,39 +112,39 @@ export const navItems = [
         links: [
             {
                 label: "Audio",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Image",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Video",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "PDF",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Text",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Web",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Writing",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Marketing",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "SEO",
-                link: "/"
+                link: "/dashboard"
             },
         ],
     },
@@ -151,27 +154,27 @@ export const navItems = [
         links: [
             {
                 label: "Shopify",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Wordpress",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Zappier",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Google",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Microsoft",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "GitHub",
-                link: "/"
+                link: "/dashboard"
             },
         ],
     },
@@ -181,31 +184,31 @@ export const navItems = [
         links: [
             {
                 label: "Prompt Playground",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Agents",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Super Agents",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Recipes",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Tools",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Knowledge",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "System Brokers",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Custom Brokers",
@@ -219,23 +222,23 @@ export const navItems = [
         links: [
             {
                 label: "Actions",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Tasks",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Clusters",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Hyperclustures",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Automation",
-                link: "/"
+                link: "/dashboard"
             },
         ],
     },
@@ -249,11 +252,11 @@ export const navItems = [
             },
             {
                 label: "App Tester",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "App Components",
-                link: "/"
+                link: "/dashboard"
             },
         ],
     },
@@ -263,19 +266,19 @@ export const navItems = [
         links: [
             {
                 label: "Google Analytics",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Google Search Console",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Social Media",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "AI Matrix Stats",
-                link: "/"
+                link: "/dashboard"
             },
         ],
     },
@@ -289,15 +292,15 @@ export const navItems = [
             },
             {
                 label: "Manage Users",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Agency Settings",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Secrets Manager",
-                link: "/"
+                link: "/dashboard"
             },
         ],
     },
@@ -311,15 +314,15 @@ export const navItems = [
             },
             {
                 label: "Clients",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Users",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Configuration",
-                link: "/"
+                link: "/dashboard"
             },
         ],
     },
@@ -329,16 +332,255 @@ export const navItems = [
         links: [
             {
                 label: "Function Manager",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "System Apps",
-                link: "/"
+                link: "/dashboard"
             },
             {
                 label: "Access Management",
-                link: "/"
+                link: "/dashboard"
             },
         ],
     },
+    {
+        label: "Samples",
+        icon: VscWorkspaceTrusted,
+        initiallyOpened: false,
+        links: [
+            {
+                "label": "Atom tester",
+                "link": "/samples/atom-tester"
+            },
+            {
+                "label": "Center content",
+                "link": "/samples/center-content"
+            },
+            {
+                "label": "Chats",
+                "link": "/samples/chats"
+            },
+            {
+                "label": "Code highlight",
+                "link": "/samples/code-highlight"
+            },
+            {
+                "label": "Contrast",
+                "link": "/samples/code-highlight/contrast"
+            },
+            {
+                "label": "Tabs",
+                "link": "/samples/code-highlight/tabs"
+            },
+            {
+                "label": "Component tester",
+                "link": "/samples/component-tester"
+            },
+            {
+                "label": "Css tests",
+                "link": "/samples/css-tests"
+            },
+            {
+                "label": "Dependency selects",
+                "link": "/samples/dependency-selects"
+            },
+            {
+                "label": "Dynamic textarea",
+                "link": "/samples/dynamic-textarea"
+            },
+            {
+                "label": "Textarea",
+                "link": "/samples/dynamic-textarea/textarea"
+            },
+            {
+                "label": "Editor",
+                "link": "/samples/editor"
+            },
+            {
+                "label": "With content",
+                "link": "/samples/editor/with-content"
+            },
+            {
+                "label": "Fancy text",
+                "link": "/samples/fancy-text"
+            },
+            {
+                "label": "Grid layout",
+                "link": "/samples/grid-layout"
+            },
+            {
+                "label": "Home",
+                "link": "/samples/home"
+            },
+            {
+                "label": "Json utils",
+                "link": "/samples/json-utils"
+            },
+            {
+                "label": "Layout controller",
+                "link": "/samples/layout-controller"
+            },
+            {
+                "label": "Animation",
+                "link": "/samples/layout-controller/Animation"
+            },
+            {
+                "label": "Markdown",
+                "link": "/samples/markdown"
+            },
+            {
+                "label": "Matrix events",
+                "link": "/samples/matrix-events"
+            },
+            {
+                "label": "Progress slider",
+                "link": "/samples/progress-slider"
+            },
+            {
+                "label": "Redis sample",
+                "link": "/samples/redis-sample"
+            },
+            {
+                "label": "Right click",
+                "link": "/samples/right-click"
+            },
+            {
+                "label": "Module",
+                "link": "/samples/right-click/module"
+            },
+            {
+                "label": "Submodule",
+                "link": "/samples/right-click/module/submodule"
+            },
+            {
+                "label": "Supabase",
+                "link": "/samples/supabase"
+            },
+            {
+                "label": "New db",
+                "link": "/samples/supabase/new-db"
+            },
+            {
+                "label": "Tree view",
+                "link": "/samples/tree-view"
+            },
+            {
+                "label": "Vertical split",
+                "link": "/samples/vertical-split"
+            },
+            {
+                "label": "Dual split",
+                "link": "/samples/vertical-split/dual-split"
+            },
+            {
+                "label": "Horizontal splitter",
+                "link": "/samples/vertical-split/horizontal-splitter"
+            }
+        ],
+    },
+    {
+        label: "Trials",
+        icon: GrTest,
+        initiallyOpened: false,
+        links: [
+            {
+                "label": "All in one",
+                "link": "/trials/all-in-one"
+            },
+            {
+                "label": "Chat cache",
+                "link": "/trials/chat-cache"
+            },
+            {
+                "label": "Core chat trial",
+                "link": "/trials/core-chat-trial"
+            },
+            {
+                "label": "Crud",
+                "link": "/trials/crud"
+            },
+            {
+                "label": "Crud trials",
+                "link": "/trials/crud-trials"
+            },
+            {
+                "label": "Grids",
+                "link": "/trials/grids"
+            },
+            {
+                "label": "Features",
+                "link": "/trials/grids/features"
+            },
+            {
+                "label": "Nested",
+                "link": "/trials/nested"
+            },
+            {
+                "label": "Next related",
+                "link": "/trials/next-related"
+            },
+            {
+                "label": "Quick test",
+                "link": "/trials/quick-test"
+            },
+            {
+                "label": "Atom tester",
+                "link": "/trials/recoil/atom-tester"
+            },
+            {
+                "label": "Callback trial",
+                "link": "/trials/recoil/callback-trial"
+            },
+            {
+                "label": "Chat v43",
+                "link": "/trials/recoil/chat-v43"
+            },
+            {
+                "label": "Components",
+                "link": "/trials/recoil/chat-v43/components"
+            },
+            {
+                "label": "Destructuring",
+                "link": "/trials/recoil/destructuring"
+            },
+            {
+                "label": "Loadable trial",
+                "link": "/trials/recoil/loadable-trial"
+            },
+            {
+                "label": "Local",
+                "link": "/trials/recoil/local"
+            },
+            {
+                "label": "Splitters",
+                "link": "/trials/splitters"
+            },
+            {
+                "label": "Dual",
+                "link": "/trials/splitters/dual"
+            },
+            {
+                "label": "Horizontal",
+                "link": "/trials/splitters/horizontal"
+            },
+            {
+                "label": "Vertical",
+                "link": "/trials/splitters/vertical"
+            },
+            {
+                "label": "Stream encapsulated",
+                "link": "/trials/stream-encapsulated"
+            },
+            {
+                "label": "Stream tester",
+                "link": "/trials/stream-tester"
+            },
+            {
+                "label": "Text classification",
+                "link": "/trials/text-classification"
+            }
+        ],
+    },
+
 ];

@@ -1,4 +1,4 @@
-// app/samples/new-db/page.tsx
+// app/samples/new-db/OptionalStarterPage.tsx
 
 'use client';
 

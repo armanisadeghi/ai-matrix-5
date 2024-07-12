@@ -4,7 +4,7 @@
 import React, { useContext } from 'react';
 import settingsComponents from './SettingsRegistry';
 import { SettingsContext } from '@/context/AiContext/SettingsContext';
-import type { ChatSettings } from '@/types/settings';
+import type { ChatSettings } from '@/types/settings.types';
 
 const ChatSettings = () => {
     const { settings, updateSettings } = useContext(SettingsContext);
@@ -31,6 +31,7 @@ const ChatSettings = () => {
 
     return (
         <SettingsComponent
+            //@ts-ignore
             settings={settings.chatSettings}
             onChange={handleChange}
             onSubmit={handleSubmit}

@@ -1,4 +1,4 @@
-// chat-app/nice-working/ChatInput.tsx
+// chat-app/nice-working/userInputArea.tsx
 'use client';
 import React, { useState, useContext } from 'react';
 import { emitEvent } from '@/utils/socketio/socket';

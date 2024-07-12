@@ -1,6 +1,6 @@
 // utils/transforms.ts
 
-import { Chat } from '../types/chat';
+import { Chat } from '@/types/chat.ts';
 
 // Chat transformations
 const chatsDbToFrontend = (dbRecord: any): Chat => ({
