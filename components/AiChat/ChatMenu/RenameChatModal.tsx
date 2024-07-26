@@ -1,4 +1,4 @@
-import ChatModalDisplay from '@/components/AiChat/ChatMenu/new/ChatModalDisplay';
+import ChatModalDisplay from '@/components/AiChat/ChatMenu/ChatModalDisplay';
 import AssistantMessage from '@/components/AiChat/Response/AssistantMessage';
 import UserMessagePaper from '@/components/AiChat/Response/UserMessagePaper';
 import UserMessage from '@/components/AiChat/Response/UserMessagePaper';

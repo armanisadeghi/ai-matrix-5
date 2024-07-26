@@ -1,5 +1,5 @@
 // DeleteChatModal.tsx
-import ChatModalDisplay from '@/components/AiChat/ChatMenu/new/ChatModalDisplay';
+import ChatModalDisplay from '@/components/AiChat/ChatMenu/ChatModalDisplay';
 import { chatSelectorFamily } from '@/state/aiAtoms/aiChatAtoms';
 import React, { useCallback } from 'react';
 import { Modal, Button, Text } from '@mantine/core';

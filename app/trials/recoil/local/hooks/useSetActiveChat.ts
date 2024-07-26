@@ -1,7 +1,7 @@
 import { ChatDetailsType, ChatType, MessageType } from '@/types';
 import { useRecoilState, useRecoilValue, useSetRecoilState, useRecoilValueLoadable, Loadable } from 'recoil';
 import { v4 as uuidv4 } from 'uuid';
-import { activeChatIdAtom, chatSummariesAtom, isNewChatAtom, messagesFamily } from '@/state/aiAtoms/aiChatAtoms';
+import { activeChatIdAtom, chatSummariesAtom, isNewChatAtom, chatMessagesAtomFamily } from '@/state/aiAtoms/aiChatAtoms';
 
 interface SetActiveChatReturn {
     chatId: string;
@@ -20,7 +20,7 @@ interface UseSetActiveChatReturn {
 export function useSetActiveChat(): UseSetActiveChatReturn {
     const [activeChatId, setActiveChatId] = useRecoilState(activeChatIdAtom);
     const [isNewChat, setIsNewChat] = useRecoilState(isNewChatAtom);
-    const setMessages = useSetRecoilState(messagesFamily(activeChatId));
+    const setMessages = useSetRecoilState(chatMessagesAtomFamily(activeChatId));
 
     const chatSummaries = useRecoilValue<ChatType[]>(chatSummariesAtom);
 
@@ -41,7 +41,7 @@ export function useSetActiveChat(): UseSetActiveChatReturn {
 
    // TODO: I Don't think we need the full chat here
     //const activeFullChatLoadable = useRecoilValueLoadable(fullChatSelectorFamily(activeChatId));
-    const messages = useRecoilValue(messagesFamily(activeChatId));
+    const messages = useRecoilValue(chatMessagesAtomFamily(activeChatId));
 
 /*    let activeFullChat: ChatDetailsType | null = null;
     let activeFullChatState: 'loading' | 'hasValue' | 'hasError' = 'loading';

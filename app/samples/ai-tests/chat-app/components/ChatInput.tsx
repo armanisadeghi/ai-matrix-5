@@ -1,7 +1,7 @@
 // chat-app/nice-working/userInputArea.tsx
 'use client';
 import React, { useState, useContext } from 'react';
-import { emitEvent } from '@/utils/socketio/socket';
+import { emitEvent } from '@/utils/socketio/basicSocket';
 
 const ChatInput = () => {
     const [input, setInput] = useState('');

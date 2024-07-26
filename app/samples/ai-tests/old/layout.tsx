@@ -1,13 +1,13 @@
 // app/dashboard/intelligence/aiChat/layout.tsx
 "use client";
 
+import ChatSidebar from '@/components/AiChat/Sidebar/ChatSidebar';
 import React, { useCallback, useEffect } from "react";
 import { Container, Grid } from "@mantine/core";
 import styles from '@/app/dashboard/intelligence/ai-chat/AiChat.module.css';
 import { useRecoilState, useRecoilValue } from "recoil";
 import { activeUserAtom } from "@/state/userAtoms";
 import { SidebarProvider, useSidebar } from "@/context/SidebarContext";
-import ChatSidebar from "@/components/AiChat/Sidebar/ChatList";
 import { deviceTypeAtom, overrideFlagAtom, presetTypeAtom } from "@/state/layoutAtoms";
 
 const ChatLayout = ({children}: { children: React.ReactNode }) => {

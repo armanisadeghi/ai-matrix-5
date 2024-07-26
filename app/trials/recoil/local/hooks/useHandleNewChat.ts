@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useRecoilValue, useSetRecoilState, useRecoilState } from 'recoil';
-import { activeChatIdAtom, chatStartSelector, chatSummariesAtom, messagesFamily, streamTriggerAtomFamily } from '@/state/aiAtoms/aiChatAtoms';
+import { activeChatIdAtom, chatStartSelector, chatSummariesAtom, chatMessagesAtomFamily, streamTriggerAtomFamily } from '@/state/aiAtoms/aiChatAtoms';
 import useStreamChat from '@/app/trials/recoil/local/hooks/useSteamChat';
 
 export const useHandleNewChat = () => {
@@ -8,7 +8,7 @@ export const useHandleNewChat = () => {
     const activeChatId = useRecoilValue(activeChatIdAtom);
     const [streamTrigger, setStreamTrigger] = useRecoilState(streamTriggerAtomFamily({ hookId: 'OpenAiStream', index: 0 }));
     const setChatSummaries = useSetRecoilState(chatSummariesAtom);
-    const setMessages = useSetRecoilState(messagesFamily(activeChatId));
+    const setMessages = useSetRecoilState(chatMessagesAtomFamily(activeChatId));
 
     return useCallback(() => {
         if (!startChatObject) return;

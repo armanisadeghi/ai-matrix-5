@@ -1,5 +1,5 @@
 // DownloadChatModal.tsx
-import ChatModalDisplay from '@/components/AiChat/ChatMenu/new/ChatModalDisplay';
+import ChatModalDisplay from '@/components/AiChat/ChatMenu/ChatModalDisplay';
 import { useChatApi } from '@/hooks/ai/useChatApi';
 import { chatWithMessagesSelector } from '@/state/aiAtoms/aiChatAtoms';
 import React from 'react';

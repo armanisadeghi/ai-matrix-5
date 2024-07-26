@@ -4,8 +4,7 @@ import { v4 } from 'uuid';
 import { Button, Divider, Space, Stack, Text } from '@mantine/core';
 import styles from './SidebarAdmin.module.css';
 
-import { submitChatIdAtom } from '@/app/dashboard/intelligence/ai-chat/components/UserInputArea';
-import { activeChatIdAtom, chatTransitionAtom, isNewChatAtom, streamStatusAtom, chatMessagesAtomFamily } from '@/state/aiAtoms/aiChatAtoms';
+import { activeChatIdAtom, chatTransitionAtom, isNewChatAtom, streamStatusAtom, submitChatIdAtom, chatMessagesAtomFamily } from '@/state/aiAtoms/aiChatAtoms';
 
 interface SidebarAdminProps {
     chatSelectCount: number;
@@ -60,8 +59,6 @@ const SidebarAdmin: React.FC<SidebarAdminProps> = (
 
     return (
         <>
-            <Space h="xs"/>
-            <Divider my="xs"/>
             <Text size="md" c="grape">Sidebar Admin</Text>
             <Space h="xs"/>
             <Stack gap="xs">
@@ -76,7 +73,6 @@ const SidebarAdmin: React.FC<SidebarAdminProps> = (
             </Stack>
             <Space h="md"/>
             <Button fullWidth variant="filled" color="grape" size="xs" onClick={openAdminModal}>Admin modal</Button>
-            <Divider my="md"/>
         </>
     );
 };

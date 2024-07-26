@@ -2,8 +2,8 @@
 
 'use client';
 
+import ChatSidebar from '@/components/AiChat/Sidebar/ChatSidebar';
 import React from 'react';
-import ChatSidebar from "@/components/AiChat/Sidebar/ChatList";
 
 const ChatPage = () => {
     return (

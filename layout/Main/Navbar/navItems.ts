@@ -11,13 +11,16 @@ import {
 } from "@tabler/icons-react";
 import { GrTest } from "react-icons/gr";
 import { VscWorkspaceTrusted } from "react-icons/vsc";
+import { SiKnowledgebase } from "react-icons/si";
+import { SiMusicbrainz } from "react-icons/si";
+
 
 import { PATH_ADMIN, PATH_AGENCY } from "@/routes";
 
 export const navItems = [
     {
         label: "Intelligence",
-        icon: IconGauge,
+        icon: SiMusicbrainz,
         initiallyOpened: false,
         links: [
             {
@@ -107,33 +110,51 @@ export const navItems = [
         ],
     },
     {
-        label: "Tools",
-        icon: IconTools,
+        label: "Knowledge Base",
+        icon: SiKnowledgebase,
         links: [
             {
-                label: "Audio",
-                link: "/dashboard"
-            },
-            {
-                label: "Image",
-                link: "/dashboard"
-            },
-            {
-                label: "Video",
-                link: "/dashboard"
+                label: "File Manager",
+                link: "/samples/suites/file-suite"
             },
             {
                 label: "PDF",
-                link: "/dashboard"
+                link: "/samples/suites/pdf-suite"
             },
             {
                 label: "Text",
-                link: "/dashboard"
+                link: "/samples/suites/text-suite"
             },
             {
-                label: "Web",
-                link: "/dashboard"
+                label: "Audio",
+                link: "/samples/suites/audio-suite"
             },
+            {
+                label: "Image",
+                link: "/samples/suites/image-suite"
+            },
+            {
+                label: "Video",
+                link: "/samples/suites/video-suite"
+            },
+            {
+                label: "Slides",
+                link: "/samples/suites/slide-suite"
+            },
+            {
+                label: "Spreadsheets",
+                link: "/samples/suites/spreadsheet-suite"
+            },
+            {
+                label: "Web Pages",
+                link: "/samples/suites/web-suite"
+            },
+        ],
+    },
+    {
+        label: "Tools",
+        icon: IconTools,
+        links: [
             {
                 label: "Writing",
                 link: "/dashboard"
@@ -349,6 +370,10 @@ export const navItems = [
         icon: VscWorkspaceTrusted,
         initiallyOpened: false,
         links: [
+            {
+                "label": "Socket Test",
+                "link": "/samples/socket-test"
+            },
             {
                 "label": "Atom tester",
                 "link": "/samples/atom-tester"

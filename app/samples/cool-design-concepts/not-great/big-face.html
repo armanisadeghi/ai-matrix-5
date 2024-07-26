@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+    <style>
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .pulse { animation: pulse 2s infinite; }
+        .blink { animation: blink 1.5s infinite; }
+        .rotate { animation: rotate 10s linear infinite; }
+    </style>
+
+    <!-- Main circle (head) -->
+    <circle cx="100" cy="100" r="80" fill="#4a90e2" class="pulse" />
+
+    <!-- Eyes -->
+    <circle cx="70" cy="80" r="15" fill="white" />
+    <circle cx="130" cy="80" r="15" fill="white" />
+    <circle cx="70" cy="80" r="7" fill="black" class="blink" />
+    <circle cx="130" cy="80" r="7" fill="black" class="blink" />
+
+    <!-- Smile -->
+    <path d="M70 120 Q100 150 130 120" stroke="white" stroke-width="5" fill="none" />
+
+    <!-- Rotating gear -->
+    <g class="rotate" transform="translate(100 100)">
+        <path d="M0,-60 L10,-40 L40,-40 L50,-60 L40,-80 L10,-80 Z" fill="#f0f0f0" />
+        <path d="M0,-60 L10,-40 L40,-40 L50,-60 L40,-80 L10,-80 Z" fill="#f0f0f0" transform="rotate(60)" />
+        <path d="M0,-60 L10,-40 L40,-40 L50,-60 L40,-80 L10,-80 Z" fill="#f0f0f0" transform="rotate(120)" />
+        <path d="M0,-60 L10,-40 L40,-40 L50,-60 L40,-80 L10,-80 Z" fill="#f0f0f0" transform="rotate(180)" />
+        <path d="M0,-60 L10,-40 L40,-40 L50,-60 L40,-80 L10,-80 Z" fill="#f0f0f0" transform="rotate(240)" />
+        <path d="M0,-60 L10,-40 L40,-40 L50,-60 L40,-80 L10,-80 Z" fill="#f0f0f0" transform="rotate(300)" />
+    </g>
+</svg>

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useRecoilState, useRecoilValue, useRecoilCallback, CallbackInterface, selectorFamily, DefaultValue, atom } from 'recoil';
-import { activeChatIdAtom, blankAssistantTextSelector, fetchStatusAtom, messagesFamily, openAiArraySelector } from '@/state/aiAtoms/aiChatAtoms';
+import { activeChatIdAtom, blankAssistantTextSelector, fetchStatusAtom, chatMessagesAtomFamily, openAiArraySelector } from '@/state/aiAtoms/aiChatAtoms';
 import { MessageType } from '@/types';
 import { OpenAiStream } from '@/app/api/openai/route';
 import { v4 as uuidv4 } from 'uuid';
@@ -25,12 +25,12 @@ const startStreaming = (chatId: string) => (callbackInterface: CallbackInterface
 const streamingUpdateSelector = selectorFamily<MessageType, string>({
     key: 'streamingUpdateSelector',
     get: (chatId: string) => ({get}) => {
-        const messages = get(messagesFamily(chatId));
+        const messages = get(chatMessagesAtomFamily(chatId));
         return messages[messages.length - 1] || null;
     },
     set: (chatId: string) => ({set}, newValue) => {
         if (!(newValue instanceof DefaultValue)) {
-            set(messagesFamily(chatId), (prevMessages) => {
+            set(chatMessagesAtomFamily(chatId), (prevMessages) => {
                 if (prevMessages.length > 0 && prevMessages[prevMessages.length - 1].role === 'assistant') {
                     return [...prevMessages.slice(0, -1), newValue];
                 } else { return [...prevMessages, newValue];
@@ -55,7 +55,7 @@ const updateStreamingMessage = (chatId: string, content: string) => (callbackInt
 const endStreaming = (chatId: string) => (callbackInterface: CallbackInterface) => {
     const {set} = callbackInterface;
     set(isStreamingAtom, false);
-    set(messagesFamily(chatId), (prev: MessageType[]) => {
+    set(chatMessagesAtomFamily(chatId), (prev: MessageType[]) => {
         const finalMessage = prev[prev.length - 1];
         if (finalMessage && finalMessage.role === 'assistant') {
             return [...prev.slice(0, -1), {...finalMessage, index: prev.length - 1}];

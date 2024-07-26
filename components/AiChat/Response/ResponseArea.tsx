@@ -1,16 +1,30 @@
 'use client';
 
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { autoscrollStateAtom } from '@/state/layoutAtoms';
+import React, { useEffect, useMemo } from 'react';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRouter } from 'next/navigation';
+import { Box, Space } from '@mantine/core';
 import useOpenAiStreamer from '@/hooks/ai/useOpenAiStreamer';
 import { activeChatIdAtom, assistantTextStreamAtom, chatMessagesAtomFamily, hasSubmittedMessageAtom, streamStatusAtom } from '@/state/aiAtoms/aiChatAtoms';
 import { updateLastAssistantText } from '@/utils/supabase/chatDb';
-import React, { useEffect } from 'react';
-import { Box, Grid, Space } from '@mantine/core';
 import AssistantMessage from './AssistantMessage';
 import UserMessage from './UserMessagePaper';
 import styles from '@/components/AiChat/Response/ResponseArea.module.css';
-import { useRouter } from 'next/navigation';
 
+
+const MessageWrapper = React.memo(({entry}: { entry: { role: string; text: string } }) => (
+    <>
+        {entry.role === 'assistant' ? (
+            <AssistantMessage text={entry.text}/>
+        ) : entry.role === 'user' ? (
+            <UserMessage text={entry.text}/>
+        ) : null}
+        <Space h={30}/>
+    </>
+));
+
+MessageWrapper.displayName = 'MessageWrapper';
 
 export interface ResponseAreaProps {
     bottomPadding?: number;
@@ -18,19 +32,24 @@ export interface ResponseAreaProps {
     chatId?: string;
 }
 
-const ResponseArea: React.FC<ResponseAreaProps> = ({bottomPadding = 200, className = '', chatId}) => {
+const ResponseArea: React.FC<ResponseAreaProps> = (
+    {
+        bottomPadding = 0,
+        className = '',
+        chatId,
+    }) => {
     const router = useRouter();
-    const [activeChatId,] = useRecoilState(activeChatIdAtom);
+    const [activeChatId] = useRecoilState(activeChatIdAtom);
     const messages = useRecoilValue(chatMessagesAtomFamily(activeChatId));
     const [streamStatus, setStreamStatus] = useRecoilState(streamStatusAtom);
     const [userHasSubmitted, setUserHasSubmitted] = useRecoilState(hasSubmittedMessageAtom);
     const assistantTextStream = useRecoilValue(assistantTextStreamAtom);
+    const setAutoScroll = useSetRecoilState(autoscrollStateAtom);
 
     useEffect(() => {
         if (streamStatus === 'success' && userHasSubmitted && messages && messages.length > 0) {
             const lastMessage = messages[messages.length - 1];
             if (lastMessage.role === 'assistant' && lastMessage.id && lastMessage.text.length > 0) {
-
                 updateLastAssistantText(messages);
                 setUserHasSubmitted(false);
                 setStreamStatus('idle');
@@ -40,33 +59,35 @@ const ResponseArea: React.FC<ResponseAreaProps> = ({bottomPadding = 200, classNa
                 }
             }
         }
-    }, [streamStatus, activeChatId, messages, userHasSubmitted, setUserHasSubmitted, router]);
+    }, [streamStatus, activeChatId, messages, userHasSubmitted, setUserHasSubmitted, router, setStreamStatus]);
 
     useOpenAiStreamer({chatId: activeChatId});
 
     useEffect(() => {
-    }, [messages, activeChatId]);
+        if (streamStatus === 'streaming') {
+            setAutoScroll(true);
+        }
+    }, [streamStatus]);
+
+    const memoizedMessages = useMemo(() =>
+            messages.filter(entry => entry.role === 'assistant' || entry.role === 'user').map((entry, index) => (
+                <MessageWrapper key={entry.id || index} entry={entry}/>
+            )),
+        [messages]
+    );
 
     return (
         <Box className={`${styles.container} ${className}`}>
             <div>
                 <div style={{paddingBottom: bottomPadding}}>
-                    <Space h={10}/>
                     <div>
-                        {messages.filter(entry => entry.role === 'assistant' || entry.role === 'user').map((entry, entryIndex) => (
-                            <div key={entryIndex}>
-                                {entry.role === 'assistant' ? (
-                                    <AssistantMessage text={entry.text}/>
-                                ) : entry.role === 'user' ? (
-                                    <UserMessage text={entry.text}/>
-                                ) : null}
-                                <Space h={10}/>
+                        {memoizedMessages}
+                        {assistantTextStream && (
+                            <div>
+                                <AssistantMessage key="stream" text={assistantTextStream} stream={true}/>
+                                <Space h={30}/>
                             </div>
-                        ))}
-                        {<div>
-                            <AssistantMessage key={999} text={assistantTextStream}/>
-                            <Space h={10}/>
-                        </div>}
+                        )}
                     </div>
                 </div>
             </div>

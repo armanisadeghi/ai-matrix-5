@@ -48,7 +48,6 @@ export default function ChatClientLogic({chatId}: ChatClientLogicProps) {
     }, [transitionState, setIsNewChat]);
 
     useEffect(() => {
-        console.log('[id] ChatClientLogic triggered with change to ChatId or activeChatId');
         if (isNewChat !== false) return;
         if (chatId === 'matrix-ai' || activeChatId === 'matrix-ai') { return; }
         if (!messages) {

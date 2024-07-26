@@ -1,4 +1,4 @@
-import deepgram from '@/utils/speech/deepgram/client';
+import { deepgram } from '@/utils/speech/deepgram/client';
 import { useState, useCallback } from 'react';
 
 interface TTSOptions {

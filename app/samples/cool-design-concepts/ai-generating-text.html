@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Typing Animation</title>
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: #f0f0f0;
+            font-family: 'Courier New', monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #container {
+            width: 600px;
+            background-color: #2d2d2d;
+            border-radius: 8px;
+            padding: 20px;
+            position: relative;
+        }
+        #text-container {
+            min-height: 200px;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        #cursor {
+            position: relative;
+            display: inline-block;
+            width: 10px;
+            height: 20px;
+            background-color: #4a90e2;
+            animation: blink 0.7s infinite;
+        }
+        @keyframes blink {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        #ai-indicator {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+        .gear {
+            position: absolute;
+            border-radius: 50%;
+            border: 3px solid #4a90e2;
+            animation: rotate 2s linear infinite;
+        }
+        .gear:before, .gear:after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #4a90e2;
+        }
+        .gear:before {
+            width: 100%;
+            height: 10%;
+        }
+        .gear:after {
+            width: 10%;
+            height: 100%;
+        }
+        #gear1 { width: 20px; height: 20px; top: 0; left: 0; }
+        #gear2 { width: 15px; height: 15px; bottom: 0; right: 0; animation-direction: reverse; }
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div id="container">
+    <div id="text-container"></div>
+    <div id="ai-indicator">
+        <div id="gear1" class="gear"></div>
+        <div id="gear2" class="gear"></div>
+    </div>
+    <span id="cursor"></span>
+    <button onclick="generateText()">Generate Text</button>
+</div>
+
+<script>
+    const textContainer = document.getElementById('text-container');
+    const cursor = document.getElementById('cursor');
+    const aiIndicator = document.getElementById('ai-indicator');
+    const sampleText = "The artificial intelligence system processes vast amounts of data, learning patterns and generating insights that can revolutionize industries and solve complex problems. With each iteration, the AI grows more sophisticated, adapting to new challenges and pushing the boundaries of what's possible in technology and human-computer interaction.";
+
+    let charIndex = 0;
+
+    function generateText() {
+        textContainer.textContent = '';
+        charIndex = 0;
+        typeNextChar();
+    }
+
+    function typeNextChar() {
+        if (charIndex < sampleText.length) {
+            textContainer.textContent += sampleText[charIndex];
+            charIndex++;
+
+            const lastChar = textContainer.lastElementChild || textContainer;
+            const rect = lastChar.getBoundingClientRect();
+            const containerRect = textContainer.getBoundingClientRect();
+
+            aiIndicator.style.left = `${rect.right - containerRect.left + 5}px`;
+            aiIndicator.style.top = `${rect.bottom - containerRect.top}px`;
+
+            cursor.style.left = `${rect.right - containerRect.left}px`;
+            cursor.style.top = `${rect.top - containerRect.top}px`;
+
+            const delay = Math.random() * 50 + 20;  // Random delay between 20ms and 70ms
+            setTimeout(typeNextChar, delay);
+        }
+    }
+</script>
+</body>
+</html>

@@ -40,6 +40,7 @@ export interface MatrixUser {
     preferredPicture?: string | null; // Corresponds to "preferred_picture" in the database
     lastLogin?: string | null; // Corresponds to "last_login" in the database
     lastActivity?: string | null; // Corresponds to "last_activity" in the database
+    auth_id: string;
 }
 
 

@@ -1,8 +1,8 @@
 // /app/samples/ai-tests/shared/tests/TrialAtoms.tsx
 
 
+import { MessageEntry } from '@/app/samples/chats/shared/types/chatData';
 import { atom } from 'recoil';
-import { MessageEntry } from '@/types/chat.ts';
 
 export const messageChunksAtom = atom<MessageEntry[]>({
     key: 'messageChunksAtom',

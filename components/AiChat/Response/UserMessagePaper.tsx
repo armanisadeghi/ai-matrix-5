@@ -1,5 +1,5 @@
 // UserMessagePaper.tsx
-import MarkdownRenderer from '@/components/AiChat/Response/markdown/MarkdownRenderer';
+
 import React from 'react';
 import { Grid, Paper, Text, ActionIcon } from "@mantine/core";
 import styles from "./ResponseArea.module.css";
@@ -21,7 +21,7 @@ const UserMessagePaper: React.FC<{ text: string }> = ({ text }) => {
                     </ActionIcon>
                 </Grid.Col>
                 <Grid.Col span={11}>
-                    <Text className={styles.userMessage}>
+                    <Text className={styles.userMessage} style={{ whiteSpace: 'pre-wrap' }}>
                         {text}
                     </Text>
                 </Grid.Col>

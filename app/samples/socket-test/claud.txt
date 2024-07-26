@@ -1,0 +1,214 @@
+https://claude.ai/chat/c6df3a92-3304-4ff4-a638-268cc3e1228e
+
+Certainly! We can adapt the approach to work without Context and integrate it with Recoil. Here's a revised version that doesn't use Context and aligns with your current setup:
+
+1. First, let's modify the `SocketManager` to include a static instance that can be accessed globally:
+
+```typescript
+// src/utils/socketio/socket.ts
+
+export class SocketManager {
+  private static instance: SocketManager | null = null;
+  // ... existing properties ...
+
+  private constructor(
+    private setSocketStatus: (status: SocketStatus) => void,
+    private setIsAuthenticated: (isAuth: boolean) => void,
+    private setUserId: (userId: string | null) => void
+  ) {}
+
+  static getInstance(
+    setSocketStatus: (status: SocketStatus) => void,
+    setIsAuthenticated: (isAuth: boolean) => void,
+    setUserId: (userId: string | null) => void
+  ): SocketManager {
+    if (!SocketManager.instance) {
+      SocketManager.instance = new SocketManager(setSocketStatus, setIsAuthenticated, setUserId);
+    }
+    return SocketManager.instance;
+  }
+
+  // ... existing methods ...
+
+  getSocket(): Socket | null {
+    return this.socket;
+  }
+}
+```
+
+2. Now, let's create a custom hook for AI socket operations:
+
+```typescript
+// src/hooks/useAISocket.ts
+
+import { useState, useEffect } from 'react';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { socketStatusAtom, recipeIdAtom } from '@/state/aiAtoms/aiChatAtoms';
+import { SocketManager } from '@/utils/socketio/socket';
+
+export const useAISocket = () => {
+  const socketStatus = useRecoilValue(socketStatusAtom);
+  const recipeId = useRecoilValue(recipeIdAtom);
+  const [streamData, setStreamData] = useState<string>('');
+  const [isStreamComplete, setIsStreamComplete] = useState<boolean>(false);
+  const [eventName, setEventName] = useState<string | null>(null);
+
+  const runSimpleRecipe = (data: any) => {
+    if (socketStatus !== 'authenticated') {
+      console.error('Socket not authenticated');
+      return;
+    }
+
+    const socket = SocketManager.getInstance(()=>{}, ()=>{}, ()=>{}).getSocket();
+    if (!socket) {
+      console.error('Socket not initialized');
+      return;
+    }
+
+    setStreamData('');
+    setIsStreamComplete(false);
+
+    socket.emit('simple_recipe', data, (response: any) => {
+      console.log('Simple recipe initiated:', response);
+      if (response.event_name) {
+        setEventName(response.event_name);
+      }
+    });
+  };
+
+  useEffect(() => {
+    const socket = SocketManager.getInstance(()=>{}, ()=>{}, ()=>{}).getSocket();
+    if (!socket || !eventName) return;
+
+    const handleStreamResponse = (response: { data: string; is_final: boolean }) => {
+      setStreamData(prevData => prevData + response.data);
+      if (response.is_final) {
+        setIsStreamComplete(true);
+        socket.off(eventName);
+      }
+    };
+
+    socket.on(eventName, handleStreamResponse);
+
+    return () => {
+      socket.off(eventName);
+    };
+  }, [eventName]);
+
+  return { runSimpleRecipe, streamData, isStreamComplete };
+};
+```
+
+3. Update your `InputCard` component:
+
+```typescript
+// src/app/samples/socket-test/InputCard.tsx
+
+import React, { useState } from 'react';
+import { Card, TextInput, Button, Container, Center, Grid, Text } from '@mantine/core';
+import { useAISocket } from '@/hooks/useAISocket';
+import { useRecoilValue } from 'recoil';
+import { recipeIdAtom } from '@/state/aiAtoms/aiChatAtoms';
+
+function InputCard() {
+    // ... existing state variables ...
+
+    const { runSimpleRecipe, streamData, isStreamComplete } = useAISocket();
+    const recipeId = useRecoilValue(recipeIdAtom);
+
+    const handleSubmit = () => {
+        // ... existing code to prepare data ...
+
+        const data = {
+            task: "run_simple_recipe",
+            index: 0,
+            recipe_id: recipeId,
+            broker_values,
+            overrides,
+            stream: true,
+        };
+
+        runSimpleRecipe(data);
+    };
+
+    return (
+        <Container>
+            <Center style={{ height: '100vh' }}>
+                <Card shadow="sm" padding="lg" style={{ width: '400px' }}>
+                    {/* ... existing input fields ... */}
+                    <Button fullWidth mt="md" onClick={handleSubmit}>Submit</Button>
+                    {streamData && (
+                        <Text mt="md">
+                            Stream Data: {streamData}
+                        </Text>
+                    )}
+                    {isStreamComplete && (
+                        <Text mt="md" color="green">
+                            Stream Complete
+                        </Text>
+                    )}
+                </Card>
+            </Center>
+        </Container>
+    );
+}
+
+export default InputCard;
+```
+
+4. Modify your `SocketWithAuth` component:
+
+```typescript
+// src/app/samples/socket-test/SocketWithAuth.tsx
+
+import { SocketManager } from '@/utils/socketio/socket';
+import React, { useEffect } from 'react';
+import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
+import { activeUserAtom } from '@/state/userAtoms';
+import { socketStatusAtom } from '@/state/aiAtoms/aiChatAtoms';
+
+interface SocketWithAuthProps {
+    children: React.ReactNode;
+}
+
+const SocketWithAuth: React.FC<SocketWithAuthProps> = ({children}) => {
+    const activeUser = useRecoilValue(activeUserAtom);
+    const [socketStatus, setSocketStatus] = useRecoilState(socketStatusAtom);
+    const setIsAuthenticated = useSetRecoilState(/* your isAuthenticated atom */);
+    const setUserId = useSetRecoilState(/* your userId atom */);
+
+    useEffect(() => {
+        const socketManager = SocketManager.getInstance(setSocketStatus, setIsAuthenticated, setUserId);
+        socketManager.setupSocket();
+
+        return () => {
+            socketManager.disconnect();
+        };
+    }, []);
+
+    useEffect(() => {
+        if (socketStatus === 'connected' && activeUser) {
+            SocketManager.getInstance(()=>{}, ()=>{}, ()=>{}).authenticateUser(activeUser);
+        }
+    }, [socketStatus, activeUser]);
+
+    return (
+        <>
+            <h5>User Session Status: {socketStatus}</h5>
+            {children}
+        </>
+    );
+};
+
+export default SocketWithAuth;
+```
+
+This approach:
+
+1. Uses a singleton pattern for `SocketManager` to ensure a single instance across the application.
+2. Utilizes Recoil for state management instead of React Context.
+3. Provides a custom hook `useAISocket` that encapsulates all AI-related socket operations.
+4. Keeps the `InputCard` component focused on UI, using the custom hook for socket interactions.
+5. Maintains the existing structure of your `App` and `SocketWithAuth` components.
+
+This setup should work well with your current architecture and allow for easy testing of the streaming functionality. It also provides a foundation that can be easily extended for additional socket events in the future.

@@ -1,6 +1,6 @@
 import { activeChatIdAtom, activeChatMessagesArrayAtom } from '@/state/aiAtoms/aiChatAtoms';
 import { activeUserAtom } from '@/state/userAtoms';
-import { initializeSocket, emitEvent, waitForEvent, closeSocket } from '@/utils/socketio/socket';
+import { initializeSocket, emitEvent, waitForEvent, closeSocket } from '@/utils/socketio/basicSocket';
 import { atom, useRecoilValue, useSetRecoilState } from 'recoil';
 import { quickChatSettingsState } from "@/state/aiAtoms/settingsAtoms";
 import { requestEventTaskAtom, requestSocketEventAtom, requestIndexAtom } from '@/state/aiAtoms/metadataAtoms';

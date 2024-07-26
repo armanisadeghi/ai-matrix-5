@@ -4,7 +4,7 @@ import React from 'react';
 import { Paper, Textarea } from '@mantine/core';
 
 interface AIResponseProps {
-    message: { id: string; content: string };
+    message: { id: string; text: string };
 }
 
 const AIResponse: React.FC<AIResponseProps> = ({ message }) => {
@@ -18,7 +18,7 @@ const AIResponse: React.FC<AIResponseProps> = ({ message }) => {
             onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.02)')}
             onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
         >
-            <Textarea minRows={10} readOnly value={message.content} />
+            <Textarea minRows={10} readOnly value={message.text} />
         </Paper>
     );
 };

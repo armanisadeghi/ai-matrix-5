@@ -1,5 +1,6 @@
 'use client';
 
+import { SocketStatus } from '@/utils/socketio/SocketManager';
 import { atom, atomFamily, DefaultValue, selector, selectorFamily } from 'recoil';
 import { activeUserAtom } from '@/state/userAtoms';
 import { ChatDetailsType, ChatType, mapToChatType, MessageType } from '@/types';
@@ -32,6 +33,17 @@ export const userTextInputAtom = atom<string>({
     key: 'userTextInputAtom',
     default: '',
 });
+
+export const focusInputAtom = atom<boolean>({
+    key: 'focusInputAtom',
+    default: false,
+});
+
+export const submitChatIdAtom = atom<string>({
+    key: 'submitChatIdAtom',
+    default: undefined,
+});
+
 
 export const userInputAtomFamily = atomFamily<string, string>({
     key: 'userInputAtomFamily',
@@ -88,7 +100,6 @@ export const assistantTextStreamAtom = atom<string>({
     default: '',
 });
 
-
 export const chatSummariesAtom = atom<ChatType[]>({
     key: 'chatSummariesAtom',
     default: selector({
@@ -108,7 +119,6 @@ export const chatSummariesAtom = atom<ChatType[]>({
         },
     }),
 });
-
 
 export const chatMessagesAtomFamily = atomFamily<MessageType[], string>({
     key: 'chatMessagesAtomFamily',
@@ -175,7 +185,6 @@ export const chatMessagesSelectorFamily = selectorFamily({
 
         const addUserMessage = getCallback(({snapshot, set}) => async (userInput: string) => {
             const activeMessages = get(chatMessagesAtomFamily(chatId));
-
 
             set(userTextInputAtom, userInput);
             set(hasSubmittedMessageAtom, true);
@@ -248,7 +257,7 @@ export const chatStarter = selector<(userMessage: string, chatId: string) => Cha
         };
 
         const initialMessages: MessageType[] = [systemMessageEntry, userMessageEntry, assistantEntry];
-        const chatTitle = userMessage.length > 25 ? userMessage.substring(0, 25) + '...' : userMessage;
+        const chatTitle = userMessage.length > 35 ? userMessage.substring(0, 35) + '...' : userMessage;
 
         const chatStartObject = {
             chatId: chatId,
@@ -274,7 +283,6 @@ export const chatStarter = selector<(userMessage: string, chatId: string) => Cha
 const userMessageUpdater = selector<(userMessage: string, chatId: string, activeMessages: MessageType[]) => MessageType[]>({
     key: 'userMessageUpdater',
     get: ({get}) => (userMessage: string, chatId: string, activeMessages: MessageType[]): MessageType[] => {
-
 
         const userIndex = activeMessages.length;
 
@@ -305,11 +313,6 @@ const userMessageUpdater = selector<(userMessage: string, chatId: string, active
         return updatedMessagesArray;
     }
 });
-
-
-
-
-
 
 export const chatSelectorFamily = selectorFamily<ChatType | null, string>({
     key: 'chatSelector',
@@ -365,7 +368,6 @@ export const activeChatWithMessagesSelector = selector<ChatDetailsType | null>({
 
 // Currently not in use -------------------------------------------------------------------------------------------
 
-
 export const chatMessagesSelector = selector({
     key: 'chatMessagesSelector',
     get: async ({get}) => {
@@ -401,3 +403,25 @@ export const chatMessagesSelector = selector({
         }
     }
 });
+
+
+export const requestTaskAtom = atom<string>({
+    key: 'requestTaskAtom',
+    default: 'matrix_chat',
+});
+
+export const taskTriggerAtomFamily = atomFamily<boolean, { hookId: string, index: number }>({
+    key: 'taskTriggerAtomFamily',
+    default: false,
+});
+
+export const socketStatusAtom = atom<SocketStatus>({
+    key: 'socketStatusAtom',
+    default: 'not-connected',
+});
+
+export const taskStatusAtom = atom<string>({
+    key: 'taskStatusAtom',
+    default: 'idle',
+});
+

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Eyes Following Cursor</title>
+    <style>
+        body {
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .eyes {
+            display: flex;
+            gap: 20px;
+        }
+        .eye {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .pupil {
+            width: 25px;
+            height: 25px;
+            background: #333;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body>
+<div class="eyes">
+    <div class="eye"><div class="pupil"></div></div>
+    <div class="eye"><div class="pupil"></div></div>
+</div>
+
+<script>
+    document.addEventListener('mousemove', (e) => {
+        const eyes = document.querySelectorAll('.eye');
+        eyes.forEach(eye => {
+            const rect = eye.getBoundingClientRect();
+            const x = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
+            const y = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2);
+            const pupil = eye.querySelector('.pupil');
+            const maxMove = 10;
+            pupil.style.transform = `translate(${x * maxMove}px, ${y * maxMove}px)`;
+        });
+    });
+</script>
+</body>
+</html>

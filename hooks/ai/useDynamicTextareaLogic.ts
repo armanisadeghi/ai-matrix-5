@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import useStartNewChat from '@/app/trials/core-chat-trial/hooks/useStartNewChat';
 import { activeChatIdAtom, activeChatMessagesArrayAtom, userTextInputAtom } from '@/state/aiAtoms/aiChatAtoms';
 import { v4 as uuidv4 } from 'uuid';
 

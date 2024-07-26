@@ -1,24 +1,21 @@
-import MarkdownRendererFast from '@/components/AiChat/Response/markdown/tests/MarkdownNew/MarkdownRendererFast';
-import ResponseSaveRow from '@/components/AiChat/Response/ResponseSaveRow/ActionButtonRow';
 import React, { useRef } from 'react';
 import { Grid, Space } from '@mantine/core';
 import { GiArtificialHive } from 'react-icons/gi';
 import styles from './ResponseArea.module.css';
 import MarkdownRenderer from './markdown/MarkdownRenderer';
-
+import ResponseSaveRow from '@/components/AiChat/Response/ResponseSaveRow';
 
 interface AssistantMessageProps {
     text?: string;
+    stream?: boolean; // Added the stream prop
 }
 
-const AssistantMessage: React.FC<AssistantMessageProps> = ({text}) => {
+const AssistantMessage: React.FC<AssistantMessageProps> = ({ text, stream = false }) => { // Set default value of stream to false
     const textRef = useRef<string | null>(null);
 
     if (!text) {
         return null;
     }
-
-    // Update the ref value
     textRef.current = text;
 
     return (
@@ -29,10 +26,9 @@ const AssistantMessage: React.FC<AssistantMessageProps> = ({text}) => {
 
             <Grid.Col span={11.4}>
                 <div className={styles.assistantResponseText}>
-                    {/*<MarkdownRenderer content={text} />*/}
-                    <MarkdownRendererFast content={text}/>
+                    <MarkdownRenderer content={text}/>
                     <Space h="xs"/>
-                    <ResponseSaveRow textRef={textRef}/>
+                    {!stream && <ResponseSaveRow textRef={textRef}/>} {/* Conditionally render ResponseSaveRow */}
                 </div>
             </Grid.Col>
         </Grid>

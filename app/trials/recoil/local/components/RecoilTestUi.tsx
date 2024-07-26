@@ -3,7 +3,7 @@
 import React, { useRef } from 'react';
 import { useSetActiveChat } from '@/app/trials/recoil/local/hooks/useSetActiveChat';
 import ChatSummariesPage from '@/app/trials/recoil/local/components/chatCrudTable';
-import { fetchStatusAtom, hasSubmittedMessageAtom, messagesFamily, userTextInputAtom, userUpdatedArraySelector } from '@/state/aiAtoms/aiChatAtoms';
+import { fetchStatusAtom, hasSubmittedMessageAtom, chatMessagesAtomFamily, userTextInputAtom, userUpdatedArraySelector } from '@/state/aiAtoms/aiChatAtoms';
 import { Button, Pill, Space, Textarea } from '@mantine/core';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import useNewHandleUserInput from '@/app/trials/recoil/local/hooks/useNewHandleUserInput';
@@ -11,7 +11,7 @@ import useNewHandleUserInput from '@/app/trials/recoil/local/hooks/useNewHandleU
 
 const ChatTestPage: React.FC = () => {
     const {activeChatId, isNewChat, setActiveChat, chatSummaries,} = useSetActiveChat();
-    const [messages, setMessages] = useRecoilState(messagesFamily(activeChatId));
+    const [messages, setMessages] = useRecoilState(chatMessagesAtomFamily(activeChatId));
     const messagesText = (messages && messages.map(msg => msg.text).join('\n')) || '';
     const [userTextInput, setUserTextInput] = useRecoilState(userTextInputAtom);
     const arrayWithUserMessage = useRecoilValue(userUpdatedArraySelector);

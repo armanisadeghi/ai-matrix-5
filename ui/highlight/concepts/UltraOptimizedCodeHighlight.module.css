@@ -1,0 +1,138 @@
+/* ui/highlight/UltraOptimizedCodeHighlight.module.css */
+
+/* Global styles for dark mode */
+:global([data-mantine-color-scheme='dark']) {
+    .codeSection pre {
+        --code-text-color: #ffffff;
+        --code-background: #000000;
+        --code-comment-color: #6272a4;
+        --code-keyword-color: #188cff;
+        --code-tag-color: #da10b2;
+        --code-literal-color: #ab54f3;
+        --code-string-color: #0fe12b;
+        --code-variable-color: #2accef;
+        --code-class-color: #fa1414;
+    }
+
+    .header {
+        background-color: #494747;
+        color: #f0f0f0;
+    }
+
+    .expandButton {
+        color: #f0f0f0;
+    }
+
+    .expandButton:hover {
+        color: #ffffff;
+    }
+
+    .fadeOverlay {
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0), #2c2c2c);
+    }
+
+    .codeSection pre::-webkit-scrollbar-track {
+        background: #2c2c2c;
+    }
+}
+
+/* Global styles for light mode */
+:global([data-mantine-color-scheme='light']) {
+    .codeSection pre {
+        --code-background: #e1e1e1;
+        --code-text-color: #000000;
+    }
+
+    .header {
+        background-color: #322f2f;
+        color: #ffffff;
+    }
+
+    .expandButton {
+        color: #ffffff;
+    }
+
+    .expandButton:hover {
+        color: #c1c1c1;
+    }
+
+    .fadeOverlay {
+        background: linear-gradient(to bottom, rgba(225, 225, 225, 0), #f1f1f1);
+    }
+
+    .codeSection pre::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+}
+
+.codeSection pre {
+    background-color: var(--code-background);
+    color: var(--code-text-color);
+    border-radius: 4px;
+    padding: 10px;
+    overflow-x: auto;
+    max-width: 712px;
+}
+
+.codeSection code {
+    font-family: 'ui-monospace', monospace;
+    font-size: 12px;
+}
+
+.codeSection pre::-webkit-scrollbar {
+    height: 0;
+}
+
+.codeSection pre::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.codeSection pre::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.header {
+    padding: 4px 10px;
+    font-size: 14px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+.expandButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    margin-left: 10px;
+}
+
+.codeSection {
+    position: relative;
+    max-width: 800px;
+    margin: auto;
+}
+
+.codePreviewWrapper {
+    position: relative;
+    max-height: 250px;
+    overflow: hidden;
+}
+
+.codePreview {
+    overflow: hidden;
+    position: relative;
+}
+
+.fadeOverlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    pointer-events: none;
+}

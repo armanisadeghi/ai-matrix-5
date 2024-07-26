@@ -43,8 +43,6 @@ const AutoFetch: React.FC<AutoFetchProps> = ({ children }) => {
         if (isNewChat !== false) return;
         if (activeChatId === 'matrix-ai' || !uuidValidate(activeChatId)) return;
         if (messages.length === 0) {
-            console.log('DEBUG AutoFetch: Fetching messages for chatId:', activeChatId)
-            console.log('DEBUG AutoFetch: isNewChat:', isNewChat)
             fetchDatabaseMessages();
         }
     }, [activeChatId, isNewChat, messages]);

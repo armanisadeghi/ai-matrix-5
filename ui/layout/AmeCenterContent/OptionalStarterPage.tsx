@@ -9,7 +9,7 @@ import React from 'react';
 import ResponseArea from '@/components/AiChat/Response/ResponseArea';
 import useDynamicLayout from '@/hooks/ai/useDynamicChatLayout';
 import OptionalBottomSection from '@/ui/layout/AmeCenterContent/OptionalBottomSection';
-import ChatSidebar from "@/components/AiChat/Sidebar/ChatList";
+import ChatSidebar from "@/components/AiChat/Sidebar/ChatSidebar";
 
 const TopSection: React.FC = () => {
     return (

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Mood Ring</title>
+    <style>
+        body {
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .mood-ring {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3, #54a0ff, #5f27cd);
+            animation: rotate 10s linear infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        .inner-circle {
+            width: 120px;
+            height: 120px;
+            background-color: #1a1a1a;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 14px;
+            text-align: center;
+        }
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+<div class="mood-ring" id="moodRing">
+    <div class="inner-circle" id="moodText">
+        AI is calm
+    </div>
+</div>
+
+<script>
+    const moodRing = document.getElementById('moodRing');
+    const moodText = document.getElementById('moodText');
+    const moods = [
+        { text: "AI is excited", gradient: "conic-gradient(from 0deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3, #54a0ff, #5f27cd)" },
+        { text: "AI is focused", gradient: "conic-gradient(from 0deg, #54a0ff, #5f27cd, #ff6b6b, #feca57, #48dbfb, #ff9ff3)" },
+        { text: "AI is processing", gradient: "conic-gradient(from 0deg, #48dbfb, #ff9ff3, #54a0ff, #5f27cd, #ff6b6b, #feca57)" },
+        { text: "AI is learning", gradient: "conic-gradient(from 0deg, #feca57, #48dbfb, #ff9ff3, #54a0ff, #5f27cd, #ff6b6b)" },
+        { text: "AI is calm", gradient: "conic-gradient(from 0deg, #ff9ff3, #54a0ff, #5f27cd, #ff6b6b, #feca57, #48dbfb)" }
+    ];
+
+    let currentMood = 0;
+
+    moodRing.addEventListener('click', () => {
+        currentMood = (currentMood + 1) % moods.length;
+        moodRing.style.background = moods[currentMood].gradient;
+        moodText.textContent = moods[currentMood].text;
+    });
+</script>
+</body>
+</html>

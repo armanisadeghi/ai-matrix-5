@@ -152,6 +152,35 @@ export type Database = {
         }
         Relationships: []
       }
+      file_sharing: {
+        Row: {
+          is_public: boolean | null
+          object_id: string
+          share_with_all: boolean | null
+          shared_with_users: string[] | null
+        }
+        Insert: {
+          is_public?: boolean | null
+          object_id: string
+          share_with_all?: boolean | null
+          shared_with_users?: string[] | null
+        }
+        Update: {
+          is_public?: boolean | null
+          object_id?: string
+          share_with_all?: boolean | null
+          shared_with_users?: string[] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "file_sharing_settings_object_id_fkey"
+            columns: ["object_id"]
+            isOneToOne: true
+            referencedRelation: "objects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       messages: {
         Row: {
           chat_id: string | null
@@ -673,7 +702,7 @@ export type Database = {
       }
     }
     Enums: {
-      [_ in never]: never
+      presentation_visibility: "public" | "private" | "link"
     }
     CompositeTypes: {
       chat_messages_response_type: {
@@ -786,5 +815,3 @@ export type Enums<
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
     : never
-
-// test

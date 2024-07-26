@@ -18,7 +18,6 @@ const VerticalSplitter: React.FC<VerticalSplitterProps> = React.memo(({ children
     const [ref, dimensions] = useDynamicDimensions();
 
     const panelStyle: CSSProperties = useMemo(() => ({
-        padding: '10px',
         height: '100%',
     }), []);
 

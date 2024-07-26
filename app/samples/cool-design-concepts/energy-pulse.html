@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Energy Pulse</title>
+    <style>
+        body {
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        .energy-field {
+            position: relative;
+            width: 200px;
+            height: 200px;
+        }
+        .pulse {
+            position: absolute;
+            border-radius: 50%;
+            background-color: rgba(74, 144, 226, 0.3);
+            box-shadow: 0 0 20px rgba(74, 144, 226, 0.5);
+            animation: pulse 4s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        }
+        .core {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            background-color: #4a90e2;
+            border-radius: 50%;
+            box-shadow: 0 0 30px #4a90e2;
+        }
+        @keyframes pulse {
+            0% {
+                width: 0;
+                height: 0;
+                opacity: 1;
+            }
+            100% {
+                width: 200px;
+                height: 200px;
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="energy-field" id="energyField">
+    <div class="core"></div>
+</div>
+
+<script>
+    const energyField = document.getElementById('energyField');
+    let pulseCount = 3;
+    let activityLevel = 1;
+
+    function createPulse() {
+        const pulse = document.createElement('div');
+        pulse.classList.add('pulse');
+        energyField.appendChild(pulse);
+
+        pulse.style.animationDuration = `${4 / activityLevel}s`;
+
+        pulse.addEventListener('animationend', () => {
+            pulse.remove();
+        });
+    }
+
+    function updatePulses() {
+        setInterval(() => {
+            if (energyField.childElementCount < pulseCount + 1) {
+                createPulse();
+            }
+        }, 1000 / activityLevel);
+    }
+
+    function changeActivityLevel() {
+        activityLevel = Math.random() * 2 + 0.5;
+        pulseCount = Math.floor(Math.random() * 3) + 2;
+        document.querySelectorAll('.pulse').forEach(pulse => pulse.remove());
+    }
+
+    updatePulses();
+    setInterval(changeActivityLevel, 10000);
+</script>
+</body>
+</html>

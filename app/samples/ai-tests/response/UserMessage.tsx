@@ -9,10 +9,10 @@ import { useResponses } from './ResponseContext';
 // Also had logic for editing that I removed. That part, we should put back, but it wasn't set up right anyways.
 
 interface UserMessageProps {
-    text: string;
+    message: { id: string; text: string };
 }
 
-const UserMessage: React.FC<UserMessageProps> = ({ text }) => {
+const UserMessage: React.FC<UserMessageProps> = ({ message }) => {
     const { updateMessage } = useResponses();
     const [isEditing, setIsEditing] = useState(false);
 
@@ -43,13 +43,13 @@ const UserMessage: React.FC<UserMessageProps> = ({ text }) => {
                 <>
                     <Textarea
                         minRows={4}
-                        value={text}
+                        value={message.text}
                     />
                     <Button onClick={handleSave}>Ask Again</Button>
                 </>
             ) : (
                 <>
-                    <Textarea minRows={4} readOnly value={text} />
+                    <Textarea minRows={4} readOnly value={message.text} />
                     <ActionIcon
                         variant="transparent"
                         style={{ position: 'absolute', top: 10, right: 10 }}

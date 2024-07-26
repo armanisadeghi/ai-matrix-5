@@ -1,4 +1,4 @@
-import { activeChatIdAtom, chatStartSelector, isNewChatAtom, messagesFamily, systemMessageAtom, userTextInputAtom } from '@/state/aiAtoms/aiChatAtoms';
+import { activeChatIdAtom, chatStartSelector, isNewChatAtom, chatMessagesAtomFamily, systemMessageAtom, userTextInputAtom } from '@/state/aiAtoms/aiChatAtoms';
 import { activeUserAtom } from '@/state/userAtoms';
 import { ChatDetailsType, ChatType, MessageType } from '@/types';
 import { createChatStartEntry } from '@/utils/supabase/chatDb';
@@ -27,8 +27,8 @@ const initializeNewChat = async ({ get, set }: { get: any, set: any }) => {
     // Add the new chat summary to chatSummariesAtom
     set(chatSummariesAtom, (prevSummaries: ChatType[]) => [...prevSummaries, chatSummary]);
 
-    // Update messagesFamily with the new messages
-    set(messagesFamily(activeChatId), startChatObject.messages);
+    // Update chatMessagesAtomFamily with the new messages
+    set(chatMessagesAtomFamily(activeChatId), startChatObject.messages);
 
     // Update the database
     try {

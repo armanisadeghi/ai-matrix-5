@@ -1,7 +1,7 @@
 import useStreamChat from '@/app/trials/recoil/local/hooks/useSteamChat';
 import { useCallback, useEffect, useState } from 'react';
 import { useRecoilCallback, useRecoilState, useRecoilValue } from 'recoil';
-import { fetchStatusAtom, isNewChatAtom, userTextInputAtom, chatStartSelector, messagesFamily, activeChatIdAtom, userUpdatedArraySelector, streamTriggerAtomFamily, hookIdAtom, hookIndexAtom, chatSummariesAtom } from '@/state/aiAtoms/aiChatAtoms';
+import { fetchStatusAtom, isNewChatAtom, userTextInputAtom, chatMessagesAtomFamily, activeChatIdAtom, streamTriggerAtomFamily, hookIdAtom, hookIndexAtom, chatSummariesAtom } from '@/state/aiAtoms/aiChatAtoms';
 import { useMessageActions } from '@/app/trials/recoil/local/hooks/useMessageActions';
 
 
@@ -24,7 +24,7 @@ export const useHandleUserInput = () => {
 
             const {messages, ...chatSummary} = startChatObject;
             set(chatSummariesAtom, (prevSummaries) => [...prevSummaries, chatSummary]);
-            set(messagesFamily(startChatObject.chatId), messages);
+            set(chatMessagesAtomFamily(startChatObject.chatId), messages);
         } else {
             const arrayWithUserMessage = await snapshot.getPromise(userUpdatedArraySelector);
             const activeChatId = await snapshot.getPromise(activeChatIdAtom);

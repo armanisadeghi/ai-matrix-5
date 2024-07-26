@@ -1,16 +1,21 @@
 'use client';
 
+import MicrophoneButton, { audioStateAtom } from '@/components/Audio/MicrophoneButton';
+import MicrophoneButtonSmall from '@/components/Audio/MicrophoneButtonSmall';
+import InputDropUp from '@/ui/textarea/concepts/InputDropUp';
 import React, { forwardRef, useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import { Textarea, ActionIcon, Group, Box, Modal, useMantineTheme, useMantineColorScheme } from '@mantine/core';
-import { RiDeleteBin3Line, RiSettings2Line } from "react-icons/ri";
-import { FaExpandArrowsAlt } from "react-icons/fa";
-import AmeOverComponentIcon from "@/ui/button/AmeOverComponentIcon";
-import { AmeFileUploadOverComponent } from "@/ui/button/AmeFileUploadOverComponent";
+import { Textarea, ActionIcon, Group, Box, Modal, useMantineTheme, useMantineColorScheme, NativeSelect, Select } from '@mantine/core';
+import { RiDeleteBin3Line, RiSettings2Line } from 'react-icons/ri';
+import { FaExpandArrowsAlt } from 'react-icons/fa';
+import AmeOverComponentIcon from '@/ui/button/AmeOverComponentIcon';
+import { AmeFileUploadOverComponent } from '@/ui/button/AmeFileUploadOverComponent';
+import { useRecoilState } from 'recoil';
 import styles from './FancyText.module.css';
-import useKeyDownHandler from "@/utils/commonUtils/useKeyDownHandler";
+import useKeyDownHandler from '@/utils/commonUtils/useKeyDownHandler';
 import AmeSettingsModal from '@/ui/modal/AmeSettingsModal';
-import { AtomName, matrixLevelSetting } from "@/state/aiAtoms/settingsAtoms";
-import AmeResponsiveSlider from "@/ui/slider/AmeResponsiveSlider";
+import { AtomName, matrixLevelSetting } from '@/state/aiAtoms/settingsAtoms';
+import AmeResponsiveSlider from '@/ui/slider/AmeResponsiveSlider';
+import { FaMicrophone } from 'react-icons/fa6';
 
 export interface AmeTextWithSliderProps {
     label?: string;
@@ -25,27 +30,33 @@ export interface AmeTextWithSliderProps {
     onInputCleared?: () => void;
 }
 
-
 interface ActionButtonsProps {
     modalType: 'none' | 'custom' | 'default';
+    onMicClick: () => void;
     fileUploadEnabled: boolean;
     onSettingsClick: () => void;
     onDelete: () => void;
     onToggle: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-const ActionButtons: React.FC<ActionButtonsProps> = React.memo(({ modalType, fileUploadEnabled, onSettingsClick, onDelete, onToggle }) => (
+const ActionButtons: React.FC<ActionButtonsProps> = React.memo(({modalType, onMicClick, fileUploadEnabled, onSettingsClick, onDelete, onToggle}) => (
     <ActionIcon.Group>
+        <MicrophoneButtonSmall/>
+{/*
+        <AmeOverComponentIcon tooltip="Use Mic" onClick={(e) => { e.stopPropagation(); onMicClick(); }} className={styles['amefancy-action-icon']}>
+            <FaMicrophone/>
+        </AmeOverComponentIcon>
+*/}
         {modalType !== 'none' && (
-            <AmeOverComponentIcon tooltip="Chat settings" onClick={onSettingsClick} className={styles['amefancy-action-icon']}>
+            <AmeOverComponentIcon tooltip="Chat settings" onClick={(e) => { e.stopPropagation(); onSettingsClick(); }} className={styles['amefancy-action-icon']}>
                 <RiSettings2Line/>
             </AmeOverComponentIcon>
         )}
-        {fileUploadEnabled && <AmeFileUploadOverComponent/>}
-        <AmeOverComponentIcon tooltip="Clear all text" onClick={onDelete} className={styles['amefancy-action-icon']}>
+        {fileUploadEnabled && <AmeFileUploadOverComponent  />}
+        <AmeOverComponentIcon tooltip="Clear all text" onClick={(e) => { e.stopPropagation(); onDelete(); }} className={styles['amefancy-action-icon']}>
             <RiDeleteBin3Line/>
         </AmeOverComponentIcon>
-        <AmeOverComponentIcon tooltip="Expand or collapse without impacting the text content" onClick={onToggle} className={styles['amefancy-action-icon']}>
+        <AmeOverComponentIcon tooltip="Expand or collapse without impacting the text content" onClick={(e) => { e.stopPropagation(); onToggle(e); }} className={styles['amefancy-action-icon']}>
             <FaExpandArrowsAlt/>
         </AmeOverComponentIcon>
     </ActionIcon.Group>
@@ -74,7 +85,8 @@ const AmeTextWithSlider = forwardRef<HTMLDivElement, AmeTextWithSliderProps>((pr
     const [isFocused, setIsFocused] = useState(false);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const theme = useMantineTheme();
-    const { colorScheme } = useMantineColorScheme();
+    const {colorScheme} = useMantineColorScheme();
+    const [recording, setRecording] = useRecoilState(audioStateAtom);
 
     useEffect(() => {
         document.body.style.overflow = 'hidden';
@@ -114,6 +126,10 @@ const AmeTextWithSlider = forwardRef<HTMLDivElement, AmeTextWithSliderProps>((pr
         setCollapsed(prev => !prev);
     }, []);
 
+    const handleMicClick = useCallback(() => {
+        setRecording(prev => !prev);
+    }, []);
+
     const handleBoxClick = useCallback(() => {
         if (collapsed) {
             setCollapsed(false);
@@ -146,50 +162,64 @@ const AmeTextWithSlider = forwardRef<HTMLDivElement, AmeTextWithSliderProps>((pr
 
     const textareaProps = useMemo(() => ({
         autosize: true,
-        minRows: 3,
+        minRows: 2,
         maxRows: collapsed ? 2 : 40,
         placeholder,
-        size: "sm" as const,
-        variant: "unstyled" as const,
+        size: 'sm' as const,
+        variant: 'unstyled' as const,
         className: styles['amefancy-textarea'],
     }), [collapsed, placeholder]);
 
+    const sliderClassName = useMemo(() => {
+        return `${styles['amefancy-slider']} ${
+            colorScheme === 'dark' ? styles['amefancy-slider-dark'] : styles['amefancy-slider-light']
+        }`;
+    }, [colorScheme]);
+
     return (
-        <Box ref={ref} {...boxStyle} onClick={handleBoxClick} tabIndex={-1}>
-            <Group justify='space-between' className={styles['amefancy-group']}>
-                <div className={styles['amefancy-label']}>{label}</div>
-                <ActionButtons
-                    modalType={modalType}
-                    fileUploadEnabled={fileUploadEnabled}
-                    onSettingsClick={openSettingsModal}
-                    onDelete={handleDelete}
-                    onToggle={handleToggle}
+        <>
+            <Box ref={ref} {...boxStyle} onClick={handleBoxClick} tabIndex={-1}>
+                <Group justify="space-between" className={styles['amefancy-group']}>
+                    <InputDropUp/>
+                    <div className={styles['amefancy-label']}>
+                        {label}
+                    </div>
+                    <ActionButtons
+                        modalType={modalType}
+                        onMicClick={handleMicClick}
+                        fileUploadEnabled={fileUploadEnabled}
+                        onSettingsClick={openSettingsModal}
+                        onDelete={handleDelete}
+                        onToggle={handleToggle}
+                    />
+                </Group>
+                <Textarea
+                    ref={textareaRef}
+                    value={userInput}
+                    onChange={handleInputChange}
+                    onKeyDown={handleKeyDown}
+                    {...textareaProps}
                 />
-            </Group>
-            <Textarea
-                ref={textareaRef}
-                value={userInput}
-                onChange={handleInputChange}
-                onKeyDown={handleKeyDown}
-                {...textareaProps}
-            />
-            <AmeResponsiveSlider setting={matrixLevelSetting}/>
-            {modalType === 'default' && (
-                <AmeSettingsModal
-                    opened={settingsModalOpened}
-                    onClose={closeSettingsModal}
-                    atomNames={settingAtomNames}
-                />
-            )}
-            {modalType === 'custom' && customModal}
-            <Modal
-                opened={defaultModalOpened}
-                onClose={() => setDefaultModalOpened(false)}
-                title="Text Submitted"
-            >
-                {textareaRef.current?.value}
-            </Modal>
-        </Box>
+                <div className={sliderClassName}>
+                    <AmeResponsiveSlider setting={matrixLevelSetting}/>
+                </div>
+                {modalType === 'default' && (
+                    <AmeSettingsModal
+                        opened={settingsModalOpened}
+                        onClose={closeSettingsModal}
+                        atomNames={settingAtomNames}
+                    />
+                )}
+                {modalType === 'custom' && customModal}
+                <Modal
+                    opened={defaultModalOpened}
+                    onClose={() => setDefaultModalOpened(false)}
+                    title="Text Submitted"
+                >
+                    {textareaRef.current?.value}
+                </Modal>
+            </Box>
+        </>
     );
 });
 

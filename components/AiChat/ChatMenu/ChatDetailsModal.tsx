@@ -1,6 +1,6 @@
-import ChatModalDisplay from '@/components/AiChat/ChatMenu/new/ChatModalDisplay';
 import React, { useEffect, useState, useCallback } from 'react';
 import { Modal } from '@mantine/core';
+import ChatModalDisplay from '@/components/AiChat/ChatMenu/ChatModalDisplay';
 
 interface ChatDetailsModalProps {
     chatId: string;

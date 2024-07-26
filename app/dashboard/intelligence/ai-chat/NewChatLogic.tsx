@@ -17,12 +17,10 @@ export default function NewChatLogic({chatId}: ChatClientLogicProps) {
     const [isNewChat, setIsNewChat] = useRecoilState(isNewChatAtom);
     const [transitionState, setTransitionState] = useRecoilState(chatTransitionAtom);
 
-
     useEffect(() => {
         setActiveChatId(chatId);
         if (chatId === 'matrix-ai') {
             setIsNewChat(true);
-            console.log('DEBUG NewChatLogic useEffect: chatId was matrix-ai. Set isNewChat to true')
         }
 
     }, [chatId]);
@@ -33,8 +31,6 @@ export default function NewChatLogic({chatId}: ChatClientLogicProps) {
         const newChatId = v4();
         setTransitionState('new');
         setActiveChatId(newChatId);
-        console.log('DEBUG NewChatLogic useEffect:: isNewChat set a new newChatId: ', newChatId)
-
 
     }, [isNewChat, setTransitionState, setActiveChatId]);
 
@@ -42,7 +38,6 @@ export default function NewChatLogic({chatId}: ChatClientLogicProps) {
         if (transitionState === 'transition') {
             setIsNewChat(false);
             setTransitionState('idle');
-            console.log('DEBUG NewChatLogic useEffect: transitioned chat')
 
         }
     }, [transitionState, setIsNewChat]);

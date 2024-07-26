@@ -3,11 +3,11 @@ import type { NextRequest } from 'next/server';
 import { getSession } from '@auth0/nextjs-auth0/edge';
 import { upsertFromAuth0 } from '@/hooks/users/upsertAuth0';
 import { AuthProfile, MatrixUser } from '@/types/user.types';
-import { cookies } from 'next/headers'
+import { cookies } from 'next/headers';
 
 export default async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
-    const paths = ['/samples','/armani', '/dashboard', '/matrix-engine', '/trial', '/trial-cookie', '/app'];
+    const paths = ['/samples', '/armani', '/dashboard', '/matrix-engine', '/trial', '/trial-cookie', '/app'];
 
     if (paths.some(path => pathname.startsWith(path))) {
         console.log('request.nextUrl.pathname and request url:', pathname, request.url);
@@ -19,8 +19,6 @@ export default async function middleware(request: NextRequest) {
             const user: AuthProfile = session.user as AuthProfile;
             console.log('got user');
 
-            // TODO: Currently, we're actually calling the db twice. Once here by the server, and then again by the client.
-            // I hope to find a good way to pass the information, but cookies doesn't appear to be the best solution.
             try {
                 const matrixUser: MatrixUser | null = await upsertFromAuth0(user);
                 console.log('matrixUser from middleware has the user from Auth0');
@@ -31,6 +29,12 @@ export default async function middleware(request: NextRequest) {
 
                     const language = typeof user.language === 'string' ? user.language : '';
                     res.cookies.set('hl', language, { path: '/' });
+
+                    // Get the Auth0 JWT and add it to cookies
+                    const auth0Jwt = session.idToken;
+                    if (auth0Jwt) {
+                        res.cookies.set('auth0_jwt', auth0Jwt, { httpOnly: true, path: '/' });
+                    }
                 } else {
                     console.error('Failed to upsert user');
                 }
@@ -47,17 +51,9 @@ export default async function middleware(request: NextRequest) {
     return NextResponse.next();
 }
 
-
 // See "Matching Paths" below to learn more
 export const config = {
     matcher: [
-        /*
-         * Match all request paths except for the ones starting with:
-         * - api (API routes)
-         * - _next/static (static files)
-         * - _next/image (image optimization files)
-         * - favicon.ico (favicon file)
-         */
         {
             source: '/((?!api|_next/static|_next/image|favicon.ico).*)',
             missing: [
@@ -65,7 +61,6 @@ export const config = {
                 { type: 'header', key: 'purpose', value: 'prefetch' },
             ],
         },
-
         {
             source: '/((?!api|_next/static|_next/image|favicon.ico).*)',
             has: [
@@ -73,7 +68,6 @@ export const config = {
                 { type: 'header', key: 'purpose', value: 'prefetch' },
             ],
         },
-
         {
             source: '/((?!api|_next/static|_next/image|favicon.ico).*)',
             has: [{ type: 'header', key: 'x-present' }],

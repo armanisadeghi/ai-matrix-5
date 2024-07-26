@@ -1,29 +1,19 @@
-// app/samples/OptionalStarterPage.tsx
+// pages/MarkdownDemo.tsx
 'use client';
-import ContextMenu from '@/components/ContextMenu/ContextMenu';
-import { useContextMenu } from '@/context/ContextMenuProvider';
-import React from 'react';
 
+import RichTextEditorPage from '@/components/RichTextEditor/RichTextEditorPage';
 
-export default function Index() {
-    const { showMenu } = useContextMenu();
-
-    const handleRightClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        event.preventDefault();  // Prevent the default context menu
-        showMenu(event.pageX, event.pageY, [
-            { label: 'Dashboard', onClick: () => console.log('Go to Dashboard') },
-            { label: 'Settings', onClick: () => console.log('Open Settings') },
-        ]);
+const MarkdownDemo = () => {
+    const handleSave = (content: string) => {
+        console.log('Saved content:', content);
+        // Implement your save logic here
     };
 
     return (
         <div>
-            <div onContextMenu={handleRightClick}>
-                {/* Your app components go here */}
-                <ContextMenu />
-            </div>
+            <RichTextEditorPage content="<p>Initial content</p>" onSave={handleSave} />
         </div>
     );
-}
+};
 
-
+export default MarkdownDemo;

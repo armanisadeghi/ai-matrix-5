@@ -1,7 +1,7 @@
 // ShareChatModal.tsx
-import ChatModalDisplay from '@/components/AiChat/ChatMenu/new/ChatModalDisplay';
 import React from 'react';
 import { Modal, Button, Text } from '@mantine/core';
+import ChatModalDisplay from '@/components/AiChat/ChatMenu/ChatModalDisplay';
 
 
 interface ShareChatModalProps {

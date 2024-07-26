@@ -5,7 +5,7 @@ import { useRecoilState } from "recoil";
 import { presetTypeAtom } from "@/state/layoutAtoms";
 import { activeUserAtom } from "@/state/userAtoms";
 import { SidebarProvider, useSidebar } from "@/context/SidebarContext";
-import ChatSidebar from "@/components/AiChat/Sidebar/ChatList";
+import ChatSidebar from "@/components/AiChat/Sidebar/ChatSidebar";
 
 interface LayoutProps {
     children: ReactNode;

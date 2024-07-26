@@ -1,7 +1,7 @@
 // renderers.tsx
 import AmeCodeHighlight from '@/ui/highlight/AmeCodeHighlight';
 import React, { ReactNode } from 'react';
-import { CustomTable, CustomTableHead, CustomTableBody, CustomTableRow, CustomTableCell, CustomTableHeaderCell } from './CustomTable';
+import { TableHandler } from './CustomTable';
 import { Code } from '@mantine/core';
 
 const isBlockLevelElement = (element: ReactNode) => {
@@ -38,12 +38,7 @@ const renderers = {
         );
     }),
 
-    table: ({ children }: { children: ReactNode }) => <CustomTable>{children}</CustomTable>,
-    thead: ({ children }: { children: ReactNode }) => <CustomTableHead>{children}</CustomTableHead>,
-    tbody: ({ children }: { children: ReactNode }) => <CustomTableBody>{children}</CustomTableBody>,
-    tr: ({ children }: { children: ReactNode }) => <CustomTableRow>{children}</CustomTableRow>,
-    th: ({ children }: { children: ReactNode }) => <CustomTableHeaderCell>{children}</CustomTableHeaderCell>,
-    td: ({ children }: { children: ReactNode }) => <CustomTableCell>{children}</CustomTableCell>,
+    table: ({ children }: { children: ReactNode }) => <TableHandler>{children}</TableHandler>,
     li: ({ children }: { children: ReactNode }) => <li>{children}</li>,
     h1: ({ children }: { children: ReactNode }) => <h1>{children}</h1>,
     h2: ({ children }: { children: ReactNode }) => <h2>{children}</h2>,

@@ -1,12 +1,14 @@
 // app/dashboard/ClientLayoutLogic.tsx
 'use client'
 
+import { store } from '@/redux/store';
 import React, { ReactNode, useEffect } from 'react';
 import { RecoilRoot, useSetRecoilState } from 'recoil';
 import { LayoutProvider } from '@/context/LayoutContext';
 import ErrorBoundary from '@/components/ErrorManagement/ErrorBoundary';
 import { presetTypeAtom } from '@/state/layoutAtoms';
-import { AuthWrapper } from '@/components/Auth/AuthWrapper';
+import { AuthWrapper } from '@/components/Auth/AuthWrapperRedux';
+import { Provider as ReduxProvider } from 'react-redux';
 
 const LayoutGuard: React.FC<{ children: ReactNode }> = ({ children }) => {
     const setPresetType = useSetRecoilState(presetTypeAtom);
@@ -22,6 +24,8 @@ export default function ClientLayoutLogic({ children }: { children: ReactNode })
     return (
         <ErrorBoundary>
             <RecoilRoot>
+                <ReduxProvider store={store}>
+
                 <AuthWrapper>
                     <LayoutGuard>
                         <LayoutProvider>
@@ -29,6 +33,8 @@ export default function ClientLayoutLogic({ children }: { children: ReactNode })
                         </LayoutProvider>
                     </LayoutGuard>
                 </AuthWrapper>
+                </ReduxProvider>
+
             </RecoilRoot>
         </ErrorBoundary>
     );

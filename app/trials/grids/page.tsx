@@ -1,6 +1,7 @@
+import NewChatInput from '@/app/trials/chat/core-chat-trials/components/NewChatInput';
+import ChatSummaries from '@/app/trials/recoil/loadable-trial/Component1';
 import React from 'react';
 import AtomTesterComponent from '@/app/trials/grids/components/AtomTesterComponent';
-import NewChatInput from '@/app/trials/core-chat-trial/components/NewChatInput';
 import { AllUserChatsComponent } from '@/app/trials/grids/components/AllUserChatsComponent';
 import AmeGridLayout from 'ui/layout/AmeGridLayout/AmeGridLayout';
 import { SystemMessageComponent } from './components/SystemMessageComponent';
@@ -8,7 +9,6 @@ import { ChatDetailsComponent } from './components/ChatDetailsComponent';
 import { ActiveUserChatComponent } from './components/ActiveUserChatComponent';
 import { ActiveChatMessagesComponent } from './components/ActiveChatMessagesComponent';
 import { UserInputComponent } from './components/UserInputComponent';
-import ChatSummaries from '@/app/trials/core-chat-trial/components/ChatSummaries';
 
 const ChatPage: React.FC = () => {
     const gridItems = [

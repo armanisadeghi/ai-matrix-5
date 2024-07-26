@@ -92,7 +92,7 @@ const transformSelector2 = selector<SelectorGetResult>({
 });
 
 
-import { activeChatIdAtom, activeChatMessagesArrayAtom, messagesFamily } from '@/state/aiAtoms/aiChatAtoms';
+import { activeChatIdAtom, activeChatMessagesArrayAtom, chatMessagesAtomFamily } from '@/state/aiAtoms/aiChatAtoms';
 import { MessageType } from '@/types';
 
 

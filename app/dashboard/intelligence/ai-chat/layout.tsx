@@ -1,8 +1,8 @@
 import { ResponseArea } from '@/components/AiChat';
 import AutoFetch from '@/components/AiChat/new/AutoFetch';
+import ChatSidebar from '@/components/AiChat/Sidebar/ChatSidebar';
 import React, { ReactNode, useMemo } from 'react';
 import UserInputArea from '@/app/dashboard/intelligence/ai-chat/components/UserInputArea';
-import ChatSidebar from '@/components/AiChat/Sidebar/ChatList';
 import CenterLayout from '@/ui/layout/AmeCenterContent/CenterLayout';
 
 
@@ -23,7 +23,7 @@ export default function Layout({children}: Props) {
                 centerSectionWidth={83}
                 rightMenuSectionContent={<MemoizedChatSidebar/>}
                 rightMenuSectionWidth={17}
-                scrollAreaContent={<ResponseArea className="responseTextArea" bottomPadding={200}/>}
+                scrollAreaContent={<ResponseArea className="responseTextArea" bottomPadding={0}/>}
             />
             {children}
         </>

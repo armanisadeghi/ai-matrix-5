@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200">
+    <style>
+        @keyframes pulse {
+            0%, 100% { r: 5; }
+            50% { r: 7; }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .pulse { animation: pulse 2s infinite; }
+        .float { animation: float 4s infinite; }
+        .rotate { animation: rotate 10s linear infinite; }
+    </style>
+
+    <!-- Background -->
+    <rect width="400" height="200" fill="#1a1a1a" />
+
+    <!-- Concept 1: Neural Network -->
+    <g transform="translate(100, 100)">
+        <circle cx="0" cy="0" r="3" fill="#00ff00" />
+        <circle cx="-30" cy="-30" r="3" fill="#00ff00" />
+        <circle cx="30" cy="-30" r="3" fill="#00ff00" />
+        <circle cx="-30" cy="30" r="3" fill="#00ff00" />
+        <circle cx="30" cy="30" r="3" fill="#00ff00" />
+        <line x1="0" y1="0" x2="-30" y2="-30" stroke="#00ff00" stroke-width="1" />
+        <line x1="0" y1="0" x2="30" y2="-30" stroke="#00ff00" stroke-width="1" />
+        <line x1="0" y1="0" x2="-30" y2="30" stroke="#00ff00" stroke-width="1" />
+        <line x1="0" y1="0" x2="30" y2="30" stroke="#00ff00" stroke-width="1" />
+        <circle cx="0" cy="0" r="5" fill="#00ff00" class="pulse" />
+    </g>
+
+    <!-- Concept 2: Floating AI Orb -->
+    <g transform="translate(300, 100)" class="float">
+        <circle cx="0" cy="0" r="40" fill="#2a2a2a" />
+        <circle cx="-15" cy="-10" r="8" fill="#00ff00" opacity="0.7" />
+        <circle cx="15" cy="-10" r="8" fill="#00ff00" opacity="0.7" />
+        <path d="M-15 15 Q0 25 15 15" stroke="#00ff00" stroke-width="3" fill="none" />
+    </g>
+
+    <!-- Concept 3: Data Flow -->
+    <g transform="translate(200, 100)">
+        <circle cx="0" cy="0" r="30" fill="#2a2a2a" class="rotate" />
+        <circle cx="0" cy="-30" r="5" fill="#00ff00" />
+        <circle cx="26" cy="15" r="5" fill="#00ff00" />
+        <circle cx="-26" cy="15" r="5" fill="#00ff00" />
+    </g>
+</svg>

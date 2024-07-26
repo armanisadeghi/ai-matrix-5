@@ -5,7 +5,13 @@
     .codeSection :global(.m_1f5e827e) {
         --code-text-color: #ffffff; /* Bright white for general text */
         --code-background: #000000; /* Jet black for background */
-    --code-fade-color: #333;    /* Dark gray for fade */
+        --code-comment-color: #6272a4; /* Dim gray for comments */
+        --code-keyword-color: #188cff; /* Bright blue for keywords eg. 'def' */
+        --code-tag-color: #da10b2; /* Bright pink for tags */
+        --code-literal-color: #ab54f3; /* Bright purple for literals */
+        --code-string-color: #0fe12b; /* Bright green for strings eg. 'imports and dict keys' */
+        --code-variable-color: #2accef; /* Bright cyan for variables */
+        --code-class-color: #fa1414; /* Bright red for classes ex. 'function name' */
     }
 
     .header {
@@ -22,15 +28,7 @@
     }
 
     .fadeOverlay {
-    background: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 1) 0%,          /* Solid black */
-      rgba(0, 0, 0, 0.8) 20%,       /* Fade quickly at the top */
-      rgba(0, 0, 0, 0.6) 40%,       /* Fade fast */
-      rgba(0, 0, 0, 0.4) 60%,       /* Fade at medium speed */
-      rgba(0, 0, 0, 0.2) 80%,       /* Fade slowly */
-      rgba(51, 51, 51, 0) 100%      /* Fade to grey */
-    );
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0), #2c2c2c); /* Dark mode fade */
     }
 
     .codeSection :global(.mantine-CodeHighlight-pre::-webkit-scrollbar-track),
@@ -44,7 +42,6 @@
     .codeSection :global(.m_1f5e827e) {
         --code-background: #e1e1e1; /* Slightly darker gray */
         --code-text-color: #000000; /* Black for general text */
-    --code-fade-color: #ececec; /* Light gray for fade */
     }
 
     .header {
@@ -61,15 +58,7 @@
     }
 
     .fadeOverlay {
-    background: linear-gradient(
-      to bottom,
-      rgba(225, 225, 225, 1) 0%,    /* Solid light gray */
-      rgba(225, 225, 225, 0.8) 20%, /* Fade quickly at the top */
-      rgba(225, 225, 225, 0.6) 40%, /* Fade fast */
-      rgba(225, 225, 225, 0.4) 60%, /* Fade at medium speed */
-      rgba(225, 225, 225, 0.2) 80%, /* Fade slowly */
-      rgba(236, 236, 236, 0) 100%   /* Fade to very light gray */
-    );
+    background: linear-gradient(to bottom, rgba(225, 225, 225, 0), #f1f1f1); /* Light mode fade */
     }
 
     .codeSection :global(.mantine-CodeHighlight-pre::-webkit-scrollbar-track),
