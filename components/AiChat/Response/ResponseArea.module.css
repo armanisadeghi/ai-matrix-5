@@ -1,64 +1,68 @@
 /* ResponseArea.module.css */
 
 .container {
-    flex-grow: 1;
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 90vh;
     position: relative;
+    padding-bottom: 15rem;
+    max-width: 778px;
+
 }
 
-.scrollable {
-    position: absolute;
-    top: 0;
-    left: -120px;
-    right: -25px;
-    bottom: -200px;
-    overflow: scroll;
-}
 
-.responseTextArea {
+.assistantResponseText {
     text-overflow: ellipsis;
+    width: 100%;
     overflow: hidden;
-    font-size: 0.85rem;
-    font-weight: 450;
-    line-height: 1.4rem;
+    font-weight: 400;
+    line-height: 1.6rem;
     font-family: 'Google Sans', 'Helvetica Neue', sans-serif;
     letter-spacing: normal;
     margin-block: 0;
-    margin-left: 1px;
 }
 
 .userMessage {
     text-overflow: ellipsis;
     overflow: hidden;
-    font-size: 0.875rem;
     font-weight: 400;
-    line-height: 1.5rem;
+    line-height: 1.6rem;
     font-family: 'Google Sans', 'Helvetica Neue', sans-serif;
     letter-spacing: normal;
     margin-block: 0;
     padding-top: 5px;
-    margin-left: 150px;
     position: relative;
+
 }
 
-.actionIcon {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
+.userEditActionIcon {
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease, transform 0.1s ease;
 }
 
-.userMessage:hover {
+.userEditActionIcon:hover {
+    transform: scale(1.3);
+}
+
+
+.userMessage2:hover {
     color: #8aa7ca;
 }
 
-.userMessagePaper:hover {
-    color: #4e4e4e;
+.userMessagePaper {
+    transition: transform 0.3s ease;
+    margin-left: 200px;
+    border-width: 0.5px;
+    border-style: solid;
+    border-color: #8c8585;
+
 }
 
-.userMessage:hover .actionIcon {
+.userMessagePaper:hover {
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.userMessagePaper:hover .userEditActionIcon {
     opacity: 1;
 }
 
@@ -117,33 +121,101 @@
     filter: brightness(95%);
 }
 
-.mantine-Table-table {
+.customTableWrapper {
+    margin: 20px 0;
+    max-width: 780px;
+}
+
+.customTable {
     --table-vertical-spacing: calc(0.4375rem * var(--mantine-scale));
     border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
 }
 
-.mantine-Table-table[data-with-table-border="true"] {
-    border: 1px solid #ccc;
+.customTable[data-with-table-border="true"] {
+    border: 1px solid #858484;
 }
 
-.mantine-Table-table thead {
+.customTableHead {
     background-color: #f0f0f0;
 }
 
-.mantine-Table-table thead th {
+.customTableHeaderCell {
     border: 1px solid #ccc;
     padding: 8px;
 }
 
-.mantine-Table-table tbody tr:nth-child(odd) {
+.customTableBody tr:nth-child(odd) {
     background-color: #f9f9f9;
 }
 
-.mantine-Table-table tbody tr:hover {
+.customTableRow:hover {
     background-color: #e0e0e0;
 }
 
-.mantine-Table-table tbody td {
+.customTableCell {
     border: 1px solid #ccc;
     padding: 8px;
 }
+
+.newMessageIndicator {
+    position: sticky;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #123dff;
+    padding: 10px;
+    border-radius: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    cursor: pointer;
+}
+
+
+/*
+Older CSS
+
+.responseTextAreaCOPY {
+    text-overflow: ellipsis;
+    width: 100%;
+    overflow: hidden;
+    font-size: 0.85rem;
+    font-weight: 450;
+    font-family: 'Google Sans', 'Helvetica Neue', sans-serif;
+    letter-spacing: normal;
+    margin-block: 0;
+    margin-left: 1px;
+
+}
+
+.containerCOPY {
+    display: flex;
+    flex-direction: column;
+    min-height: 90vh;
+    position: relative;
+    padding-bottom: 1rem;
+
+}
+
+.scrollableCOPY {
+    position: absolute;
+    top: 0;
+    left: 15px;
+    right: 15px;
+    bottom: 50px;
+    overflow: scroll;
+
+}
+.scrollableBackup {
+    position: absolute;
+    top: 0;
+    left: -120px;
+    right: -25px;
+    bottom: -200px;
+    overflow: scroll;
+
+}
+
+
+
+ */

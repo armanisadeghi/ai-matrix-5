@@ -1,28 +1,35 @@
-import React from 'react';
-import { Grid, Text } from '@mantine/core';
-import { GiArtificialHive } from "react-icons/gi";
-import styles from "./ResponseArea.module.css";
-import MarkdownRenderer from "./markdown/MarkdownRenderer";
+import React, { useRef } from 'react';
+import { Grid, Space } from '@mantine/core';
+import { GiArtificialHive } from 'react-icons/gi';
+import styles from './ResponseArea.module.css';
+import MarkdownRenderer from './markdown/MarkdownRenderer';
+import ResponseSaveRow from '@/components/AiChat/Response/ResponseSaveRow';
 
 interface AssistantMessageProps {
     text?: string;
+    stream?: boolean; // Added the stream prop
 }
 
-const AssistantMessage: React.FC<AssistantMessageProps> = ({ text }) => {
+const AssistantMessage: React.FC<AssistantMessageProps> = ({ text, stream = false }) => { // Set default value of stream to false
+    const textRef = useRef<string | null>(null);
+
     if (!text) {
         return null;
     }
+    textRef.current = text;
 
     return (
         <Grid>
-            <Grid.Col span={2} style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-                <GiArtificialHive size={22} style={{ color: 'gray' }} />
+            <Grid.Col span={0.6}>
+                <GiArtificialHive size={22} style={{color: 'gray'}}/>
             </Grid.Col>
 
-            <Grid.Col span={10} style={{ display: 'flex', alignItems: 'center' }}>
-                <Text className={styles.responseTextArea} style={{ marginLeft: '10px' }}>
-                    <MarkdownRenderer content={text} />
-                </Text>
+            <Grid.Col span={11.4}>
+                <div className={styles.assistantResponseText}>
+                    <MarkdownRenderer content={text}/>
+                    <Space h="xs"/>
+                    {!stream && <ResponseSaveRow textRef={textRef}/>} {/* Conditionally render ResponseSaveRow */}
+                </div>
             </Grid.Col>
         </Grid>
     );

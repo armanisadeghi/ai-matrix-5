@@ -1,10 +1,10 @@
-// hooks/redis/useWebSocket.ts
+// hooks43/redis/useWebSocket.ts
 'use client';
 
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { activeUserAtom } from '@/state/userAtoms';
-import { RequestPayload, WebSocketResponse } from '@/types/requests';
+import { RequestPayload, WebSocketResponse } from '@/types/requests.types';
 
 export const useWebSocket = (request: RequestPayload): [WebSocketResponse | null, (request: RequestPayload) => void] => {
     const activeUser = useRecoilValue(activeUserAtom);

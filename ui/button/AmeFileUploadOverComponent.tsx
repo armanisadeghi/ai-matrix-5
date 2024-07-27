@@ -14,6 +14,7 @@ const AmeFileUploadOverComponent = () => {
                 <AmeOverComponentIcon
                     tooltip="Upload file..."
                     {...props}
+                    onClick={(e) => e.stopPropagation()}  // Stop propagation here
                     style={{ outline: 'none' }}
                 >
                     <MdPermMedia />
@@ -32,6 +33,7 @@ const AmeFileUploadActionIcon = () => {
                 <AmeActionIcon
                     title="Upload file..."
                     {...props}
+                    onClick={(e) => e.stopPropagation()}  // Stop propagation here
                     style={{ outline: 'none' }}
                 >
                     <MdPermMedia />

@@ -1,76 +1,96 @@
-import React, { useEffect, useRef } from 'react';
-import { Box, Grid, Space, LoadingOverlay } from '@mantine/core';
-import { useRecoilState } from 'recoil';
+'use client';
+
+import { autoscrollStateAtom } from '@/state/layoutAtoms';
+import React, { useEffect, useMemo } from 'react';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRouter } from 'next/navigation';
+import { Box, Space } from '@mantine/core';
+import useOpenAiStreamer from '@/hooks/ai/useOpenAiStreamer';
+import { activeChatIdAtom, assistantTextStreamAtom, chatMessagesAtomFamily, hasSubmittedMessageAtom, streamStatusAtom } from '@/state/aiAtoms/aiChatAtoms';
+import { updateLastAssistantText } from '@/utils/supabase/chatDb';
 import AssistantMessage from './AssistantMessage';
-import UserMessage from "./UserMessagePaper";
-import { activeChatMessagesArrayAtom, assistantTextStreamAtom } from "@/state/aiAtoms/chatAtoms";
-import { MessageEntry } from '@/types/chat';
-import styles from './ResponseArea.module.css';
+import UserMessage from './UserMessagePaper';
+import styles from '@/components/AiChat/Response/ResponseArea.module.css';
+
+
+const MessageWrapper = React.memo(({entry}: { entry: { role: string; text: string } }) => (
+    <>
+        {entry.role === 'assistant' ? (
+            <AssistantMessage text={entry.text}/>
+        ) : entry.role === 'user' ? (
+            <UserMessage text={entry.text}/>
+        ) : null}
+        <Space h={30}/>
+    </>
+));
+
+MessageWrapper.displayName = 'MessageWrapper';
 
 export interface ResponseAreaProps {
-    bottomPadding: number;
+    bottomPadding?: number;
     className?: string;
+    chatId?: string;
 }
 
-const ResponseArea: React.FC<ResponseAreaProps> = ({ bottomPadding, className }) => {
-    const scrollRef = useRef<HTMLDivElement>(null);
-    const [activeChatMessages] = useRecoilState(activeChatMessagesArrayAtom);
-    const [assistantTextStream] = useRecoilState(assistantTextStreamAtom);
+const ResponseArea: React.FC<ResponseAreaProps> = (
+    {
+        bottomPadding = 0,
+        className = '',
+        chatId,
+    }) => {
+    const router = useRouter();
+    const [activeChatId] = useRecoilState(activeChatIdAtom);
+    const messages = useRecoilValue(chatMessagesAtomFamily(activeChatId));
+    const [streamStatus, setStreamStatus] = useRecoilState(streamStatusAtom);
+    const [userHasSubmitted, setUserHasSubmitted] = useRecoilState(hasSubmittedMessageAtom);
+    const assistantTextStream = useRecoilValue(assistantTextStreamAtom);
+    const setAutoScroll = useSetRecoilState(autoscrollStateAtom);
 
     useEffect(() => {
-        if (scrollRef.current) {
-            scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-        }
-    }, []);
+        if (streamStatus === 'success' && userHasSubmitted && messages && messages.length > 0) {
+            const lastMessage = messages[messages.length - 1];
+            if (lastMessage.role === 'assistant' && lastMessage.id && lastMessage.text.length > 0) {
+                updateLastAssistantText(messages);
+                setUserHasSubmitted(false);
+                setStreamStatus('idle');
 
-    useEffect(() => {
-        if (scrollRef.current) {
-            const observer = new MutationObserver(() => {
-                if (scrollRef.current) {
-                    scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+                if (lastMessage.index < 3) {
+                    router.push(`/dashboard/intelligence/ai-chat/${encodeURIComponent(activeChatId)}`);
                 }
-            });
-            observer.observe(scrollRef.current, { childList: true, subtree: true });
-
-            return () => {
-                observer.disconnect();
-            };
+            }
         }
-    }, []);
+    }, [streamStatus, activeChatId, messages, userHasSubmitted, setUserHasSubmitted, router, setStreamStatus]);
 
-    if (!activeChatMessages) {
-        return <LoadingOverlay visible />;
-    }
+    useOpenAiStreamer({chatId: activeChatId});
+
+    useEffect(() => {
+        if (streamStatus === 'streaming') {
+            setAutoScroll(true);
+        }
+    }, [streamStatus]);
+
+    const memoizedMessages = useMemo(() =>
+            messages.filter(entry => entry.role === 'assistant' || entry.role === 'user').map((entry, index) => (
+                <MessageWrapper key={entry.id || index} entry={entry}/>
+            )),
+        [messages]
+    );
 
     return (
         <Box className={`${styles.container} ${className}`}>
-            <Box ref={scrollRef} className={styles.scrollable}>
-                <Grid>
-                    <Grid.Col span={0.5}></Grid.Col>
-                    <Grid.Col span={11}>
-                        <div style={{ paddingBottom: bottomPadding }}>
-                            <Space h={10} />
+            <div>
+                <div style={{paddingBottom: bottomPadding}}>
+                    <div>
+                        {memoizedMessages}
+                        {assistantTextStream && (
                             <div>
-                                {activeChatMessages.map((entry: MessageEntry, entryIndex: number) => (
-                                    <div key={entryIndex}>
-                                        {entry.role === 'assistant' ? (
-                                            <AssistantMessage text={entry.text} />
-                                        ) : (
-                                            <UserMessage text={entry.text} />
-                                        )}
-                                        <Space h={10} />
-                                    </div>
-                                ))}
-                                <div>
-                                    <AssistantMessage text={assistantTextStream} />
-                                    <Space h={10} />
-                                </div>
+                                <AssistantMessage key="stream" text={assistantTextStream} stream={true}/>
+                                <Space h={30}/>
                             </div>
-                        </div>
-                    </Grid.Col>
-                    <Grid.Col span={0.5}></Grid.Col>
-                </Grid>
-            </Box>
+                        )}
+                    </div>
+                </div>
+            </div>
         </Box>
     );
 };

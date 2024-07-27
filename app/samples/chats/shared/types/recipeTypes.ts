@@ -1,3 +1,6 @@
+import { BrokerValue } from '@/redux/features/broker/types';
+
+
 interface Permission {
     public: boolean;
     groups: string[];
@@ -10,12 +13,14 @@ interface Message {
     text: string;
 }
 
-interface Broker {
+/*
+interface BrokerValues {
     name: string;
     type: string;
     required: boolean;
     defaultValue: any; // Use appropriate type based on your data (e.g., string, number, null, etc.)
 }
+*/
 
 interface CallParams {
     models: {
@@ -23,7 +28,7 @@ interface CallParams {
         eliteModel: string;
         trialModels: string[];
     };
-    brokers: Broker[];
+    brokers: BrokerValue[];
     overrides: {
         stream: boolean;
     };
@@ -79,7 +84,7 @@ const recipe: Recipe = {
         brokers: [
             {
                 name: "",
-                type: "",
+                dataType: "",
                 required: true,
                 defaultValue: null
             }

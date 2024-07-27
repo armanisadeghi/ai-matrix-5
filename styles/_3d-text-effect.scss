@@ -1,0 +1,55 @@
+// _3d-text-effect.scss
+
+@use 'sass:math';
+
+// Base values for the 3D effect
+$text-3d-offset-x: 0.5px;
+$text-3d-offset-y: 0.5px;
+$text-3d-blur: 0px;
+
+// Adjustments for light and dark themes
+$text-3d-light-shadow: rgba(255, 255, 255, 0.3);
+$text-3d-dark-shadow: rgba(0, 0, 0, 0.3);
+
+// Mixin for the 3D effect
+@mixin text-3d-effect($size) {
+  $offset-x: math.div($text-3d-offset-x * $size, 1px) * 1px;
+  $offset-y: math.div($text-3d-offset-y * $size, 1px) * 1px;
+  $blur: math.div($text-3d-blur * $size, 1px) * 1px;
+
+  text-shadow:
+          $offset-x $offset-y $blur var(--text-3d-light-shadow),
+          #{$offset-x * -1} #{$offset-y * -1} $blur var(--text-3d-dark-shadow);
+
+  @supports (color: color-mix(in srgb, #fff, #000)) {
+    color: color-mix(in srgb, currentColor 95%, transparent);
+  }
+}
+
+// Classes for different 3D effect sizes
+.text-3d-small {
+  @include text-3d-effect(0.5);
+}
+
+.text-3d-medium {
+  @include text-3d-effect(1);
+}
+
+.text-3d-large {
+  @include text-3d-effect(1.5);
+}
+
+// Apply to specific Mantine components
+.mantine-Text-root {
+  @include text-3d-effect(0.75);
+}
+
+.mantine-Button-label {
+  @include text-3d-effect(0.5);
+}
+
+// Adjust for dark theme
+[data-mantine-color-scheme="dark"] {
+  --text-3d-light-shadow: #{rgba(255, 255, 255, 0.2)};
+  --text-3d-dark-shadow: #{rgba(0, 0, 0, 0.4)};
+}

@@ -1,33 +1,96 @@
-// CustomTable.tsx
-import React from 'react';
-import { Table } from '@mantine/core';
+import { copyTableToClipboard, exportToCSV, tableToData } from '@/components/AiChat/Response/markdown/utils';
+import React, { useRef, useMemo, useCallback } from 'react';
+import { Button, Group, Table } from '@mantine/core';
+import styles from '@/components/AiChat/Response/ResponseArea.module.css';
 
-interface CustomTableProps {
+interface TableHandlerProps {
     children: React.ReactNode;
 }
 
-export const CustomTable: React.FC<CustomTableProps> = ({ children }) => (
-    <Table striped highlightOnHover withTableBorder withColumnBorders withRowBorders={false}>
-        {children}
-    </Table>
-);
+// Memoization function to determine if props are equal, thus avoiding unnecessary re-renders
+const areEqual = (prevProps: any, nextProps: any) => {
+    // Simple shallow compare, can be deepened as needed based on actual data structures
+    return prevProps.child === nextProps.child && prevProps.wrapChildrenWithClasses === nextProps.wrapChildrenWithClasses;
+};
 
-export const CustomTableHead: React.FC<CustomTableProps> = ({ children }) => (
-    <thead className="m_b242d975 mantine-Table-thead">{children}</thead>
-);
+// Memoized TableRow component to wrap each child with classes only when necessary
+const TableRow = React.memo(({ child, wrapChildrenWithClasses }: { child: React.ReactElement, wrapChildrenWithClasses: (child: React.ReactNode) => React.ReactNode }) => {
+    // Wrapped the child with classes and return
+    return wrapChildrenWithClasses(child);
+}, areEqual);
 
-export const CustomTableBody: React.FC<CustomTableProps> = ({ children }) => (
-    <tbody className="m_b2404537 mantine-Table-tbody">{children}</tbody>
-);
+export const TableHandler: React.FC<TableHandlerProps> = ({ children }) => {
+    const tableRef = useRef<HTMLTableElement>(null);
 
-export const CustomTableRow: React.FC<CustomTableProps> = ({ children }) => (
-    <tr className="m_4e7aa4fd mantine-Table-tr" data-striped="odd" data-hover="true">{children}</tr>
-);
+    const handleCopyToClipboard = useCallback(() => {
+        if (tableRef.current) {
+            copyTableToClipboard(tableRef.current);
+        }
+    }, []);
 
-export const CustomTableCell: React.FC<CustomTableProps> = ({ children }) => (
-    <td className="m_4e7aa4ef mantine-Table-td" data-with-column-border="true">{children}</td>
-);
+    const handleExportToCSV = useCallback(() => {
+        if (tableRef.current) {
+            exportToCSV(tableToData(tableRef.current));
+        }
+    }, []);
 
-export const CustomTableHeaderCell: React.FC<CustomTableProps> = ({ children }) => (
-    <th className="m_4e7aa4f3 mantine-Table-th" data-with-column-border="true">{children}</th>
-);
+    // Function to wrap children with classes
+    const wrapChildrenWithClasses = useMemo(() => (child: React.ReactNode): React.ReactNode => {
+        if (!React.isValidElement(child)) {
+            return child;
+        }
+
+        let newProps: { [key: string]: any } = { ...child.props };
+        let newChildren = child.props.children;
+
+        // Apply classes based on the type of the element
+        if (child.type === 'thead') {
+            newProps.className = `${newProps.className || ''} m_b242d975 mantine-Table-thead`.trim();
+        } else if (child.type === 'tbody') {
+            newProps.className = `${newProps.className || ''} m_b2404537 mantine-Table-tbody`.trim();
+        } else if (child.type === 'tr') {
+            newProps.className = `${newProps.className || ''} m_4e7aa4fd mantine-Table-tr`.trim();
+            newProps['data-striped'] = 'odd';
+            newProps['data-hover'] = 'true';
+        } else if (child.type === 'th') {
+            newProps.className = `${newProps.className || ''} m_4e7aa4f3 mantine-Table-th`.trim();
+            newProps['data-with-column-border'] = 'true';
+        } else if (child.type === 'td') {
+            newProps.className = `${newProps.className || ''} m_4e7aa4ef mantine-Table-td`.trim();
+            newProps['data-with-column-border'] = 'true';
+        }
+
+        // Recursively apply this wrapping to children
+        if (React.Children.count(child.props.children) > 0) {
+            newChildren = React.Children.map(child.props.children, wrapChildrenWithClasses);
+        }
+
+        return React.cloneElement(child, newProps, newChildren);
+    }, []);
+
+    // Memoizing the transformation of children to avoid unnecessary re-renders
+    const memoizedChildren = useMemo(() => React.Children.map(children, (child) =>
+        React.isValidElement(child) ? <TableRow child={child} wrapChildrenWithClasses={wrapChildrenWithClasses} /> : child
+    ), [children, wrapChildrenWithClasses]);
+
+    return (
+        <div className={styles.customTableWrapper}>
+            <Group justify="flex-end" mb="md">
+                <Button onClick={handleCopyToClipboard}>Copy to Clipboard</Button>
+                <Button onClick={handleExportToCSV}>Export to CSV</Button>
+            </Group>
+
+            <Table
+                ref={tableRef}
+                striped
+                highlightOnHover
+                withTableBorder
+                withColumnBorders
+                withRowBorders={false}
+                className={styles.customTable}
+            >
+                {memoizedChildren}
+            </Table>
+        </div>
+    );
+};

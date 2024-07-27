@@ -5,7 +5,7 @@ import { Button, Textarea, Select, Container, Title, Space } from '@mantine/core
 import { useWebSocketText } from '@/hooks/redis/useWebSocketText';
 import { useWebSocketData } from '@/hooks/redis/useWebSocketData';
 import AmeJsonInput from '@/ui/json/AmeJsonInput';
-import { RequestPayload } from '@/types/requests';
+import { RequestPayload } from '@/types/requests.types';
 
 const ExampleComponent: React.FC = () => {
     const [message, setMessage] = useState<string>('');

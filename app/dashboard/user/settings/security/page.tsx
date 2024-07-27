@@ -4,7 +4,7 @@ import { Button, Divider, Flex, Paper, Select, Stack, Text, Title } from "@manti
 import { useState } from "react";
 import { IconCircleKey, IconDeviceMobile, IconMessage } from "@tabler/icons-react";
 import AmeTitle from "@/ui/typography/AmeTitle";
-import AmeSelect from "@/ui/select/AmeSelect";
+import AmeSelect from "@/ui/select/AmeSelect/AmeSelect";
 
 const twoFactorAuths = [
     {

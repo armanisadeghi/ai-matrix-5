@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect, useRef } from 'react';
 import { useMediaQuery } from '@mantine/hooks';
 
@@ -65,3 +67,4 @@ const useDynamicChatLayout = () => {
 };
 
 export default useDynamicChatLayout;
+

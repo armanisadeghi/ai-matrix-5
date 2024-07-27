@@ -1,17 +1,17 @@
-import { useRecoilState, useRecoilValue } from "recoil";
+import { assistantTextStreamAtom, chatMessagesAtomFamily, streamStatusAtom, streamTriggerAtomFamily } from '@/state/aiAtoms/aiChatAtoms';
+import { AiParamsType } from '@/types';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { requestEventTaskAtom, requestSocketEventAtom } from "@/state/aiAtoms/metadataAtoms";
-import { activeChatMessagesArrayAtom } from "@/state/aiAtoms/chatAtoms";
 
 import { EVENT_TASKS, SOCKET_EVENTS } from "@/utils/config/aiRequestOptions";
 import apiHandlers from "./aiCallRouter";
-import { MessageEntry, Role } from "@/types";
 import { OpenAiStream } from "@/app/api/openai/route";
 import { useDynamicSocketHandler } from "@/hooks/ai/dynamicSocketHandler";
 
 const openaiStreamRequest = (
-    activeChatMessagesArray: MessageEntry[],
+    activeChatMessagesArray: Message[],
     updateCallback: (message: string) => void,
-    finalizeCallback: (message: MessageEntry) => void
+    finalizeCallback: (message: Message) => void
 ): Promise<void> => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -20,6 +20,7 @@ const openaiStreamRequest = (
             }
 
             const messages = activeChatMessagesArray.map(chat => ({
+                //@ts-ignore
                 role: chat.role as 'system' | 'user' | 'assistant',
                 content: chat.text
             }));
@@ -31,7 +32,8 @@ const openaiStreamRequest = (
                 updateCallback(chunk);
             });
 
-            const fullResponse: MessageEntry = { text: assistantMessage, role: 'assistant' as Role };
+            //@ts-ignore
+            const fullResponse: Message = { text: assistantMessage, role: 'assistant' };
             finalizeCallback(fullResponse);
             resolve();
         } catch (error) {
@@ -44,9 +46,9 @@ const openaiStreamRequest = (
 const handleStaticTask = async (
     eventTask: string,
     data: any,
-    activeChatMessagesArray: MessageEntry[],
+    activeChatMessagesArray: Message[],
     updateCallback: (message: string) => void,
-    finalizeCallback: (message: MessageEntry) => void
+    finalizeCallback: (message: Message) => void
 ): Promise<any> => {
     switch (eventTask) {
         case "directChat":
@@ -65,17 +67,29 @@ const handleStaticTask = async (
     }
 };
 
-export const useRequestManager = () => {
+export interface MatrixStreamHookProps {
+    chatId: string;
+    model?: string;
+    options?: AiParamsType;
+    index?: number;
+}
+
+export const useRequestManager = ({chatId, model = 'gpt-4o', options, index = 0}: MatrixStreamHookProps) => {
+    const hookId = 'OpenAiStream';
+    const [streamTrigger, setStreamTrigger] = useRecoilState(streamTriggerAtomFamily({hookId, index}));
+    const setStreamStatus = useSetRecoilState(streamStatusAtom);
+    const [messages, setMessages] = useRecoilState(chatMessagesAtomFamily(chatId));
+    const setStreamMessage = useSetRecoilState(assistantTextStreamAtom);
+
     const eventTask = useRecoilValue(requestEventTaskAtom);
     const socketEvent = useRecoilValue(requestSocketEventAtom);
-    const [activeChatMessagesArray] = useRecoilState(activeChatMessagesArrayAtom);
     const { handleDynamicElements } = useDynamicSocketHandler();
     console.log('useRequestManager')
 
     const handleRequest = async (
         data: any,
         updateCallback: (message: string) => void,
-        finalizeCallback: (message: MessageEntry) => void
+        finalizeCallback: (message: Message) => void
     ) => {
         try {
             if (typeof apiHandlers[eventTask] === 'function') {
@@ -87,7 +101,8 @@ export const useRequestManager = () => {
                 const staticTaskResponse = await handleStaticTask(
                     eventTask,
                     data,
-                    activeChatMessagesArray,
+                    //@ts-ignore
+                    messages,
                     updateCallback,
                     finalizeCallback
                 );

@@ -1,0 +1,37 @@
+/* SidebarAdmin.module.css */
+
+.gridItem {
+    padding: 0px;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.highlightAnimation {
+    animation: highlight 5s ease-out;
+}
+
+@keyframes highlight {
+    0%, 100% {
+        background-color: transparent;
+        color: initial;
+    }
+    10% {
+        background-color: red;
+        font-weight: bold;
+    }
+    30% {
+        background-color: orange;
+        font-weight: bold;
+    }
+    50% {
+        background-color: blue;
+        font-weight: bold;
+    }
+    70% {
+        background-color: gray;
+        font-weight: normal;
+    }
+}

@@ -1,0 +1,17 @@
+.container {
+    padding-left: 20px;
+    font-family: monospace;
+    color: #fff;
+    text-align: left;
+    padding-top: 10em;
+    white-space: pre-wrap;
+}
+
+.typewrite {
+    color: #fff;
+    text-decoration: none;
+}
+
+.typewrite > .wrap {
+    border-right: 0.08em solid #fff;
+}

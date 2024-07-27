@@ -3,6 +3,7 @@ import { Slider, Box } from '@mantine/core';
 import { useRecoilState, RecoilState } from 'recoil';
 import { matrixLevelSetting } from '@/state/aiAtoms/settingsAtoms';
 
+
 type SliderPresetSettingAtom = typeof matrixLevelSetting;
 
 interface Mark {
@@ -17,7 +18,7 @@ interface AmeResponsiveSliderProps {
     onChangeCallback?: (value: number) => void;
 }
 
-const AmeResponsiveSlider: React.FC<AmeResponsiveSliderProps> = ({ setting = matrixLevelSetting, customAtom, customMarks, onChangeCallback }) => {
+const AmeResponsiveSlider: React.FC<AmeResponsiveSliderProps> = ({setting = matrixLevelSetting, customAtom, customMarks, onChangeCallback}) => {
     const [value, setValue] = useRecoilState(customAtom || setting.atom);
     const marks = customMarks || setting.options;
     const [showLimitedMarks, setShowLimitedMarks] = useState(false);
@@ -76,7 +77,9 @@ const AmeResponsiveSlider: React.FC<AmeResponsiveSliderProps> = ({ setting = mat
     };
 
     return (
-        <Box ref={sliderRef} px="xl" py="md">
+        <Box ref={sliderRef} px="xl" py="md"
+             onClick={(e) => { e.stopPropagation(); }}
+        >
             <Slider {...sliderProps} />
         </Box>
     );

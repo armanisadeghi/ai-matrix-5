@@ -1,3 +1,5 @@
+'use client';
+
 import React, { forwardRef, useState } from 'react';
 import { Textarea, ActionIcon, Group, Box } from '@mantine/core';
 import { RiDeleteBin3Line } from "react-icons/ri";
@@ -9,7 +11,6 @@ import useDynamicTextareaLogic from '../../../hooks/ai/useDynamicTextareaLogic';
 import useKeyDownHandler from "@/utils/commonUtils/useKeyDownHandler";
 import ResponsiveSlider from '@/components/AiChat/UserInput/settings/MatrixSlider/ResponsiveSlider';
 import SimpleChatSettingsModal from "./settings/SimpleChatSettingsModal";
-import StreamOpenai from "@/hooks/ai/openAiStream";
 import AmeOverComponentIcon from "@/ui/button/AmeOverComponentIcon";
 import { AmeFileUploadOverComponent } from "@/ui/button/AmeFileUploadOverComponent";
 
@@ -80,7 +81,6 @@ const DynamicTextarea = forwardRef<HTMLDivElement, DynamicTextareaProps>((
             </Box>
             <ResponsiveSlider />
             <div style={{ height: '185px' }}></div>
-            {streamTrigger && <StreamOpenai trigger={streamTrigger} onComplete={handleStreamComplete} />}
             <SimpleChatSettingsModal opened={settingsModalOpened} onClose={closeSettingsModal} />
         </div>
     );

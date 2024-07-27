@@ -1,7 +1,7 @@
-// chat-app/hooks/useForm.ts
+// chat-app/hooks43/useForm.ts
 
 import { useState } from 'react';
-import { FormData, FormResponse, CustomInput } from '@/types/chat';
+import { FormData, FormResponse, CustomInput } from '@/types/chat.ts';
 
 export const useForm = (initialValues: FormData) => {
     const [values, setValues] = useState<FormData>(initialValues);

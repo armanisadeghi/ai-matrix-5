@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Mood Indicator</title>
+    <style>
+        body {
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .mood-container {
+            width: 200px;
+            height: 40px;
+            background-color: #2a2a2a;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        .mood-indicator {
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, #4a90e2, #50e3c2);
+            transition: width 0.5s ease;
+        }
+        .mood-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+<div class="mood-container">
+    <div class="mood-indicator"></div>
+    <div class="mood-label">AI Mood: Neutral</div>
+</div>
+
+<script>
+    const moods = ['Focused', 'Energetic', 'Relaxed', 'Productive', 'Inspired'];
+    const indicator = document.querySelector('.mood-indicator');
+    const label = document.querySelector('.mood-label');
+
+    function changeMood() {
+        const width = Math.random() * 100;
+        const moodIndex = Math.floor(Math.random() * moods.length);
+
+        indicator.style.width = `${width}%`;
+        label.textContent = `AI Mood: ${moods[moodIndex]}`;
+    }
+
+    setInterval(changeMood, 5000);
+</script>
+</body>
+</html>

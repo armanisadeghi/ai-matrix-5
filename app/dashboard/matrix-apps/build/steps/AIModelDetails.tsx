@@ -2,7 +2,7 @@
 import React from 'react';
 import AmeFieldset from "@/ui/fieldset/AmeFieldset";
 import CustomCollapse from "@/ui/collapse/CustomCollapse";
-import AmeSelect from "@/ui/select/AmeSelect";
+import AmeSelect from "@/ui/select/AmeSelect/AmeSelect";
 import AmeSlider from "@/ui/slider/AmeSlider";
 import AmePillsInput from "@/ui/pills/AmePillsInput";
 import { aiModels, apiEndpoints, apiProviders } from "@/utils/config/aiModels";

@@ -8,7 +8,8 @@ interface AmeOverComponentIconProps extends ActionIconProps {
 function AmeOverComponentIcon({ tooltip, onClick, children, ...others }: AmeOverComponentIconProps) {
     return (
         <Tooltip label={tooltip}>
-            <ActionIcon {...others} aria-label={tooltip} onClick={onClick} size="sm" variant="transparent" style={{ color: '#909090' }}>
+            <ActionIcon {...others} aria-label={tooltip} onClick={onClick} size="sm" variant="transparent" style={{ color: '#909090' }}
+            >
                 {children}
             </ActionIcon>
         </Tooltip>

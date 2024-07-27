@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Typing Effect</title>
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: #f0f0f0;
+            font-family: 'Courier New', monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #typing-container {
+            width: 300px;
+            height: 100px;
+            border: 1px solid #4a4a4a;
+            padding: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #cursor {
+            display: inline-block;
+            width: 10px;
+            height: 20px;
+            background-color: #f0f0f0;
+            animation: blink 0.7s infinite;
+        }
+        @keyframes blink {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+<div id="typing-container">
+    <span id="typed-text"></span><span id="cursor"></span>
+</div>
+
+<script>
+    const texts = [
+        "Analyzing data...",
+        "Generating insights...",
+        "Optimizing workflow...",
+        "AI assistant ready!"
+    ];
+    let textIndex = 0;
+    let charIndex = 0;
+
+    function typeText() {
+        if (textIndex < texts.length) {
+            if (charIndex < texts[textIndex].length) {
+                document.getElementById('typed-text').innerHTML += texts[textIndex].charAt(charIndex);
+                charIndex++;
+                setTimeout(typeText, 50);
+            } else {
+                setTimeout(eraseText, 2000);
+            }
+        }
+    }
+
+    function eraseText() {
+        if (charIndex > 0) {
+            document.getElementById('typed-text').innerHTML = texts[textIndex].substring(0, charIndex-1);
+            charIndex--;
+            setTimeout(eraseText, 20);
+        } else {
+            textIndex++;
+            if (textIndex >= texts.length) textIndex = 0;
+            setTimeout(typeText, 500);
+        }
+    }
+
+    typeText();
+</script>
+</body>
+</html>

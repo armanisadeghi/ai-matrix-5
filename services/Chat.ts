@@ -1,5 +1,6 @@
+/*
 import supabase from "@/utils/supabase/client";
-import { Role, MessageEntry } from "@/types/chat";
+import { Role, MessageEntry } from "@/types/chat.ts";
 
 class Chat {
     chat_id: string;
@@ -113,3 +114,4 @@ class Chat {
 }
 
 export default Chat;
+*/

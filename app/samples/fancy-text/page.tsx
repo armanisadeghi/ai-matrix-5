@@ -1,4 +1,4 @@
-// app/samples/fancy-text/page.tsx
+// app/samples/fancy-text/OptionalStarterPage.tsx
 'use client';
 
 

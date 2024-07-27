@@ -1,0 +1,35 @@
+.codeTypewriter {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 16px;
+    line-height: 1.2;
+    color: white;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    white-space: pre-wrap;
+    word-break: break-all;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.codeTypewriter pre {
+    margin: 0;
+    padding: 0;
+}
+
+.cursor {
+    position: absolute;
+    width: 9.6px; /* Match the width of a single character */
+    height: 19.2px; /* Match the line height */
+    background-color: white;
+    animation: blink 0.7s step-end infinite;
+}
+
+@keyframes blink {
+    from, to {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+}

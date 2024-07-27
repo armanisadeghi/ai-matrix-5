@@ -1,8 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
-import { useRecoilState } from 'recoil';
-import { activeChatMessagesArrayAtom, userTextInputAtom } from "@/state/aiAtoms/chatAtoms";
-import { MatrixMessage, MessageEntry } from '@/types/chat';
-import { useChatDbAtoms } from "@/hooks/ai/useChatDbAtoms";
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { activeChatIdAtom, activeChatMessagesArrayAtom, userTextInputAtom } from '@/state/aiAtoms/aiChatAtoms';
+import { v4 as uuidv4 } from 'uuid';
 
 const useDynamicTextareaLogic = () => {
     const [userInput, setUserInput] = useState('');
@@ -10,7 +9,7 @@ const useDynamicTextareaLogic = () => {
     const [userTextInput, setUserTextInput] = useRecoilState(userTextInputAtom);
     const [activeChatMessagesArray, setActiveChatMessagesArray] = useRecoilState(activeChatMessagesArrayAtom);
     const [streamTrigger, setStreamTrigger] = useState(false);
-    const { pushUpdatedArrayToDb } = useChatDbAtoms();
+    const activeChatId = useRecoilValue(activeChatIdAtom);
 
     useEffect(() => {
         document.body.style.overflow = 'hidden';
@@ -27,9 +26,11 @@ const useDynamicTextareaLogic = () => {
         const text = textareaRef.current?.value || '';
 
         setUserTextInput(text.trim());
-
         if (userTextInput) {
-            const newUserMessage: MatrixMessage = {
+            const newUserMessage = {
+                chatId: activeChatId!,
+                createdAt: new Date().toISOString(),
+                id: uuidv4(),
                 index: activeChatMessagesArray.length,
                 role: 'user',
                 text: userTextInput,
@@ -43,7 +44,7 @@ const useDynamicTextareaLogic = () => {
 
             setStreamTrigger(true);
 
-            await pushUpdatedArrayToDb();
+            useStartNewChat();  // TODO CHAT UPDATE - I added this in place of the old code, but it's not doing this properly.
         }
     };
 

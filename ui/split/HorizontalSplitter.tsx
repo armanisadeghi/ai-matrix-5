@@ -1,5 +1,6 @@
 import React, { CSSProperties, ReactNode, useState, useRef, useEffect, useImperativeHandle, forwardRef } from 'react';
 import Split from 'react-split';
+import useDynamicDimensions from '@/hooks/layout/useDynamicDimensions';
 
 interface HorizontalSplitterProps {
     children: ReactNode[];
@@ -15,6 +16,7 @@ const HorizontalSplitter = forwardRef<HorizontalSplitterRef, HorizontalSplitterP
     const defaultSizes = Array(sections).fill(100 / sections);
     const [sizes, setSizes] = useState<number[]>(initialSizes || defaultSizes);
     const gutters = useRef<HTMLDivElement[]>([]);
+    const [elementRef, dimensions] = useDynamicDimensions();
 
     useImperativeHandle(ref, () => ({
         updateSizes: (newSizes: number[]) => setSizes(newSizes)
@@ -38,6 +40,8 @@ const HorizontalSplitter = forwardRef<HorizontalSplitterRef, HorizontalSplitterP
         }
     }, [sizes]);
 
+    const newHeight = dimensions.availableHeight * 0.99;
+
     return (
         <Split
             sizes={sizes}
@@ -50,7 +54,7 @@ const HorizontalSplitter = forwardRef<HorizontalSplitterRef, HorizontalSplitterP
             direction="vertical"
             cursor="row-resize"
             onDragEnd={newSizes => setSizes(newSizes)}
-            style={{ display: 'flex', height: 'calc(100vh - 10px)', flexDirection: 'column' }}
+            style={{ display: 'flex', height: `${newHeight}hv`, flexDirection: 'column' }}
             gutter={(index, direction) => {
                 const gutter = document.createElement('div');
                 gutter.style.cssText = `width: 100%; background-color: transparent; height: 30px; cursor: row-resize; position: relative;`;

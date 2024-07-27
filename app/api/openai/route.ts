@@ -1,6 +1,6 @@
 import openai from './oaiClient';
 
-interface OpenaiMessageEntry {
+export interface OpenaiMessageEntry {
     role: 'system' | 'user' | 'assistant';
     content: string;
 }
@@ -18,8 +18,7 @@ export async function OpenAiStream(
     messages: OpenaiMessageEntry[],
     callback: (chunk: string) => void,
     model: string = "gpt-4o",
-    options?: OptionalParams
-): Promise<void> {
+    options?: OptionalParams): Promise<void> {
     const requestParams: {
         model: string;
         messages: OpenaiMessageEntry[];

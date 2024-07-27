@@ -1,0 +1,40 @@
+/* crud.module.css */
+.ame-crud-mainContainer {
+    padding: 8px;
+}
+
+.ame-crud-tableContainer {
+    position: relative;
+    height: 600px;
+    overflow: auto;
+}
+
+.ame-crud-table {
+    th {
+        font-size: 12px;
+    }
+
+    td {
+        font-size: 12px;
+    }
+}
+
+.ame-crud-tableRow {
+    cursor: pointer;
+}
+
+.ame-crud-emptyRow {
+    height: 40px;
+}
+
+.ame-crud-loadingOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}

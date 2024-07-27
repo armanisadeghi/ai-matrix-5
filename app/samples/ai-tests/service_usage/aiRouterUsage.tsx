@@ -1,12 +1,13 @@
+import { MessageEntry } from '@/app/samples/chats/shared/types/chatData';
 import React from 'react';
 import { useRecoilState } from 'recoil';
 import { requestEventTaskAtom, requestSocketEventAtom } from "@/state/aiAtoms/metadataAtoms";
 import { useRequestManager } from '@/services/chat-services/underTesting/RequestManager';
-import { MessageEntry } from '@/types/chat';
 
 const YourComponent = () => {
     const [eventTask, setEventTask] = useRecoilState(requestEventTaskAtom);
     const [socketEvent, setSocketEvent] = useRecoilState(requestSocketEventAtom);
+    //@ts-ignore
     const { handleRequest } = useRequestManager();
 
     const handleClick = async () => {

@@ -1,0 +1,116 @@
+/* app/trials/custom-splitter/atomic-splitter/AtomicContainer.module.css */
+
+.containerRoot {
+    --primary-color: #3498db;
+    --secondary-color: #2ecc71;
+    --handle-color: #34495e;
+    --container-bg: #ecf0f1;
+    --text-color: #2c3e50;
+    --animation-duration: 0.3s;
+    --handle-size: 10px;
+    --border-width: 4px;
+    --container-top: 100px;
+    --container-left: 100px;
+    --container-width: 600px;
+    --container-height: 600px;
+}
+
+.resizableContainer {
+    position: absolute;
+    top: var(--container-top);
+    left: var(--container-left);
+    width: var(--container-width);
+    height: var(--container-height);
+    border: var(--border-width) solid var(--primary-color);
+    background-color: var(--container-bg);
+    color: var(--text-color);
+    overflow: hidden;
+    cursor: move;
+    transition: all var(--animation-duration) ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.resizableContainer:hover {
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.handle {
+    position: absolute;
+    background: var(--handle-color);
+    width: var(--handle-size);
+    height: var(--handle-size);
+    border-radius: 50%;
+    z-index: 1;
+    transition: all var(--animation-duration) ease;
+}
+
+.handle:hover {
+    background: var(--secondary-color);
+    transform: scale(1.2);
+}
+
+.handle-top { top: calc(var(--handle-size) / -2); left: 50%; cursor: n-resize; transform: translateX(-50%); }
+.handle-right { right: calc(var(--handle-size) / -2); top: 50%; cursor: e-resize; transform: translateY(-50%); }
+.handle-bottom { bottom: calc(var(--handle-size) / -2); left: 50%; cursor: s-resize; transform: translateX(-50%); }
+.handle-left { left: calc(var(--handle-size) / -2); top: 50%; cursor: w-resize; transform: translateY(-50%); }
+
+.handle-top-left { top: calc(var(--handle-size) / -2); left: calc(var(--handle-size) / -2); cursor: nw-resize; }
+.handle-top-right { top: calc(var(--handle-size) / -2); right: calc(var(--handle-size) / -2); cursor: ne-resize; }
+.handle-bottom-left { bottom: calc(var(--handle-size) / -2); left: calc(var(--handle-size) / -2); cursor: sw-resize; }
+.handle-bottom-right { bottom: calc(var(--handle-size) / -2); right: calc(var(--handle-size) / -2); cursor: se-resize; }
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+.resizableContainer:hover .handle {
+    animation: pulse var(--animation-duration) infinite;
+}
+
+.resizing {
+    user-select: none;
+    opacity: 0.8;
+    transition: none;
+}
+
+/* Custom cursors */
+.resizableContainer { cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="%23333"/></svg>') 10 10, auto; }
+.handle-top, .handle-bottom { cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path d="M10 2 L6 6 L14 6 Z M10 18 L6 14 L14 14 Z" fill="%23333"/></svg>') 10 10, ns-resize; }
+.handle-left, .handle-right { cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path d="M2 10 L6 6 L6 14 Z M18 10 L14 6 L14 14 Z" fill="%23333"/></svg>') 10 10, ew-resize; }
+.handle-top-left, .handle-bottom-right { cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path d="M2 2 L6 6 L6 2 Z M18 18 L14 14 L18 14 Z" fill="%23333"/></svg>') 10 10, nwse-resize; }
+.handle-top-right, .handle-bottom-left { cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path d="M18 2 L14 6 L18 6 Z M2 18 L6 14 L2 14 Z" fill="%33333"/></svg>') 10 10, nesw-resize; }
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .resizableContainer {
+        --handle-size: 8px;
+    }
+}
+
+/* Accessibility */
+.resizableContainer:focus,
+.handle:focus {
+    outline: 2px solid var(--secondary-color);
+    outline-offset: 2px;
+}
+
+/* For high contrast mode */
+@media (forced-colors: active) {
+    .resizableContainer {
+        border-color: CanvasText;
+    }
+    .handle {
+        background: ButtonText;
+    }
+}
+
+/* Theme support */
+.containerRoot.theme-dark {
+    --primary-color: #2980b9;
+    --secondary-color: #27ae60;
+    --handle-color: #2c3e50;
+    --container-bg: #34495e;
+    --text-color: #ecf0f1;
+}

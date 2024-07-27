@@ -1,4 +1,6 @@
 // recoil/aiAtoms/settingsAtoms.ts
+'use client';
+
 import { atom, selector, RecoilState } from 'recoil';
 import { AIModel } from "@/utils/config/aiModels";
 import { string } from "@recoiljs/refine";
@@ -9,7 +11,7 @@ import {
     InputSettingAtom,
     SliderSettingAtom,
     SliderPresetSettingAtom
-} from '@/types/settings';
+} from '@/types/settings.types';
 
 export const matrixLevelAtom = atom<number>({
     key: 'matrixLevelAtom',
@@ -253,3 +255,18 @@ export const combinedSettingsState = selector({
 
 export const simpleChatSettingsList = ['submitOnEnter', 'makeSmallTalk', 'quickAnswer', 'improveQuestions', 'aiPreferencesMain', 'stopSequence', 'aiPreferencesSecond', 'matrixLevel'] as AtomName[]
 export const aiModelSettingsList = ['aiModel', 'temperature', 'maxTokens', 'topP', 'frequencyPenalty', 'stopSequence'] as AtomName[]
+export const quickChatSettingsList = [
+    'submitOnEnter',
+    'aiPreferencesMain',
+    'aiPreferencesSecond',
+    'makeSmallTalk',
+    'quickAnswer',
+    'improveQuestions',
+    'matrixLevel',
+    'aiModel',
+    'temperature',
+    'maxTokens',
+    'topP',
+    'frequencyPenalty',
+    'stopSequence'
+] as AtomName[];

@@ -1,3 +1,4 @@
+import InputDropUp from '@/ui/textarea/concepts/InputDropUp';
 import React, { forwardRef, useState } from 'react';
 import { Textarea, ActionIcon, Group, Box } from '@mantine/core';
 import { RiDeleteBin3Line, RiSettings2Line } from "react-icons/ri";

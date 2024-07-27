@@ -7,9 +7,9 @@ import { JsonInput, JsonInputProps, Button, Space } from '@mantine/core';
 interface AmeJsonInputProps extends Omit<JsonInputProps, 'size' | 'radius' | 'label' | 'placeholder' | 'value' | 'onChange' | 'error'> {
     enabled?: boolean;
     errorMessage?: string;
-    label: string;
-    value: any;
-    onChange?: (value: string) => void;
+    label?: string;
+    value: Record<string, any>;
+    onChange?: (value: Record<string, any>) => void;
     showButton?: boolean;
     validateJson?: boolean;
 }
@@ -26,24 +26,25 @@ const AmeJsonInput: React.FC<AmeJsonInputProps> = (
         ...props
     }) => {
     const [isEnabled, setIsEnabled] = useState<boolean>(enabled);
-    const [inputValue, setInputValue] = useState<string>(value);
+    const [inputValue, setInputValue] = useState<string>(JSON.stringify(value, null, 2));
     const [error, setError] = useState<string | undefined>(errorMessage);
 
     useEffect(() => {
-        setInputValue(value);
+        setInputValue(JSON.stringify(value, null, 2));
     }, [value]);
 
-    const handleJsonChange = (newValue: string) => {
+    const handleInputChange = (newValue: string) => {
         setInputValue(newValue);
-        if (onChange) {
-            onChange(newValue);
-        }
+        setError(undefined); // Clear error on new input
     };
 
     const handleBlur = () => {
         if (validateJson) {
             try {
-                JSON.parse(inputValue);
+                const parsedValue = JSON.parse(inputValue);
+                if (onChange) {
+                    onChange(parsedValue);
+                }
                 setError(undefined);
             } catch (e) {
                 setError('Invalid JSON');
@@ -64,7 +65,7 @@ const AmeJsonInput: React.FC<AmeJsonInputProps> = (
                 disabled={!isEnabled}
                 error={error}
                 value={inputValue}
-                onChange={handleJsonChange}
+                onChange={handleInputChange}
                 onBlur={handleBlur}
                 {...props}
             />

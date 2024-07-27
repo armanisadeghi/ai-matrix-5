@@ -1,4 +1,5 @@
-// app/samples/atom-tester/page.tsx
+/*
+// app/samples/atom-tester/OptionalStarterPage.tsx
 'use client';
 
 
@@ -12,7 +13,7 @@ export default Page;
 
 
 
-/*
+/!*
 
 const handleAtomSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selected = event.target.value;
@@ -98,4 +99,5 @@ export default AtomTester;
     const [allChats, setAllChats] = useRecoilState(allChatsAtom);
     const [currentChatMessages, setCurrentChatMessages] = useRecoilState(activeChatMessagesArrayAtom);
 
- */
+ *!/
+*/

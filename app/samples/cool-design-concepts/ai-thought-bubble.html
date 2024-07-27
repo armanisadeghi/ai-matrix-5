@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Thought Bubble</title>
+    <style>
+        body {
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .thought {
+            position: relative;
+            width: 200px;
+            height: 100px;
+            background: #fff;
+            border-radius: 20px;
+            padding: 20px;
+            color: #333;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .thought:before, .thought:after {
+            content: '';
+            background-color: #fff;
+            border-radius: 50%;
+            display: block;
+            position: absolute;
+            z-index: -1;
+        }
+        .thought:before {
+            width: 44px;
+            height: 44px;
+            top: -12px;
+            left: 28px;
+            box-shadow: -50px 30px 0 -12px #fff;
+        }
+        .thought:after {
+            bottom: -10px;
+            right: 26px;
+            width: 30px;
+            height: 30px;
+            box-shadow: 40px -34px 0 0 #fff, -28px -6px 0 -2px #fff, -24px 17px 0 -6px #fff, -5px 25px 0 -10px #fff;
+        }
+        #thought-content {
+            font-size: 14px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+<div class="thought">
+    <div id="thought-content"></div>
+</div>
+
+<script>
+    const thoughts = [
+        "Analyzing user patterns...",
+        "Considering optimal solutions...",
+        "Evaluating multiple scenarios...",
+        "Integrating new data points...",
+        "Optimizing for efficiency..."
+    ];
+    const thoughtBubble = document.querySelector('.thought');
+    const thoughtContent = document.getElementById('thought-content');
+
+    function showThought() {
+        const thought = thoughts[Math.floor(Math.random() * thoughts.length)];
+        thoughtContent.textContent = thought;
+        thoughtBubble.style.opacity = 1;
+        setTimeout(() => {
+            thoughtBubble.style.opacity = 0;
+        }, 3000);
+    }
+
+    setInterval(showThought, 5000);
+</script>
+</body>
+</html>

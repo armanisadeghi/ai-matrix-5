@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { chatMessagesAtomFamily, activeChatIdAtom, selectedChatMessagesSelector} from "@/state/aiAtoms/chatAtoms";
 import ChatMessage from './ChatMessage';
 
 const ChatDetails = () => {

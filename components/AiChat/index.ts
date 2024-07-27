@@ -8,4 +8,4 @@ export * from './Sidebar/ChatList';
 
 export { default as ResponseArea } from './Response/ResponseArea';
 export { default as DynamicTextarea } from './UserInput/DynamicTextarea';
-export { default as ChatList } from './Sidebar/ChatList';
+export { default as ChatList } from './Sidebar/ChatSidebar';

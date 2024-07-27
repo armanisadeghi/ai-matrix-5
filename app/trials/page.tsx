@@ -1,4 +1,5 @@
-// app/trials/page.tsx
+'use client';
+// app/trials/OptionalStarterPage.tsx
 
 import React from 'react';
 

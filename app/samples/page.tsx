@@ -1,14 +1,19 @@
-// app/samples/page.tsx
+// pages/MarkdownDemo.tsx
 'use client';
 
+import RichTextEditorPage from '@/components/RichTextEditor/RichTextEditorPage';
 
-export default function Index() {
+const MarkdownDemo = () => {
+    const handleSave = (content: string) => {
+        console.log('Saved content:', content);
+        // Implement your save logic here
+    };
 
     return (
         <div>
-            Sample Page
+            <RichTextEditorPage content="<p>Initial content</p>" onSave={handleSave} />
         </div>
     );
-}
+};
 
-
+export default MarkdownDemo;

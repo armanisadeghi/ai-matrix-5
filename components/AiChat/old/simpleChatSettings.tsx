@@ -6,7 +6,7 @@ import { Select } from '@mantine/core';
 import { aiPreferencesMainOptions, aiPreferencesSecondOptions } from '@/utils/config/chatSettingsOptions';
 import AmeFieldset from '@/ui/fieldset/AmeFieldset';
 import AmeCheckbox from '@/ui/checkbox/AmeCheckbox';
-import { ChatSettings } from '../../../../types/settings';
+import { ChatSettings } from '@/types';
 
 export interface SimpleChatSettingsProps {
     settings: ChatSettings;

@@ -1,5 +1,8 @@
 import { atom } from 'recoil';
 
+
+// This atom name is duplicated and it will cause problems. Need to fix it. Most likely by combining them.
+
 export const leftSidebarAtom = atom({
     key: 'leftSidebarAtom',
     default: 0,

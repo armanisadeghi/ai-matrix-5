@@ -1,7 +1,7 @@
 was having issues with the build so I just deleted the folder:
 
 fieldset-sample
-- page.tsx:
+- OptionalStarterPage.tsx:
   "use client";
 - 
 '''tsx

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Constellation Insights</title>
+    <style>
+        body {
+            background-color: #0a0a2a;
+            color: #f0f0f0;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        #constellation {
+            width: 600px;
+            height: 400px;
+            position: relative;
+            border: 1px solid #4a90e2;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            animation: twinkle 1s infinite alternate;
+        }
+        @keyframes twinkle {
+            0% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+        .insight {
+            position: absolute;
+            background-color: rgba(74, 144, 226, 0.1);
+            border: 1px solid #4a90e2;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 12px;
+            max-width: 150px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .line {
+            position: absolute;
+            background-color: #4a90e2;
+            transform-origin: 0 0;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        #aiCursor {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #4a90e2;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 10;
+        }
+        #aiCursor::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 6px;
+            height: 6px;
+            background-color: #4a90e2;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+        #aiCursor::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border: 2px solid #4a90e2;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0.2; }
+            100% { transform: scale(1); opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <div id="constellation"></div>
+    <div id="aiCursor"></div>
+
+    <script>
+        const constellation = document.getElementById('constellation');
+        const aiCursor = document.getElementById('aiCursor');
+        const insights = [
+            "AI predicts a 15% increase in efficiency",
+            "New data patterns suggest unexplored market opportunities",
+            "Anomaly detected: potential cybersecurity threat",
+            "Machine learning model accuracy improved by 7%",
+            "Natural language processing breakthrough achieved"
+        ];
+
+        function createStars(count) {
+            for (let i = 0; i < count; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.animationDelay = `${Math.random() * 2}s`;
+                constellation.appendChild(star);
+            }
+        }
+
+        function createInsight(x, y) {
+            const insight = document.createElement('div');
+            insight.className = 'insight';
+            insight.textContent = insights[Math.floor(Math.random() * insights.length)];
+            insight.style.left = `${x}px`;
+            insight.style.top = `${y}px`;
+            constellation.appendChild(insight);
+            setTimeout(() => insight.style.opacity = 1, 50);
+
+            return insight;
+        }
+
+        function createLine(x1, y1, x2, y2) {
+            const length = Math.sqrt((x2-x1)**2 + (y2-y1)**2);
+            const angle = Math.atan2(y2-y1, x2-x1) * 180 / Math.PI;
+            const line = document.createElement('div');
+            line.className = 'line';
+            line.style.width = `${length}px`;
+            line.style.height = '1px';
+            line.style.left = `${x1}px`;
+            line.style.top = `${y1}px`;
+            line.style.transform = `rotate(${angle}deg)`;
+            constellation.appendChild(line);
+            setTimeout(() => line.style.opacity = 1, 50);
+
+            return line;
+        }
+
+        function moveAICursor(x, y, callback) {
+            const duration = 1000;
+            const startX = parseInt(aiCursor.style.left) || 0;
+            const startY = parseInt(aiCursor.style.top) || 0;
+            const startTime = performance.now();
+
+            function step(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const easeProgress = 1 - Math.pow(1 - progress, 3); // Cubic ease-out
+
+                aiCursor.style.left = `${startX + (x - startX) * easeProgress}px`;
+                aiCursor.style.top = `${startY + (y - startY) * easeProgress}px`;
+
+                if (progress < 1) {
+                    requestAnimationFrame(step);
+                } else if (callback) {
+                    callback();
+                }
+            }
+
+            requestAnimationFrame(step);
+        }
+
+        function generateConstellation() {
+            constellation.innerHTML = '';
+            createStars(50);
+
+            const points = [];
+            for (let i = 0; i < 5; i++) {
+                const x = 50 + Math.random() * (constellation.offsetWidth - 100);
+                const y = 50 + Math.random() * (constellation.offsetHeight - 100);
+                points.push({x, y});
+            }
+
+            let currentPoint = 0;
+            function connectPoints() {
+                if (currentPoint < points.length) {
+                    const point = points[currentPoint];
+                    moveAICursor(point.x, point.y, () => {
+                        createInsight(point.x, point.y);
+                        if (currentPoint > 0) {
+                            const prevPoint = points[currentPoint - 1];
+                            createLine(prevPoint.x, prevPoint.y, point.x, point.y);
+                        }
+                        currentPoint++;
+                        connectPoints();
+                    });
+                }
+            }
+
+            aiCursor.style.opacity = 1;
+            connectPoints();
+        }
+
+        constellation.addEventListener('click', generateConstellation);
+        generateConstellation();
+    </script>
+</body>
+</html>

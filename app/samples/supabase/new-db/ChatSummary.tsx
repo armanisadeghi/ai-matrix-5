@@ -1,7 +1,7 @@
 /*
 
 import React, { useEffect, useState } from 'react';
-import useChatApi from './hooks/useChatApi';
+import useChatApi from './hooks43/useChatApi';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { activeUserAtom } from "@/context/aiAtoms/userAtoms";
 import { chatSummaryAtom, activeChatIdAtom } from "@/app/samples/ai-tests/shared/aiAtoms/chatAtoms";

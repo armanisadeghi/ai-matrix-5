@@ -1,5 +1,6 @@
 // app/chat/response/ResponseArea.tsx
 
+import { MessageType } from '@/types';
 import React from 'react';
 import { ScrollArea } from '@mantine/core';
 import { useResponses } from './ResponseContext';
@@ -16,9 +17,12 @@ const ResponseArea: React.FC<ResponseAreaProps> = ({ bottomPadding }) => {
     return (
         <ScrollArea style={{ flexGrow: 1, width: '95%', paddingBottom: bottomPadding }}>
             {messages.map((message) =>
-                message.type === 'user' ? (
+                //@ts-ignore
+                message.role === 'user' ? (
+                    //@ts-ignore
                     <UserMessage key={message.id} message={message} />
                 ) : (
+                    //@ts-ignore
                     <AIResponse key={message.id} message={message} />
                 )
             )}

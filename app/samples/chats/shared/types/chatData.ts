@@ -36,6 +36,7 @@ export type MessageEntry = SystemEntry | UserEntry | AssistantEntry;
 // AllMessages type (array of MessageEntry)
 export type AllMessages = MessageEntry[];
 
+/*
 // Chat interface
 export interface Chat {
     chatId: ChatIDType;
@@ -44,6 +45,7 @@ export interface Chat {
 }
 
 
+*/
 
 
 

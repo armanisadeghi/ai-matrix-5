@@ -1,15 +1,11 @@
-// app/dashboard/templates/page.tsx
+// app/dashboard/templates/OptionalStarterPage.tsx
 
 function Page() {
-    return <>
+    return (
+        <>
 
-
-
-
-
-
-
-    </>;
+        </>
+    );
 }
 
 export default Page;

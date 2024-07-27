@@ -1,4 +1,4 @@
-// hooks/animation/useAnimatedSize.ts
+// hooks43/animation/useAnimatedSize.ts
 import { useEffect } from 'react';
 
 type UseAnimatedSizeProps = {

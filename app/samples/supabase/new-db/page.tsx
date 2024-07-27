@@ -1,9 +1,9 @@
-// app/samples/new-db/page.tsx
+// app/samples/new-db/OptionalStarterPage.tsx
 
 'use client';
 
+import ChatSidebar from '@/components/AiChat/Sidebar/ChatSidebar';
 import React from 'react';
-import ChatSidebar from "@/components/AiChat/Sidebar/ChatList";
 
 const ChatPage = () => {
     return (

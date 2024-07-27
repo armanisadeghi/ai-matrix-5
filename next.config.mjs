@@ -11,13 +11,19 @@ const withBundleAnalyzerConfig = withBundleAnalyzer({
     enabled: process.env.ANALYZE === 'true',
 });
 
+// Control React Strict Mode with an environment variable
+const reactStrictMode = process.env.NEXT_PUBLIC_DISABLE_STRICT_MODE !== 'true';
+
 const nextConfig = {
-    reactStrictMode: true,
+    reactStrictMode: reactStrictMode,
     eslint: {
         ignoreDuringBuilds: true,
     },
     experimental: {
-        optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
+        optimizePackageImports: ['@mantine/core', '@mantine/hooks43'],
+    },
+    sassOptions: {
+        includePaths: [path.join(__dirname, 'styles')],
     },
     webpack(config, { isServer }) {
         config.resolve.alias['@'] = path.resolve(__dirname);
@@ -25,10 +31,16 @@ const nextConfig = {
         if (isServer) {
             config.plugins.push(
                 new webpack.IgnorePlugin({
-                    resourceRegExp: /app\/samples/,
-                }),
-                new webpack.IgnorePlugin({
-                    resourceRegExp: /armaniLocal/,
+                    checkResource: (resource) => {
+                        const ignoredPaths = [
+                            'app/samples',
+                            'app/trials',
+                            'armaniLocal'
+                        ];
+                        return ignoredPaths.some(ignorePath =>
+                            resource.includes(path.normalize(ignorePath))
+                        );
+                    },
                 })
             );
         }

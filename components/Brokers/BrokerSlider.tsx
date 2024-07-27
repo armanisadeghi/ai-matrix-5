@@ -1,4 +1,4 @@
-import { Box, Flex, Group, Slider, Stack, Text } from '@mantine/core';
+import AmeSlider from '@/ui/slider/AmeSlider';
 import { useState } from 'react';
 
 type BrokerSizeSliderProps = {
@@ -18,27 +18,16 @@ export const BrokerSlider = ({ defaultValue, color, description, onChange, label
     const [value, setValue] = useState(defaultValue);
 
     return (
-        <Box w="100%" mx="auto">
-            <Text size="sm">{description}</Text>
-            <Flex justify="space-between" mt={10} w="100%" gap={10}>
-                <Text size="xs">{min}</Text>
-                <Slider
-                    w={"100%"}
-                    min={min}
-                    max={max}
-                    size={size}
-                    step={steps}
-                    showLabelOnHover
-                    value={value}
-                    label={value => `${value}`}
-                    marks={marks}
-                    color={color}
-                    onChange={(value) => { setValue(value); onChange(value) }}
-                    defaultValue={defaultValue}
-                    {...props}
-                />
-                <Text size="xs">{max}</Text>
-            </Flex>
-        </Box>
+        <AmeSlider
+            name={label || ''}
+            min={min}
+            max={max}
+            size={size as any}
+            step={steps}
+            value={value}
+            color={color as any}
+            onChange={(value) => { setValue(value); onChange(value); }}
+            {...props}
+        />
     );
 };

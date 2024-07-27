@@ -1,29 +1,49 @@
-// app/samples/chat-sidebar/AmeActionTextInput.tsx
+// ui/input/AmeActionTextInput.tsx
+'use client';
 
-import React, { useState, useRef, FocusEvent, ChangeEvent } from "react";
-import { TextInput, TextInputProps } from "@mantine/core";
-import useColorUtils from "@/utils/colorUtils";
+import React, { useState, useRef, useCallback, useMemo } from 'react';
+import { TextInput, TextInputProps } from '@mantine/core';
+import useColorUtils from '@/utils/colorUtils';
 
-interface AmeActionTextInputProps extends TextInputProps {
+
+interface AmeActionTextInputProps extends Omit<TextInputProps, 'value' | 'onChange'> {
     initialValue?: string;
     editable?: boolean;
-    variant?: "default" | "filled" | "unstyled";
+    variant?: 'default' | 'filled' | 'unstyled';
     highlightOnClick?: boolean;
+    onChange?: (value: string) => void;
 }
 
-const AmeActionTextInput: React.FC<AmeActionTextInputProps> = ({ initialValue, editable = true, highlightOnClick = true, ...others }) => {
+const AmeActionTextInput: React.FC<AmeActionTextInputProps> = React.memo((
+    {
+        initialValue = '',
+        editable = true,
+        highlightOnClick = true,
+        onChange,
+        ...others
+    }) => {
     const [value, setValue] = useState(initialValue);
     const inputRef = useRef<HTMLInputElement>(null);
-    const { getModerateTextColor } = useColorUtils();
+    const {getModerateTextColor} = useColorUtils();
 
-    const handleFocus = (event: FocusEvent<HTMLInputElement>) => {
-        if (!highlightOnClick) return;
-        event.target.select();
-    };
+    const handleFocus = useCallback((event: React.FocusEvent<HTMLInputElement>) => {
+        if (highlightOnClick) {
+            event.target.select();
+        }
+    }, [highlightOnClick]);
 
-    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setValue(event.target.value);
-    };
+    const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+        const newValue = event.target.value;
+        setValue(newValue);
+        onChange?.(newValue);
+    }, [onChange]);
+
+    const inputStyles = useMemo(() => ({
+        input: {
+            cursor: editable ? 'text' : 'pointer',
+            color: getModerateTextColor(),
+        },
+    }), [getModerateTextColor, editable]);
 
     return (
         <TextInput
@@ -31,19 +51,16 @@ const AmeActionTextInput: React.FC<AmeActionTextInputProps> = ({ initialValue, e
             onChange={handleChange}
             onFocus={handleFocus}
             ref={inputRef}
-            variant={"default"}
+            variant="default"
             size="sm"
             readOnly={!editable}
             placeholder="Enter text here..."
-            styles={{
-                input: {
-                    cursor: "pointer",
-                    color: getModerateTextColor(),
-                },
-            }}
+            styles={inputStyles}
             {...others}
         />
     );
-};
+});
+
+AmeActionTextInput.displayName = 'AmeActionTextInput';
 
 export default AmeActionTextInput;

@@ -1,5 +1,9 @@
 import supabase from './client';
-import { Database, Tables, TablesInsert, TablesUpdate, Enums } from '@/types/db_types';
+import { Database, Tables, TablesInsert, TablesUpdate, Enums } from '@/types/engineDb.types';
+
+export type TableNameType = string
+export type DataType = Record<string, any>
+
 
 export const createTable = async <T extends keyof Database['public']['Tables']>(
     tableName: T,

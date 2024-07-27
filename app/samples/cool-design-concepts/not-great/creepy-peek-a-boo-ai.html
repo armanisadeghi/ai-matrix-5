@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+    <style>
+        @keyframes peekaboo {
+            0%, 100% { transform: translateX(-80px); }
+            25%, 75% { transform: translateX(-40px); }
+            50% { transform: translateX(0); }
+        }
+        @keyframes blink {
+            0%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(0.1); }
+        }
+        .peek { animation: peekaboo 8s infinite; }
+        .eye { animation: blink 2s infinite; }
+    </style>
+
+    <!-- Background -->
+    <rect width="200" height="200" fill="#1a1a1a" />
+
+    <!-- AI Character -->
+    <g class="peek">
+        <circle cx="160" cy="100" r="60" fill="#4a4a4a" />
+        <circle cx="140" cy="85" r="15" fill="#2a2a2a" />
+        <circle cx="180" cy="85" r="15" fill="#2a2a2a" />
+        <circle cx="140" cy="85" r="7" fill="#00ff00" class="eye" />
+        <circle cx="180" cy="85" r="7" fill="#00ff00" class="eye" />
+        <path d="M130 120 Q160 140 190 120" stroke="#2a2a2a" stroke-width="5" fill="none" />
+    </g>
+
+    <!-- Sidebar representation -->
+    <rect x="0" y="0" width="40" height="200" fill="#2a2a2a" />
+</svg>
