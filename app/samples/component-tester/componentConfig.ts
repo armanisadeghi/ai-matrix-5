@@ -20,7 +20,6 @@ export const componentMap: { [key: string]: React.ComponentType<any> } = {
     AmeSearchInput: dynamic(() => import('@/ui/input/AmeSearchInput')),
     AmePillsInput: dynamic(() => import('@/ui/pills/AmePillsInput')),
     SelectableList: dynamic(() => import('@/ui/pills/AmeSearchablePill')),
-    AmeHoverMenuChat: dynamic(() => import('@/components/AiChat/Sidebar/ChatSummaryEntry')),
     AmeRadioCard: dynamic(() => import('@/ui/radio/AmeRadioCard')),
     AmeSelect: dynamic(() => import('@/ui/select/AmeSelect/AmeSelect')),
     AmeSlider: dynamic(() => import('@/ui/slider/AmeSlider')),

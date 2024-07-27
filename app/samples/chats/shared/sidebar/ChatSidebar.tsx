@@ -1,6 +1,5 @@
-import { useChatSummaries } from '@/app/trials/core-chat-trial/hooks/useChatSummaries';
+import useChatSummaries from '@/app/trials/recoil/local/tests/chatAtomTest2';
 import React, { useEffect } from 'react';
-import AmeChatHistoryEntry from '@/components/AiChat/Sidebar/ChatSummaryEntry';
 import { Space, Stack, Text, Skeleton } from '@mantine/core';
 
 interface ChatSidebarProps {

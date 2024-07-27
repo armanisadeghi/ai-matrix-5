@@ -3,7 +3,7 @@
 import React, { useRef } from 'react';
 import { useSetActiveChat } from '@/app/trials/recoil/local/hooks/useSetActiveChat';
 import ChatSummariesPage from '@/app/trials/recoil/local/components/chatCrudTable';
-import { fetchStatusAtom, hasSubmittedMessageAtom, chatMessagesAtomFamily, userTextInputAtom, userUpdatedArraySelector } from '@/state/aiAtoms/aiChatAtoms';
+import { fetchStatusAtom, hasSubmittedMessageAtom, chatMessagesAtomFamily, userTextInputAtom } from '@/state/aiAtoms/aiChatAtoms';
 import { Button, Pill, Space, Textarea } from '@mantine/core';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import useNewHandleUserInput from '@/app/trials/recoil/local/hooks/useNewHandleUserInput';

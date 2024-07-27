@@ -9,9 +9,8 @@ import AmeGridLayout from '@/ui/layout/AmeGridLayout/AmeGridLayout';
 import { Select, Stack } from '@mantine/core';
 import {
     activeChatIdAtom,
-    activeChatMessagesArrayAtom, ,
-    chatSummariesAtom, chatSummariesSelector,
-    messagesAtomFamily,
+    activeChatMessagesArrayAtom, chatMessagesAtomFamily, chatMessagesSelector,
+    chatSummariesAtom, isNewChatAtom,
     systemMessageAtom,
     userTextInputAtom
 } from '@/state/aiAtoms/aiChatAtoms';

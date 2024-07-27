@@ -1,0 +1,429 @@
+[33mcommit db2a79ffd68561386c0a38f9deb407c7722a47ca[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Thu Jul 25 22:43:25 2024 -0700
+
+    Removed secret file and updated the commit
+
+[33mcommit 4bbd882951fd05008e7876f26bf9919b78bfd7d6[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Thu Jul 25 22:32:41 2024 -0700
+
+    updated code but definitely has a lot of cleaning up I need to do
+
+[33mcommit 9ead2dddeecb5b797ffc66c29c1b97cd052a64a7[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Thu Jul 11 23:38:41 2024 -0700
+
+    added one more file
+
+[33mcommit 0de7e1c9ea7627e012ba312cca7fc0c154de8541[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Mon Jun 17 21:39:27 2024 -0700
+
+    lots of updates but lots of errors for now
+
+[33mcommit 80a8720c56644bbbf337d7a3c6a2993c2bc2cb63[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Sun Jun 16 22:39:58 2024 -0700
+
+    completely changed the layout system and helped Natalie a bit with Brokers for about an hour
+
+[33mcommit ecab56c9ed5465721891f177cb8839352c4a55f8[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Sat Jun 15 13:48:50 2024 -0700
+
+    Fixed Auth and header and home as well
+
+[33mcommit bf4cf02ed2d7d5de6d2620e3ed70aeabd7d433fb[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Sat Jun 15 12:01:56 2024 -0700
+
+    fixed logo and a few other things
+
+[33mcommit c760c195ea6dbe82930ff3e0e6bfe1c248526204[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Sat Jun 15 11:09:49 2024 -0700
+
+    updates to a few minor things and merging code
+
+[33mcommit 61f26cfb1a66426078a0662b519ff1edd307aac7[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Sat Jun 15 10:34:16 2024 -0700
+
+    merged ihors updates
+
+[33mcommit f8e34bce34632613ed6dfe87890d1d2f55bea150[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Sat Jun 15 09:52:22 2024 -0700
+
+    fixed the navbar unique key issue and merged some code
+
+[33mcommit 45492118f55ec8ed8f63312d57956b664362fadb[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Sat Jun 15 07:25:32 2024 -0700
+
+    merged Kevins code
+
+[33mcommit de1c5a11aa4fa77b4c63a7e906b147883298e628[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Fri Jun 14 21:58:45 2024 -0700
+
+    more reusable components and merged nats code with story which might cause problems for some
+
+[33mcommit c30543959aab3ca3763469fe4e9c911741397d88[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Wed Jun 12 18:53:35 2024 -0700
+
+    more updates
+
+[33mcommit b83e19596d46c732107ae0914a62496977b3cd22[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Fri Jun 14 21:58:45 2024 -0700
+
+    more reusable components and merged nats code with story which might cause problems for some
+
+[33mcommit b0e3821dec1173d378a2ffa7b3765e8b29aff15a[m
+Author: Hilarious95 <yummy.radish.x@gmail.com>
+Date:   Sat Jun 15 08:26:24 2024 -0700
+
+    Update middleware.ts
+
+[33mcommit 8bab38a7b7787be60ac135f8bf6e19ffd5f52fba[m
+Merge: e9b5ca1 7dc34e1
+Author: Hilarious95 <yummy.radish.x@gmail.com>
+Date:   Sat Jun 15 08:17:26 2024 -0700
+
+    Merge remote-tracking branch 'origin/lin/auth0'
+
+[33mcommit e9b5ca1fb3a3b265391116519571f5469f2fc2ac[m[33m ([m[1;32marmani-main[m[33m)[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Sat Jun 15 07:25:32 2024 -0700
+
+    merged Kevins code
+
+[33mcommit c9b22a0cdcd0276d51aede4cfe3d115e542b8947[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Fri Jun 14 21:58:45 2024 -0700
+
+    more reusable components and merged nats code with story which might cause problems for some
+
+[33mcommit e55f5617fe3fb5999c0ca7df38ff1b94490065b0[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Wed Jun 12 18:53:35 2024 -0700
+
+    more updates
+
+[33mcommit 205a9e12c7c027934d914120e430c8ee5f3c3054[m[33m ([m[1;32mtemp-main[m[33m)[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Fri Jun 14 21:58:45 2024 -0700
+
+    more reusable components and merged nats code with story which might cause problems for some
+
+[33mcommit 7dc34e12ce3c0feb974e687b9faa49b90b76ca7f[m[33m ([m[1;31morigin/lin/auth0[m[33m)[m
+Author: Superstar823 <superstardev823@gmail.com>
+Date:   Thu Jun 13 11:08:15 2024 +0900
+
+    fix the middleware for auth0
+
+[33mcommit 79af3e7aa52a509ccfb7110f211a279b9e6b24c6[m
+Merge: d375831 6b85218
+Author: Superstar823 <superstardev823@gmail.com>
+Date:   Thu Jun 13 10:57:39 2024 +0900
+
+    Merge branch 'main' of https://github.com/armanisadeghi/ai-matrix-5 into lin/auth0
+
+[33mcommit 6b8521815409ef34b1a2b014d981c83c4d9c33e2[m[33m ([m[1;32mtemp-merge-branch[m[33m)[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Wed Jun 12 18:53:35 2024 -0700
+
+    more updates
+
+[33mcommit d375831d9d6b7db2f49ae6a9e0b4268c6a0c2fad[m
+Author: Superstar823 <superstardev823@gmail.com>
+Date:   Thu Jun 13 06:55:55 2024 +0900
+
+    feat:add login/logout/middleware
+
+[33mcommit 6a542498013c4f2b5a67f04d7e7cb1e3c16ac3ab[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Wed Jun 12 12:21:50 2024 -0700
+
+    more updates but still can't build or deploy
+
+[33mcommit 1459052bdf703950920604f5c53a8fd731d7cf11[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Wed Jun 12 06:17:32 2024 -0700
+
+    more fixes but still isn't building. Updated tsconfig to make it more strict
+
+[33mcommit 68b0c6ee07a2b4a18c66e88235a2c02b03f7e05a[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Tue Jun 11 20:32:28 2024 -0700
+
+    changed more files. renamed files. deleted files
+
+[33mcommit 30c85f69a97ae8d08e6505031c0415bab06c8d17[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Tue Jun 11 20:28:35 2024 -0700
+
+    this stucks
+
+[33mcommit 5fa55fa6140056f782a9a7306f9b54c4851b043f[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Tue Jun 11 20:20:39 2024 -0700
+
+    something is wrong with our settings because pages that exist are not properly resolving during build and deployment
+
+[33mcommit 82eedd7e17452af32d473f152a2b76bf19077b1e[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Tue Jun 11 20:13:52 2024 -0700
+
+    updates to dependencies to make the deployment work
+
+[33mcommit a2feac7124036abc69130a80f463353b598c9890[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Tue Jun 11 20:03:50 2024 -0700
+
+    more files added
+
+[33mcommit 8c965d9fee0b1cb0e036c52c9d028dfb815b8586[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Tue Jun 11 19:57:18 2024 -0700
+
+    finally got it to build locally after 6 hours of nonstop work
+
+[33mcommit acc9b6cb1a3d9943386320f937c387a184e563f3[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Tue Jun 11 18:37:24 2024 -0700
+
+    more issues resolved but more to go
+
+[33mcommit 46795833016c1baf0fa68387d6c3434ffa9cc8c3[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Tue Jun 11 18:07:03 2024 -0700
+
+    fixed a bunch more errors but still a lot left
+
+[33mcommit c8e55103eeaa8b0f8a3626a78f203e61d3ff16b3[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Tue Jun 11 16:21:14 2024 -0700
+
+    fixed some build issues but more to do
+
+[33mcommit 5b30a2ea750f65f775b28be83e3b0388f86e9d5f[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Tue Jun 11 14:20:23 2024 -0700
+
+    updatd gitignore
+
+[33mcommit 1e8b0d2b9a3e65002c750e3265da6f929ad946ca[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Tue Jun 11 14:18:47 2024 -0700
+
+    added placeholder for opeanai
+
+[33mcommit 1fe02c46734c036a1fbb8e76164fce47c9b50bf7[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Tue Jun 11 14:17:23 2024 -0700
+
+    merged a few more things. everything but kevins since I don't have a confirmation and merge yet
+
+[33mcommit 81e459013b7a41775626d098fc3248fe581a2ccc[m[33m ([m[1;31morigin/armani/snapshot7[m[33m, [m[1;32marmani/snapshot7[m[33m)[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Tue Jun 11 13:51:39 2024 -0700
+
+    merged angie's work
+
+[33mcommit 593fef2f18d630d48e4229aaa1bc9865ebf7b3ba[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Tue Jun 11 13:31:57 2024 -0700
+
+    fixed auth and some errors and updated header
+
+[33mcommit 841c56dbaed49e35ffe5607af2b3a3ed583d1297[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Tue Jun 11 07:49:02 2024 -0700
+
+    added the start of authentication with auth0
+
+[33mcommit 8e21c9e511447d2c1db2593bb8db9eab95daa722[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Tue Jun 11 07:24:04 2024 -0700
+
+    some more testing but nothing important for anyone else
+
+[33mcommit d7fb853905332e3bbd7c2142366f95ef12eecdc8[m[33m ([m[1;31morigin/armani/snapshot6[m[33m, [m[1;32marmani/snapshot6[m[33m, [m[1;32marmani/snapshot5[m[33m)[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Sun Jun 9 20:56:19 2024 -0700
+
+    cleaned up a lot
+
+[33mcommit 005c955e6ffdf5dd087a6dfdd72e8b0d45dcf28a[m[33m ([m[1;31morigin/armani/snapshot4[m[33m, [m[1;32marmani/snapshot4[m[33m, [m[1;32marmani/snapshot3[m[33m)[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Sun Jun 9 12:03:39 2024 -0700
+
+    committing changes before creating new branches
+
+[33mcommit 18679f8455560efc8e8a22cf53f33f28bd7deed1[m[33m ([m[1;31morigin/armani/snapshot3[m[33m)[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Sat Jun 8 21:26:13 2024 -0700
+
+    more chat updates and db updates
+
+[33mcommit ce187765d560774ce0b47a36e2e3eb3d680b3576[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Fri Jun 7 22:15:42 2024 -0700
+
+    major chat advancements
+
+[33mcommit d18a107714fefde88742a1b08bffd613d9f10c10[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Thu Jun 6 23:06:37 2024 -0700
+
+    more updates
+
+[33mcommit 6d96755738aa4099cc76a409e2aa2089ec716e1c[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Thu Jun 6 08:02:29 2024 -0700
+
+    more updates to prepare for big cleanup
+
+[33mcommit 9bc775ecef94b7599044316bb5dc4f3e7918239b[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Thu Jun 6 08:01:28 2024 -0700
+
+    updated gitignore
+
+[33mcommit d6ee0a65b62720a6385c8e24f725b84fd73122ed[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Thu Jun 6 07:43:27 2024 -0700
+
+    merged everyones laters together but needs testing
+
+[33mcommit bfbc25eb6c16387f856f1797431f0d98fb875f6f[m[33m ([m[1;32marmani/snapshot2[m[33m)[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Wed Jun 5 18:29:25 2024 -0700
+
+    more progress on global atoms and chat
+
+[33mcommit fcea644c8d906a29959f2f2c292600a2bd1ef84f[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Wed Jun 5 14:18:14 2024 -0700
+
+    streaming working with two different implementations including atoms directly in the component oai removed
+
+[33mcommit 539220bbcfb93aaa41c1149f250188193192ebca[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Tue Jun 4 20:12:17 2024 -0700
+
+    updates to chat stream and apis
+
+[33mcommit 18ecea90513484216861123e4a97b520a67a8fdc[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Tue Jun 4 12:15:22 2024 -0700
+
+    updates to response area and message areas for chat
+
+[33mcommit cecf0dfdd7ee4605e07787950c4bbdae78fc7df9[m[33m ([m[1;32marmani/snapshot1[m[33m)[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Mon Jun 3 23:50:13 2024 -0700
+
+    making progress with atoms and the chatbot
+
+[33mcommit ecaab40e60d5c1c7280da4fa7ef935febf33ef12[m[33m ([m[1;31morigin/armani/snapshot1[m[33m)[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Mon Jun 3 20:58:41 2024 -0700
+
+    updates
+
+[33mcommit 834eb8dad897e264795c1d030512d4a503202731[m[33m ([m[1;32marmani-snapshot/snapshot-3[m[33m)[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Mon Jun 3 20:51:10 2024 -0700
+
+    removed oai file
+
+[33mcommit 5d1829b7861b54b674c025f07b48c1b1d97daa7c[m[33m ([m[1;32marmani-snapshot/snapshot-2[m[33m)[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Mon Jun 3 20:47:03 2024 -0700
+
+    updated route for openai
+
+[33mcommit aef36766bc1cf01c34eae71f9895d66f6c1e0861[m[33m ([m[1;32mlocal-snapshots/snapshot-1[m[33m)[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Mon Jun 3 20:22:06 2024 -0700
+
+    updates to chats settings and api
+
+[33mcommit 2865ce0990d11ebc84dba916df3b36db12e9ebfe[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Mon Jun 3 10:46:52 2024 -0700
+
+    merged with some stuff and then scrambled to get it to work but a lot is messed up I assume
+
+[33mcommit 47b2b1a26c735de17069744ba35b15afc11f7dbd[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Fri May 31 21:41:00 2024 -0700
+
+    testing out jotai so lots of atoms
+
+[33mcommit aefe08fdd3e4350458f0bbefe3b1cf6dd0204c15[m
+Merge: 20a4a3a 17ca7e9
+Author: Kelvin Kiptum Kiprop <kelvin.kiprop96@gmail.com>
+Date:   Fri May 31 13:20:08 2024 +0300
+
+    Merge remote-tracking branch 'origin/master'
+
+[33mcommit 17ca7e9aa3631b05bbdc20b9f7b1111132e9704c[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Thu May 30 17:10:16 2024 -0700
+
+    made progress with atoms
+
+[33mcommit 20a4a3aed9b3d89ba181b547a846cca780e17f1f[m
+Merge: 0be77c0 d2e37f2
+Author: Kelvin Kiptum Kiprop <kelvin.kiprop96@gmail.com>
+Date:   Thu May 30 22:05:28 2024 +0300
+
+    Merge branch 'refs/heads/ft/kelvin'
+
+[33mcommit d2e37f27ce943f3f838e50d995a9ddf4e028108f[m
+Author: Kelvin Kiptum Kiprop <kelvin.kiprop96@gmail.com>
+Date:   Thu May 30 22:04:56 2024 +0300
+
+    feat(ui): updated sidebar, header, footer and navbar configs, added use of local storage to store their respective states
+
+[33mcommit 0be77c0b70cf1e98f041a3808b8f7ec3b0d18234[m
+Merge: 13bcdf3 83aa749
+Author: Kelvin Kiptum Kiprop <kelvin.kiprop96@gmail.com>
+Date:   Thu May 30 21:02:47 2024 +0300
+
+    Merge branch 'refs/heads/ft/kelvin'
+
+[33mcommit 83aa749b487c4871916c435a81665240d9d7da52[m
+Author: Kelvin Kiptum Kiprop <kelvin.kiprop96@gmail.com>
+Date:   Thu May 30 20:59:23 2024 +0300
+
+    feat(ui): updated sidebar and navbar configs, added use of local storage to store their respective states
+
+[33mcommit 13bcdf36ff2ccde5286d06489d804ccbc5bbd890[m
+Merge: 467269d 4cfcb24
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Wed May 29 13:33:38 2024 -0700
+
+    Merge branch 'armani-backup'
+    updating master with local changes.
+
+[33mcommit 4cfcb245afc1650bf999fa77a9a60f6f1c094948[m[33m ([m[1;31morigin/armani-backup[m[33m, [m[1;32marmani-backup[m[33m)[m
+Author: armanisadeghi <132974515+armanisadeghi@users.noreply.github.com>
+Date:   Wed May 29 13:26:21 2024 -0700
+
+    making some progress on the chat history sidebar
+
+[33mcommit 467269dc0962a6926bcc66cfaaac0b0ee01a293d[m
+Author: Kelvin Kiptum Kiprop <kelvin.kiprop96@gmail.com>
+Date:   Wed May 29 17:19:24 2024 +0300
+
+    feat:
+    - added logic for burger icon to toggle sidebar,
+    - added logic to highlight active links,
+    - fixed navigation display on mobile screens

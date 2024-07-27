@@ -17,13 +17,13 @@ const BrokerTable = () => {
     const setBrokers = useSetRecoilState(brokersAtom);
     const filteredAndSortedData = useRecoilValue<Broker[]>(filteredAndSortedDataSelector);
     const setSortedData = useSetRecoilState(sortingAtom);
+    const activeUser = useRecoilValue(activeUserAtom);
     const router = useRouter()
     const [page, setPage] = useState(1);
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus<Broker>>({
         columnAccessor: 'name',
         direction: 'asc',
     });
-    const activeUser = useRecoilValue(activeUserAtom);
     const key = 'resize-example';
 
     const handleDelete = async (broker: Broker) => {
@@ -52,7 +52,7 @@ const BrokerTable = () => {
                             <IconTrash size={14} />
                         </ActionIcon>
                     </Tooltip>
-                    {activeUser.matrixId === broker.matrixId &&
+                    {activeUser.matrix_id === broker.matrixId &&
                         <Tooltip label="Edit broker">
                             <ActionIcon onClick={() => handleEdit(broker)}>
                                 <IconEdit size={14} />

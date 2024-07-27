@@ -1,9 +1,9 @@
 // app/trials/grids/components/AmeGridLayout.tsx
 'use client';
 
+import AmeTestCard from '@/ui/layout/AmeDragGrid/AmeTestingCard';
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import GridLayout from 'react-grid-layout';
-import AmeTestCard from '@/app/trials/core-chat-trial/ui/AmeTestingCard';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 

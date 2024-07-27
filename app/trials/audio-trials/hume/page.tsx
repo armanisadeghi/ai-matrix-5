@@ -1,3 +1,5 @@
+'use client';
+
 import { getHumeAccessToken } from "./utils/getHumeAccessToken";
 import dynamic from "next/dynamic";
 

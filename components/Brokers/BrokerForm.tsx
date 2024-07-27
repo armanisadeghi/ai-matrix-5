@@ -1,9 +1,9 @@
 "use client";
 
-import { activeUserAtom } from '@/state/userAtoms';
+import { activeUserAtom, userCredentialsSelector } from '@/state/userAtoms';
 import { Button, Fieldset, Space, TextInput, Grid, Select, Tooltip, Textarea, Group, Text, useCombobox, Combobox, Input, InputBase } from '@mantine/core';
 import { ComponentType, Broker, ComponentTypeInfo, Component } from '@/types/broker';
-import { brokersAtom, componentAtomFamily, componentsAtom, selectedComponentSelector } from '@/context/atoms/brokerAtoms';
+import { brokerByIdSelector, brokersAtom, componentsAtom, selectedBroker, componentSelector, componentAtom } from '@/context/atoms/brokerAtoms';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { createBrokerManager } from '@/services/brokerService';
 import { BrokerEdit } from '../../app/dashboard/matrix-engine/brokers/add/BrokerEdit';
@@ -31,23 +31,25 @@ const dataTypeOptions: Item[] = [
 
 interface BrokerFormProps {
     id: string;
+    newBroker: boolean;
 }
 
-export const BrokerForm = ({ id }: BrokerFormProps) => {
+export const BrokerForm = ({ id, newBroker }: BrokerFormProps) => {
     const brokerManager = createBrokerManager();
     const [brokers, setBrokers] = useRecoilState(brokersAtom);
-    const currentComponent = useRecoilValue(selectedComponentSelector(id));
-    const setCurrentComponent = useSetRecoilState(componentsAtom);
-    const activeUser = useRecoilValue(activeUserAtom);
-    const [currentData, setCurrentData] = useState<Broker>(brokers.filter((broker: Broker) => broker.id === id)[0] || {});
+    const [components, setComponents] = useRecoilState(componentsAtom);
+    const currentBroker = useRecoilValue(brokerByIdSelector(id));
+    const selectedComponent = useRecoilValue(componentSelector(id));
+    const [currentComponent, setCurrentComponent] = useRecoilState(componentAtom);
+    const [currentData, setCurrentData] = useRecoilState(selectedBroker);
     const [componentOptions, setComponentOptions] = useState(Object.entries(ComponentType).map(([key, value]) => ({
         value: key,
         label: value.label,
     })));
-
+    const activeUser = useRecoilValue(activeUserAtom);
 
     useEffect(() => {
-        if (!currentData) {
+        if (!currentBroker) {
             const newBroker: Broker = {
                 id: id,
                 displayName: '',
@@ -61,16 +63,19 @@ export const BrokerForm = ({ id }: BrokerFormProps) => {
                 validationRules: '{}',
             };
 
-            setBrokers((prev: Broker[]) => ([...prev, newBroker as Broker]));
-            setCurrentComponent((prev) => ([...prev, { id: id, label: '', type: 'Input', description: '', tooltip: '' }]));
+            setCurrentData(newBroker);
+            setCurrentComponent({ id: id, type: 'Input', label: '', description: '', tooltip: '' });
+            setBrokers(() => [...brokers, newBroker]);
+            setComponents(() => [...components, { id: id, type: 'Input', label: 'Add a name', description: '', tooltip: '' }]);
             return () => {
                 setBrokers((prev: Broker[]) => prev.filter((broker) => broker.id !== newBroker.id));
-                setCurrentComponent((prev) => prev.filter((component) => component.id !== newBroker.id));
+                setComponents((prev: Component[]) => prev.filter((component) => component.id !== newBroker.id));
             };
         } else {
-            const componentProperties = JSON.parse(currentData.validationRules || '{}');
-            setCurrentComponent((prev) => ([...prev, { id: id, label: currentData.displayName, type: currentData.componentType, description: currentData.description, tooltip: currentData.tooltip }]));
-            setCurrentData((prev) => ({ ...prev, validationRules: JSON.stringify(componentProperties) }));
+            if (selectedComponent) {
+                setCurrentComponent(selectedComponent);
+            }
+            setCurrentData(currentBroker);
         }
 
     }, []);
@@ -106,7 +111,9 @@ export const BrokerForm = ({ id }: BrokerFormProps) => {
                 sampleEntries: currentData?.sampleEntries,
                 validationRules: JSON.stringify(currentComponent)
             }
-            currentData ? brokerManager.updateBroker(broker as Broker) : brokerManager.createBroker(broker as Broker);
+            !newBroker ? brokerManager.updateBroker(broker as Broker) : brokerManager.createBroker(broker as Broker);
+            setBrokers([...brokers.filter((broker) => broker.id !== currentData?.id), broker as Broker]);
+            setComponents([...components.filter((component) => component.id !== currentComponent.id), currentComponent]);
             Notifications.show({
                 title: `${currentData ? 'Broker updated' : 'Broker created'}`,
                 message: `${currentData ? 'Broker updated' : 'Broker created'} successfully`,
@@ -135,9 +142,8 @@ export const BrokerForm = ({ id }: BrokerFormProps) => {
         } else if (data === 'componentType') {
             updatedComponent.type = value as ComponentTypeInfo['type'];
         }
-        setCurrentComponent((prev: Component[]) => {
-            return [...prev.filter((component: Component) => component.id !== currentData.id), updatedComponent]
-        });
+        setCurrentComponent(updatedComponent);
+        setComponents([...components.filter((component) => component.id !== currentComponent.id), updatedComponent]);
     }
 
     const selectedOption = dataTypeOptions.find((item) => item.value === currentData.dataType);
@@ -170,7 +176,7 @@ export const BrokerForm = ({ id }: BrokerFormProps) => {
                     <TextInput
                         label="Name"
                         onChange={(value) => handleValueChange('displayName', value.target.value)}
-                        value={currentData.displayName || ''}
+                        value={currentData.displayName || currentComponent.label || ''}
                         placeholder='Enter a name'
                     />
                     <Space h="sm" />
@@ -188,6 +194,7 @@ export const BrokerForm = ({ id }: BrokerFormProps) => {
                                 component="button"
                                 type="button"
                                 pointer
+                                defaultValue={currentData.dataType || currentComponent.type}
                                 rightSection={<Combobox.Chevron />}
                                 onClick={() => combobox.toggleDropdown()}
                                 rightSectionPointerEvents="none"
@@ -206,16 +213,16 @@ export const BrokerForm = ({ id }: BrokerFormProps) => {
                         </Combobox.Dropdown>
                     </Combobox>
                     <Space h="sm" />
-                    <Textarea resize='both' label="Description" value={currentData.description || ''}
+                    <Textarea resize='both' label="Description" value={currentData.description || currentComponent.description}
                         onChange={value => handleValueChange('description', value.target.value)} placeholder='Enter a description' />
                     <Space h="sm" />
-                    <Select label="Component" description="Choose the type of component" placeholder="Choose the type of component" data={componentOptions} value={currentData.componentType}
+                    <Select label="Component" description="Choose the type of component" placeholder="Choose the type of component" data={componentOptions} value={currentData.componentType || currentComponent.type}
                         onChange={value => handleValueChange('componentType', value as string)} />
                 </Fieldset>
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 6 }}>
                 <Fieldset legend="Preview" radius="md">
-                    <BrokerComponent id={currentData!.id} type={currentData.componentType} handleDefaultValueChange={(value: any) => setCurrentComponent(prev => [...prev, { ...currentComponent, defaultValue: value }])} />
+                    <BrokerComponent id={currentData.id} type={currentData.componentType || currentComponent.type} handleDefaultValueChange={(value: any) => setCurrentComponent({ ...currentComponent, defaultValue: value })} />
                 </Fieldset>
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 12 }}>

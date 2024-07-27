@@ -1,6 +1,6 @@
+/*
 import { useSelector, useDispatch } from 'react-redux';
 import { selectActiveChatId, selectChatMessages, setActiveChatId, addUserMessage, fetchChatMessages, } from '../store/chatSlice';
-import { selectActiveUser } from '../store/userSlice';
 
 // In your component
 const Component = () => {
@@ -11,6 +11,7 @@ const Component = () => {
 
     // Use dispatch to update state
     dispatch(setActiveChatId('some-chat-id'));
-    dispatch(addUserMessage({chatId: 'some-chat-id', message: /* message object */}));
+    dispatch(addUserMessage({chatId: 'some-chat-id', message: "Hello!"}));
     dispatch(fetchChatMessages('some-chat-id'));
 };
+*/

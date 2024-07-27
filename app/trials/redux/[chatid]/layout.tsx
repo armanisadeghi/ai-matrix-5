@@ -1,3 +1,4 @@
+/*
 export default function ChatLayout(
     {
         children,
@@ -7,7 +8,7 @@ export default function ChatLayout(
     return (
         <div className="chat-layout">
             <aside className="chat-sidebar">
-                {/* Chat list component will go here */}
+                {/!* Chat list component will go here *!/}
             </aside>
             <main className="chat-main">
                 {children}
@@ -15,3 +16,4 @@ export default function ChatLayout(
         </div>
     )
 }
+*/

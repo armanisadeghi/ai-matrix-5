@@ -8,7 +8,7 @@ export interface RecipeInstance {
     name: string;
     description: string;
     overrides: {
-        model_overrides: Record<string, any>;
+        model_override: string;
         processor_overrides: Record<string, any>;
         other_overrides: Record<string, any>;
     };
@@ -43,7 +43,7 @@ const recipeSlice = createSlice({
                 name,
                 description,
                 overrides: {
-                    model_overrides: {},
+                    model_override: '',
                     processor_overrides: {},
                     other_overrides: {},
                 },

@@ -1,17 +1,16 @@
 'use client';
 
-import { useReduxSocket } from '@/utils/socketio/useReduxSocket';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Button, Switch, TextInput, Textarea, Title, Stack, Group, SimpleGrid, Space, Divider, Select, Card, Tooltip } from '@mantine/core';
 import { RootState, AppDispatch } from '@/redux/store';
 import { updateRecipeOverrides } from '@/redux/features/recipes/recipeSlice';
-import { initializeRecipe } from '@/redux/features/recipes/recipeThunks';
-import { setRequestEvent, setRequestStream, setRequestTask } from '@/redux/features/dynamicEvents/dynamicEventsSlice';
 import { updateBrokerInstance } from '@/redux/features/broker/brokerSlice';
-import { submitTaskData } from '@/redux/features/dynamicEvents/dynamicEventsThunks';
+import { SocketManager } from '@/utils/socketio/SocketManager';
 import AmeJsonInput from '@/ui/json/AmeJsonInput';
 import { BrokerInstance } from '@/redux/features/broker/types';
+import { initializeRecipe } from '@/redux/features/recipes/recipeThunks';
+
 
 const BrokerInput: React.FC<{
     broker: BrokerInstance;
@@ -59,30 +58,58 @@ const BrokerInput: React.FC<{
     );
 };
 
+
+
 export const RecipeTestingUI: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const activeRecipeIds = useSelector((state: RootState) => state.recipes.activeRecipeIds);
-    const recipeId = activeRecipeIds[0] || ''; // Use the first active recipe, or an empty string if none
+    const recipeId = activeRecipeIds[0] || '';
     const recipe = useSelector((state: RootState) => state.recipes.recipeInstances[recipeId]);
     const brokerInstances = useSelector((state: RootState) => state.brokers.brokerInstances[recipeId] || {});
-    const {
-        requestEvent,
-        requestTask,
-        requestEventOptions,
-        requestTaskOptions,
-        requestStream,
-        events: dynamicEvents,
-    } = useSelector((state: RootState) => state.dynamicEvents);
+    const { sessionUrl, socketNamespace } = useSelector((state: RootState) => state.config);
+    const { matrixId } = useSelector((state: RootState) => state.user.currentUser);
 
     const [recipeIdInput, setRecipeIdInput] = useState('');
+    const [requestEvent, setRequestEvent] = useState('simple_recipe');
+    const [requestTask, setRequestTask] = useState('run_recipe');
+    const [requestStream, setRequestStream] = useState(true);
+    const [dynamicEvents, setDynamicEvents] = useState<Record<string, string>>({});
 
-    const {
-        socketStatus,
-        isAuthenticated,
-        socketSid,
-        addDirectListener,
-        removeDirectListener,
-    } = useReduxSocket();
+    const socketManager = SocketManager.getInstance(matrixId, sessionUrl, socketNamespace);
+    const [loggedEvents, setLoggedEvents] = useState({});
+    const loggedEventsRef = useRef({});
+
+    useEffect(() => {
+        const handleIncomingStreamEvent = (data: { event_name: string }) => {
+            console.log('Stream Easy - Received incoming stream event:', data.event_name);
+            setDynamicEvents(prev => ({ ...prev, [data.event_name]: '' }));
+
+            socketManager.addDirectListener(data.event_name, (eventData: any) => {
+                if (eventData.data === 'STREAM_END') {
+                    return;
+                }
+
+                if (!loggedEventsRef.current[data.event_name]) {
+                    console.log(`Stream Easy - Received data for ${data.event_name}:`, eventData);
+                    loggedEventsRef.current[data.event_name] = true;
+                    setLoggedEvents({ ...loggedEventsRef.current });
+                }
+
+                setDynamicEvents(prev => ({
+                    ...prev,
+                    [data.event_name]: prev[data.event_name] + (eventData.data || '')
+                }));
+            });
+        };
+
+        socketManager.addDirectListener('incoming_stream_event', handleIncomingStreamEvent);
+
+        return () => {
+            socketManager.removeDirectListener('incoming_stream_event', handleIncomingStreamEvent);
+        };
+    }, [socketManager]);
+
+
 
     const handleLoadRecipe = useCallback(() => {
         if (recipeIdInput) {
@@ -95,7 +122,6 @@ export const RecipeTestingUI: React.FC = () => {
     }, [dispatch, recipeId]);
 
     const handleSubmit = useCallback(() => {
-        console.log('Submitting recipe data')
         if (!recipe) return;
 
         const taskData = {
@@ -110,34 +136,17 @@ export const RecipeTestingUI: React.FC = () => {
             })),
             overrides: recipe.overrides,
         };
-        console.log('Task data:', taskData)
 
-        dispatch(submitTaskData({
-            eventName: requestEvent,
+        const task = {
             task: requestTask,
-            taskData: taskData,
-        }));
-    }, [dispatch, recipeId, recipe, brokerInstances, requestEvent, requestTask]);
-
-    useEffect(() => {
-        const handleDynamicEvent = (eventName: string) => (data: any) => {
-            console.log(`Recipe Tester - Received data for ${eventName}:`, data);
-            // Update dynamic event data in Redux store
-            // This will be handled by the dynamicEventsSlice reducer
+            index: 0,
+            stream: requestStream,
+            taskData,
         };
 
-        // Set up listeners for all dynamic events
-        Object.keys(dynamicEvents).forEach(eventName => {
-            addDirectListener(eventName, handleDynamicEvent(eventName));
-        });
-
-        return () => {
-            // Clean up listeners
-            Object.keys(dynamicEvents).forEach(eventName => {
-                removeDirectListener(eventName, handleDynamicEvent(eventName));
-            });
-        };
-    }, [dynamicEvents, addDirectListener, removeDirectListener]);
+        console.log('Submitting task:', task);
+        socketManager.startTask(requestEvent, [task]);
+    }, [recipe, recipeId, brokerInstances, requestEvent, requestTask, requestStream, socketManager]);
 
     return (
         <Box style={{maxWidth: '1000px', margin: '0 auto'}}>
@@ -153,56 +162,50 @@ export const RecipeTestingUI: React.FC = () => {
                     <Switch
                         label="Stream"
                         checked={requestStream}
-                        onChange={(e) => dispatch(setRequestStream(e.currentTarget.checked))}
+                        onChange={(e) => setRequestStream(e.currentTarget.checked)}
                     />
                 </Group>
                 <Group>
                     <Select
                         label="Request Event"
-                        data={requestEventOptions}
+                        data={['simple_recipe', 'full_recipe']} // Add more options as needed
                         value={requestEvent}
-                        onChange={(value) => value && dispatch(setRequestEvent(value))}
+                        onChange={(value) => value && setRequestEvent(value)}
                     />
                     <Select
                         label="Request Task"
-                        data={requestTaskOptions}
+                        data={['run_recipe', 'validate_recipe']} // Add more options as needed
                         value={requestTask}
-                        onChange={(value) => value && dispatch(setRequestTask(value))}
+                        onChange={(value) => value && setRequestTask(value)}
                     />
                 </Group>
                 <Divider my="sm" label="Dynamic Broker Display" labelPosition="center"/>
                 <SimpleGrid cols={2}>
                     {Object.values(brokerInstances).map((broker) => (
-                        <BrokerInput
-                            key={broker.id}
-                            broker={broker}
-                            onChange={handleBrokerChange}
-                        />
-                    ))}
-                </SimpleGrid>
-                <Divider my="sm" label="Dynamic Events" labelPosition="center"/>
-
-                <SimpleGrid cols={2}>
-                    {Object.entries(dynamicEvents).map(([eventName, event]) => (
-                        <Card key={eventName}>
-                            <Title order={6}>{eventName}</Title>
+                        <Card key={broker.id}>
+                            <Title order={6}>{broker.displayName}</Title>
                             <Textarea
-                                value={event.textStream}
-                                readOnly
-                                minRows={5}
-                                autosize
+                                value={broker.value || ''}
+                                onChange={(e) => handleBrokerChange(broker.id, e.currentTarget.value, broker.ready)}
+                            />
+                            <Switch
+                                label="Ready"
+                                checked={broker.ready}
+                                onChange={(e) => handleBrokerChange(broker.id, broker.value, e.currentTarget.checked)}
                             />
                         </Card>
                     ))}
                 </SimpleGrid>
-`
                 <Divider my="sm" label="Recipe Data" labelPosition="center"/>
                 <SimpleGrid cols={2}>
                     <Card>
                         <Textarea
                             label="Model Override"
                             value={recipe?.overrides.model_override || ''}
-            onChange={(event) => dispatch(updateRecipeOverrides({recipeId, overrides: {model_override: event.target.value}}))}
+                            onChange={(e) => dispatch(updateRecipeOverrides({
+                                recipeId,
+                                overrides: {model_override: e.target.value}
+                            }))}
                             minRows={2}
                         />
                     </Card>
@@ -227,12 +230,13 @@ export const RecipeTestingUI: React.FC = () => {
             <Space h="md"/>
             <Button onClick={handleSubmit}>Submit Recipe</Button>
             <Space h="md"/>
+            <Divider my="sm" label="Dynamic Events" labelPosition="center"/>
             <SimpleGrid cols={2}>
-                {Object.entries(dynamicEvents).map(([eventName, event]) => (
+                {Object.entries(dynamicEvents).map(([eventName, textStream]) => (
                     <Card key={eventName}>
-                        <Title order={5}>{eventName}</Title>
+                        <Title order={6}>{eventName}</Title>
                         <Textarea
-                            value={event.textStream}
+                            value={textStream}
                             readOnly
                             minRows={5}
                             autosize
@@ -240,23 +244,6 @@ export const RecipeTestingUI: React.FC = () => {
                     </Card>
                 ))}
             </SimpleGrid>
-            <Space h="md"/>
-            <Card>
-                <Title order={5}>Current Recipe State</Title>
-                <AmeJsonInput
-                    value={recipe || {}}
-                    readOnly
-                    minRows={10}
-                />
-            </Card>
-            <Card>
-                <Title order={5}>Current Broker Instances</Title>
-                <AmeJsonInput
-                    value={brokerInstances}
-                    readOnly
-                    minRows={10}
-                />
-            </Card>
         </Box>
     );
 };

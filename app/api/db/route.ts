@@ -45,7 +45,7 @@ async function handleRequest(
                 const { selectColumns = '*', filterColumn, filterValue } = transformedQueryParams;
                 console.log(`GET request with selectColumns: ${selectColumns}, filterColumn: ${filterColumn}, filterValue: ${filterValue}`);
 
-                let query = supabase.from(table).select(selectColumns as string);
+                let query = supabase.from("chats").select(selectColumns as string);
                 if (filterColumn && filterValue) {
                     query = query.eq(filterColumn as string, filterValue as string);
                 }
@@ -67,7 +67,7 @@ async function handleRequest(
             case 'POST':
                 const transformedBodyParams = transformData(table, 'toBackend', bodyParams);
                 console.log(`POST request with transformedBodyParams: ${JSON.stringify(transformedBodyParams)}`);
-                ({ data, error } = await supabase.from(table).insert(transformedBodyParams));
+                ({ data, error } = await supabase.from("chats").insert(transformedBodyParams));
 
                 console.log(`POST response data: ${JSON.stringify(data)}, error: ${JSON.stringify(error)}`);
 
@@ -79,7 +79,7 @@ async function handleRequest(
 
             case 'DELETE':
                 console.log(`DELETE request with transformedQueryParams: ${JSON.stringify(transformedQueryParams)}`);
-                ({ error } = await supabase.from(table).delete().match(transformedQueryParams));
+                ({ error } = await supabase.from('chats').delete().match(transformedQueryParams));
 
                 console.log(`DELETE response error: ${JSON.stringify(error)}`);
 
@@ -92,7 +92,7 @@ async function handleRequest(
             case 'PATCH':
                 const updateRecord = transformData(table, 'toBackend', bodyParams);
                 console.log(`PATCH request with updateRecord: ${JSON.stringify(updateRecord)}, transformedQueryParams: ${JSON.stringify(transformedQueryParams)}`);
-                ({ data, error } = await supabase.from(table).update(updateRecord).match(transformedQueryParams));
+                ({ data, error } = await supabase.from('chats').update(updateRecord).match(transformedQueryParams));
 
                 console.log(`PATCH response data: ${JSON.stringify(data)}, error: ${JSON.stringify(error)}`);
 

@@ -9,14 +9,19 @@ export const recipeData = [
         input_brokers: ['0f330db6-6ce8-4865-bc33-188fad2a8dbd']
     },
     {
-        id: 'A1002',
-        name: 'Recipe Two',
-        input_brokers: ['value1']
+        id: '6618283c8b434eb62211af45',
+        name: 'Old School Iran',
+        input_brokers: ['7c496083-a696-4b9c-b528-e8880c324703', 'f640852d-fe1f-493f-94cb-417690d8f66b']
     },
     {
-        id: 'A1003',
-        name: 'Recipe Three',
-        input_brokers: ['value1', 'value2']
+        id: '6618283c8b434eb62211af3c',
+        name: 'Name That Capital',
+        input_brokers: ['f9c30c75-441c-4085-8e3a-6b1d96af7022']
+    },
+    {
+        id: '6618283c8b434eb62211af5b',
+        name: 'Code Review',
+        input_brokers: ['CODE_BLOCK_ONE_1001']
     }
 ];
 

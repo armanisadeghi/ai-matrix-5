@@ -1,6 +1,6 @@
 // app/trials/grids/ChatPage.tsx
-import NewChatInput from '@/app/trials/chat/core-chat-trials/components/NewChatInput';
 import ChatSummaries from '@/app/trials/recoil/loadable-trial/Component1';
+import { Textarea } from '@mantine/core';
 import React from 'react';
 import { ActiveChatMessagesComponent } from '@/app/trials/grids/components/ActiveChatMessagesComponent';
 import { ActiveUserChatComponent } from '@/app/trials/grids/components/ActiveUserChatComponent';
@@ -33,7 +33,7 @@ const ChatPage: React.FC = () => {
         },
         {
             title: 'User Text Input',
-            content: <NewChatInput />,
+            content: <Textarea />,
             locked: false,
             minimized: false
         },

@@ -1,3 +1,5 @@
+'use client';
+
 // app/dashboard/layout.tsx
 
 import { MainLayout } from '@/layout';

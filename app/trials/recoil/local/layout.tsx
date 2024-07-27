@@ -1,7 +1,6 @@
 'use client'
 
 import React, { ReactNode } from 'react';
-import ChatCoreProvider from '@/app/trials/stream-encapsulated/components/ChatCoreComponent';
 import { MainLayout } from '@/layout';
 import { UserProvider } from '@auth0/nextjs-auth0/client';
 import ClientLayoutLogic from 'app/trials/recoil/local/ClientLayoutLogic';
@@ -15,9 +14,7 @@ export default function Layout({ children }: Props) {
         <UserProvider>
             <ClientLayoutLogic>
                 <MainLayout>
-                    <ChatCoreProvider>
                         {children}
-                    </ChatCoreProvider>
                 </MainLayout>
             </ClientLayoutLogic>
         </UserProvider>

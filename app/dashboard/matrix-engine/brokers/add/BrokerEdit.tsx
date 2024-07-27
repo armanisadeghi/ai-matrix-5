@@ -1,9 +1,10 @@
+/*
 "use client";
 import { useEffect, useState } from 'react';
 import { Fieldset, Space, Switch, TextInput, Group, FileInput, Grid, NumberInput, Flex, ColorPicker } from '@mantine/core';
 import AmeSlider from '@/ui/slider/AmeSlider';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { componentsAtom, selectedComponentSelector } from '@/context/atoms';
+import { componentsAtom } from '@/context/atoms';
 
 type Size = "xs" | "sm" | "md" | "lg" | "xl";
 
@@ -12,7 +13,6 @@ interface BrokerEditProps {
 }
 
 export const BrokerEdit = ({ id }: BrokerEditProps) => {
-    const currentComponent = useRecoilValue(selectedComponentSelector(id));
     const setCurrentComponent = useSetRecoilState(componentsAtom);
     const [imageUploaded, setImageUploaded] = useState(false);
     const [fileUploaded, setFileUploaded] = useState(false);
@@ -95,9 +95,9 @@ export const BrokerEdit = ({ id }: BrokerEditProps) => {
                     <Space h="sm" />
                     <TextInput size='xs' label="Placeholder" placeholder="Placeholder" onChange={(e) => handleChange("placeholder", e.target.value)} value={currentComponent.placeholder || ""} />
                     <Space h="sm" />
-                    {/* <Switch size="xs" label="Marks" onChange={() => setIsMarks(!isMarks)} checked={currentComponent.isMarks} />
-                    <Space h="xs" /> */}
-                    {/* {isMarks && (
+                    {/!* <Switch size="xs" label="Marks" onChange={() => setIsMarks(!isMarks)} checked={currentComponent.isMarks} />
+                    <Space h="xs" /> *!/}
+                    {/!* {isMarks && (
                         <TextInput
                             size='xs'
                             label="Marks"
@@ -106,7 +106,7 @@ export const BrokerEdit = ({ id }: BrokerEditProps) => {
                             onChange={(e) => handleChange("marks", (e.target.value).split(","))}
                             value={[currentComponent.marks].join(",")}
                         />
-                    )} */}
+                    )} *!/}
                     <Space h="sm" />
                     {currentComponent.type === "Slider" && (
                         <Group>
@@ -152,3 +152,4 @@ export const BrokerEdit = ({ id }: BrokerEditProps) => {
         </Grid>
     );
 };
+*/

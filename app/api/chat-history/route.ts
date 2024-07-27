@@ -1,7 +1,7 @@
+/*
 // app/api/chat-history/route.ts
 
 import { NextRequest, NextResponse } from 'next/server';
-import loadChatHistory from '@/app/data/fake-data/fake-chat-history/fake-chat-history';
 import { MongoClient } from 'mongodb';
 import handleCorsMiddleware from '@/middleware/corsMiddleware';
 
@@ -31,7 +31,6 @@ export async function GET(req: NextRequest) {
 
     try {
         if (knownUserIds.includes(userId)) {
-            const chatHistories = await loadChatHistory();
             const userHistory = chatHistories.find(history => history.userId === userId);
             if (userHistory) {
                 return NextResponse.json(userHistory);
@@ -60,3 +59,4 @@ export async function GET(req: NextRequest) {
         }
     }
 }
+*/

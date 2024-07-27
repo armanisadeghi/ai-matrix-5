@@ -31,10 +31,16 @@ const nextConfig = {
         if (isServer) {
             config.plugins.push(
                 new webpack.IgnorePlugin({
-                    resourceRegExp: /app\/samples/,
-                }),
-                new webpack.IgnorePlugin({
-                    resourceRegExp: /armaniLocal/,
+                    checkResource: (resource) => {
+                        const ignoredPaths = [
+                            'app/samples',
+                            'app/trials',
+                            'armaniLocal'
+                        ];
+                        return ignoredPaths.some(ignorePath =>
+                            resource.includes(path.normalize(ignorePath))
+                        );
+                    },
                 })
             );
         }

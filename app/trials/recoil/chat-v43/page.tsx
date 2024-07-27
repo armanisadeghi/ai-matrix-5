@@ -1,10 +1,9 @@
 'use client';
 
+import { useSetActiveChat } from '@/app/trials/recoil/local/hooks/useSetActiveChat';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useLoadChats } from '@/hooks/ai/useLoadChats';
-import { activeChatIdAtom, chatSummariesAtom, hasSubmittedMessageAtom, hookIdAtom, hookIndexAtom, isNewChatAtom, streamTriggerAtomFamily, systemMessageAtom, userTextInputAtom } from '@/state/aiAtoms/aiChatAtoms';
-import useSetActiveChat43 from '@/hooks/ai/old/useActiveChat43';
-import { chatMessagesSelectorFamily } from '@/state/aiAtoms/chatMessagesState';
+import { activeChatIdAtom, chatMessagesSelectorFamily, chatSummariesAtom, hasSubmittedMessageAtom, hookIdAtom, hookIndexAtom, isNewChatAtom, streamTriggerAtomFamily, systemMessageAtom, userTextInputAtom } from '@/state/aiAtoms/aiChatAtoms';
 import { useChatApi } from '@/hooks/ai/useChatApi';
 import { notifications } from '@mantine/notifications';
 import { useRecoilValue, useSetRecoilState, useRecoilState, } from 'recoil';
@@ -20,19 +19,17 @@ const ControlPanel: React.FC = () => {
     const [userMessage, setUserMessage] = useState('');
     const [assistantMessage, setAssistantMessage] = useState('');
     const [systemMessage, setSystemMessage] = useRecoilState(systemMessageAtom);
-    const {messages, initialChats, onFetchMessages, onAddUserMessage, onAddAssistantText} = useRecoilValue(chatMessagesSelectorFamily(activeChatId));
+    const {messages, initialChats, fetchMessages, addUserMessage, addAssistantText} = useRecoilValue(chatMessagesSelectorFamily(activeChatId));
     const [userTextInput, setUserTextInput] = useRecoilState(userTextInputAtom);
     const [userSubmitState, setUserSubmit] = useRecoilState(hasSubmittedMessageAtom);
     const [isNewChatState, setIsNewChat] = useRecoilState(isNewChatAtom);
     const hookId = useRecoilValue(hookIdAtom);
     const hookIndex = useRecoilValue(hookIndexAtom)
     const [streamTrigger, setStreamTrigger] = useRecoilState(streamTriggerAtomFamily({hookId: hookId, index: hookIndex}));
-    const activeChat = useSetActiveChat43(activeChatId);
 
     useEffect(() => {
         if (activeChatId) {
-            onFetchMessages();
-            activeChat;
+            fetchMessages();
             messages;
 
         }
@@ -51,7 +48,7 @@ const ControlPanel: React.FC = () => {
     };
 
     const handleSubmitChat = () => {
-        onAddUserMessage(userInput);
+        addUserMessage(userInput);
         setUserInput('');
     };
 
@@ -77,8 +74,8 @@ const ControlPanel: React.FC = () => {
             <h4>Controls & Data</h4>
             <List size="sm" listStyleType="disc">
                 <List.Item>Chat ID: {activeChatId}</List.Item>
-                <List.Item>Active Chat ID: {activeChat?.chatId? activeChat.chatId : 'None'}</List.Item>
-                <List.Item>Active Chat Title:{activeChat?.chatTitle? activeChat.chatTitle : 'None'}</List.Item>
+                <List.Item>Active Chat ID: {'hi'}</List.Item>
+                <List.Item>Active Chat Title:{"hello"}</List.Item>
                 <List.Item>Is New Chat? {String(isNewChatState)}</List.Item>
                 <List.Item>User Submit: {String(userSubmitState)}</List.Item>
                 <List.Item>User Text Input:</List.Item>
@@ -172,7 +169,7 @@ const UserChats: React.FC = () => {
 };
 
 const ChatListItem: React.FC<{ chat: ChatType; }> = ({chat}) => {
-    const {onFetchMessages} = useRecoilValue(chatMessagesSelectorFamily(chat.chatId));
+    const {fetchMessages} = useRecoilValue(chatMessagesSelectorFamily(chat.chatId));
     const setActiveChatId = useSetRecoilState(activeChatIdAtom);
 
     const [isDeleting, setIsDeleting] = useState<string | null>(null);
@@ -204,7 +201,7 @@ const ChatListItem: React.FC<{ chat: ChatType; }> = ({chat}) => {
 
     const handleClick = async () => {
         setActiveChatId(chat.chatId);
-        const updatedMessages = await onFetchMessages();
+        const updatedMessages = await fetchMessages();
         console.log(updatedMessages);
     };
 

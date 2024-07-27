@@ -2,7 +2,7 @@
 
 import { useBrokers } from '@/app/samples/socket-test/hooks/useBrokers';
 import { brokersAtom } from '@/context/atoms';
-import { requestEventOptions, requestTaskOptions } from '@/redux/features/dynamicEvents/types';
+import { requestEventOptions, requestTaskOptions } from '@/redux/features/dynamicEvents/data';
 import { recipeData } from '@/redux/features/recipes/recipeData';
 import { FlatRecipeData } from '@/redux/features/recipes/types';
 import {
@@ -144,7 +144,7 @@ export const RecipeTestComponent: React.FC = () => {
     useEffect(() => {
         if (dynamicEventName) {
             const handleDynamicEvent = (data: any) => {
-                console.log(`Received data for ${dynamicEventName}:`, data);
+                console.log(`Recipe Component - Received data for ${dynamicEventName}:`, data);
                 setStreamOutput(prev => prev + JSON.stringify(data) + '\n');
             };
 

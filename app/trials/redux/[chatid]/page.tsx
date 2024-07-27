@@ -1,3 +1,4 @@
+/*
 // app/chat/[chatId]/page.tsx
 'use client';
 
@@ -47,7 +48,7 @@ export default function ChatPage({ params }: { params: { chatId: string } }) {
 
     return (
         <div>
-            {/* Render chat messages */}
+            {/!* Render chat messages *!/}
             <form onSubmit={handleSubmit}>
                 <input
                     value={userInput}
@@ -58,3 +59,4 @@ export default function ChatPage({ params }: { params: { chatId: string } }) {
         </div>
     );
 }
+*/

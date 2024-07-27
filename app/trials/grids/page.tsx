@@ -1,5 +1,7 @@
-import NewChatInput from '@/app/trials/chat/core-chat-trials/components/NewChatInput';
+'use client';
+
 import ChatSummaries from '@/app/trials/recoil/loadable-trial/Component1';
+import { Textarea } from '@mantine/core';
 import React from 'react';
 import AtomTesterComponent from '@/app/trials/grids/components/AtomTesterComponent';
 import { AllUserChatsComponent } from '@/app/trials/grids/components/AllUserChatsComponent';
@@ -26,7 +28,7 @@ const ChatPage: React.FC = () => {
         },
         {
             title: 'User Text Input',
-            content: <NewChatInput />
+            content: <Textarea />
         },
         {
             title: 'System & liveChatsAtomFamily',

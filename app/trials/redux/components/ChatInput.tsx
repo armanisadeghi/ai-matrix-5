@@ -1,3 +1,4 @@
+/*
 'use client'
 
 import { useState } from 'react'
@@ -36,3 +37,4 @@ export function ChatInput({ chatId }: { chatId: string }) {
         </form>
     )
 }
+*/

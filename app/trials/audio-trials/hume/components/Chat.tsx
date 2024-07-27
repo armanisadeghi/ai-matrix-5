@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useRef } from 'react';
 import { Container, Box, ScrollArea } from '@mantine/core';
 import { VoiceProvider } from "@humeai/voice-react";

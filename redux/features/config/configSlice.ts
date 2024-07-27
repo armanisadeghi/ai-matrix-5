@@ -11,8 +11,8 @@ interface ConfigState {
 }
 
 const initialState: ConfigState = {
-    env: 'local',
-    sessionUrl: 'http://localhost:8000',
+    env: 'devServer',
+    sessionUrl: 'https://dev-back.aimatrixengine.com',
     socketNamespace: '/UserSession',
 };
 

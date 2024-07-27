@@ -1,12 +1,13 @@
-import { chatSummariesSelector } from '@/app/trials/core-chat-trial/hooks/old/useChatAtomsDb';
-import { isNewChatAtom, useActiveChat } from '@/state/aiAtoms/aiChatAtoms';
-import { activeChatIdAtom } from '@/state/aiAtoms/old/chatAtoms';
+'use client';
+
+import { useSetActiveChat } from '@/app/trials/recoil/local/hooks/useSetActiveChat';
+import { activeChatIdAtom, chatSummariesAtom, isNewChatAtom } from '@/state/aiAtoms/aiChatAtoms';
+import { ChatType } from '@/types';
 import React, { useState } from 'react';
-import { useRecoilState, useRecoilValue, useRecoilValueLoadable } from 'recoil';
-import { Chat } from '@/types/chat.types'; // Make sure the correct path to Chat type
+import {  useRecoilValue, useRecoilValueLoadable } from 'recoil';
 
 // A simple ChatItem component to render individual chat summaries
-const ChatItem: React.FC<{ chat: Chat }> = ({ chat }) => (
+const ChatItem: React.FC<{ chat: ChatType }> = ({ chat }) => (
     <div>
         <h2>{chat.chatTitle}</h2>
         <p>{chat.createdAt}</p>
@@ -16,9 +17,9 @@ const ChatItem: React.FC<{ chat: Chat }> = ({ chat }) => (
 
 function ChatSummaries() {
     const activeChatId = useRecoilValue(activeChatIdAtom);
-    const { setActiveChat } = useActiveChat();
+    const { setActiveChat } = useSetActiveChat();
     const isNewChat= useRecoilValue(isNewChatAtom);
-    const chatSummariesLoadable = useRecoilValueLoadable(chatSummariesSelector);
+    const chatSummariesLoadable = useRecoilValueLoadable(chatSummariesAtom);
     const [newChatId, setNewChatId] = useState('');
 
     const handleSetActiveChatId = () => {
@@ -40,7 +41,7 @@ function ChatSummaries() {
             {chatSummariesLoadable.state === 'hasError' && <div>Error loading chats</div>}
             {chatSummariesLoadable.state === 'hasValue' && (
                 <div>
-                    {chatSummariesLoadable.contents.map((chat: Chat) => (
+                    {chatSummariesLoadable.contents.map((chat: ChatType) => (
                         <ChatItem key={chat.chatId} chat={chat} />
                     ))}
                 </div>

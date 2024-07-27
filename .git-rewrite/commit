@@ -1,6 +1,6 @@
-tree cf8b2b089e99cdbafa7c733410365cd36c2cde22
-parent 133db1fba70fc2c28b096a8ceb877195a20da8d5
-author armanisadeghi <132974515+armanisadeghi@users.noreply.github.com> 1716342376 -0700
-committer armanisadeghi <132974515+armanisadeghi@users.noreply.github.com> 1716342376 -0700
+tree e0180573e5fc8231f5e8e0e2cb12b0dac1be4730
+parent 4a998496b2895b969b2d4b81476b770874b76c9d
+author Kelvin Kiptum Kiprop <kelvin.kiprop96@gmail.com> 1716546578 +0300
+committer Kelvin Kiptum Kiprop <kelvin.kiprop96@gmail.com> 1716546578 +0300
 
-initial
+feat(ui): added created client page

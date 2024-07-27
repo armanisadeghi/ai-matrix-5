@@ -1,9 +1,8 @@
 'use client';
 
+import { activeChatIdAtom, chatSummariesAtom } from '@/state/aiAtoms/aiChatAtoms';
 import React from 'react';
 import { RecoilRoot, useRecoilState, useRecoilValueLoadable } from 'recoil';
-import { activeChatIdAtom } from '@/state/aiAtoms/old/chatAtoms';
-import { chatSummariesSelector } from '@/app/trials/core-chat-trial/hooks/old/useChatAtomsDb';
 import GenericComponent from './Component5';
 
 
@@ -12,14 +11,14 @@ import GenericComponent from './Component5';
 
 function App() {
     const [activeChatId, setActiveChatId] = useRecoilState(activeChatIdAtom);
-    const chatSummariesLoadable = useRecoilValueLoadable(chatSummariesSelector);
+    const chatSummariesLoadable = useRecoilValueLoadable(chatSummariesAtom);
 
 
     return (
         <RecoilRoot>
             <GenericComponent
                 activeItemIdAtom={activeChatIdAtom}
-                itemSummariesSelector={chatSummariesSelector}
+                itemSummariesSelector={chatSummariesAtom}
             />
         </RecoilRoot>
     );

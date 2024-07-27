@@ -17,6 +17,7 @@ export class SocketManager {
     private sessionUrl: string;
     private socketNamespace: string;
     private sid: string | null = null;
+    private loggedEvents: Set<string> = new Set();
 
     private constructor(matrixId: string, sessionUrl: string, socketNamespace: string) {
         this.matrixId = matrixId;
@@ -211,7 +212,10 @@ export class SocketManager {
         if (!this.socket) return;
 
         const listener = (data: any) => {
-            console.log(`Dynamic event received: ${eventName}`, data);
+            if (!this.loggedEvents.has(eventName)) {
+                console.log(`Dynamic event received: ${eventName}`, data);
+                this.loggedEvents.add(eventName);
+            }
             this.eventHandler.handleEvent(eventName, data);
         };
 

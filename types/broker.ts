@@ -33,49 +33,51 @@ export type TableData = {
 };
 
 export interface Component {
-    id: string;
-    type: string;
-    label?: string;
-    tooltip?: string;
-    description?: string;
-    maxLength?: number;
-    placeholder?: string;
-    defaultValue?: string | number | boolean | string[] | number[] | File;
-    defaultChecked?: boolean;
-    displayOrder?: number;
-    validation?: boolean;
-    dependencies?: string[];
-    required?: boolean;
-    options?: string[]
-    groupOptions?: { value: string; label: string }[];
-    size?: "xs" | "sm" | "md" | "lg" | "xl";
-    color?: string;
-    exampleInputs?: string[];
-    group?: string;
-    min?: number;
-    max?: number;
-    step?: number;
-    value?: number | string | boolean | string[] | number[] | File;
-    onChange?: ((value: string | number | boolean) => void) | ((value: string[] | number[]) => void);
-    tableData?: TableData;
-    src?: any;
     alt?: string;
-    radius?: "xs" | "sm" | "md" | "lg" | "xl" | "full";
-    h?: number | "auto";
-    w?: number | "auto";
+    autosize?: any;
+    color?: string;
+    defaultChecked?: boolean;
+    defaultValue?: string | number | boolean | string[] | number[] | File;
+    dependencies?: string[];
+    description?: string;
+    displayOrder?: number;
+    error?: string;
+    exampleInputs?: string[];
+    expandable?: boolean;
+    file?: string;
     fit?: "fill" | "contain" | "cover" | "none" | "scale-down";
-    marks?: { value: number; label: string }[],
-    isMarks?: boolean
-    minRows?: number
-    maxRows?: number
-    position?: "top" | "bottom" | "left" | "right"
-    withArrow?: boolean
-    withAsterisk?: boolean
-    resize?: any
-    autosize?: any
-    submitOnEnter?: boolean
-    expandable?: boolean
-    error?: string
+    group?: string;
+    groupOptions?: { value: string; label: string }[];
+    h?: number | "auto";
+    id: string;
+    isMarks?: boolean;
+    label?: string;
+    marks?: { value: number; label: string }[];
+    max?: number;
+    maxRows?: number;
+    maxLength?: number;
+    min?: number;
+    minRows?: number;
+    onChange?: ((value: string | number | boolean) => void) | ((value: string[] | number[]) => void);
+    options?: string[];
+    placeholder?: string;
+    position?: "top" | "bottom" | "left" | "right";
+    radius?: "xs" | "sm" | "md" | "lg" | "xl" | "full";
+    required?: boolean;
+    resize?: any;
+    selected?: boolean;
+    size?: "xs" | "sm" | "md" | "lg" | "xl";
+    src?: any;
+    step?: number;
+    submitOnEnter?: boolean;
+    tableData?: TableData;
+    tooltip?: string;
+    type: string;
+    value?: number | string | boolean | string[] | number[] | File;
+    validation?: boolean;
+    w?: number | "auto";
+    withArrow?: boolean;
+    withAsterisk?: boolean;
 }
 
 export type ComponentTypeInfo = {

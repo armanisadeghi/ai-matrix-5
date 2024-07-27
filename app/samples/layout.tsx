@@ -1,3 +1,4 @@
+'use client';
 //import { PrimaryLayout } from '@/layout';
 import { MainLayout } from '@/layout';
 import React, { ReactNode } from 'react';

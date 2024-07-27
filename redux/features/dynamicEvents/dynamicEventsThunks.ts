@@ -13,7 +13,7 @@ export const setupDynamicEventListener = createAsyncThunk<void, string, { state:
         const socketManager = SocketManager.getInstance(matrixId, sessionUrl, socketNamespace);
 
         const listener = (data: any) => {
-            console.log(`Listener received data for ${eventName}:`, data);
+            console.log(`dynamic Event Thunks - Listener received data for ${eventName}:`, data);
             if (typeof data === 'string') {
                 dispatch(updateDynamicEventStream({ eventName, textStream: data }));
             } else if (data && data.data) {
