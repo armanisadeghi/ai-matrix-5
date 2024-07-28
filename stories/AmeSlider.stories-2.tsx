@@ -1,6 +1,6 @@
 // AmeSlider.stories.tsx
+import AmeSlider, { AmeSliderProps } from '@/ui/slider/AmeSlider';
 import type { Meta, StoryObj } from '@storybook/react';
-import AmeSlider, { AmeSliderProps } from './AmeSlider';
 
 const meta: Meta<AmeSliderProps> = {
     title: 'Components/AmeSlider',

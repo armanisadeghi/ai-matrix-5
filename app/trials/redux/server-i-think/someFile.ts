@@ -1,7 +1,7 @@
 // Frontend (React/Redux)
-import { configureStore } from '@reduxjs/toolkit';
-import chatReducer, { addAssistantMessage, addUserMessage, updateAssistantMessage } from './chatSlice';
-import userReducer from './userSlice';
+import { configureStore } from "@reduxjs/toolkit";
+import chatReducer, { addAssistantMessage, addUserMessage, updateAssistantMessage } from "../store/chatSlice";
+import userReducer from "../store/userSlice";
 
 export const store = configureStore({
     reducer: {
@@ -14,16 +14,16 @@ export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
 // WebSocket connection
-const socket = new WebSocket('ws://aimatrixengine.com/ws');
+const socket = new WebSocket("ws://aimatrixengine.com/ws");
 
 socket.onmessage = (event) => {
     const data = JSON.parse(event.data);
     const { chatId, message, messageId, text } = data;
 
     if (message) {
-        if (message.role === 'user') {
+        if (message.role === "user") {
             store.dispatch(addUserMessage({ chatId, message }));
-        } else if (message.role === 'assistant') {
+        } else if (message.role === "assistant") {
             store.dispatch(addAssistantMessage({ chatId, message }));
         }
     } else if (messageId && text) {

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Textarea, Button, Group } from '@mantine/core';
+import { Button, Group, Textarea } from '@mantine/core';
+import { useEffect, useState } from 'react';
 
 interface TextFileEditorProps {
   file: File;

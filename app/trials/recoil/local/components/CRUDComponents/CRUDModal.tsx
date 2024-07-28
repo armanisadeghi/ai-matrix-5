@@ -1,11 +1,21 @@
-import { CRUDModalProps } from '@/app/trials/recoil/local/components/CRUDComponents/types';
-import { Button, Group, Modal, TextInput } from '@mantine/core';
-import { useForm } from '@mantine/form';
-import { useEffect } from 'react';
-import { useRecoilState } from 'recoil';
-import { currentCRUDItemAtom } from './CRUDAtoms';
+import { CRUDModalProps } from "@/app/trials/recoil/local/components/CRUDComponents/types";
+import { Button, Group, Modal, TextInput } from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { useEffect } from "react";
+import { useRecoilState } from "recoil";
+import { currentCRUDItemAtom } from "./CRUDAtoms";
 
-const CRUDModal = ({ opened, setOpened, headers, onSubmit, onDelete, title, submitLabel, readOnly = false, toggleEditMode }: CRUDModalProps) => {
+const CRUDModal = ({
+    opened,
+    setOpened,
+    headers,
+    onSubmit,
+    onDelete,
+    title,
+    submitLabel,
+    readOnly = false,
+    toggleEditMode,
+}: CRUDModalProps) => {
     const [currentItem, setCurrentItem] = useRecoilState(currentCRUDItemAtom);
 
     const form = useForm({
@@ -47,13 +57,15 @@ const CRUDModal = ({ opened, setOpened, headers, onSubmit, onDelete, title, subm
                             Edit
                         </Button>
                     )}
-                    {!readOnly && (
-                        <Button type="submit">
-                            {submitLabel}
-                        </Button>
-                    )}
+                    {!readOnly && <Button type="submit">{submitLabel}</Button>}
                     {readOnly && onDelete && (
-                        <Button onClick={() => { onDelete(); setOpened(false); }} color="red">
+                        <Button
+                            onClick={() => {
+                                onDelete();
+                                setOpened(false);
+                            }}
+                            color="red"
+                        >
                             Delete
                         </Button>
                     )}

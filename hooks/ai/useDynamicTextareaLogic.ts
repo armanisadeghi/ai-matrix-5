@@ -59,3 +59,7 @@ const useDynamicTextareaLogic = () => {
 };
 
 export default useDynamicTextareaLogic;
+
+function useStartNewChat() {
+    throw new Error('Function not implemented.');
+}

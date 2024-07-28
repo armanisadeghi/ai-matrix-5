@@ -8,8 +8,8 @@ interface AmeJsonInputProps extends Omit<JsonInputProps, 'size' | 'radius' | 'la
     enabled?: boolean;
     errorMessage?: string;
     label?: string;
-    value: Record<string, any>;
-    onChange?: (value: Record<string, any>) => void;
+    value: Record<string, any> | string;
+    onChange?: (value: Record<string, any> | string) => void;
     showButton?: boolean;
     validateJson?: boolean;
 }

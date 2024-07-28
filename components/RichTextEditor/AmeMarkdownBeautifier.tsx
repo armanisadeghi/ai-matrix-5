@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Button, Textarea } from '@mantine/core';
-import DynamicRichTextEditor from './DynamicRichTextEditor';
-import { useRichTextEditorContext } from './RichTextEditorContextProvider';
-import ToolbarControls from './ToolbarControls';
-import MakeBoldButton from './controls/MakeBoldButton';
-import InsertStarControl from './controls/InsertStarControl';
-import { handleToggleView } from './utils/handleToggleView';
-import styles from './AmeMarkdownBeautifier.module.css';
-import { RichTextEditor } from '@mantine/tiptap';
+import { Button, Textarea } from "@mantine/core";
+import { RichTextEditor } from "@mantine/tiptap";
+import { useState } from "react";
+import styles from "./AmeMarkdownBeautifier.module.css";
+import DynamicRichTextEditor from "./DynamicRichTextEditor";
+import { useRichTextEditorContext } from "./RichTextEditorContextProvider";
+import ToolbarControls from "./ToolbarControls";
+import InsertStarControl from "./controls/InsertStarControl";
+import MakeBoldButton from "./controls/MakeBoldButton";
+import { handleToggleView } from "./utils/handleToggleView";
 
 interface AmeMarkdownBeautifierProps {
     onSave: (content: string) => void;
@@ -17,7 +17,7 @@ interface AmeMarkdownBeautifierProps {
 
 const AmeMarkdownBeautifier: React.FC<AmeMarkdownBeautifierProps> = ({ onSave }) => {
     const [isPlainText, setIsPlainText] = useState(false);
-    const [plainText, setPlainText] = useState('');
+    const [plainText, setPlainText] = useState("");
     const { editor } = useRichTextEditorContext();
 
     const handleSave = () => {
@@ -39,7 +39,7 @@ const AmeMarkdownBeautifier: React.FC<AmeMarkdownBeautifierProps> = ({ onSave })
             <div className={styles.content}>
                 {!isPlainText ? (
                     <DynamicRichTextEditor editor={editor}>
-                        <RichTextEditor.Content style={{ minHeight: '700px' }} />
+                        <RichTextEditor.Content style={{ minHeight: "700px" }} />
                     </DynamicRichTextEditor>
                 ) : (
                     <Textarea
@@ -48,15 +48,15 @@ const AmeMarkdownBeautifier: React.FC<AmeMarkdownBeautifierProps> = ({ onSave })
                         placeholder="Start typing your text here..."
                         minRows={10}
                         className={styles.textarea}
-                        style={{ minHeight: '700px' }}
+                        style={{ minHeight: "700px" }}
                     />
                 )}
             </div>
-            <div style={{ marginTop: '1rem', display: 'flex', gap: '0.5rem' }}>
+            <div style={{ marginTop: "1rem", display: "flex", gap: "0.5rem" }}>
                 <MakeBoldButton />
                 <InsertStarControl />
                 <Button onClick={handleToggle} size="sm">
-                    {isPlainText ? 'Switch to Rich Text' : 'Switch to Plain Text'}
+                    {isPlainText ? "Switch to Rich Text" : "Switch to Plain Text"}
                 </Button>
                 <Button onClick={handleSave} size="sm" color="primary">
                     Save

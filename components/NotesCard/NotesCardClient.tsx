@@ -1,13 +1,13 @@
 // components/NotesCard/NotesCardClient.tsx
 
-'use client';
+"use client";
 
-import React, { useMemo, useCallback } from 'react';
-import { Flex, rem } from "@mantine/core";
 import { NotesItem } from "@/components/NotesCard/NotesItem";
-import { IconPlus } from "@tabler/icons-react";
-import AmeTitle from "@/ui/typography/AmeTitle";
 import AmeButton from "@/ui/buttons/AmeButton";
+import AmeTitle from "@/ui/typography/AmeTitle";
+import { Flex, rem } from "@mantine/core";
+import { IconPlus } from "@tabler/icons-react";
+import React, { useCallback, useMemo } from "react";
 
 interface NotesCardClientProps {
     data: any[];
@@ -15,14 +15,12 @@ interface NotesCardClientProps {
 
 export const NotesCardClient = React.memo(function NotesCardClient({ data }: NotesCardClientProps) {
     const noteItems = useMemo(() => {
-        return data.map((d: any) => (
-            <NotesItem key={d.id} {...d} mb="sm" />
-        ));
+        return data.map((d: any) => <NotesItem key={d.id} {...d} mb="sm" />);
     }, [data]);
 
     const handleAddNote = useCallback(() => {
         // Implement add note functionality
-        console.log('Add note clicked');
+        console.log("Add note clicked");
     }, []);
 
     return (

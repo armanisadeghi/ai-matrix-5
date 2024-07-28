@@ -1,39 +1,39 @@
 // components/slides/SlideSync.tsx
 
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { Button, Group, Text, Progress } from '@mantine/core';
-import { IconCloudUpload, IconCloudDownload } from '@tabler/icons-react';
+import { Button, Group, Progress, Text } from "@mantine/core";
+import { IconCloudUpload } from "@tabler/icons-react";
+import { useState } from "react";
 
 export default function SlideSync() {
     const [syncProgress, setSyncProgress] = useState(0);
-    const [syncStatus, setSyncStatus] = useState<'idle' | 'syncing' | 'completed'>('idle');
+    const [syncStatus, setSyncStatus] = useState<"idle" | "syncing" | "completed">("idle");
 
     const handleSync = async () => {
-        setSyncStatus('syncing');
+        setSyncStatus("syncing");
         // Simulating sync progress
         for (let i = 0; i <= 100; i += 10) {
             setSyncProgress(i);
-            await new Promise(resolve => setTimeout(resolve, 200));
+            await new Promise((resolve) => setTimeout(resolve, 200));
         }
-        setSyncStatus('completed');
+        setSyncStatus("completed");
         setTimeout(() => {
-            setSyncStatus('idle');
+            setSyncStatus("idle");
             setSyncProgress(0);
         }, 2000);
     };
 
     return (
         <Group>
-            <Button onClick={handleSync} leftSection={<IconCloudUpload size={14} />} loading={syncStatus === 'syncing'}>
+            <Button onClick={handleSync} leftSection={<IconCloudUpload size={14} />} loading={syncStatus === "syncing"}>
                 Sync Slides
             </Button>
-            {syncStatus !== 'idle' && (
+            {syncStatus !== "idle" && (
                 <>
                     <Progress value={syncProgress} size="sm" w={100} />
-                    <Text size="sm" color={syncStatus === 'completed' ? 'green' : 'blue'}>
-                        {syncStatus === 'completed' ? 'Sync Completed' : 'Syncing...'}
+                    <Text size="sm" color={syncStatus === "completed" ? "green" : "blue"}>
+                        {syncStatus === "completed" ? "Sync Completed" : "Syncing..."}
                     </Text>
                 </>
             )}

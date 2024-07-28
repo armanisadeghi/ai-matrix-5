@@ -56,8 +56,8 @@ const WebSocketComponent: React.FC = () => {
                 timestamp: new Date().toISOString(),
                 source: 'frontend',
                 user: {
-                    id: user.id,
-                    token: user.token
+                    id: user?.id,
+                    token: user?.token
                 }
             },
             data: { message: backendRequest },

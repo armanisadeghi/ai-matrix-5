@@ -40,7 +40,7 @@ export const Nav = () => {
         <Button
           onClick={() => {
             window.open(
-              pkg.homepage,
+              "https://github.com/your-repo", // Replace with the actual URL
               "_blank",
               "noopener noreferrer"
             );

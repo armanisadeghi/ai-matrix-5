@@ -1,18 +1,14 @@
-import supabase from './client';
-import { Database, Tables, TablesInsert, TablesUpdate, Enums } from '@/types/engineDb.types';
+import { Database, Tables, TablesInsert, TablesUpdate } from "@/types/engineDb.types";
+import supabase from "./client";
 
-export type TableNameType = string
-export type DataType = Record<string, any>
+export type TableNameType = string;
+export type DataType = Record<string, any>;
 
-
-export const createTable = async <T extends keyof Database['public']['Tables']>(
-    tableName: T,
-    data: TablesInsert<T>
+export const createTable = async <T extends keyof Database["public"]["Tables"]>(
+    tableName: T | any,
+    data: TablesInsert<T>,
 ): Promise<Tables<T>> => {
-    const { data: createdData, error } = await supabase
-        .from(tableName)
-        .insert(data)
-        .single();
+    const { data: createdData, error } = await supabase.from(tableName).insert(data).single();
 
     if (error) {
         throw new Error(`Error creating data in ${tableName}: ${error.message}`);
@@ -21,14 +17,14 @@ export const createTable = async <T extends keyof Database['public']['Tables']>(
     return createdData as Tables<T>;
 };
 
-export const getTableData = async <T extends keyof Database['public']['Tables']>(
-    tableName: T,
-    filter?: Partial<Tables<T>>
+export const getTableData = async <T extends keyof Database["public"]["Tables"]>(
+    tableName: T | any,
+    filter?: Partial<Tables<T>>,
 ): Promise<Tables<T>[]> => {
-    let query = supabase.from(tableName).select('*');
+    let query = supabase.from(tableName).select("*");
 
     if (filter) {
-        Object.keys(filter).forEach(key => {
+        Object.keys(filter).forEach((key) => {
             query = query.eq(key as string, filter[key as keyof Tables<T>]);
         });
     }
@@ -42,29 +38,23 @@ export const getTableData = async <T extends keyof Database['public']['Tables']>
     return data as Tables<T>[];
 };
 
-export const updateTableData = async <T extends keyof Database['public']['Tables']>(
-    tableName: T,
+export const updateTableData = async <T extends keyof Database["public"]["Tables"]>(
+    tableName: T | any,
     id: number,
-    data: TablesUpdate<T>
+    data: TablesUpdate<T>,
 ): Promise<void> => {
-    const { error } = await supabase
-        .from(tableName)
-        .update(data)
-        .eq('id', id);
+    const { error } = await supabase.from(tableName).update(data).eq("id", id);
 
     if (error) {
         throw new Error(`Error updating data in ${tableName}: ${error.message}`);
     }
 };
 
-export const deleteTableData = async <T extends keyof Database['public']['Tables']>(
-    tableName: T,
-    id: number
+export const deleteTableData = async <T extends keyof Database["public"]["Tables"]>(
+    tableName: T | any,
+    id: number,
 ): Promise<void> => {
-    const { error } = await supabase
-        .from(tableName)
-        .delete()
-        .eq('id', id);
+    const { error } = await supabase.from(tableName).delete().eq("id", id);
 
     if (error) {
         throw new Error(`Error deleting data from ${tableName}: ${error.message}`);

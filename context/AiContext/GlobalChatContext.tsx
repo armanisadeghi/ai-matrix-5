@@ -1,25 +1,39 @@
 // chat-app/AiContext/GlobalChatContext.tsx
-'use client';
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { GlobalChatData, GlobalChatContextProps, GlobalChatProviderProps } from '@/types/chat.ts';
+"use client";
+import React, { ReactNode, createContext, useContext, useState } from "react";
+
+interface GlobalChatData {
+    eventName: string;
+    userToken: string;
+    task: string;
+    recipeId: string;
+}
 
 const defaultGlobalChatData: GlobalChatData = {
     eventName: "",
     userToken: "",
     task: "",
-    recipeId: ""
+    recipeId: "",
 };
+interface GlobalChatContextProps {
+    globalChatData: GlobalChatData;
+    updateGlobalChatData: (data: Partial<GlobalChatData>) => void;
+}
 
 const GlobalChatContext = createContext<GlobalChatContextProps>({
     globalChatData: defaultGlobalChatData,
-    updateGlobalChatData: () => {}
+    updateGlobalChatData: () => {},
 });
+
+interface GlobalChatProviderProps {
+    children: ReactNode;
+}
 
 export const GlobalChatProvider: React.FC<GlobalChatProviderProps> = ({ children }) => {
     const [globalChatData, setGlobalChatData] = useState<GlobalChatData>(defaultGlobalChatData);
 
     const updateGlobalChatData = (data: Partial<GlobalChatData>) => {
-        setGlobalChatData(prev => ({ ...prev, ...data }));
+        setGlobalChatData((prev) => ({ ...prev, ...data }));
     };
 
     return (

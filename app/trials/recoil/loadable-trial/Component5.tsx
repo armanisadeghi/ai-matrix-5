@@ -1,24 +1,30 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { useRecoilState, useRecoilValueLoadable, RecoilState, RecoilValue } from 'recoil';
-import { SimpleGrid, Button, Modal } from '@mantine/core';
+import { Button, Modal, SimpleGrid } from "@mantine/core";
+import React, { useState } from "react";
+import { RecoilState, RecoilValue, useRecoilState, useRecoilValueLoadable } from "recoil";
 
 // Constants for the indexes of 'id' and 'name'
 const ID_INDEX = 0; // Adjust this index as needed
 const NAME_INDEX = 1; // Adjust this index as needed
 
 // Modal Component
-const GenericModal: React.FC<{ showPopup: boolean, onClose: () => void, item: any }> = ({ showPopup, onClose, item }) => (
+const GenericModal: React.FC<{ showPopup: boolean; onClose: () => void; item: any }> = ({
+    showPopup,
+    onClose,
+    item,
+}) => (
     <Modal opened={showPopup} onClose={onClose} title="Details">
         {Object.keys(item).map((key, index) => (
-            <p key={index}><strong>{key}:</strong> {item[key]}</p>
+            <p key={index}>
+                <strong>{key}:</strong> {item[key]}
+            </p>
         ))}
     </Modal>
 );
 
 // Item Component
-const GenericItem: React.FC<{ item: any, handleButtonClick: (item: any) => void }> = ({ item, handleButtonClick }) => (
+const GenericItem: React.FC<{ item: any; handleButtonClick: (item: any) => void }> = ({ item, handleButtonClick }) => (
     <>
         <SimpleGrid cols={2} spacing="sm" verticalSpacing="sm">
             <div>
@@ -55,12 +61,12 @@ function GenericComponent({ activeItemIdAtom, itemSummariesSelector }: GenericCo
             setActiveItemId(itemId);
             setShowPopup(true);
         } else {
-            console.error('Error: id is undefined');
+            console.error("Error: id is undefined");
         }
     };
 
     switch (itemSummariesLoadable.state) {
-        case 'hasValue':
+        case "hasValue":
             return (
                 <>
                     {itemSummariesLoadable.contents.map((item: any, index: number) => (
@@ -71,9 +77,9 @@ function GenericComponent({ activeItemIdAtom, itemSummariesSelector }: GenericCo
                     )}
                 </>
             );
-        case 'loading':
+        case "loading":
             return <div>Loading...</div>;
-        case 'hasError':
+        case "hasError":
             throw itemSummariesLoadable.contents;
         default:
             return null;

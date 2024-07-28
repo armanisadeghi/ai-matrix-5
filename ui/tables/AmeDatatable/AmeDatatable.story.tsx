@@ -1,7 +1,7 @@
-import { AmeDatatable } from './AmeDatatable';
+import { AmeDatatable } from "./AmeDatatable";
 
 export default {
-  title: 'Welcome',
+    title: "AmeDatatable",
 };
 
-export const Usage = () => <AmeDatatable />;
+export const Usage = () => <AmeDatatable records={[]} columns={[]} />;

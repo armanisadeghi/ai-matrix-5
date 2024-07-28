@@ -1,11 +1,10 @@
-import { Button as MantineButton } from '@mantine/core';
+import { Button as MantineButton, ButtonProps as MantineButtonProps } from "@mantine/core";
 
-interface ButtonProps extends React.ComponentPropsWithoutRef<'button'> {
-    children: React.ReactNode;
-}
+type ButtonProps = React.ComponentPropsWithoutRef<"button"> &
+    MantineButtonProps & {
+        children: React.ReactNode;
+    };
 
 export const Button: React.FC<ButtonProps> = ({ children, ...props }) => (
-    <MantineButton {...props}>
-        {children}
-    </MantineButton>
+    <MantineButton {...props}>{children}</MantineButton>
 );

@@ -1,14 +1,36 @@
-import { activeRecipeIdAtom, activeRecipeResponseAtom, activeRecipeStreamAtom, brokersAtom, BrokerValue, modelOverridesAtom, otherOverridesAtom, processorOverridesAtom, requestStreamAtom, runSimpleRecipeSocketTaskSelector } from '@/state/aiAtoms/recipeAtoms';
-import { useSocket } from '@/utils/socketio/useSocket';
-import { Button, Card, Center, Container, Grid, Group, JsonInput, Switch, Text, Textarea, TextInput } from '@mantine/core';
-import React, { useCallback, useEffect, useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { v4 } from 'uuid';
-
+import { BrokerValue } from "@/redux/features/broker/types";
+import {
+    activeRecipeIdAtom,
+    activeRecipeResponseAtom,
+    activeRecipeStreamAtom,
+    brokersAtom,
+    otherOverridesAtom,
+    processorOverridesAtom,
+    requestStreamAtom,
+    runSimpleRecipeSocketTaskSelector,
+    modelNameOverrideAtom
+} from "@/state/aiAtoms/recipeAtoms";
+import { useSocket } from "@/utils/socketio/useSocket";
+import {
+    Button,
+    Card,
+    Center,
+    Container,
+    Grid,
+    Group,
+    JsonInput,
+    Switch,
+    Text,
+    Textarea,
+    TextInput,
+} from "@mantine/core";
+import React, { useCallback, useEffect, useState } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { v4 } from "uuid";
 
 const FullSocketTester: React.FC = () => {
     const [recipeId, setRecipeId] = useRecoilState(activeRecipeIdAtom);
-    const [modelOverrides, setModelOverrides] = useRecoilState(modelOverridesAtom);
+    const [modelOverrides, setModelOverrides] = useRecoilState(modelNameOverrideAtom);
     const [processorOverrides, setProcessorOverrides] = useRecoilState(processorOverridesAtom);
     const [otherOverrides, setOtherOverrides] = useRecoilState(otherOverridesAtom);
     const [requestStream, setRequestStream] = useRecoilState(requestStreamAtom);
@@ -17,18 +39,31 @@ const FullSocketTester: React.FC = () => {
     const [brokers, setBrokers] = useRecoilState(brokersAtom);
     const socketTask = useRecoilValue(runSimpleRecipeSocketTaskSelector(recipeId));
 
-    const {socketStatus, isAuthenticated, startTask, addDirectListener, removeDirectListener, isAuthenticatedAndConnected, emitMessage, getSocket, addCatchallListener, removeCatchallListener, addRawPacketListener, removeRawPacketListener} = useSocket();
+    const {
+        socketStatus,
+        isAuthenticated,
+        startTask,
+        addDirectListener,
+        removeDirectListener,
+        isAuthenticatedAndConnected,
+        emitMessage,
+        getSocket,
+        addCatchallListener,
+        removeCatchallListener,
+        addRawPacketListener,
+        removeRawPacketListener,
+    } = useSocket();
 
     // New state for testing capabilities
-    const [sessionId, setSessionId] = useState<string>('');
-    const [directEventName, setDirectEventName] = useState<string>('');
-    const [directEventData, setDirectEventData] = useState<string>('');
-    const [classEventName, setClassEventName] = useState<string>('');
-    const [classEventData, setClassEventData] = useState<string>('');
-    const [directListenerName, setDirectListenerName] = useState<string>('');
-    const [directListenerData, setDirectListenerData] = useState<string>('');
-    const [classListenerName, setClassListenerName] = useState<string>('');
-    const [classListenerData, setClassListenerData] = useState<string>('');
+    const [sessionId, setSessionId] = useState<string>("");
+    const [directEventName, setDirectEventName] = useState<string>("");
+    const [directEventData, setDirectEventData] = useState<string>("");
+    const [classEventName, setClassEventName] = useState<string>("");
+    const [classEventData, setClassEventData] = useState<string>("");
+    const [directListenerName, setDirectListenerName] = useState<string>("");
+    const [directListenerData, setDirectListenerData] = useState<string>("");
+    const [classListenerName, setClassListenerName] = useState<string>("");
+    const [classListenerData, setClassListenerData] = useState<string>("");
     const [catchallEvents, setCatchallEvents] = useState<string[]>([]);
     const [rawPacketEvents, setRawPacketEvents] = useState<string[]>([]);
     const [dynamicEvents, setDynamicEvents] = useState<string[]>([]);
@@ -36,96 +71,103 @@ const FullSocketTester: React.FC = () => {
     useEffect(() => {
         const socket = getSocket();
         if (socket) {
-            setSessionId(socket.id || '');
+            setSessionId(socket.id || "");
         }
     }, [getSocket, socketStatus]);
 
     useEffect(() => {
         const handleSimpleRecipeStream = (data: string) => {
-            setStreamData(prev => prev + data);
+            setStreamData((prev) => prev + data);
         };
 
         const handleSimpleRecipeComplete = (data: string) => {
             setResponseData(data);
         };
 
-        addDirectListener('simple_recipe_stream', handleSimpleRecipeStream);
-        addDirectListener('simple_recipe_complete', handleSimpleRecipeComplete);
+        addDirectListener("simple_recipe_stream", handleSimpleRecipeStream);
+        addDirectListener("simple_recipe_complete", handleSimpleRecipeComplete);
 
         return () => {
-            removeDirectListener('simple_recipe_stream', handleSimpleRecipeStream);
-            removeDirectListener('simple_recipe_complete', handleSimpleRecipeComplete);
+            removeDirectListener("simple_recipe_stream", handleSimpleRecipeStream);
+            removeDirectListener("simple_recipe_complete", handleSimpleRecipeComplete);
         };
     }, [addDirectListener, removeDirectListener, setStreamData, setResponseData]);
 
     useEffect(() => {
         const handleCatchallEvent = (eventName: string, ...args: any[]) => {
             const eventInfo = `Namespace event: ${eventName}, Data: ${JSON.stringify(args)}`;
-            setCatchallEvents(prev => [...prev, eventInfo]);
+            setCatchallEvents((prev) => [...prev, eventInfo]);
         };
 
         const handleRawPacket = (packet: any) => {
-            if (packet.type === 'message') {
+            if (packet.type === "message") {
                 const eventInfo = `Raw packet: ${JSON.stringify(packet.data)}`;
-                setRawPacketEvents(prev => [...prev, eventInfo]);
+                setRawPacketEvents((prev) => [...prev, eventInfo]);
             }
         };
 
         const handleDynamicEvent = (eventName: string, data: any) => {
             const eventInfo = `Dynamic event: ${eventName}, Data: ${JSON.stringify(data)}`;
-            setDynamicEvents(prev => [...prev, eventInfo]);
+            setDynamicEvents((prev) => [...prev, eventInfo]);
         };
 
         addCatchallListener(handleCatchallEvent);
         addRawPacketListener(handleRawPacket);
 
-
         const handleIncomingStreamEvent = (data: { event_name: string }) => {
-            console.log('Received incoming stream event:', data.event_name);
+            console.log("Received incoming stream event:", data.event_name);
             const dynamicListener = (eventData: any) => handleDynamicEvent(data.event_name, eventData);
             addDirectListener(data.event_name, dynamicListener);
         };
 
-        addDirectListener('incoming_stream_event', handleIncomingStreamEvent);
+        addDirectListener("incoming_stream_event", handleIncomingStreamEvent);
 
         return () => {
             removeCatchallListener(handleCatchallEvent);
             removeRawPacketListener(handleRawPacket);
-            removeDirectListener('incoming_stream_event', handleIncomingStreamEvent);
+            removeDirectListener("incoming_stream_event", handleIncomingStreamEvent);
             // Remove any dynamic listeners here if you've stored them
         };
-    }, [addCatchallListener, removeCatchallListener, addRawPacketListener, removeRawPacketListener, addDirectListener, removeDirectListener]);
+    }, [
+        addCatchallListener,
+        removeCatchallListener,
+        addRawPacketListener,
+        removeRawPacketListener,
+        addDirectListener,
+        removeDirectListener,
+    ]);
 
     const handleSubmit = useCallback(() => {
         if (socketTask.length > 0 && isAuthenticatedAndConnected()) {
-            console.log('handleSubmit Starting task:', socketTask)
-            startTask('simple_recipe', socketTask);
+            console.log("handleSubmit Starting task:", socketTask);
+            startTask("simple_recipe", socketTask);
         } else {
-            console.error('Socket not authenticated or connected, or socketTask is empty');
+            console.error("Socket not authenticated or connected, or socketTask is empty");
         }
     }, [startTask, socketTask, isAuthenticatedAndConnected]);
 
     const handleAddBroker = useCallback(() => {
         const newBroker: BrokerValue = {
             id: v4(),
-            official_name: '',
-            name: '',
-            value: '',
-            data_type: 'str',
+            official_name: "",
+            name: "",
+            value: "",
+            data_type: "str",
             ready: false,
         };
-        setBrokers(prevBrokers => [...prevBrokers, newBroker]);
+        setBrokers((prevBrokers) => [...prevBrokers, newBroker]);
     }, [setBrokers]);
 
-    const handleUpdateBroker = useCallback((index: number, field: keyof BrokerValue, value: any) => {
-        setBrokers(prevBrokers =>
-            prevBrokers.map((broker, i) =>
-                i === index ? {...broker, [field]: value} : broker
-            )
-        );
-    }, [setBrokers]);
+    const handleUpdateBroker = useCallback(
+        (index: number, field: keyof BrokerValue, value: any) => {
+            setBrokers((prevBrokers) =>
+                prevBrokers.map((broker, i) => (i === index ? { ...broker, [field]: value } : broker)),
+            );
+        },
+        [setBrokers],
+    );
 
-    const areBrokersReady = brokers.every(broker => broker.ready);
+    const areBrokersReady = brokers.every((broker) => broker.ready);
 
     // New functions for testing capabilities
     const handleDirectEmit = useCallback(() => {
@@ -156,51 +198,33 @@ const FullSocketTester: React.FC = () => {
 
     return (
         <Container size="xl">
-            <Center style={{minHeight: '100vh'}}>
-                <Card shadow="sm" padding="lg" style={{width: '1000px'}}>
-                    <Text fw={500} size="xl" mb="md">AI Recipe Tester</Text>
+            <Center style={{ minHeight: "100vh" }}>
+                <Card shadow="sm" padding="lg" style={{ width: "1000px" }}>
+                    <Text fw={500} size="xl" mb="md">
+                        AI Recipe Tester
+                    </Text>
                     <Text>Socket Status: {socketStatus}</Text>
-                    <Text>Authenticated: {isAuthenticated ? 'Yes' : 'No'}</Text>
+                    <Text>Authenticated: {isAuthenticated ? "Yes" : "No"}</Text>
                     <Text>Session ID: {sessionId}</Text>
                     <Card shadow="sm" padding="sm" mt="md">
                         <Text fw={500}>Catchall Events</Text>
-                        <Textarea
-                            value={catchallEvents.join('\n')}
-                            readOnly
-                            minRows={2}
-                            autosize
-                        />
+                        <Textarea value={catchallEvents.join("\n")} readOnly minRows={2} autosize />
                     </Card>
                     <Card shadow="sm" padding="sm" mt="md">
                         <Text fw={500}>Namespace Events</Text>
-                        <Textarea
-                            value={catchallEvents.join('\n')}
-                            readOnly
-                            minRows={5}
-                            maxRows={10}
-                        />
+                        <Textarea value={catchallEvents.join("\n")} readOnly minRows={5} maxRows={10} />
                     </Card>
 
                     {/* Raw Packet Events Display */}
                     <Card shadow="sm" padding="sm" mt="md">
                         <Text fw={500}>Raw Packet Events</Text>
-                        <Textarea
-                            value={rawPacketEvents.join('\n')}
-                            readOnly
-                            minRows={5}
-                            maxRows={10}
-                        />
+                        <Textarea value={rawPacketEvents.join("\n")} readOnly minRows={5} maxRows={10} />
                     </Card>
 
                     {/* Dynamic Events Display */}
                     <Card shadow="sm" padding="sm" mt="md">
                         <Text fw={500}>Dynamic Events</Text>
-                        <Textarea
-                            value={dynamicEvents.join('\n')}
-                            readOnly
-                            minRows={5}
-                            maxRows={10}
-                        />
+                        <Textarea value={dynamicEvents.join("\n")} readOnly minRows={5} maxRows={10} />
                     </Card>
 
                     {/* Direct Emit Test */}
@@ -250,13 +274,7 @@ const FullSocketTester: React.FC = () => {
                             />
                             <Button onClick={handleDirectListen}>Listen Directly</Button>
                         </Group>
-                        <Textarea
-                            placeholder="Received Data"
-                            value={directListenerData}
-                            readOnly
-                            minRows={3}
-                            mt="sm"
-                        />
+                        <Textarea placeholder="Received Data" value={directListenerData} readOnly minRows={3} mt="sm" />
                     </Card>
 
                     {/* Class Listen Test */}
@@ -270,15 +288,8 @@ const FullSocketTester: React.FC = () => {
                             />
                             <Button onClick={handleClassListen}>Listen via Class</Button>
                         </Group>
-                        <Textarea
-                            placeholder="Received Data"
-                            value={classListenerData}
-                            readOnly
-                            minRows={3}
-                            mt="sm"
-                        />
+                        <Textarea placeholder="Received Data" value={classListenerData} readOnly minRows={3} mt="sm" />
                     </Card>
-
 
                     <Grid>
                         <Grid.Col span={5}>
@@ -294,31 +305,33 @@ const FullSocketTester: React.FC = () => {
                                 onChange={(e) => setRequestStream(e.currentTarget.checked)}
                                 mb="sm"
                             />
-                            <Button onClick={handleAddBroker} mb="sm" variant="outline">Add Broker</Button>
+                            <Button onClick={handleAddBroker} mb="sm" variant="outline">
+                                Add Broker
+                            </Button>
                             {brokers.map((broker, index) => (
                                 <Card key={broker.id} shadow="xs" mb="sm" withBorder>
                                     <TextInput
                                         label="Broker Official Name"
                                         value={broker.official_name}
-                                        onChange={(e) => handleUpdateBroker(index, 'official_name', e.target.value)}
+                                        onChange={(e) => handleUpdateBroker(index, "official_name", e.target.value)}
                                         mb="xs"
                                     />
                                     <TextInput
                                         label="Broker Name"
                                         value={broker.name}
-                                        onChange={(e) => handleUpdateBroker(index, 'name', e.target.value)}
+                                        onChange={(e) => handleUpdateBroker(index, "name", e.target.value)}
                                         mb="xs"
                                     />
                                     <Textarea
                                         label="Broker Value"
                                         value={broker.value}
-                                        onChange={(e) => handleUpdateBroker(index, 'value', e.target.value)}
+                                        onChange={(e) => handleUpdateBroker(index, "value", e.target.value)}
                                         mb="xs"
                                     />
                                     <Switch
                                         label="Broker Ready"
                                         checked={broker.ready}
-                                        onChange={(e) => handleUpdateBroker(index, 'ready', e.currentTarget.checked)}
+                                        onChange={(e) => handleUpdateBroker(index, "ready", e.currentTarget.checked)}
                                     />
                                 </Card>
                             ))}
@@ -371,16 +384,8 @@ const FullSocketTester: React.FC = () => {
                     >
                         Submit
                     </Button>
-                    {streamData && (
-                        <Text mt="md">
-                            Stream Data: {streamData}
-                        </Text>
-                    )}
-                    {responseData && (
-                        <Text mt="md">
-                            Response Data: {responseData}
-                        </Text>
-                    )}
+                    {streamData && <Text mt="md">Stream Data: {streamData}</Text>}
+                    {responseData && <Text mt="md">Response Data: {responseData}</Text>}
                     <JsonInput
                         label="Socket Task (Read Only)"
                         value={JSON.stringify(socketTask, null, 2)}
@@ -394,6 +399,6 @@ const FullSocketTester: React.FC = () => {
             </Center>
         </Container>
     );
-}
+};
 
 export default FullSocketTester;

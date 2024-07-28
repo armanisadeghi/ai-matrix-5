@@ -5,8 +5,8 @@ import { Select, Button, Group, Text, Stack } from '@mantine/core';
 import { IconFileExport } from '@tabler/icons-react';
 
 interface AudioConverterProps {
-    file: File;
-    onConvert: (convertedFile: File) => void;
+    file?: File;
+    onConvert?: (convertedFile: File) => void;
 }
 
 const AudioConverter: React.FC<AudioConverterProps> = ({ file, onConvert }) => {

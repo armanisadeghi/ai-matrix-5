@@ -1,5 +1,5 @@
 // types/user.types.ts
-import { Database } from '@/types/database.types';
+import { Database } from "@/types/database.types";
 
 export interface AuthProfile {
     email?: string | null;
@@ -41,18 +41,16 @@ export interface MatrixUser {
     lastLogin?: string | null; // Corresponds to "last_login" in the database
     lastActivity?: string | null; // Corresponds to "last_activity" in the database
     auth_id: string;
+    // TODO: added the below to avert build erros
+    id?: string;
+    token?: string;
 }
-
-
 
 /*
 export type MatrixUser = Omit<Database['public']['Tables']['user']['Row'], 'matrix_id'> & {
     matrix_id: string | undefined;
 };
 */
-
-
-
 
 /*
 

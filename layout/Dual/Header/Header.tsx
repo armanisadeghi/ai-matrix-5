@@ -1,9 +1,9 @@
+import { ColorSchemeToggle, Logo } from "@/components";
+import { useLayout } from "@/context/LayoutContext";
+import { PATH_USER } from "@/routes";
 import { ActionIcon, Avatar, Burger, Group, Menu, TextInput, Tooltip } from "@mantine/core";
 import { IconBell, IconSearch, IconSettings2 } from "@tabler/icons-react";
-import { ColorSchemeToggle, Logo } from "@/components";
 import Link from "next/link";
-import { PATH_USER } from "@/routes";
-import { useLayout } from "@/context/LayoutContext";
 
 type Props = {
     tabletMatch?: boolean;

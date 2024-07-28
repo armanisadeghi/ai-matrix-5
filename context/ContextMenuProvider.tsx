@@ -1,12 +1,12 @@
 // ContextMenuProvider.tsx
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { MenuItem, MenuPosition, ContextMenuContextType } from '@/types/menu.types';
+import { ContextMenuContextType, MenuItem, MenuPosition } from "@/types/menu.types";
+import React, { ReactNode, createContext, useContext, useState } from "react";
 
 const ContextMenuContext = createContext<ContextMenuContextType | undefined>(undefined);
 
 export const useContextMenu = () => {
     const context = useContext(ContextMenuContext);
-    if (!context) throw new Error('useContextMenu must be used within a ContextMenuProvider');
+    if (!context) throw new Error("useContextMenu must be used within a ContextMenuProvider");
     return context;
 };
 

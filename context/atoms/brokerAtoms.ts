@@ -1,12 +1,12 @@
 import { Broker, Component } from '@/types/broker';
 import { atom, selector, selectorFamily } from 'recoil';
 
-export const brokersAtom = atom<Broker[]>({
+export const brokersAtom = atom<Broker[] | any>({
     key: 'brokersAtom',
     default: [],
 });
 
-export const selectedBroker = atom<Broker>({
+export const selectedBroker = atom<Broker | any>({
     key: 'selectedBroker',
     default: {} as Broker
 })

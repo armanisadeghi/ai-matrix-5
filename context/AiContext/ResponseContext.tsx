@@ -1,11 +1,11 @@
 // chat-app/nice-working/response/ResponseContext.tsx
-'use client';
+"use client";
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { ReactNode, createContext, useContext, useState } from "react";
 
 interface Message {
     id: string;
-    type: 'user' | 'ai';
+    type: "user" | "ai";
     content: string;
 }
 
@@ -20,7 +20,7 @@ const ResponseContext = createContext<ResponseContextType | undefined>(undefined
 export const useResponses = () => {
     const context = useContext(ResponseContext);
     if (!context) {
-        throw new Error('useResponses must be used within a ResponseProvider');
+        throw new Error("useResponses must be used within a ResponseProvider");
     }
     return context;
 };
@@ -33,14 +33,10 @@ export const ResponseProvider: React.FC<{ children: ReactNode }> = ({ children }
     };
 
     const updateMessage = (id: string, content: string) => {
-        setMessages((prevMessages) =>
-            prevMessages.map((msg) => (msg.id === id ? { ...msg, content } : msg))
-        );
+        setMessages((prevMessages) => prevMessages.map((msg) => (msg.id === id ? { ...msg, content } : msg)));
     };
 
     return (
-        <ResponseContext.Provider value={{ messages, addMessage, updateMessage }}>
-            {children}
-        </ResponseContext.Provider>
+        <ResponseContext.Provider value={{ messages, addMessage, updateMessage }}>{children}</ResponseContext.Provider>
     );
 };

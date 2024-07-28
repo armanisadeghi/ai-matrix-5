@@ -3,7 +3,7 @@
 
 import { activeChatIdAtom, chatSummariesAtom, isNewChatAtom } from '@/state/aiAtoms/aiChatAtoms';
 import { activeUserAtom } from '@/state/userAtoms';
-import { ChatDetailsType, ChatType, MatrixUser, MessageType } from '@/types';
+import { ChatDetailsType, ChatType, MessageType } from '@/types';
 import { createChatStartEntry } from '@/utils/supabase/chatDb';
 import supabase from '@/utils/supabase/client';
 import { useRecoilState, useRecoilValue } from 'recoil';

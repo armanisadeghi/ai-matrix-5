@@ -1,6 +1,6 @@
-import React, { FC, ReactNode, RefObject } from 'react';
-import { ScrollArea } from '@mantine/core';
-import styles from '@/ui/layout/AmeCenterContent/CenterContent.module.css';
+import styles from "@/ui/layout/AmeCenterContent/CenterContent.module.css";
+import { ScrollArea } from "@mantine/core";
+import { FC, ReactNode, RefObject } from "react";
 
 interface ResponsiveLayoutProps {
     textareaContainerRef?: RefObject<HTMLDivElement>;
@@ -10,17 +10,17 @@ interface ResponsiveLayoutProps {
     bottomContent?: ReactNode;
 }
 
-const CenterContent: FC<ResponsiveLayoutProps> = (
-    {
-        mainContent,
-        bottomContent,
-    }) => {
-
+const CenterContent: FC<ResponsiveLayoutProps> = ({ mainContent, bottomContent }) => {
     return (
-        <div className={styles['ame-centerContent-container']}>
-            <div className={styles['ame-centerContent-leftGapColumn']}></div>
-            <div className={styles['ame-centerContent-centerColumn']}>
-                <ScrollArea h={250} scrollbarSize={4} scrollHideDelay={500} className={styles['ame-centerContent-mainContent']}>
+        <div className={styles["ame-centerContent-container"]}>
+            <div className={styles["ame-centerContent-leftGapColumn"]}></div>
+            <div className={styles["ame-centerContent-centerColumn"]}>
+                <ScrollArea
+                    h={250}
+                    scrollbarSize={4}
+                    scrollHideDelay={500}
+                    className={styles["ame-centerContent-mainContent"]}
+                >
                     <div>
                         testing
                         {mainContent}
@@ -28,14 +28,12 @@ const CenterContent: FC<ResponsiveLayoutProps> = (
                     </div>
                 </ScrollArea>
                 {bottomContent && (
-                    <div className={styles['ame-centerContent-bottomSection']}>
-                        <div>
-                            {bottomContent}
-                        </div>
+                    <div className={styles["ame-centerContent-bottomSection"]}>
+                        <div>{bottomContent}</div>
                     </div>
                 )}
             </div>
-            <div className={styles['ame-centerContent-rightGapColumn']}></div>
+            <div className={styles["ame-centerContent-rightGapColumn"]}></div>
         </div>
     );
 };

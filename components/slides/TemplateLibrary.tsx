@@ -1,9 +1,9 @@
 // components/slides/TemplateLibrary.tsx
 
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { SimpleGrid, Card, Image, Text, Button, Modal } from '@mantine/core';
+import { Button, Card, Image, Modal, SimpleGrid, Text } from "@mantine/core";
+import { useEffect, useState } from "react";
 
 interface Template {
     id: string;
@@ -23,9 +23,9 @@ export default function TemplateLibrary() {
     const fetchTemplates = async () => {
         // Replace this with actual API call to fetch templates
         const mockTemplates: Template[] = [
-            { id: '1', name: 'Business Presentation', thumbnailUrl: '/templates/business.jpg' },
-            { id: '2', name: 'Creative Portfolio', thumbnailUrl: '/templates/creative.jpg' },
-            { id: '3', name: 'Educational Slides', thumbnailUrl: '/templates/education.jpg' },
+            { id: "1", name: "Business Presentation", thumbnailUrl: "/templates/business.jpg" },
+            { id: "2", name: "Creative Portfolio", thumbnailUrl: "/templates/creative.jpg" },
+            { id: "3", name: "Educational Slides", thumbnailUrl: "/templates/education.jpg" },
             // Add more mock templates as needed
         ];
         setTemplates(mockTemplates);
@@ -38,7 +38,7 @@ export default function TemplateLibrary() {
 
     const handleUseTemplate = () => {
         // Here you would implement the logic to use the selected template
-        console.log('Using template:', selectedTemplate?.name);
+        console.log("Using template:", selectedTemplate?.name);
         setModalOpen(false);
     };
 

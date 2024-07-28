@@ -13,7 +13,7 @@ interface ChatState {
     fetchStatus: 'idle' | 'loading' | 'succeeded' | 'failed';
 }
 
-const initialState: ChatState = {
+const initialState: ChatState | any = {
     chatSummaries: [],
     activeChatId: null,
     isNewChat: false,

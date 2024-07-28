@@ -1,15 +1,27 @@
-import React from 'react';
-import { ChevronRight, Calendar, Github } from 'lucide-react';
+import { Calendar, ChevronRight } from "lucide-react";
+import { ReactNode } from "react";
 
-const Card = ({ title, description, tags, githubLink, customBg }) => (
-    <div className={`bg-gray-700 hover:bg-gray-600 border border-gray-600 hover:border-gray-500 p-5 rounded-xl cursor-pointer transition-all duration-300 group ${customBg}`}>
+interface CardProps {
+    title: ReactNode;
+    description: ReactNode;
+    tags?: string[];
+    githubLink?: string;
+    customBg?: string;
+    children?: ReactNode;
+}
+
+const Card = ({ title, description, tags = [], githubLink = "", customBg = "", children }: CardProps) => (
+    <div
+        className={`bg-gray-700 hover:bg-gray-600 border border-gray-600 hover:border-gray-500 p-5 rounded-xl cursor-pointer transition-all duration-300 group ${customBg}`}
+    >
         <div className="space-y-4">
             <div>
-                <h2 className="text-xl font-semibold text-white group-hover:text-gray-100 transition-colors duration-300">{title}</h2>
+                <h2 className="text-xl font-semibold text-white group-hover:text-gray-100 transition-colors duration-300">
+                    {title}
+                </h2>
                 <p className="text-gray-400 group-hover:text-gray-300 transition-colors duration-300">{description}</p>
             </div>
-            <div className="flex flex-wrap gap-2">
-            </div>
+            <div className="flex flex-wrap gap-2">{children}</div>
         </div>
     </div>
 );
@@ -22,9 +34,13 @@ const Button = ({ children, icon: Icon }) => (
 );
 
 const DashboardCards = () => (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black p-8" style={{
-        backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.4' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")"
-    }}>
+    <div
+        className="min-h-screen bg-gradient-to-b from-gray-900 to-black p-8"
+        style={{
+            backgroundImage:
+                "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.4' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")",
+        }}
+    >
         <div className="max-w-6xl mx-auto space-y-12">
             <section className="space-y-8">
                 <div>
@@ -35,19 +51,16 @@ const DashboardCards = () => (
                     <Card
                         title="Import git repository"
                         description="Get started by importing a repository from GitHub."
-                        tags={[]}
                     />
                     <Card
                         title="Generate with AI"
                         description="Generate a custom starter repo with our AI code assistant."
-                        tags={[]}
                     >
                         <Button icon={ChevronRight}>Add VS Code extension</Button>
                     </Card>
                     <Card
                         title="Get help from our founders"
                         description="Our CTO can help you plan how to build your AI product."
-                        tags={[]}
                     >
                         <Button icon={Calendar}>Book a session</Button>
                     </Card>

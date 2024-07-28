@@ -4,8 +4,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Slider, Button, Group, Text, Stack, Select } from '@mantine/core';
 
 interface AudioEffectsProps {
-    src: string;
-    onProcessed: (processedAudio: AudioBuffer) => void;
+    src?: string;
+    onProcessed?: (processedAudio: AudioBuffer) => void;
 }
 
 const AudioEffects: React.FC<AudioEffectsProps> = ({ src, onProcessed }) => {

@@ -1,9 +1,17 @@
 // utils/transforms.ts
 
-import { Chat } from '@/types/chat.ts';
+interface IChat {
+    chatId: string;
+    createdAt: string;
+    userId: string;
+    chatTitle: string;
+    messagesArray: any[];
+    lastEdited: string;
+    metadata: any;
+}
 
 // Chat transformations
-const chatsDbToFrontend = (dbRecord: any): Chat => ({
+const chatsDbToFrontend = (dbRecord: any): IChat => ({
     chatId: dbRecord.chat_id,
     createdAt: dbRecord.created_at,
     userId: dbRecord.user_id,
@@ -13,7 +21,7 @@ const chatsDbToFrontend = (dbRecord: any): Chat => ({
     metadata: dbRecord.metadata,
 });
 
-const chatFrontendToDb = (frontendRecord: Chat): any => ({
+const chatFrontendToDb = (frontendRecord: IChat): any => ({
     chat_id: frontendRecord.chatId,
     created_at: frontendRecord.createdAt,
     user_id: frontendRecord.userId,
@@ -46,7 +54,7 @@ const transformMap: { [key: string]: { toFrontend: Function; toBackend: Function
     // Add other table transformations here
 };
 
-const transformData = (table: string, transformTo: 'toFrontend' | 'toBackend', record: any) => {
+const transformData = (table: string, transformTo: "toFrontend" | "toBackend", record: any) => {
     console.log(`Transforming data for table: ${table}, direction: ${transformTo}, record: ${JSON.stringify(record)}`);
     const transformer = transformMap[table]?.[transformTo];
     if (transformer) {
@@ -59,3 +67,4 @@ const transformData = (table: string, transformTo: 'toFrontend' | 'toBackend', r
 };
 
 export { transformData };
+

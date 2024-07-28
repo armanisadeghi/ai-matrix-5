@@ -36,7 +36,7 @@ export const SystemMessageComponent: React.FC = () => {
             />
             <Space h="md" />
             <Textarea
-                value={formattedText}
+                value={""}
                 readOnly
                 minRows={15}
                 autosize

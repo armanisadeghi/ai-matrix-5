@@ -1,45 +1,62 @@
-import useStreamChat from '@/app/trials/recoil/local/hooks/useSteamChat';
-import { useCallback, useEffect, useState } from 'react';
-import { useRecoilCallback, useRecoilState, useRecoilValue } from 'recoil';
-import { fetchStatusAtom, isNewChatAtom, userTextInputAtom, chatMessagesAtomFamily, activeChatIdAtom, streamTriggerAtomFamily, hookIdAtom, hookIndexAtom, chatSummariesAtom } from '@/state/aiAtoms/aiChatAtoms';
-import { useMessageActions } from '@/app/trials/recoil/local/hooks/useMessageActions';
-
+import { useMessageActions } from "@/app/trials/recoil/local/hooks/useMessageActions";
+import useStreamChat from "@/app/trials/recoil/local/hooks/useSteamChat";
+import {
+    activeChatIdAtom,
+    chatMessagesAtomFamily,
+    chatStartSelector,
+    chatSummariesAtom,
+    fetchStatusAtom,
+    hookIdAtom,
+    hookIndexAtom,
+    isNewChatAtom,
+    streamTriggerAtomFamily,
+    userTextInputAtom,
+    userUpdatedArraySelector,
+} from "@/state/aiAtoms/aiChatAtoms";
+import { useCallback, useEffect, useState } from "react";
+import { useRecoilCallback, useRecoilState, useRecoilValue } from "recoil";
 
 export const useHandleUserInput = () => {
     const [isNewChat, setIsNewChat] = useRecoilState(isNewChatAtom);
     const fetchStatus = useRecoilValue(fetchStatusAtom);
     const hookId = useRecoilValue(hookIdAtom);
-    const hookIndex = useRecoilValue(hookIndexAtom)
-    const [streamTrigger, setStreamTrigger] = useRecoilState(streamTriggerAtomFamily({ hookId: hookId, index: hookIndex }));
+    const hookIndex = useRecoilValue(hookIndexAtom);
+    const [streamTrigger, setStreamTrigger] = useRecoilState(
+        streamTriggerAtomFamily({ hookId: hookId, index: hookIndex }),
+    );
     const [userTextInput, setUserTextInput] = useRecoilState(userTextInputAtom);
-    const {extractLastMessageAddReturnOne} = useMessageActions();
-    const [streamChatProps, setStreamChatProps] = useState({trigger: false, onComplete: () => {}});
+    const { extractLastMessageAddReturnOne } = useMessageActions();
+    const [streamChatProps, setStreamChatProps] = useState({ trigger: false, onComplete: () => {} });
 
     useStreamChat(streamChatProps);
 
-    const handleChat = useRecoilCallback(({snapshot, set}) => async () => {
-        if (isNewChat) {
-            const startChatObject = await snapshot.getPromise(chatStartSelector);
-            if (!startChatObject) return;
+    const handleChat = useRecoilCallback(
+        ({ snapshot, set }) =>
+            async () => {
+                if (isNewChat) {
+                    const startChatObject = await snapshot.getPromise(chatStartSelector);
+                    if (!startChatObject) return;
 
-            const {messages, ...chatSummary} = startChatObject;
-            set(chatSummariesAtom, (prevSummaries) => [...prevSummaries, chatSummary]);
-            set(chatMessagesAtomFamily(startChatObject.chatId), messages);
-        } else {
-            const arrayWithUserMessage = await snapshot.getPromise(userUpdatedArraySelector);
-            const activeChatId = await snapshot.getPromise(activeChatIdAtom);
+                    const { messages, ...chatSummary } = startChatObject;
+                    set(chatSummariesAtom, (prevSummaries) => [...prevSummaries, chatSummary]);
+                    set(chatMessagesAtomFamily(startChatObject.chatId), messages);
+                } else {
+                    const arrayWithUserMessage = await snapshot.getPromise(userUpdatedArraySelector);
+                    const activeChatId = await snapshot.getPromise(activeChatIdAtom);
 
-            if (!arrayWithUserMessage) {
-                console.error('arrayWithUserMessage is not ready');
-                return;
-            }
+                    if (!arrayWithUserMessage) {
+                        console.error("arrayWithUserMessage is not ready");
+                        return;
+                    }
 
-            const userMessageEntry = extractLastMessageAddReturnOne(arrayWithUserMessage);
-            console.log('User message entry:', userMessageEntry);
-        }
+                    const userMessageEntry = extractLastMessageAddReturnOne(arrayWithUserMessage);
+                    console.log("User message entry:", userMessageEntry);
+                }
 
-        setStreamTrigger(true);
-    }, [isNewChat, extractLastMessageAddReturnOne]);
+                setStreamTrigger(true);
+            },
+        [isNewChat, extractLastMessageAddReturnOne],
+    );
 
     const triggerProcessing = useCallback(async () => {
         try {
@@ -47,17 +64,15 @@ export const useHandleUserInput = () => {
             if (isNewChat) {
                 setIsNewChat(false);
             }
-        }
-        catch (error) {
-            console.error('Error processing chat:', error);
-        }
-        finally {
+        } catch (error) {
+            console.error("Error processing chat:", error);
+        } finally {
             setStreamChatProps({
                 trigger: true,
                 onComplete: () => {
                     setStreamTrigger(false);
-                    setUserTextInput('');
-                }
+                    setUserTextInput("");
+                },
             });
         }
     }, [handleChat, isNewChat, setIsNewChat, setUserTextInput, setStreamTrigger]);
@@ -70,8 +85,8 @@ export const useHandleUserInput = () => {
 
     return {
         triggerProcessing,
-        isProcessing: fetchStatus === 'fetching',
-        processingError: fetchStatus === 'error' || fetchStatus === 'dbError',
+        isProcessing: fetchStatus === "fetching",
+        processingError: fetchStatus === "error" || fetchStatus === "dbError",
     };
 };
 

@@ -24,6 +24,7 @@ export type MessageType = {
 
 // The individual chat objects, which may or may not have their messages
 export interface ChatType {
+    [x: string]: any;
     chatId: string;
     chatTitle: string;
     createdAt: string;

@@ -1,28 +1,46 @@
 // chat-app/AiContext/RequestMetadataContext.tsx
-'use client';
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { RequestMetadata, RequestMetadataContextProps, RequestMetadataProviderProps } from '@/types/chat.ts';
+"use client";
+import React, { ReactNode, createContext, useContext, useState } from "react";
+
+interface RequestMetadata {
+    requestId: string;
+    requestIndex: number;
+    uid: string;
+    requestTimestamp: string;
+    requestType: string;
+    requestSource: string;
+    requestChannel: string;
+}
 
 const defaultRequestMetadata: RequestMetadata = {
-    requestId: '',
+    requestId: "",
     requestIndex: 0,
-    uid: '',
-    requestTimestamp: '',
-    requestType: '',
-    requestSource: '',
-    requestChannel: ''
+    uid: "",
+    requestTimestamp: "",
+    requestType: "",
+    requestSource: "",
+    requestChannel: "",
 };
+
+interface RequestMetadataContextProps {
+    requestMetadata: RequestMetadata;
+    updateRequestMetadata: (metadata: Partial<RequestMetadata>) => void;
+}
 
 const RequestMetadataContext = createContext<RequestMetadataContextProps>({
     requestMetadata: defaultRequestMetadata,
-    updateRequestMetadata: () => {}
+    updateRequestMetadata: () => {},
 });
 
-export const RequestMetadataProvider: React.FC<RequestMetadataProviderProps> = ({ children }) => {
+interface RequestMetadataContextProviderProps {
+    children: ReactNode;
+}
+
+export const RequestMetadataProvider: React.FC<RequestMetadataContextProviderProps> = ({ children }) => {
     const [requestMetadata, setRequestMetadata] = useState<RequestMetadata>(defaultRequestMetadata);
 
     const updateRequestMetadata = (metadata: Partial<RequestMetadata>) => {
-        setRequestMetadata(prev => ({ ...prev, ...metadata }));
+        setRequestMetadata((prev) => ({ ...prev, ...metadata }));
     };
 
     return (

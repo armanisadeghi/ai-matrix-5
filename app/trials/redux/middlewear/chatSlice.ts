@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
+/* 
 const chatSlice = createSlice({
     name: 'chat',
     initialState: {
@@ -33,4 +33,4 @@ const chatSlice = createSlice({
             state.messages[action.payload.chatId] = action.payload.messages;
         });
     },
-});
+}); */

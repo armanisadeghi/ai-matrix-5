@@ -1,10 +1,9 @@
-import React from "react";
-import { Grid, Paper, PaperProps } from "@mantine/core";
-import AmeActionTextInput from "@/ui/input/AmeActionTextInput";
-import { IconDeviceFloppy } from "@tabler/icons-react";
-import { useForm } from "@mantine/form";
-import AmeTitle from "@/ui/typography/AmeTitle";
 import AmeButton from "@/ui/buttons/AmeButton";
+import AmeActionTextInput from "@/ui/input/AmeActionTextInput";
+import AmeTitle from "@/ui/typography/AmeTitle";
+import { Grid, Paper, PaperProps } from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { IconDeviceFloppy } from "@tabler/icons-react";
 
 interface UserDetailsFormProps extends PaperProps {}
 

@@ -5,7 +5,6 @@ import { Box, Grid, Space, LoadingOverlay } from '@mantine/core';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import UserMessagePaper from '@/components/AiChat/Response/UserMessagePaper';
 import AssistantMessage from '@/components/AiChat/Response/AssistantMessage';
-import useActiveMessages from '@/hooks/ai/old/useActiveMessages';
 import { activeChatIdAtom, isNewChatAtom } from '@/state/aiAtoms/aiChatAtoms';
 
 

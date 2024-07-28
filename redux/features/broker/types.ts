@@ -21,10 +21,13 @@ export interface BrokerInstance extends Broker {
 
 // Keep BrokerValue unchanged as it's required by the backend
 export interface BrokerValue {
-    id: string;
-    name: string;
-    value: any;
-    official_name: string;
-    data_type: string;
-    ready: boolean | null;
+    id?: string;
+    name?: string;
+    value?: any;
+    official_name?: string;
+    data_type?: string;
+    dataType?: string;
+    ready?: boolean | null;
+    required?: boolean;
+    defaultValue?: string;
 }

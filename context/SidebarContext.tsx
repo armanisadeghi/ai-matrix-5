@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import { ReactNode, createContext, useContext, useState } from "react";
 
 interface SidebarContextProps {
     title?: string;
@@ -8,14 +8,7 @@ interface SidebarContextProps {
 
 const SidebarContext = createContext<SidebarContextProps | undefined>(undefined);
 
-export const SidebarProvider = (
-    {
-        children,
-        initialTitle = "",
-    }: {
-        children: ReactNode;
-        initialTitle?: string;
-    }) => {
+export const SidebarProvider = ({ children, initialTitle = "" }: { children: ReactNode; initialTitle?: string }) => {
     const [sidebarContent, setSidebarContent] = useState<ReactNode>(null);
     const [title, setTitle] = useState<string | undefined>(initialTitle);
 

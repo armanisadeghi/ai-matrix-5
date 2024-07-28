@@ -112,40 +112,39 @@ const requestSettings: RequestSettings = {
         makeSmallTalk: true,
         quickAnswer: false,
         improveQuestions: true,
-        submitOnEnter: true
+        submitOnEnter: true,
     },
     pageSettings: {
-        fields: "removed for brevity"
+        fields: "removed for brevity",
     },
     userSettings: {
-        fields: "removed for brevity"
+        fields: "removed for brevity",
     },
     matrixSettings: {
-        fields: "removed for brevity"
+        fields: "removed for brevity",
     },
     clientSettings: {
-        fields: "removed for brevity"
+        fields: "removed for brevity",
     },
     agencySettings: {
-        fields: "removed for brevity"
+        fields: "removed for brevity",
     },
     variablesSettings: {
-        fields: "removed for brevity"
+        fields: "removed for brevity",
     },
     responseSettings: {
-        fields: "removed for brevity"
+        fields: "removed for brevity",
     },
     brokerSettings: {
-        fields: "removed for brevity"
+        fields: "removed for brevity",
     },
     aiModelSettings: {
-        fields: "removed for brevity"
+        fields: "removed for brevity",
     },
     controlSettings: {
-        fields: "removed for brevity"
-    }
+        fields: "removed for brevity",
+    },
 };
-
 
 interface PromptData {
     chatId: string;
@@ -170,10 +169,14 @@ interface Recipe {
     name: string;
     tags: string[];
     description: string;
-    permissions: Permission;
-    messages: Message[];
-    callParams: CallParams;
-    postParams: PostParams;
+    // permissions: Permission;
+    permissions: any;
+    // messages: Message[];
+    messages: any[];
+    // callParams: CallParams;
+    callParams: any;
+    // postParams: PostParams;
+    postParams: any;
     sampleOutput: string;
 }
 
@@ -187,9 +190,6 @@ interface AIModel {
     limitations: Limitations;
     controls: Control[];
 }
-
-
-
 
 /*
 const eventData: EventData = {

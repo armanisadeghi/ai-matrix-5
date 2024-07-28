@@ -63,8 +63,8 @@ export default function PowerPointIntegration() {
                     }
                 });
 
-                const blob = await pptx.writeFile({ outputType: 'blob' });
-                const url = window.URL.createObjectURL(blob);
+                const blob = await pptx.writeFile();
+                const url = window.URL.createObjectURL(new Blob([blob]));
                 const a = document.createElement('a');
                 a.style.display = 'none';
                 a.href = url;

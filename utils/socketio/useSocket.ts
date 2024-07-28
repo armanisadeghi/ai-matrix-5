@@ -1,8 +1,6 @@
 import { SocketContext } from '@/app/samples/socket-test/components/SocketWithAuth';
 import { SocketTask } from '@/utils/socketio/types';
-import { useContext, useCallback } from 'react';
-import { SocketManager } from '@/utils/socketio/SocketManager';
-
+import { useCallback, useContext } from 'react';
 
 export const useSocket = () => {
     const context = useContext(SocketContext);
@@ -56,6 +54,10 @@ export const useSocket = () => {
         socketManager.removeRawPacketListener(callback);
     }, [socketManager]);
 
+    const getSocket = useCallback(() => {
+        return socket
+    }, [socket]);
+
     return {
         socketManager,
         socket,
@@ -73,5 +75,6 @@ export const useSocket = () => {
         removeCatchallListener,
         addRawPacketListener,
         removeRawPacketListener,
+        getSocket
     };
 };

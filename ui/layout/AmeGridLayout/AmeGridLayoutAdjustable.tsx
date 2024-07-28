@@ -1,14 +1,13 @@
 // app/ui/layout/AmeGridLayout/AmeGridLayoutAdjustable.tsx
-'use client';
+"use client";
 
-import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
-import { Responsive, WidthProvider, Layout } from 'react-grid-layout';
-import AmeTestCard from '@/app/trials/core-chat-trial/ui/AmeTestingCard';
-import { Button, NumberInput, Stack, Paper, ActionIcon } from '@mantine/core';
-import { TbSettings } from 'react-icons/tb';
-import 'react-grid-layout/css/styles.css';
-import 'react-resizable/css/styles.css';
-
+import { ActionIcon, Button, NumberInput, Paper, Stack } from "@mantine/core";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { Layout, Responsive, WidthProvider } from "react-grid-layout";
+import "react-grid-layout/css/styles.css";
+import { TbSettings } from "react-icons/tb";
+import "react-resizable/css/styles.css";
+import AmeTestCard from "../AmeDragGrid/AmeTestingCard";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -22,30 +21,29 @@ interface AmeGridLayoutAdjustableProps {
     margin?: [number, number];
     isResizable?: boolean;
     isDraggable?: boolean;
-    compactType?: 'vertical' | 'horizontal' | null;
+    compactType?: "vertical" | "horizontal" | null;
     widthUnits?: number;
     heightUnits?: number;
     containerWidth?: string | number;
 }
 
-const AmeGridLayoutAdjustable: React.FC<AmeGridLayoutAdjustableProps> = (
-    {
-        items,
-        cols= { lg: 4, md: 3, sm: 2, xs: 1 },
-        breakpoints = { lg: 1400, md: 1150, sm: 900, xs: 600 },
-        initialLayout,
-        rowHeight: initialRowHeight = 300,
-        containerPadding = [10, 10],
-        margin = [10, 10],
-        isResizable = true,
-        isDraggable = true,
-        compactType = 'vertical',
-        widthUnits: initialWidthUnits = 100,
-        heightUnits: initialHeightUnits = 100,
-        containerWidth = '100%'
-    }) => {
+const AmeGridLayoutAdjustable: React.FC<AmeGridLayoutAdjustableProps> = ({
+    items,
+    cols = { lg: 4, md: 3, sm: 2, xs: 1 },
+    breakpoints = { lg: 1400, md: 1150, sm: 900, xs: 600 },
+    initialLayout,
+    rowHeight: initialRowHeight = 300,
+    containerPadding = [10, 10],
+    margin = [10, 10],
+    isResizable = true,
+    isDraggable = true,
+    compactType = "vertical",
+    widthUnits: initialWidthUnits = 100,
+    heightUnits: initialHeightUnits = 100,
+    containerWidth = "100%",
+}) => {
     const [layouts, setLayouts] = useState<{ [key: string]: Layout[] }>({});
-    const [currentBreakpoint, setCurrentBreakpoint] = useState<string>('lg');
+    const [currentBreakpoint, setCurrentBreakpoint] = useState<string>("lg");
     const [showSettings, setShowSettings] = useState(false);
     const [rowHeight, setRowHeight] = useState(initialRowHeight);
     const [widthUnits, setWidthUnits] = useState(initialWidthUnits);
@@ -60,13 +58,13 @@ const AmeGridLayoutAdjustable: React.FC<AmeGridLayoutAdjustableProps> = (
             x: (index % currentCols) * widthUnits,
             y: Math.floor(index / currentCols) * heightUnits,
             w: widthUnits,
-            h: heightUnits
+            h: heightUnits,
         }));
     }, [items, currentCols, widthUnits, heightUnits]);
 
     useEffect(() => {
         const initialLayouts: { [key: string]: Layout[] } = {};
-        Object.keys(cols).forEach(breakpoint => {
+        Object.keys(cols).forEach((breakpoint) => {
             initialLayouts[breakpoint] = initialLayout || generateLayout();
         });
         setLayouts(initialLayouts);
@@ -86,10 +84,13 @@ const AmeGridLayoutAdjustable: React.FC<AmeGridLayoutAdjustableProps> = (
     };
 
     const resetLayout = () => {
-        const resetLayouts = Object.keys(cols).reduce((acc, breakpoint) => {
-            acc[breakpoint] = generateLayout();
-            return acc;
-        }, {} as { [key: string]: Layout[] });
+        const resetLayouts = Object.keys(cols).reduce(
+            (acc, breakpoint) => {
+                acc[breakpoint] = generateLayout();
+                return acc;
+            },
+            {} as { [key: string]: Layout[] },
+        );
         setLayouts(resetLayouts);
         setRowHeight(initialRowHeight);
         setWidthUnits(initialWidthUnits);
@@ -98,7 +99,7 @@ const AmeGridLayoutAdjustable: React.FC<AmeGridLayoutAdjustableProps> = (
     };
 
     return (
-        <div ref={containerRef} style={{width: containerWidth, position: 'relative'}}>
+        <div ref={containerRef} style={{ width: containerWidth, position: "relative" }}>
             <ResponsiveGridLayout
                 layouts={layouts}
                 breakpoints={breakpoints}
@@ -117,10 +118,16 @@ const AmeGridLayoutAdjustable: React.FC<AmeGridLayoutAdjustableProps> = (
                 {items.map((item) => (
                     <div key={item.title}>
                         <AmeTestCard
-                            rowHeight={calculateActualHeight(layouts[currentBreakpoint]?.find(l => l.i === item.title)?.h || heightUnits)}
+                            rowHeight={calculateActualHeight(
+                                layouts[currentBreakpoint]?.find((l) => l.i === item.title)?.h || heightUnits,
+                            )}
                             title={item.title}
                             scrollbar={true}
-                            scrollAreaHeight={calculateActualHeight(layouts[currentBreakpoint]?.find(l => l.i === item.title)?.h || heightUnits) - 70}
+                            scrollAreaHeight={
+                                calculateActualHeight(
+                                    layouts[currentBreakpoint]?.find((l) => l.i === item.title)?.h || heightUnits,
+                                ) - 70
+                            }
                         >
                             {item.content}
                         </AmeTestCard>
@@ -128,20 +135,20 @@ const AmeGridLayoutAdjustable: React.FC<AmeGridLayoutAdjustableProps> = (
                 ))}
             </ResponsiveGridLayout>
             <ActionIcon
-                style={{position: 'fixed', bottom: '20px', right: '20px', zIndex: 1000}}
+                style={{ position: "fixed", bottom: "20px", right: "20px", zIndex: 1000 }}
                 onClick={() => setShowSettings(!showSettings)}
             >
-                <TbSettings size={24}/>
+                <TbSettings size={24} />
             </ActionIcon>
             {showSettings && (
                 <Paper
                     style={{
-                        position: 'fixed',
-                        bottom: '60px',
-                        right: '20px',
-                        padding: '20px',
+                        position: "fixed",
+                        bottom: "60px",
+                        right: "20px",
+                        padding: "20px",
                         zIndex: 1000,
-                        maxWidth: '300px'
+                        maxWidth: "300px",
                     }}
                     shadow="md"
                 >
@@ -152,9 +159,9 @@ const AmeGridLayoutAdjustable: React.FC<AmeGridLayoutAdjustableProps> = (
                             onChange={(val) => {
                                 const newCols = Number(val);
                                 setCurrentCols(newCols);
-                                setLayouts(prevLayouts => ({
+                                setLayouts((prevLayouts) => ({
                                     ...prevLayouts,
-                                    [currentBreakpoint]: generateLayout()
+                                    [currentBreakpoint]: generateLayout(),
                                 }));
                             }}
                             min={1}
@@ -176,9 +183,9 @@ const AmeGridLayoutAdjustable: React.FC<AmeGridLayoutAdjustableProps> = (
                             onChange={(val) => {
                                 const newWidthUnits = Number(val);
                                 setWidthUnits(newWidthUnits);
-                                setLayouts(prevLayouts => ({
+                                setLayouts((prevLayouts) => ({
                                     ...prevLayouts,
-                                    [currentBreakpoint]: generateLayout()
+                                    [currentBreakpoint]: generateLayout(),
                                 }));
                             }}
                             min={1}
@@ -190,9 +197,9 @@ const AmeGridLayoutAdjustable: React.FC<AmeGridLayoutAdjustableProps> = (
                             onChange={(val) => {
                                 const newHeightUnits = Number(val);
                                 setHeightUnits(newHeightUnits);
-                                setLayouts(prevLayouts => ({
+                                setLayouts((prevLayouts) => ({
                                     ...prevLayouts,
-                                    [currentBreakpoint]: generateLayout()
+                                    [currentBreakpoint]: generateLayout(),
                                 }));
                             }}
                             min={1}

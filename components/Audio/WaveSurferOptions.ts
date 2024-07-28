@@ -1,7 +1,7 @@
 // WaveSurferOptions.ts
 export type WaveSurferOptions = {
     container: HTMLElement | string;
-    height?: number | 'auto';
+    height?: number | "auto";
     width?: number | string;
     waveColor?: string | string[] | CanvasGradient;
     progressColor?: string | string[] | CanvasGradient;
@@ -11,7 +11,7 @@ export type WaveSurferOptions = {
     barGap?: number;
     barRadius?: number;
     barHeight?: number;
-    barAlign?: 'top' | 'bottom';
+    barAlign?: "top" | "bottom";
     minPxPerSec?: number;
     fillParent?: boolean;
     url?: string;
@@ -32,7 +32,13 @@ export type WaveSurferOptions = {
     plugins?: any[];
     renderFunction?: (peaks: Array<Float32Array | number[]>, ctx: CanvasRenderingContext2D) => void;
     fetchParams?: RequestInit;
-    backend?: 'WebAudio' | 'MediaElement';
+    backend?: "WebAudio" | "MediaElement";
+    src?: any;
+    onReady?: any;
+    onPlay?: any;
+    onPause?: any;
+    onFinish?: any;
+    onError?: any;
 };
 
 export type WaveSurferEvents = {

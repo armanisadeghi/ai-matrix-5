@@ -1,15 +1,17 @@
-import { useState, useEffect } from "react";
-import { useRecoilState, RecoilState, useRecoilValue } from 'recoil';
 import {
-    rightSidebarAtom,
-    leftSidebarAtom,
+    deviceTypeAtom,
     footerAtom,
-    headerAtom,
-    rightSidebarToggleOptionsAtom,
-    leftSidebarToggleOptionsAtom,
     footerToggleOptionsAtom,
-    headerToggleOptionsAtom, deviceTypeAtom, leftSidebarMobileToggleOptionsAtom,
-} from '@/state/layoutAtoms';
+    headerAtom,
+    headerToggleOptionsAtom,
+    leftSidebarAtom,
+    leftSidebarMobileToggleOptionsAtom,
+    leftSidebarToggleOptionsAtom,
+    rightSidebarAtom,
+    rightSidebarToggleOptionsAtom,
+} from "@/state/layoutAtoms";
+import { useState } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 // Configuration for animation
 const INTERVAL_TIME = 3; // Interval time in milliseconds
@@ -35,7 +37,7 @@ const useToggleSizes = () => {
         if (currentSize === 0) {
             return sortedOptions[0];
         }
-        const nextSize = sortedOptions.find(size => size < currentSize) || sortedOptions[sortedOptions.length - 1];
+        const nextSize = sortedOptions.find((size) => size < currentSize) || sortedOptions[sortedOptions.length - 1];
         return nextSize;
     };
 
@@ -43,7 +45,7 @@ const useToggleSizes = () => {
         currentSize: number,
         setSize: (size: number) => void,
         targetSize: number,
-        rate: number
+        rate: number,
     ) => {
         const step = targetSize > currentSize ? rate : -rate;
         let newSize = currentSize;
@@ -59,22 +61,27 @@ const useToggleSizes = () => {
         }, INTERVAL_TIME);
     };
 
-    const toggleSize = (element: 'leftSidebar' | 'rightSidebar' | 'footer' | 'header', rate: number = DEFAULT_RATE) => {
+    const toggleSize = (element: "leftSidebar" | "rightSidebar" | "footer" | "header", rate: number = DEFAULT_RATE) => {
         if (isAnimating) return;
         setIsAnimating(true);
 
         switch (element) {
-            case 'leftSidebar':
-                const options = deviceType === 'mobile' ? leftSidebarMobileOptions : leftSidebarOptions;
+            case "leftSidebar":
+                const options = deviceType === "mobile" ? leftSidebarMobileOptions : leftSidebarOptions;
                 animateSizeChange(leftSidebarWidth, setLeftSidebarWidth, getNextSize(leftSidebarWidth, options), rate);
                 break;
-            case 'rightSidebar':
-                animateSizeChange(rightSidebarWidth, setRightSidebarWidth, getNextSize(rightSidebarWidth, rightSidebarOptions), rate);
+            case "rightSidebar":
+                animateSizeChange(
+                    rightSidebarWidth,
+                    setRightSidebarWidth,
+                    getNextSize(rightSidebarWidth, rightSidebarOptions),
+                    rate,
+                );
                 break;
-            case 'footer':
+            case "footer":
                 animateSizeChange(footerHeight, setFooterHeight, getNextSize(footerHeight, footerOptions), rate);
                 break;
-            case 'header':
+            case "header":
                 animateSizeChange(headerHeight, setHeaderHeight, getNextSize(headerHeight, headerOptions), rate);
                 break;
             default:

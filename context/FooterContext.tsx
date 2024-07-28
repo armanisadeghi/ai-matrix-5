@@ -1,5 +1,4 @@
-import React, { createContext, ReactNode, useContext, useState } from "react";
-import { useLocalStorage } from "@mantine/hooks";
+import { createContext, ReactNode, useContext, useState } from "react";
 
 interface FooterContextProps {
     setSidebarContent: (content: ReactNode) => void;

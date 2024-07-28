@@ -42,6 +42,8 @@ const CRUDList: React.FC<CRUDListProps> = (
             deleteItem,
             editItem,
             addLink,
+            fetchData: dataFetch,
+            rpcName: 'defaultRpcName',
         };
 
         setCrudConfig(config);

@@ -1,10 +1,10 @@
 // components/slides/CollaborationTool.tsx
 
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { Button, TextInput, Group, Text, Avatar, Paper, Stack } from '@mantine/core';
-import { IconUserPlus, IconMessage } from '@tabler/icons-react';
+import { Avatar, Button, Group, Paper, Stack, Text, TextInput } from "@mantine/core";
+import { IconMessage, IconUserPlus } from "@tabler/icons-react";
+import { useState } from "react";
 
 interface Collaborator {
     id: string;
@@ -14,33 +14,35 @@ interface Collaborator {
 
 export default function CollaborationTool() {
     const [collaborators, setCollaborators] = useState<Collaborator[]>([]);
-    const [newCollaboratorEmail, setNewCollaboratorEmail] = useState('');
+    const [newCollaboratorEmail, setNewCollaboratorEmail] = useState("");
     const [comments, setComments] = useState<string[]>([]);
-    const [newComment, setNewComment] = useState('');
+    const [newComment, setNewComment] = useState("");
 
     const addCollaborator = () => {
         if (newCollaboratorEmail) {
             const newCollaborator: Collaborator = {
                 id: Date.now().toString(),
-                name: newCollaboratorEmail.split('@')[0], // Simple name extraction
+                name: newCollaboratorEmail.split("@")[0], // Simple name extraction
                 email: newCollaboratorEmail,
             };
             setCollaborators([...collaborators, newCollaborator]);
-            setNewCollaboratorEmail('');
+            setNewCollaboratorEmail("");
         }
     };
 
     const addComment = () => {
         if (newComment) {
             setComments([...comments, newComment]);
-            setNewComment('');
+            setNewComment("");
         }
     };
 
     return (
         <Stack>
             <Paper shadow="xs" p="md">
-                <Text fw={500} size="lg" mb="md">Collaborators</Text>
+                <Text fw={500} size="lg" mb="md">
+                    Collaborators
+                </Text>
                 <Group mb="md">
                     <TextInput
                         placeholder="Enter collaborator's email"
@@ -54,17 +56,23 @@ export default function CollaborationTool() {
                 </Group>
                 {collaborators.map((collaborator) => (
                     <Group key={collaborator.id} mb="xs">
-                        <Avatar color="blue" radius="xl">{collaborator.name[0].toUpperCase()}</Avatar>
+                        <Avatar color="blue" radius="xl">
+                            {collaborator.name[0].toUpperCase()}
+                        </Avatar>
                         <div>
                             <Text>{collaborator.name}</Text>
-                            <Text size="xs" color="dimmed">{collaborator.email}</Text>
+                            <Text size="xs" color="dimmed">
+                                {collaborator.email}
+                            </Text>
                         </div>
                     </Group>
                 ))}
             </Paper>
 
             <Paper shadow="xs" p="md">
-                <Text fw={500} size="lg" mb="md">Comments</Text>
+                <Text fw={500} size="lg" mb="md">
+                    Comments
+                </Text>
                 <Group mb="md">
                     <TextInput
                         placeholder="Add a comment"
@@ -77,7 +85,9 @@ export default function CollaborationTool() {
                     </Button>
                 </Group>
                 {comments.map((comment, index) => (
-                    <Text key={index} mb="xs">{comment}</Text>
+                    <Text key={index} mb="xs">
+                        {comment}
+                    </Text>
                 ))}
             </Paper>
         </Stack>

@@ -1,7 +1,7 @@
 // chat-app/nice-working/userInputArea.tsx
 'use client';
-import React, { useState, useContext } from 'react';
 import { emitEvent } from '@/utils/socketio/basicSocket';
+import React, { useState } from 'react';
 
 const ChatInput = () => {
     const [input, setInput] = useState('');
@@ -33,7 +33,7 @@ const ChatInput = () => {
         };
 
         // Send the message through the WebSocket
-        emitEvent('socket_event', chatRequest, (response) => {
+        emitEvent('matrix_chat', chatRequest, (response) => {
             console.log('Received response:', response);
             // Handle response, update AiContext or state as necessary
         });

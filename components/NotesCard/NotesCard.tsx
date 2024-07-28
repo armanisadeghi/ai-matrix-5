@@ -1,6 +1,5 @@
 // components/NotesCard/NotesCard.tsx
 
-import React from 'react';
 import { Paper, PaperProps } from "@mantine/core";
 import { NotesCardClient } from './NotesCardClient';
 

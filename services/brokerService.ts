@@ -1,9 +1,8 @@
-import { createClient } from '@supabase/supabase-js';
+import { activeUserAtom } from '@/state/userAtoms';
 import { Broker, Component } from "@/types/broker";
-import { brokersAtom, componentsAtom} from 'context/atoms/brokerAtoms';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { activeUserAtom, userCredentialsSelector } from '@/state/userAtoms';
-import { useCompleteUserProfile } from '@/hooks/users/useMatrixUser';
+import { createClient } from '@supabase/supabase-js';
+import { brokersAtom, componentsAtom } from 'context/atoms/brokerAtoms';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,);

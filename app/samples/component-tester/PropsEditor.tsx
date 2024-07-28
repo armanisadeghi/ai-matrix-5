@@ -23,7 +23,7 @@ const PropsEditor: React.FC<PropsEditorProps> = ({ props, propDefinitions, onCha
                         value={JSON.stringify(props[propPath] || propObject[key], null, 2)}
                         onChange={(value) => {
                             try {
-                                const parsedValue = JSON.parse(value);
+                                const parsedValue = typeof value === 'string' ? JSON.parse(value) : value;
                                 onChange(propPath, parsedValue);
                             } catch (error) {
                                 console.error('Invalid JSON:', error);

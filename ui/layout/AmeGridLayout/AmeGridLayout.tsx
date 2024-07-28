@@ -1,12 +1,11 @@
 // app/trials/grids/components/AmeGridLayout.tsx
-'use client';
+"use client";
 
-import AmeTestCard from '@/ui/layout/AmeDragGrid/AmeTestingCard';
-import React, { useState, useEffect, useMemo, useRef } from 'react';
-import GridLayout from 'react-grid-layout';
-import 'react-grid-layout/css/styles.css';
-import 'react-resizable/css/styles.css';
-
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import GridLayout from "react-grid-layout";
+import "react-grid-layout/css/styles.css";
+import "react-resizable/css/styles.css";
+import AmeTestCard from "../AmeDragGrid/AmeTestingCard";
 
 interface AmeGridLayoutProps {
     items: Array<{ title: string; content: React.ReactNode }>;
@@ -19,17 +18,16 @@ interface AmeGridLayoutProps {
     heightUnits?: number;
 }
 
-const AmeGridLayout: React.FC<AmeGridLayoutProps> = (
-    {
-        items,
-        columns = 2,
-        rowHeight = 300,
-        containerWidth = '100%',
-        isResizable = true,
-        isDraggable = true,
-        widthUnits = 1,
-        heightUnits = 1,
-    }) => {
+const AmeGridLayout: React.FC<AmeGridLayoutProps> = ({
+    items,
+    columns = 2,
+    rowHeight = 300,
+    containerWidth = "100%",
+    isResizable = true,
+    isDraggable = true,
+    widthUnits = 1,
+    heightUnits = 1,
+}) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const [layout, setLayout] = useState<Array<{ i: string; x: number; y: number; w: number; h: number }>>([]);
     const [width, setWidth] = useState(0);
@@ -37,14 +35,14 @@ const AmeGridLayout: React.FC<AmeGridLayoutProps> = (
     // Generate unique keys from titles
     const itemsWithKeys = useMemo(() => {
         const keyMap = new Map<string, number>();
-        return items.map(item => {
-            let key = item.title.toLowerCase().replace(/[^a-z0-9]/g, '-');
+        return items.map((item) => {
+            let key = item.title.toLowerCase().replace(/[^a-z0-9]/g, "-");
             const count = keyMap.get(key) || 0;
             if (count > 0) {
                 key = `${key}-${count}`;
             }
             keyMap.set(key, count + 1);
-            return {...item, key};
+            return { ...item, key };
         });
     }, [items]);
 
@@ -85,7 +83,7 @@ const AmeGridLayout: React.FC<AmeGridLayoutProps> = (
     }, []);
 
     return (
-        <div ref={containerRef} style={{width: containerWidth}}>
+        <div ref={containerRef} style={{ width: containerWidth }}>
             {width > 0 && (
                 <GridLayout
                     className="layout"
@@ -102,11 +100,7 @@ const AmeGridLayout: React.FC<AmeGridLayoutProps> = (
                 >
                     {itemsWithKeys.map((item) => (
                         <div key={item.key}>
-                            <AmeTestCard
-                                rowHeight={rowHeight}
-                                title={item.title}
-                                scrollbar={true}
-                            >
+                            <AmeTestCard rowHeight={rowHeight} title={item.title} scrollbar={true}>
                                 {item.content}
                             </AmeTestCard>
                         </div>

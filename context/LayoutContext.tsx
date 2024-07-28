@@ -8,6 +8,9 @@ interface LayoutContextType {
     handleIconMouseover: () => void;
     handleEndIconMouseover: () => void;
     iconMouseOver: boolean;
+    navbarState?: any;
+    handleNavbarExpand?: any;
+    handleNavbarCollapse?: any;
 }
 
 const LayoutContext = createContext<LayoutContextType | undefined>(undefined);
@@ -52,6 +55,7 @@ export const LayoutProvider: React.FC<LayoutProviderProps> = ({ children }) => {
                 handleIconMouseover,
                 handleEndIconMouseover,
                 iconMouseOver,
+                navbarState: "",
             }}
         >
             {children}

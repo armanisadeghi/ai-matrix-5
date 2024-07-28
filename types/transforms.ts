@@ -1,10 +1,19 @@
 // types/transform.ts
 
-import { Database } from '@/types/database.types';
-import { Chat, Message, ChatWithMessages } from './chat.types';
+import { Database } from "@/types/database.types";
 
+interface Chat {
+    chatId: string;
+    chatTitle: string;
+    createdAt: string;
+    lastEdited: string;
+    matrixId: string;
+    metadata: {};
+}
+interface Message {}
+interface ChatWithMessages {}
 
-export const transformChatToFrontend = (dbChat: Database['public']['Tables']['chats']['Row']): Chat => {
+export const transformChatToFrontend = (dbChat: Database["public"]["Tables"]["chats"]["Row"]): Chat => {
     return {
         chatId: dbChat.chat_id,
         chatTitle: dbChat.chat_title,
@@ -15,7 +24,7 @@ export const transformChatToFrontend = (dbChat: Database['public']['Tables']['ch
     };
 };
 
-export const transformMessageToFrontend = (dbMessage: Database['public']['Tables']['messages']['Row']): Message => {
+export const transformMessageToFrontend = (dbMessage: Database["public"]["Tables"]["messages"]["Row"]): Message => {
     return {
         chatId: dbMessage.chat_id,
         createdAt: dbMessage.created_at,
@@ -27,7 +36,7 @@ export const transformMessageToFrontend = (dbMessage: Database['public']['Tables
 };
 
 export const transformChatMessageViewToFrontend = (viewData: any[]): ChatWithMessages => {
-  if (viewData.length === 0) throw new Error("Empty view data");
+    if (viewData.length === 0) throw new Error("Empty view data");
 
     const chat = {
         chatId: viewData[0].chat_id,
@@ -47,17 +56,16 @@ export const transformChatMessageViewToFrontend = (viewData: any[]): ChatWithMes
         role: message.role,
     }));
 
-    return {...chat, messages};
+    return { ...chat, messages };
 };
 
-export const transformChatToDb = (frontendChat: Chat): Database['public']['Tables']['chats']['Row'] => {
+export const transformChatToDb = (frontendChat: Chat): Database["public"]["Tables"]["chats"]["Row"] => {
     return {
-        chat_id: frontendChat.chatId ?? '',
-        chat_title: frontendChat.chatTitle ?? '',
-        created_at: frontendChat.createdAt ?? '',
-        last_edited: frontendChat.lastEdited ?? '',
-        matrix_id: frontendChat.matrixId ?? '',
+        chat_id: frontendChat.chatId ?? "",
+        chat_title: frontendChat.chatTitle ?? "",
+        created_at: frontendChat.createdAt ?? "",
+        last_edited: frontendChat.lastEdited ?? "",
+        matrix_id: frontendChat.matrixId ?? "",
         metadata: frontendChat.metadata ?? {},
     };
 };
-

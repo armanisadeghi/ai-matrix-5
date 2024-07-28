@@ -1,19 +1,13 @@
-/*
 // app/samples/atom-tester/OptionalStarterPage.tsx
-'use client';
-
-
-import AtomTester from "@/app/samples/atom-tester/AtomTester";
 
 function Page() {
-    return <AtomTester></AtomTester>;
+    return <div>Atom Tester page</div>;
 }
 
 export default Page;
 
+/*
 
-
-/!*
 
 const handleAtomSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selected = event.target.value;

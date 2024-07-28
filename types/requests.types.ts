@@ -1,9 +1,8 @@
 // types/requests.types.ts
 
-import { MatrixUser } from '@/types/user.types';
+import { MatrixUser } from "@/types/user.types";
 
-
-export type RequestType = 'webSocketText' | 'webSocketData' | 'socketIO' | 'dbTask' | 'restAPI' | 'other' | undefined;
+export type RequestType = "webSocketText" | "webSocketData" | "socketIO" | "dbTask" | "restAPI" | "other" | undefined;
 
 export interface TaskSpecs {
     class?: string;

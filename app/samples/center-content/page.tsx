@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { autoscrollStateAtom } from '@/state/layoutAtoms';
-import React, { useRef, useEffect, useCallback } from 'react';
-import { useRecoilState } from 'recoil';
-import CenterContent from './CenterContent';
-import AmeTextWithSlider, { AmeTextWithSliderProps } from '@/ui/textarea/AmeTextWithSlider';
-import textareaStyles from '@/components/AiChat/UserInput/DynamicTextarea.module.css';
-import { simpleChatSettingsList } from '@/state/aiAtoms/settingsAtoms';
-import ResponseArea, { ResponseAreaProps } from '@/components/AiChat/Response/ResponseArea';
-import useDynamicLayout from '@/hooks/ai/useDynamicChatLayout';
+import ResponseArea, { ResponseAreaProps } from "@/components/AiChat/Response/ResponseArea";
+import textareaStyles from "@/components/AiChat/UserInput/DynamicTextarea.module.css";
+import useDynamicLayout from "@/hooks/ai/useDynamicChatLayout";
+import { simpleChatSettingsList } from "@/state/aiAtoms/settingsAtoms";
+import { autoscrollStateAtom } from "@/state/layoutAtoms";
+import AmeTextWithSlider, { AmeTextWithSliderProps } from "@/ui/textarea/AmeTextWithSlider";
+import React, { useCallback, useEffect, useRef } from "react";
+import { useRecoilState } from "recoil";
+import CenterContent from "./CenterContent";
 
 const Page: React.FC = () => {
     const [isAutoscroll, setIsAutoscroll] = useRecoilState(autoscrollStateAtom);
@@ -30,9 +30,9 @@ const Page: React.FC = () => {
     useEffect(() => {
         const contentElement = contentRef.current;
         if (contentElement) {
-            contentElement.addEventListener('scroll', handleScroll);
+            contentElement.addEventListener("scroll", handleScroll);
             return () => {
-                contentElement.removeEventListener('scroll', handleScroll);
+                contentElement.removeEventListener("scroll", handleScroll);
             };
         }
     }, [handleScroll]);

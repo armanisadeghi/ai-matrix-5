@@ -1,16 +1,21 @@
 // SocketWithAuth.tsx
 
-'use client';
+"use client";
 
-import { isAuthenticatedAtom, socketNamespaceAtom, socketSessionUrlAtom, socketSessionUrlSelector, socketSidAtom } from '@/state/aiAtoms/recipeAtoms';
-import { SocketManager } from '@/utils/socketio/SocketManager';
-import { SocketStatus } from '@/utils/socketio/types';
-import { SimpleGrid } from '@mantine/core';
-import React, { createContext, useContext, useEffect } from 'react';
-import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
-import { activeUserAtom } from '@/state/userAtoms';
-import { socketStatusAtom } from '@/state/aiAtoms/aiChatAtoms';
-
+import { socketStatusAtom } from "@/state/aiAtoms/aiChatAtoms";
+import {
+    isAuthenticatedAtom,
+    socketNamespaceAtom,
+    socketSessionUrlAtom,
+    socketSessionUrlSelector,
+    socketSidAtom,
+} from "@/state/aiAtoms/recipeAtoms";
+import { activeUserAtom } from "@/state/userAtoms";
+import { SocketManager } from "@/utils/socketio/SocketManager";
+import { SocketStatus } from "@/utils/socketio/types";
+import { SimpleGrid } from "@mantine/core";
+import React, { createContext, useContext, useEffect } from "react";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 interface SocketWithAuthProps {
     children: React.ReactNode;
@@ -31,7 +36,7 @@ export const SocketContext = createContext<SocketContextValue | null>(null);
 export const useSocket = () => {
     const context = useContext(SocketContext);
     if (!context) {
-        throw new Error('useSocket must be used within a SocketWithAuth provider');
+        throw new Error("useSocket must be used within a SocketWithAuth provider");
     }
     return context;
 };
@@ -55,12 +60,11 @@ const SocketWithAuth: React.FC<SocketWithAuthProps> = ({children}) => {
     useEffect(() => {
         const handleSocketStatusChange = (status: SocketStatus) => {
             setSocketStatus(status);
-            if (status === 'connected') {
-
+            if (status === "connected") {
             }
         };
 
-        socketManager.initialize(handleSocketStatusChange, setIsAuthenticated);
+        socketManager.initialize(handleSocketStatusChange, setIsAuthenticated,setSocketSid);
         socketManager.setupSocket();
 
         return () => {
@@ -69,7 +73,7 @@ const SocketWithAuth: React.FC<SocketWithAuthProps> = ({children}) => {
     }, [socketManager, isAuthenticated, setSocketStatus, setIsAuthenticated]);
 
     useEffect(() => {
-        if (socketStatus === 'connected' && activeUser && !isAuthenticated) {
+        if (socketStatus === "connected" && activeUser && !isAuthenticated) {
             socketManager.authenticateUser(activeUser);
             setSocketSid(socketManager.getSocketSid());
         }
@@ -87,7 +91,7 @@ const SocketWithAuth: React.FC<SocketWithAuthProps> = ({children}) => {
 
     return (
         <SocketContext.Provider value={contextValue}>
-            <div style={{padding: '10px', border: '1px solid gray', marginBottom: '10px'}}>
+            <div style={{ padding: "10px", border: "1px solid gray", marginBottom: "10px" }}>
                 <SimpleGrid cols={4}>
                     <div>User Session Status</div>
                     <div>Socket SID:</div>
@@ -97,9 +101,7 @@ const SocketWithAuth: React.FC<SocketWithAuthProps> = ({children}) => {
                     <div>{socketSid}</div>
                     <div>{socketNamespace}</div>
                     <div>{isAuthenticated.toString()}</div>
-
                 </SimpleGrid>
-
             </div>
             {children}
         </SocketContext.Provider>

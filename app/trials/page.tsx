@@ -1,8 +1,6 @@
 'use client';
 // app/trials/OptionalStarterPage.tsx
 
-import React from 'react';
-
 const SampleAppPage = () => {
 
     return (

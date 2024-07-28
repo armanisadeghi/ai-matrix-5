@@ -1,7 +1,7 @@
-import { RichTextEditor } from '@mantine/tiptap';
-import { IconColorPicker, IconTextSize } from '@tabler/icons-react';
-import { colorPickerColors } from './utils/colorPickerColors';
-import styles from './AmeMarkdownBeautifier.module.css';
+import { RichTextEditor } from "@mantine/tiptap";
+import { IconColorPicker, IconTextSize } from "@tabler/icons-react";
+import styles from "./AmeMarkdownBeautifier.module.css";
+import { colorPickerColors } from "./utils/colorPickerColors";
 
 interface ToolbarControlsProps {
     handleToggleView: () => void;
@@ -62,7 +62,12 @@ const ToolbarControls: React.FC<ToolbarControlsProps> = ({ handleToggleView }) =
         <RichTextEditor.UnsetColor />
 
         <RichTextEditor.ControlsGroup className={styles.controlsGroup}>
-            <RichTextEditor.Control onClick={handleToggleView} aria-label="Toggle view" title="Toggle view" className={styles.control}>
+            <RichTextEditor.Control
+                onClick={handleToggleView}
+                aria-label="Toggle view"
+                title="Toggle view"
+                className={styles.control}
+            >
                 <IconTextSize size="1rem" stroke={1.5} />
             </RichTextEditor.Control>
         </RichTextEditor.ControlsGroup>

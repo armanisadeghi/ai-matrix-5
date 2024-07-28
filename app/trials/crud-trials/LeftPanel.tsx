@@ -8,7 +8,8 @@ import { useMediaQuery } from '@mantine/hooks';
 import { v4 as uuidv4 } from 'uuid';
 
 interface LeftPanelProps {
-    componentID: string;
+    componentID?: string;
+    moduleName?: string
 }
 
 const LeftPanel: React.FC<LeftPanelProps> = ({ componentID }) => {

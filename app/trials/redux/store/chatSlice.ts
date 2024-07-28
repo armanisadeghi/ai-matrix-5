@@ -1,7 +1,7 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { ChatType, MessageType } from '@/types';
-import supabase from '@/utils/supabase/client';
-import { RootState } from '../store';
+import { ChatType, MessageType } from "@/types";
+import supabase from "@/utils/supabase/client";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { RootState } from "../store";
 
 interface ChatState {
     isNewChat: boolean | null;
@@ -14,61 +14,55 @@ interface ChatState {
     activeChatMessagesArray: MessageType[];
     hookId: string;
     hookIndex: number;
-    fetchStatus: 'idle' | 'fetching' | 'success' | 'error' | 'dbError';
+    fetchStatus: "idle" | "fetching" | "success" | "error" | "dbError";
     fullAssistantText: string;
     remainingCount: number;
-    chatTransition: 'idle' | 'new' | 'transition';
-    streamStatus: 'idle' | 'waiting' | 'streaming' | 'success' | 'error';
+    chatTransition: "idle" | "new" | "transition";
+    streamStatus: "idle" | "waiting" | "streaming" | "success" | "error";
     assistantTextStream: string;
     chatSummaries: ChatType[];
     chatMessages: { [chatId: string]: MessageType[] };
 }
 
-const initialState: ChatState = {
+const initialState: ChatState | any = {
     isNewChat: null,
     activeChatId: undefined,
     hasSubmittedMessage: false,
-    systemMessage: 'You are a helpful assistant',
-    userTextInput: '',
+    systemMessage: "You are a helpful assistant",
+    userTextInput: "",
     focusInput: false,
     submitChatId: undefined,
     activeChatMessagesArray: [],
-    hookId: 'OpenAiStream',
+    hookId: "OpenAiStream",
     hookIndex: 0,
-    fetchStatus: 'idle',
-    fullAssistantText: '',
+    fetchStatus: "idle",
+    fullAssistantText: "",
     remainingCount: 1,
-    chatTransition: 'idle',
-    streamStatus: 'idle',
-    assistantTextStream: '',
+    chatTransition: "idle",
+    streamStatus: "idle",
+    assistantTextStream: "",
     chatSummaries: [],
     chatMessages: {},
 };
 
-export const fetchChatSummaries = createAsyncThunk(
-    'chat/fetchChatSummaries',
-    async (matrixId: string) => {
-        const { data, error } = await supabase.rpc('fetch_user_chats', { user_matrix_id: matrixId });
-        if (error) {
-            throw error;
-        }
-        return data;
+export const fetchChatSummaries = createAsyncThunk("chat/fetchChatSummaries", async (matrixId: string) => {
+    const { data, error } = await supabase.rpc("fetch_user_chats", { user_matrix_id: matrixId });
+    if (error) {
+        throw error;
     }
-);
+    return data;
+});
 
-export const fetchChatMessages = createAsyncThunk(
-    'chat/fetchChatMessages',
-    async (chatId: string) => {
-        const { data, error } = await supabase.rpc('fetch_messages', { matrix_chat_id: chatId });
-        if (error) {
-            throw error;
-        }
-        return { chatId, messages: data as MessageType[] };
+export const fetchChatMessages = createAsyncThunk("chat/fetchChatMessages", async (chatId: string) => {
+    const { data, error } = await supabase.rpc("fetch_messages", { matrix_chat_id: chatId });
+    if (error) {
+        throw error;
     }
-);
+    return { chatId, messages: data as MessageType[] };
+});
 
 const chatSlice = createSlice({
-    name: 'chat',
+    name: "chat",
     initialState,
     reducers: {
         setIsNewChat: (state, action: PayloadAction<boolean | null>) => {
@@ -101,7 +95,7 @@ const chatSlice = createSlice({
         setHookIndex: (state, action: PayloadAction<number>) => {
             state.hookIndex = action.payload;
         },
-        setFetchStatus: (state, action: PayloadAction<'idle' | 'fetching' | 'success' | 'error' | 'dbError'>) => {
+        setFetchStatus: (state, action: PayloadAction<"idle" | "fetching" | "success" | "error" | "dbError">) => {
             state.fetchStatus = action.payload;
         },
         setFullAssistantText: (state, action: PayloadAction<string>) => {
@@ -110,10 +104,10 @@ const chatSlice = createSlice({
         setRemainingCount: (state, action: PayloadAction<number>) => {
             state.remainingCount = action.payload;
         },
-        setChatTransition: (state, action: PayloadAction<'idle' | 'new' | 'transition'>) => {
+        setChatTransition: (state, action: PayloadAction<"idle" | "new" | "transition">) => {
             state.chatTransition = action.payload;
         },
-        setStreamStatus: (state, action: PayloadAction<'idle' | 'waiting' | 'streaming' | 'success' | 'error'>) => {
+        setStreamStatus: (state, action: PayloadAction<"idle" | "waiting" | "streaming" | "success" | "error">) => {
             state.streamStatus = action.payload;
         },
         setAssistantTextStream: (state, action: PayloadAction<string>) => {
@@ -135,7 +129,7 @@ const chatSlice = createSlice({
         },
         updateAssistantMessage: (state, action: PayloadAction<{ chatId: string; messageId: string; text: string }>) => {
             const { chatId, messageId, text } = action.payload;
-            const message = state.chatMessages[chatId]?.find(m => m.id === messageId);
+            const message = state.chatMessages[chatId]?.find((m) => m.id === messageId);
             if (message) {
                 message.text = text;
             }
@@ -143,12 +137,12 @@ const chatSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-        .addCase(fetchChatSummaries.fulfilled, (state, action) => {
-            state.chatSummaries = action.payload;
-        })
-        .addCase(fetchChatMessages.fulfilled, (state, action) => {
-            state.chatMessages[action.payload.chatId] = action.payload.messages;
-        });
+            .addCase(fetchChatSummaries.fulfilled, (state, action) => {
+                state.chatSummaries = action.payload;
+            })
+            .addCase(fetchChatMessages.fulfilled, (state, action) => {
+                state.chatMessages[action.payload.chatId] = action.payload.messages;
+            });
     },
 });
 
@@ -174,13 +168,12 @@ export const {
     updateAssistantMessage,
 } = chatSlice.actions;
 
-
 // Selectors v2:
 export const selectActiveChatWithMessages = (state: RootState) => {
     const activeChatId = state.chat.activeChatId;
     if (!activeChatId) return null;
 
-    const chat = state.chat.chatSummaries.find(chat => chat.chatId === activeChatId);
+    const chat = state.chat.chatSummaries.find((chat) => chat.chatId === activeChatId);
     if (!chat) return null;
 
     return {
@@ -190,7 +183,7 @@ export const selectActiveChatWithMessages = (state: RootState) => {
 };
 
 export const selectChatWithMessages = (chatId: string) => (state: RootState) => {
-    const chat = state.chat.chatSummaries.find(chat => chat.chatId === chatId);
+    const chat = state.chat.chatSummaries.find((chat) => chat.chatId === chatId);
     if (!chat) return null;
 
     return {
@@ -198,10 +191,6 @@ export const selectChatWithMessages = (chatId: string) => (state: RootState) => 
         messages: state.chat.chatMessages[chatId] || [],
     };
 };
-
-
-
-
 
 // Selectors
 export const selectIsNewChat = (state: RootState) => state.chat.isNewChat;
@@ -224,6 +213,3 @@ export const selectChatSummaries = (state: RootState) => state.chat.chatSummarie
 export const selectChatMessages = (state: RootState, chatId: string) => state.chat.chatMessages[chatId] || [];
 
 export default chatSlice.reducer;
-
-
-

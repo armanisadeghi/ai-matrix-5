@@ -1,15 +1,15 @@
 // components/ThemeSelection/ThemeSelectionCardClient.tsx
 
-'use client';
+"use client";
 
-import React, { useState, useMemo, useCallback } from 'react';
-import { Flex, Grid, PaperProps, Radio, rem } from '@mantine/core';
-import { IconDeviceFloppy } from '@tabler/icons-react';
-import AmeRadioCard from '@/ui/radio/AmeRadioCard';
-import AmeTitle from '@/ui/typography/AmeTitle';
-import AmeButton from '@/ui/buttons/AmeButton';
-import AmeText from '@/ui/typography/AmeText';
-import AmePaper from '@/ui/surfaces/AmePaper';
+import AmeButton from "@/ui/buttons/AmeButton";
+import AmeRadioCard from "@/ui/radio/AmeRadioCard";
+import AmePaper from "@/ui/surfaces/AmePaper";
+import AmeText from "@/ui/typography/AmeText";
+import AmeTitle from "@/ui/typography/AmeTitle";
+import { Flex, Grid, PaperProps, Radio, rem } from "@mantine/core";
+import { IconDeviceFloppy } from "@tabler/icons-react";
+import React, { useCallback, useMemo, useState } from "react";
 
 interface ThemeSelectionCardClientProps extends PaperProps {
     showSaveButton?: boolean;
@@ -17,19 +17,20 @@ interface ThemeSelectionCardClientProps extends PaperProps {
 }
 
 export const ThemeSelectionCardClient = React.memo(function ThemeSelectionCardClient({
-                                                                                         showSaveButton,
-                                                                                         data,
-                                                                                         ...others
-                                                                                     }: ThemeSelectionCardClientProps) {
+    showSaveButton,
+    data,
+    ...others
+}: ThemeSelectionCardClientProps) {
     const [colorMode, setColorMode] = useState<string | null>(null);
 
     const handleColorModeChange = useCallback((value: string) => {
         setColorMode(value);
     }, []);
 
-    const cards = useMemo(() => data.map((item) => (
-        <AmeRadioCard value={item.name} key={item.name} {...item} />
-    )), [data]);
+    const cards = useMemo(
+        () => data.map((item) => <AmeRadioCard value={item.name} key={item.name} {...item} />),
+        [data],
+    );
 
     return (
         <AmePaper component="form" p="md" mb="md" {...others}>

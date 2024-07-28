@@ -1,17 +1,32 @@
-'use client';
+"use client";
 
-import { useReduxSocket } from '@/utils/socketio/useReduxSocket';
-import React, { useCallback, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Box, Button, Switch, TextInput, Textarea, Title, Stack, Group, SimpleGrid, Space, Divider, Select, Card, Tooltip } from '@mantine/core';
-import { RootState, AppDispatch } from '@/redux/store';
-import { updateRecipeOverrides } from '@/redux/features/recipes/recipeSlice';
-import { initializeRecipe } from '@/redux/features/recipes/recipeThunks';
-import { setRequestEvent, setRequestStream, setRequestTask } from '@/redux/features/dynamicEvents/dynamicEventsSlice';
-import { updateBrokerInstance } from '@/redux/features/broker/brokerSlice';
-import { submitTaskData } from '@/redux/features/dynamicEvents/dynamicEventsThunks';
-import AmeJsonInput from '@/ui/json/AmeJsonInput';
-import { BrokerInstance } from '@/redux/features/broker/types';
+import { useReduxSocket } from "@/utils/socketio/useReduxSocket";
+import React, { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    Box,
+    Button,
+    Switch,
+    TextInput,
+    Textarea,
+    Title,
+    Stack,
+    Group,
+    SimpleGrid,
+    Space,
+    Divider,
+    Select,
+    Card,
+    Tooltip,
+} from "@mantine/core";
+import { RootState, AppDispatch } from "@/redux/store";
+import { updateRecipeOverrides } from "@/redux/features/recipes/recipeSlice";
+import { initializeRecipe } from "@/redux/features/recipes/recipeThunks";
+import { setRequestEvent, setRequestStream, setRequestTask } from "@/redux/features/dynamicEvents/dynamicEventsSlice";
+import { updateBrokerInstance } from "@/redux/features/broker/brokerSlice";
+import { submitTaskData } from "@/redux/features/dynamicEvents/dynamicEventsThunks";
+import AmeJsonInput from "@/ui/json/AmeJsonInput";
+import { BrokerInstance } from "@/redux/features/broker/types";
 
 const BrokerInput: React.FC<{
     broker: BrokerInstance;
@@ -27,10 +42,10 @@ const BrokerInput: React.FC<{
 
     let input;
     switch (broker.componentType) {
-        case 'Textarea':
+        case "Textarea":
             input = <Textarea value={broker.value} onChange={(e) => handleChange(e.target.value)} />;
             break;
-        case 'SELECT':
+        case "SELECT":
             input = (
                 <Select
                     data={broker.additionalParams?.select_options || []}
@@ -62,7 +77,7 @@ const BrokerInput: React.FC<{
 export const RecipeTestingUI: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const activeRecipeIds = useSelector((state: RootState) => state.recipes.activeRecipeIds);
-    const recipeId = activeRecipeIds[0] || ''; // Use the first active recipe, or an empty string if none
+    const recipeId = activeRecipeIds[0] || ""; // Use the first active recipe, or an empty string if none
     const recipe = useSelector((state: RootState) => state.recipes.recipeInstances[recipeId]);
     const brokerInstances = useSelector((state: RootState) => state.brokers.brokerInstances[recipeId] || {});
     const {
@@ -74,15 +89,9 @@ export const RecipeTestingUI: React.FC = () => {
         events: dynamicEvents,
     } = useSelector((state: RootState) => state.dynamicEvents);
 
-    const [recipeIdInput, setRecipeIdInput] = useState('');
+    const [recipeIdInput, setRecipeIdInput] = useState("");
 
-    const {
-        socketStatus,
-        isAuthenticated,
-        socketSid,
-        addDirectListener,
-        removeDirectListener,
-    } = useReduxSocket();
+    const { socketStatus, isAuthenticated, socketSid, addDirectListener, removeDirectListener } = useReduxSocket();
 
     const handleLoadRecipe = useCallback(() => {
         if (recipeIdInput) {
@@ -90,33 +99,40 @@ export const RecipeTestingUI: React.FC = () => {
         }
     }, [dispatch, recipeIdInput]);
 
-    const handleBrokerChange = useCallback((brokerId: string, value: any, ready: boolean) => {
-        dispatch(updateBrokerInstance({ recipeId, brokerId, updates: { value, ready } }));
-    }, [dispatch, recipeId]);
+    const handleBrokerChange = useCallback(
+        (brokerId: string, value: any, ready: boolean) => {
+            dispatch(updateBrokerInstance({ recipeId, brokerId, updates: { value, ready } }));
+        },
+        [dispatch, recipeId],
+    );
 
     const handleSubmit = useCallback(() => {
-        console.log('Submitting recipe data')
+        console.log("Submitting recipe data");
         if (!recipe) return;
 
         const taskData = {
             recipe_id: recipeId,
-            broker_values: Object.values(brokerInstances).map(({ id, displayName, officialName, dataType, value, ready }) => ({
-                id,
-                name: displayName,
-                official_name: officialName,
-                data_type: dataType,
-                value,
-                ready,
-            })),
+            broker_values: Object.values(brokerInstances).map(
+                ({ id, displayName, officialName, dataType, value, ready }) => ({
+                    id,
+                    name: displayName,
+                    official_name: officialName,
+                    data_type: dataType,
+                    value,
+                    ready,
+                }),
+            ),
             overrides: recipe.overrides,
         };
-        console.log('Task data:', taskData)
+        console.log("Task data:", taskData);
 
-        dispatch(submitTaskData({
-            eventName: requestEvent,
-            task: requestTask,
-            taskData: taskData,
-        }));
+        dispatch(
+            submitTaskData({
+                eventName: requestEvent,
+                task: requestTask,
+                taskData: taskData,
+            }),
+        );
     }, [dispatch, recipeId, recipe, brokerInstances, requestEvent, requestTask]);
 
     useEffect(() => {
@@ -127,20 +143,20 @@ export const RecipeTestingUI: React.FC = () => {
         };
 
         // Set up listeners for all dynamic events
-        Object.keys(dynamicEvents).forEach(eventName => {
+        Object.keys(dynamicEvents).forEach((eventName) => {
             addDirectListener(eventName, handleDynamicEvent(eventName));
         });
 
         return () => {
             // Clean up listeners
-            Object.keys(dynamicEvents).forEach(eventName => {
+            Object.keys(dynamicEvents).forEach((eventName) => {
                 removeDirectListener(eventName, handleDynamicEvent(eventName));
             });
         };
     }, [dynamicEvents, addDirectListener, removeDirectListener]);
 
     return (
-        <Box style={{maxWidth: '1000px', margin: '0 auto'}}>
+        <Box style={{ maxWidth: "1000px", margin: "0 auto" }}>
             <Title order={3}>Recipe Testing UI</Title>
             <Stack gap="md">
                 <Group>
@@ -170,39 +186,36 @@ export const RecipeTestingUI: React.FC = () => {
                         onChange={(value) => value && dispatch(setRequestTask(value))}
                     />
                 </Group>
-                <Divider my="sm" label="Dynamic Broker Display" labelPosition="center"/>
+                <Divider my="sm" label="Dynamic Broker Display" labelPosition="center" />
                 <SimpleGrid cols={2}>
                     {Object.values(brokerInstances).map((broker) => (
-                        <BrokerInput
-                            key={broker.id}
-                            broker={broker}
-                            onChange={handleBrokerChange}
-                        />
+                        <BrokerInput key={broker.id} broker={broker} onChange={handleBrokerChange} />
                     ))}
                 </SimpleGrid>
-                <Divider my="sm" label="Dynamic Events" labelPosition="center"/>
-
+                <Divider my="sm" label="Dynamic Events" labelPosition="center" />
                 <SimpleGrid cols={2}>
                     {Object.entries(dynamicEvents).map(([eventName, event]) => (
                         <Card key={eventName}>
                             <Title order={6}>{eventName}</Title>
-                            <Textarea
-                                value={event.textStream}
-                                readOnly
-                                minRows={5}
-                                autosize
-                            />
+                            <Textarea value={event.textStream} readOnly minRows={5} autosize />
                         </Card>
                     ))}
                 </SimpleGrid>
-`
-                <Divider my="sm" label="Recipe Data" labelPosition="center"/>
+                `
+                <Divider my="sm" label="Recipe Data" labelPosition="center" />
                 <SimpleGrid cols={2}>
                     <Card>
                         <Textarea
                             label="Model Override"
-                            value={recipe?.overrides.model_override || ''}
-            onChange={(event) => dispatch(updateRecipeOverrides({recipeId, overrides: {model_override: event.target.value}}))}
+                            value={recipe?.overrides.model_override || ""}
+                            onChange={(event) =>
+                                dispatch(
+                                    updateRecipeOverrides({
+                                        recipeId,
+                                        overrides: { model_override: event.target.value },
+                                    }),
+                                )
+                            }
                             minRows={2}
                         />
                     </Card>
@@ -210,7 +223,9 @@ export const RecipeTestingUI: React.FC = () => {
                         <AmeJsonInput
                             label="Processor Override"
                             value={recipe?.overrides.processor_overrides || {}}
-                            onChange={(value) => dispatch(updateRecipeOverrides({recipeId, overrides: {processor_overrides: value}}))}
+                            onChange={(value) =>
+                                dispatch(updateRecipeOverrides({ recipeId, overrides: { processor_overrides: value } }))
+                            }
                             minRows={2}
                         />
                     </Card>
@@ -218,44 +233,33 @@ export const RecipeTestingUI: React.FC = () => {
                         <AmeJsonInput
                             label="Other Override"
                             value={recipe?.overrides.other_overrides || {}}
-                            onChange={(value) => dispatch(updateRecipeOverrides({recipeId, overrides: {other_overrides: value}}))}
+                            onChange={(value) =>
+                                dispatch(updateRecipeOverrides({ recipeId, overrides: { other_overrides: value } }))
+                            }
                             minRows={2}
                         />
                     </Card>
                 </SimpleGrid>
             </Stack>
-            <Space h="md"/>
+            <Space h="md" />
             <Button onClick={handleSubmit}>Submit Recipe</Button>
-            <Space h="md"/>
+            <Space h="md" />
             <SimpleGrid cols={2}>
                 {Object.entries(dynamicEvents).map(([eventName, event]) => (
                     <Card key={eventName}>
                         <Title order={5}>{eventName}</Title>
-                        <Textarea
-                            value={event.textStream}
-                            readOnly
-                            minRows={5}
-                            autosize
-                        />
+                        <Textarea value={event.textStream} readOnly minRows={5} autosize />
                     </Card>
                 ))}
             </SimpleGrid>
-            <Space h="md"/>
+            <Space h="md" />
             <Card>
                 <Title order={5}>Current Recipe State</Title>
-                <AmeJsonInput
-                    value={recipe || {}}
-                    readOnly
-                    minRows={10}
-                />
+                <AmeJsonInput value={recipe || {}} readOnly minRows={10} />
             </Card>
             <Card>
                 <Title order={5}>Current Broker Instances</Title>
-                <AmeJsonInput
-                    value={brokerInstances}
-                    readOnly
-                    minRows={10}
-                />
+                <AmeJsonInput value={brokerInstances} readOnly minRows={10} />
             </Card>
         </Box>
     );

@@ -1,13 +1,13 @@
 // components/TableSelectionForm/TableSelectionFormClient.tsx
 
-'use client';
+"use client";
 
-import React, { useState, useMemo } from "react";
-import { Flex, Grid, Radio } from "@mantine/core";
-import AmeTitle from "@/ui/typography/AmeTitle";
-import AmeText from "@/ui/typography/AmeText";
-import { IconTable, IconTableMinus, IconTablePlus } from "@tabler/icons-react";
 import AmeRadioCard from "@/ui/radio/AmeRadioCard";
+import AmeText from "@/ui/typography/AmeText";
+import AmeTitle from "@/ui/typography/AmeTitle";
+import { Flex, Grid, Radio } from "@mantine/core";
+import { IconTable, IconTableMinus, IconTablePlus } from "@tabler/icons-react";
+import React, { useMemo, useState } from "react";
 
 const data = [
     { name: "Default", icon: IconTable },

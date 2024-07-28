@@ -1,7 +1,6 @@
 import { BrokerValue, Broker } from '@/redux/features/broker/types';
 import { DynamicEvent } from '@/redux/features/dynamicEvents/types';
 import { FlatRecipeData, SimpleRecipeData } from '@/redux/features/recipes/types';
-import { SocketTask } from '@/utils/socketio/SocketManager';
 import { atom, atomFamily, selector, selectorFamily } from 'recoil';
 
 
@@ -57,8 +56,8 @@ export const areBrokersReadySelector = selectorFamily({
     get: (recipeId) => ({get}) => {
         const brokerIds = get(recipeBrokerAtomFamily(recipeId));
         return brokerIds.every(brokerId => {
-            const broker = get(recipeBrokerAtomFamily(brokerId));
-            return broker.ready === true;
+            const broker = get(brokerAtomFamily(brokerId));  // Use brokerAtomFamily instead
+            return broker?.ready === true;
         });
     },
 });
@@ -80,8 +79,8 @@ export const readyBrokersSelector = selectorFamily({
     get: (recipeId) => ({get}) => {
         const brokerIds = get(recipeBrokerAtomFamily(recipeId));
         return brokerIds.map(brokerId => {
-            const broker = get(recipeBrokerAtomFamily(brokerId));
-            return broker.ready === true ? broker : null;
+            const broker = get(brokerAtomFamily(brokerId));  // Use brokerAtomFamily instead
+            return broker?.ready === true ? broker : null;
         }).filter(broker => broker !== null);
     },
 });
@@ -233,7 +232,7 @@ export const simpleRecipeDataSelectorFamily = selectorFamily<SimpleRecipeData, s
     }),
 });
 
-export const runSimpleRecipeSocketTaskSelector = selectorFamily<SocketTask, string>({
+export const runSimpleRecipeSocketTaskSelector = selectorFamily<any, string>({
     key: 'runSimpleRecipeSocketTaskSelector',
     get: (recipeId) => ({get}) => {
         const task = get(socketRequestTaskAtom);
@@ -292,4 +291,3 @@ const brokerIdsAtom = atom<string[]>({
     key: 'brokerIdsAtom',
     default: [],
 });
-

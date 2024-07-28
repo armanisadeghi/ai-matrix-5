@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import addMessage from '@/app/samples/socket-test/addMessageUtil';
-import { useSocket } from '@/app/samples/socket-test/SocketManager';
-import React, { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
-import { chatMessagesAtomFamily } from '@/state/aiAtoms/aiChatAtoms';
+import addMessage from "@/app/samples/socket-test/addMessageUtil";
+import { chatMessagesAtomFamily } from "@/state/aiAtoms/aiChatAtoms";
+import React, { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { useSocket } from "./old/SocketManagerLight";
 
 interface SampleChildComponentProps {
     chatId: string;
@@ -13,8 +13,8 @@ interface SampleChildComponentProps {
 const SampleChildComponent: React.FC<SampleChildComponentProps> = ({ chatId }) => {
     const { startSocketStream, stopSocketStream, taskStatus } = useSocket();
     const [messages, setMessages] = useRecoilState(chatMessagesAtomFamily(chatId));
-    const [inputValue, setInputValue] = useState('');
-    const [taskName, setTaskName] = useState('default_task');
+    const [inputValue, setInputValue] = useState("");
+    const [taskName, setTaskName] = useState("default_task");
     const [taskIndex, setTaskIndex] = useState(0);
 
     useEffect(() => {
@@ -25,11 +25,11 @@ const SampleChildComponent: React.FC<SampleChildComponentProps> = ({ chatId }) =
     const handleSendMessage = () => {
         if (!inputValue.trim()) return;
 
-        const newMessages = addMessage(messages, chatId, inputValue, 'user');
+        const newMessages = addMessage(messages, chatId, inputValue, "user");
         setMessages(newMessages);
 
         // Reset input value
-        setInputValue('');
+        setInputValue("");
     };
 
     return (

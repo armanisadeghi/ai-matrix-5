@@ -1,6 +1,5 @@
 'use client';
 
-import useActiveMessages from '@/hooks/ai/old/useActiveMessages';
 import { chatSummariesAtom } from '@/state/aiAtoms/aiChatAtoms';
 import React from 'react';
 import { useSetActiveChat } from '@/app/trials/recoil/local/hooks/useSetActiveChat';

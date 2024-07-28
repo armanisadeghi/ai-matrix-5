@@ -1,25 +1,41 @@
-import React from 'react';
-import { ChevronRight, Calendar, Github } from 'lucide-react';
+import { Calendar, ChevronRight, Github } from "lucide-react";
+import { ReactNode } from "react";
 
+interface CardProps {
+    title: ReactNode;
+    description: ReactNode;
+    tags?: string[];
+    githubLink?: string;
+    customBg?: string;
+    children?: ReactNode;
+}
 
-
-const Card = ({ title, description, tags, githubLink }) => (
+const Card = ({ title, description, tags, githubLink }: CardProps) => (
     <div className="bg-gray-800 hover:bg-gray-750 border border-gray-700 hover:border-gray-600 p-5 rounded-xl cursor-pointer transition-all duration-300 group">
         <div className="space-y-4">
             <div>
-                <h2 className="text-xl font-semibold text-white group-hover:text-gray-100 transition-colors duration-300">{title}</h2>
+                <h2 className="text-xl font-semibold text-white group-hover:text-gray-100 transition-colors duration-300">
+                    {title}
+                </h2>
                 <p className="text-gray-400 group-hover:text-gray-300 transition-colors duration-300">{description}</p>
             </div>
             <div className="flex flex-wrap gap-2">
                 {tags.map((tag, index) => (
-                    <span key={index} className="bg-gray-700 text-gray-300 px-2.5 py-1 rounded text-sm">{tag}</span>
+                    <span key={index} className="bg-gray-700 text-gray-300 px-2.5 py-1 rounded text-sm">
+                        {tag}
+                    </span>
                 ))}
             </div>
             {githubLink && (
                 <div className="flex items-center gap-2">
                     <Github size={16} className="text-gray-400" />
-                    <a href={githubLink} target="_blank" rel="noopener noreferrer" className="text-xs text-gray-300 hover:underline hover:text-gray-100 transition-colors duration-300">
-                        {githubLink.split('/').slice(-2).join('/')}
+                    <a
+                        href={githubLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs text-gray-300 hover:underline hover:text-gray-100 transition-colors duration-300"
+                    >
+                        {githubLink.split("/").slice(-2).join("/")}
                     </a>
                 </div>
             )}
@@ -35,9 +51,13 @@ const Button = ({ children, icon: Icon }) => (
 );
 
 const DashboardCards = () => (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black p-8" style={{
-        backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.4' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")"
-    }}>
+    <div
+        className="min-h-screen bg-gradient-to-b from-gray-900 to-black p-8"
+        style={{
+            backgroundImage:
+                "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.4' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E\")",
+        }}
+    >
         <div className="max-w-6xl mx-auto space-y-12">
             <section className="space-y-8">
                 <div>

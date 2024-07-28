@@ -1,6 +1,6 @@
 // chat-app/utils/chatDefaults.ts
-import { BrokerData } from '@/types/broker';
-import { ChatSettings, RequestSettings, VariablesData } from 'types/settings.types';
+import { BrokerData } from "@/types/broker";
+import { ChatSettings, RequestSettings, VariablesData } from "types/settings.types";
 
 export interface ChatRequest {
     eventName: string;
@@ -20,14 +20,12 @@ export interface ChatRequest {
     activeChatId: string | null;
 }
 
-
-export const aiPreferencesMainDefault = "direct_chat"
-export const aiPreferencesSecondDefault = "one_ai_chat"
-export const makeSmallTalkDefault = false
-export const quickAnswerDefault = false
-export const improveQuestionsDefault = false
-export const submitOnEnterDefault = true
-
+export const aiPreferencesMainDefault = "direct_chat";
+export const aiPreferencesSecondDefault = "one_ai_chat";
+export const makeSmallTalkDefault = false;
+export const quickAnswerDefault = false;
+export const improveQuestionsDefault = false;
+export const submitOnEnterDefault = true;
 
 export const defaultChatSettings: ChatSettings = {
     aiPreferencesMain: aiPreferencesMainDefault,
@@ -35,9 +33,8 @@ export const defaultChatSettings: ChatSettings = {
     makeSmallTalk: makeSmallTalkDefault,
     quickAnswer: quickAnswerDefault,
     improveQuestions: improveQuestionsDefault,
-    submitOnEnter: submitOnEnterDefault
+    submitOnEnter: submitOnEnterDefault,
 };
-
 
 export const defaultRequestSettings: RequestSettings = {
     chatSettings: defaultChatSettings,
@@ -50,10 +47,10 @@ export const defaultRequestSettings: RequestSettings = {
     userSettings: {},
     matrixSettings: {},
     clientSettings: {},
-    agencySettings: {}
+    agencySettings: {},
 };
 
-export const defaultChatRequest: ChatRequest = {
+export const defaultChatRequest: ChatRequest | any = {
     eventName: "",
     userToken: "",
     task: "",
@@ -64,7 +61,7 @@ export const defaultChatRequest: ChatRequest = {
         requestTimestamp: "",
         requestType: "chat",
         requestSource: "chat_app_main",
-        requestChannel: "chat"
+        requestChannel: "chat",
     },
     recipeId: "",
     promptData: [],
@@ -76,5 +73,5 @@ export const defaultChatRequest: ChatRequest = {
     brokerData: {},
     modelData: {},
     controls: {},
-    activeChatId: null
+    activeChatId: null,
 };

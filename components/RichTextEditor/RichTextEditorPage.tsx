@@ -1,9 +1,9 @@
 // nice-working/RichTextEditor/RichTextEditorPage.tsx
 
-'use client';
+"use client";
 
-import { RichTextEditorContextProvider } from './RichTextEditorContextProvider';
-import AmeMarkdownBeautifier from './AmeMarkdownBeautifier';
+import AmeMarkdownBeautifier from "./AmeMarkdownBeautifier";
+import { RichTextEditorContextProvider } from "./RichTextEditorContextProvider";
 
 interface RichTextEditorPageProps {
     content: string;

@@ -1,31 +1,39 @@
-import { useEffect, useRef, useMemo, useCallback } from "react";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
-    rightSidebarAtom,
-    leftSidebarAtom,
+    customValuesAtom,
+    deviceTypeAtom,
     footerAtom,
     headerAtom,
+    leftSidebarAtom,
     loadingStateAtom,
+    overrideFlagAtom,
     presetMethodAtom,
-    deviceTypeAtom,
+    presetTypeAtom,
+    rightSidebarAtom,
+    showFooterToggle,
     showHeaderToggle,
     showLeftSidebarToggle,
     showRightSidebarToggle,
-    showFooterToggle,
-    presetTypeAtom,
-    customValuesAtom,
-    overrideFlagAtom
 } from "@/state/layoutAtoms";
-import { CustomPresets, getLayoutPresets } from "./layoutPresets";
-import { PresetType, PresetMethod, PresetValue, LayoutPreset, ModulePreset, PagePreset, ComponentPreset } from "@/types/layout.types";
+import {
+    ComponentPreset,
+    LayoutPreset,
+    ModulePreset,
+    PagePreset,
+    PresetMethod,
+    PresetType,
+    PresetValue,
+} from "@/types/layout.types";
+import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { getLayoutPresets } from "./layoutPresets";
 
 const determinePresetMethod = (presetType: PresetType): PresetMethod => {
-    if (presetType in ({} as Record<LayoutPreset, LayoutPreset>)) return 'layout';
-    if (presetType in ({} as Record<ModulePreset, ModulePreset>)) return 'module';
-    if (presetType in ({} as Record<PagePreset, PagePreset>)) return 'page';
-    if (presetType in ({} as Record<ComponentPreset, ComponentPreset>)) return 'component';
-    if (presetType === 'CustomPreset') return 'custom';
-    return 'none';
+    if (presetType in ({} as Record<LayoutPreset, LayoutPreset>)) return "layout";
+    if (presetType in ({} as Record<ModulePreset, ModulePreset>)) return "module";
+    if (presetType in ({} as Record<PagePreset, PagePreset>)) return "page";
+    if (presetType in ({} as Record<ComponentPreset, ComponentPreset>)) return "component";
+    if (presetType === "CustomPreset") return "custom";
+    return "none";
 };
 
 const useLayoutPresets = () => {
@@ -47,32 +55,62 @@ const useLayoutPresets = () => {
     const initialSet = useRef(false);
     const prevPreset = useRef<any>(null);
 
-    const priorityOrder: ReadonlyArray<PresetMethod> = ['layout', 'module', 'page', 'component', 'custom'];
+    const priorityOrder: ReadonlyArray<PresetMethod> = ["layout", "module", "page", "component", "custom"];
 
-    const isHigherPriority = useCallback((newPriority: PresetMethod): boolean => {
-        return priorityOrder.indexOf(newPriority) > priorityOrder.indexOf(currentPriority);
-    }, [currentPriority]);
+    const isHigherPriority = useCallback(
+        (newPriority: PresetMethod): boolean => {
+            return priorityOrder.indexOf(newPriority) > priorityOrder.indexOf(currentPriority);
+        },
+        [currentPriority],
+    );
 
-    const setPreset = useCallback((preset: { header: PresetValue, leftSidebar: PresetValue, rightSidebar: PresetValue, footer: PresetValue, toggles?: { header: boolean, leftSidebar: boolean, rightSidebar: boolean, footer: boolean } }) => {
-        const sizeIndex = deviceType === 'desktop' ? 0 : deviceType === 'tablet' ? 1 : 2;
+    const setPreset = useCallback(
+        (preset: {
+            header: PresetValue;
+            leftSidebar: PresetValue;
+            rightSidebar: PresetValue;
+            footer: PresetValue;
+            toggles?: { header: boolean; leftSidebar: boolean; rightSidebar: boolean; footer: boolean };
+        }) => {
+            const sizeIndex = deviceType === "desktop" ? 0 : deviceType === "tablet" ? 1 : 2;
 
-        const newHeaderHeight = preset.header[sizeIndex];
-        const newLeftSidebarWidth = preset.leftSidebar[sizeIndex];
-        const newRightSidebarWidth = preset.rightSidebar[sizeIndex];
-        const newFooterHeight = preset.footer[sizeIndex];
+            const newHeaderHeight = preset.header[sizeIndex];
+            const newLeftSidebarWidth = preset.leftSidebar[sizeIndex];
+            const newRightSidebarWidth = preset.rightSidebar[sizeIndex];
+            const newFooterHeight = preset.footer[sizeIndex];
 
-        if (newHeaderHeight !== headerHeight) setHeaderHeight(newHeaderHeight);
-        if (newLeftSidebarWidth !== leftSidebarWidth) setLeftSidebarWidth(newLeftSidebarWidth);
-        if (newRightSidebarWidth !== rightSidebarWidth) setRightSidebarWidth(newRightSidebarWidth);
-        if (newFooterHeight !== footerHeight) setFooterHeight(newFooterHeight);
+            if (newHeaderHeight !== headerHeight) setHeaderHeight(newHeaderHeight);
+            if (newLeftSidebarWidth !== leftSidebarWidth) setLeftSidebarWidth(newLeftSidebarWidth);
+            if (newRightSidebarWidth !== rightSidebarWidth) setRightSidebarWidth(newRightSidebarWidth);
+            if (newFooterHeight !== footerHeight) setFooterHeight(newFooterHeight);
 
-        if (preset.toggles) {
-            if (preset.toggles.header !== showHeader) setShowHeader(preset.toggles.header);
-            if (preset.toggles.leftSidebar !== showLeftSidebar) setShowLeftSidebar(preset.toggles.leftSidebar);
-            if (preset.toggles.rightSidebar !== showRightSidebar) setShowRightSidebar(preset.toggles.rightSidebar);
-            if (preset.toggles.footer !== showFooter) setShowFooter(preset.toggles.footer);
-        }
-    }, [deviceType, headerHeight, leftSidebarWidth, rightSidebarWidth, footerHeight, showHeader, showLeftSidebar, showRightSidebar, showFooter, setHeaderHeight, setLeftSidebarWidth, setRightSidebarWidth, setFooterHeight, setShowHeader, setShowLeftSidebar, setShowRightSidebar, setShowFooter]);
+            if (preset.toggles) {
+                if (preset.toggles.header !== showHeader) setShowHeader(preset.toggles.header);
+                if (preset.toggles.leftSidebar !== showLeftSidebar) setShowLeftSidebar(preset.toggles.leftSidebar);
+                if (preset.toggles.rightSidebar !== showRightSidebar) setShowRightSidebar(preset.toggles.rightSidebar);
+                if (preset.toggles.footer !== showFooter) setShowFooter(preset.toggles.footer);
+            }
+        },
+        [
+            deviceType,
+            headerHeight,
+            leftSidebarWidth,
+            rightSidebarWidth,
+            footerHeight,
+            showHeader,
+            showLeftSidebar,
+            showRightSidebar,
+            showFooter,
+            setHeaderHeight,
+            setLeftSidebarWidth,
+            setRightSidebarWidth,
+            setFooterHeight,
+            setShowHeader,
+            setShowLeftSidebar,
+            setShowRightSidebar,
+            setShowFooter,
+        ],
+    );
 
     const memoizedLayoutPresets = useMemo(() => getLayoutPresets(presetType, customValues), [presetType, customValues]);
 
@@ -98,7 +136,16 @@ const useLayoutPresets = () => {
                 setOverrideFlag(false);
             }
         }
-    }, [memoizedLayoutPresets, presetType, overrideFlag, isHigherPriority, setPreset, setCurrentPriority, setIsLoading, setOverrideFlag]);
+    }, [
+        memoizedLayoutPresets,
+        presetType,
+        overrideFlag,
+        isHigherPriority,
+        setPreset,
+        setCurrentPriority,
+        setIsLoading,
+        setOverrideFlag,
+    ]);
 
     return { isLoading, headerHeight, leftSidebarWidth, rightSidebarWidth, footerHeight, setOverrideFlag };
 };

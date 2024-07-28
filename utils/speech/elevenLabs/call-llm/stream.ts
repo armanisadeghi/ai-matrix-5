@@ -1,6 +1,6 @@
 import EventEmitter from 'events';
 import { v4 as uuid } from 'uuid';
-import { WebSocket } from 'ws';
+import { WebSocket } from 'ws'; // No changes needed here
 
 export class Stream extends EventEmitter {
   ws: WebSocket;

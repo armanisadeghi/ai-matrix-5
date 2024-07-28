@@ -1,9 +1,12 @@
-import { useReduxSocket } from '@/utils/socketio/useReduxSocket';
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
-import { setupDynamicEventListener, removeDynamicEventListener, submitTaskData } from '@/redux/features/dynamicEvents/dynamicEventsThunks';
-import { RootState } from '@/redux/store';
+import { useReduxSocket } from "@/utils/socketio/useReduxSocket";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    removeDynamicEventListener,
+    setupDynamicEventListener,
+    submitTaskData,
+} from "@/redux/features/dynamicEvents/dynamicEventsThunks";
+import { RootState } from "@/redux/store";
 
 const MyComponent: React.FC = () => {
     const dispatch = useDispatch();
@@ -13,20 +16,24 @@ const MyComponent: React.FC = () => {
     useEffect(() => {
         if (socketSid) {
             const eventName = `${socketSid}_my_custom_event`;
-            dispatch(setupDynamicEventListener(eventName));
+            dispatch(setupDynamicEventListener(eventName) as any);
 
             return () => {
-                dispatch(removeDynamicEventListener(eventName));
+                dispatch(removeDynamicEventListener(eventName) as any);
             };
         }
     }, [socketSid, dispatch]);
 
     const handleSubmit = () => {
-        dispatch(submitTaskData({
-            eventName: 'simple_recipe',
-            task: 'run_recipe',
-            taskData: { /* your task data */ },
-        }));
+        dispatch(
+            submitTaskData({
+                eventName: "simple_recipe",
+                task: "run_recipe",
+                taskData: {
+                    /* your task data */
+                },
+            }) as any,
+        );
     };
 
     return (

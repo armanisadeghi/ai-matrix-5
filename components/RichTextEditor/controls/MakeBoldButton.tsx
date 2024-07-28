@@ -5,7 +5,7 @@ import { useRichTextEditorContext } from '../RichTextEditorContextProvider';
 const MakeBoldButton = () => {
     const { editor } = useRichTextEditorContext();
     return (
-        <Button onClick={() => editor?.chain().focus().toggleBold().run()} size="sm" style={{ marginRight: '0.5rem' }}>
+        <Button onClick={() => editor?.chain().focus().toggleBold().run()} size="sm" style={{ marginRight: "0.5rem" }}>
             Make bold
         </Button>
     );

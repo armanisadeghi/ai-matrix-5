@@ -1,16 +1,15 @@
 // app/ui/layout/AmeGridLayout/AmeDragDropLayout.tsx
-'use client';
+"use client";
 
-import React, { useRef, useState } from 'react';
-import { Responsive, WidthProvider } from 'react-grid-layout';
-import AmeTestCard from '@/app/trials/core-chat-trial/ui/AmeTestingCard';
-import { ActionIcon } from '@mantine/core';
-import { TbSettings } from 'react-icons/tb';
-import GridSettings from './GridSettings';
-import useGridLayout from './useGridLayout';
-import 'react-grid-layout/css/styles.css';
-import 'react-resizable/css/styles.css';
-
+import { ActionIcon } from "@mantine/core";
+import React, { useRef, useState } from "react";
+import { Responsive, WidthProvider } from "react-grid-layout";
+import "react-grid-layout/css/styles.css";
+import { TbSettings } from "react-icons/tb";
+import "react-resizable/css/styles.css";
+import AmeTestCard from "./AmeTestingCard";
+import GridSettings from "./GridSettings";
+import useGridLayout from "./useGridLayout";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -24,28 +23,27 @@ interface AmeDragDropLayoutProps {
     margin?: [number, number];
     isResizable?: boolean;
     isDraggable?: boolean;
-    compactType?: 'vertical' | 'horizontal' | null;
+    compactType?: "vertical" | "horizontal" | null;
     initialHorizontalSnapIncrement?: number;
     initialVerticalSnapIncrement?: number;
     containerWidth?: string | number;
 }
 
-const AmeDragDropLayout: React.FC<AmeDragDropLayoutProps> = (
-    {
-        items,
-        cols = {lg: 4, md: 3, sm: 2, xs: 1},
-        breakpoints = {lg: 1400, md: 1150, sm: 900, xs: 600},
-        initialRowHeight = 300,
-        initialColumnWidth = 250,
-        containerPadding = [10, 10],
-        margin = [10, 10],
-        isResizable = true,
-        isDraggable = true,
-        compactType = 'vertical',
-        initialHorizontalSnapIncrement = 100,
-        initialVerticalSnapIncrement = 100,
-        containerWidth = '100%'
-    }) => {
+const AmeDragDropLayout: React.FC<AmeDragDropLayoutProps> = ({
+    items,
+    cols = { lg: 4, md: 3, sm: 2, xs: 1 },
+    breakpoints = { lg: 1400, md: 1150, sm: 900, xs: 600 },
+    initialRowHeight = 300,
+    initialColumnWidth = 250,
+    containerPadding = [10, 10],
+    margin = [10, 10],
+    isResizable = true,
+    isDraggable = true,
+    compactType = "vertical",
+    initialHorizontalSnapIncrement = 100,
+    initialVerticalSnapIncrement = 100,
+    containerWidth = "100%",
+}) => {
     const [showSettings, setShowSettings] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -65,14 +63,14 @@ const AmeDragDropLayout: React.FC<AmeDragDropLayoutProps> = (
         onBreakpointChange,
         updateLayout,
         onDragStop,
-        onResizeStop
+        onResizeStop,
     } = useGridLayout({
         items,
         cols,
         initialRowHeight,
         initialColumnWidth,
         initialHorizontalSnapIncrement,
-        initialVerticalSnapIncrement
+        initialVerticalSnapIncrement,
     });
 
     const resetLayout = () => {
@@ -84,7 +82,7 @@ const AmeDragDropLayout: React.FC<AmeDragDropLayoutProps> = (
     };
 
     return (
-        <div ref={containerRef} style={{width: containerWidth, position: 'relative'}}>
+        <div ref={containerRef} style={{ width: containerWidth, position: "relative" }}>
             <ResponsiveGridLayout
                 layouts={layouts}
                 breakpoints={breakpoints}
@@ -116,10 +114,10 @@ const AmeDragDropLayout: React.FC<AmeDragDropLayoutProps> = (
                 ))}
             </ResponsiveGridLayout>
             <ActionIcon
-                style={{position: 'fixed', bottom: '20px', right: '20px', zIndex: 1000}}
+                style={{ position: "fixed", bottom: "20px", right: "20px", zIndex: 1000 }}
                 onClick={() => setShowSettings(!showSettings)}
             >
-                <TbSettings size={24}/>
+                <TbSettings size={24} />
             </ActionIcon>
             {showSettings && (
                 <GridSettings

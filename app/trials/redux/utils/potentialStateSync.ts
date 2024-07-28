@@ -1,29 +1,28 @@
 // Redux store
-import { configureStore } from '@reduxjs/toolkit';
+import { Middleware } from "@reduxjs/toolkit";
 
-
-const clientStore = configureStore({
+/* const clientStore = configureStore({
     reducer: {
         visibleState: visibleStateReducer,
         stateReferences: stateReferencesReducer,
     },
     middleware: [websocketMiddleware]
-});
+}); */
 
 // WebSocket middleware
-const websocketMiddleware: Middleware = store => {
+const websocketMiddleware: Middleware = (store) => {
     let socket: WebSocket | null = null;
 
-    return next => action => {
-        switch(action.type) {
-            case 'CONNECT_WEBSOCKET':
-                socket = new WebSocket('ws://your-server.com/state-sync');
+    return (next) => (action: any) => {
+        switch (action.type) {
+            case "CONNECT_WEBSOCKET":
+                socket = new WebSocket("ws://your-server.com/state-sync");
                 socket.onmessage = (event) => {
                     const { type, payload } = JSON.parse(event.data);
                     store.dispatch({ type, payload });
                 };
                 break;
-            case 'UPDATE_SERVER_STATE':
+            case "UPDATE_SERVER_STATE":
                 if (socket) {
                     socket.send(JSON.stringify(action));
                 }
@@ -37,15 +36,14 @@ const websocketMiddleware: Middleware = store => {
 // Example of a state reference
 interface StateReference {
     id: string;
-    type: 'sensitive_data' | 'public_data';
+    type: "sensitive_data" | "public_data";
 }
 
 // Action to request sensitive operation
 const requestSensitiveOperation = (referenceId: string) => ({
-    type: 'REQUEST_SENSITIVE_OPERATION',
-    payload: { referenceId }
+    type: "REQUEST_SENSITIVE_OPERATION",
+    payload: { referenceId },
 });
-
 
 /*
 

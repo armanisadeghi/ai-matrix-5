@@ -6,10 +6,10 @@ import { useSetRecoilState, useRecoilValue, useRecoilState } from 'recoil';
 import { Container, Paper, TextInput, NumberInput, Select, Button, Title, Text, Stack, Group, Textarea, Alert } from '@mantine/core';
 import { IconPlayerPlay, IconPlayerStop, IconAlertCircle } from '@tabler/icons-react';
 import { v4 as uuidv4 } from 'uuid';
-import { useSocket } from './SocketManager';
 import { aiModelAtom, combinedSettingsState } from '@/state/aiAtoms/settingsAtoms';
-import { chatMessagesAtomFamily, requestTaskAtom, recipeIdAtom, assistantTextStreamAtom } from '@/state/aiAtoms/aiChatAtoms';
+import { chatMessagesAtomFamily, requestTaskAtom, assistantTextStreamAtom, recipeIdAtom } from '@/state/aiAtoms/aiChatAtoms';
 import { MessageType } from '@/types';
+import { useSocket } from './old/SocketManagerLight';
 
 const addMessage = (
     messages: MessageType[],

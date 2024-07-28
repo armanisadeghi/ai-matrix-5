@@ -1,19 +1,35 @@
 // renderers.tsx
-import { CustomTable, CustomTableBody, CustomTableCell, CustomTableHead, CustomTableHeaderCell, CustomTableRow } from '@/components/AiChat/Response/markdown/CustomTable';
-import React, { ReactNode } from 'react';
 import AmeCodeHighlight from "@/ui/highlight/AmeCodeHighlight";
+import React, { ReactNode } from "react";
 
-import { Code, Alert, Container, Button } from '@mantine/core';
+import { Alert, Button, Code, Container } from "@mantine/core";
 
 const isBlockLevelElement = (element: ReactNode) => {
     if (!React.isValidElement(element)) return false;
-    const blockElements = ['table', 'thead', 'tbody', 'tr', 'th', 'td', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'code', 'pre', 'div'];
+    const blockElements = [
+        "table",
+        "thead",
+        "tbody",
+        "tr",
+        "th",
+        "td",
+        "li",
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "h6",
+        "code",
+        "pre",
+        "div",
+    ];
     return blockElements.includes(element.type as string);
 };
 
 const logRendererInfo = (type: string, props: any) => {
     console.log(`Renderer type: ${type}`);
-    console.log('Props received:', props);
+    console.log("Props received:", props);
 };
 
 interface RendererProps {
@@ -38,12 +54,12 @@ const renderers = {
             <Code color="var(--mantine-color-blue-light)">{children}</Code>
         );
     },
-    table: ({ children }: { children: ReactNode }) => <CustomTable>{children}</CustomTable>,
-    thead: ({ children }: { children: ReactNode }) => <CustomTableHead>{children}</CustomTableHead>,
-    tbody: ({children}: { children: ReactNode }) => <CustomTableBody>{children}</CustomTableBody>,
-    tr: ({ children }: { children: ReactNode }) => <CustomTableRow>{children}</CustomTableRow>,
-    th: ({ children }: { children: ReactNode }) => <CustomTableHeaderCell>{children}</CustomTableHeaderCell>,
-    td: ({ children }: { children: ReactNode }) => <CustomTableCell>{children}</CustomTableCell>,
+    table: ({ children }: { children: ReactNode }) => <table>{children}</table>,
+    thead: ({ children }: { children: ReactNode }) => <thead>{children}</thead>,
+    tbody: ({ children }: { children: ReactNode }) => <tbody>{children}</tbody>,
+    tr: ({ children }: { children: ReactNode }) => <tr>{children}</tr>,
+    th: ({ children }: { children: ReactNode }) => <th>{children}</th>,
+    td: ({ children }: { children: ReactNode }) => <td>{children}</td>,
     li: ({ children }: { children: ReactNode }) => <li>{children}</li>,
     h1: ({ children }: { children: ReactNode }) => <h1>{children}</h1>,
     h2: ({ children }: { children: ReactNode }) => <h2>{children}</h2>,
@@ -60,28 +76,30 @@ const renderers = {
         }
         return <span>{children}</span>;
     },
-    img: ({ node, ...props }: RendererProps) => <img {...props} style={{ maxWidth: '100%', borderRadius: '8px' }} />,
+    img: ({ node, ...props }: RendererProps) => <img {...props} style={{ maxWidth: "100%", borderRadius: "8px" }} />,
     blockquote: ({ children }: { children: ReactNode }) => (
-        <blockquote style={{ borderLeft: '4px solid var(--mantine-color-gray-light)', paddingLeft: '16px', color: 'var(--mantine-color-gray-dark)' }}>
+        <blockquote
+            style={{
+                borderLeft: "4px solid var(--mantine-color-gray-light)",
+                paddingLeft: "16px",
+                color: "var(--mantine-color-gray-dark)",
+            }}
+        >
             {children}
         </blockquote>
     ),
-    a: ({ href, children }: { href: string, children: ReactNode }) => (
-        <a href={href} style={{ color: 'var(--mantine-color-blue-dark)', textDecoration: 'underline' }}>
+    a: ({ href, children }: { href: string; children: ReactNode }) => (
+        <a href={href} style={{ color: "var(--mantine-color-blue-dark)", textDecoration: "underline" }}>
             {children}
         </a>
     ),
     button: ({ children }: { children: ReactNode }) => <Button>{children}</Button>,
-    alert: ({ children, type }: { children: ReactNode, type: 'info' | 'warning' | 'error' | 'success' }) => (
-        <Alert color={type === 'error' ? 'red' : type === 'warning' ? 'yellow' : type === 'success' ? 'green' : 'blue'}>
+    alert: ({ children, type }: { children: ReactNode; type: "info" | "warning" | "error" | "success" }) => (
+        <Alert color={type === "error" ? "red" : type === "warning" ? "yellow" : type === "success" ? "green" : "blue"}>
             {children}
         </Alert>
     ),
-    container: ({ children }: { children: ReactNode }) => (
-        <Container>
-            {children}
-        </Container>
-    ),
+    container: ({ children }: { children: ReactNode }) => <Container>{children}</Container>,
 };
 
 export default renderers;

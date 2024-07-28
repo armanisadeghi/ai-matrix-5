@@ -6,8 +6,8 @@ import { IconFileExport } from '@tabler/icons-react';
 
 
 interface VideoConverterProps {
-    file: File;
-    onConvert: (convertedFile: File) => void;
+    file?: File;
+    onConvert?: (convertedFile: File) => void;
 }
 
 const VideoConverter: React.FC<VideoConverterProps> = ({file, onConvert}) => {

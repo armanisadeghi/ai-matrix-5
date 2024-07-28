@@ -1,20 +1,19 @@
 // chat-app/AiContext/AiResponseContext.tsx
-'use client';
+"use client";
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { RespondData } from '@/types/chat.ts';
+import React, { ReactNode, createContext, useContext, useState } from "react";
 
 interface AiResponseContextType {
-    respondData: RespondData | null;
+    respondData: any | null;
     triggerResponse: boolean; // Added boolean to track trigger
-    setRespondData: (data: RespondData | null) => void;
+    setRespondData: (data: any | null) => void;
     setTriggerResponse: (trigger: boolean) => void; // Setter for trigger
 }
 
 const AiResponseContext = createContext<AiResponseContextType | undefined>(undefined);
 
 export const AiResponseProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [respondData, setRespondData] = useState<RespondData | null>(null);
+    const [respondData, setRespondData] = useState<any | null>(null);
     const [triggerResponse, setTriggerResponse] = useState<boolean>(false); // Default is false
 
     return (
@@ -27,7 +26,7 @@ export const AiResponseProvider: React.FC<{ children: ReactNode }> = ({ children
 export const useAiResponse = (): AiResponseContextType => {
     const context = useContext(AiResponseContext);
     if (!context) {
-        throw new Error('useAiResponse must be used within an AiResponseProvider');
+        throw new Error("useAiResponse must be used within an AiResponseProvider");
     }
     return context;
 };

@@ -1,8 +1,8 @@
+import { PATH_USER } from "@/routes";
 import { Avatar, Group, Menu, rem, Text, UnstyledButton, UnstyledButtonProps } from "@mantine/core";
 import { IconChevronRight, IconSettings } from "@tabler/icons-react";
-import classes from "./UserButton.module.css";
-import { PATH_USER } from "@/routes";
 import Link from "next/link";
+import classes from "./UserButton.module.css";
 
 interface UserButtonProps extends Partial<UnstyledButtonProps> {
     collapsed?: boolean;

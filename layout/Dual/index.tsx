@@ -1,26 +1,19 @@
-'use client';
-import { ActionIcon, AppShell, Button } from "@mantine/core";
-import { useState, ReactNode } from "react";
+"use client";
+import { ActionIcon, AppShell } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import { useLayout } from '../../context/LayoutContext';
-import { Navbar } from "./Navbar";
+import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
+import { ReactNode, useState } from "react";
+import { useLayout } from "../../context/LayoutContext";
 import { Header } from "./Header";
-import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
+import { Navbar } from "./Navbar";
 
 type Props = {
     children: ReactNode;
     initialNavbarState?: "full" | "compact" | "icons" | "hidden";
 };
 
-export function DualLayout({
-                               children,
-                               initialNavbarState = "full"
-                           }: Props) {
-    const {
-        opened,
-        toggleOpened,
-        navbarState
-    } = useLayout();
+export function DualLayout({ children, initialNavbarState = "full" }: Props) {
+    const { opened, navbarState } = useLayout();
     const mobileMatch = useMediaQuery("(min-width: 768px)");
     const [asideOpen, setAsideOpen] = useState(true);
 
@@ -42,7 +35,7 @@ export function DualLayout({
     const asideWidth = asideOpen ? 250 : 25;
 
     const toggleAside = () => {
-        setAsideOpen(prev => !prev);
+        setAsideOpen((prev) => !prev);
     };
 
     return (
@@ -52,28 +45,28 @@ export function DualLayout({
                 header={{
                     height: {
                         base: 50,
-                    }
+                    },
                 }}
                 navbar={{
                     width: navbarWidth,
-                    breakpoint: 'sm',
-                    collapsed: { mobile: !opened }
+                    breakpoint: "sm",
+                    collapsed: { mobile: !opened },
                 }}
                 aside={{
                     width: {
                         base: 0,
-                        md: asideWidth
+                        md: asideWidth,
                     },
-                    breakpoint: 'md',
+                    breakpoint: "md",
                     collapsed: {
                         desktop: !asideOpen,
-                        mobile: true
-                    }
+                        mobile: true,
+                    },
                 }}
                 padding={{
-                    base: 'xs',
-                    sm: 'sm',
-                    lg: 'md'
+                    base: "xs",
+                    sm: "sm",
+                    lg: "md",
                 }}
             >
                 <AppShell.Header withBorder={true}>
@@ -84,14 +77,15 @@ export function DualLayout({
                         <Navbar state={navbarState} />
                     </AppShell.Navbar>
                 )}
-                <AppShell.Main>
-                    {children}
-                </AppShell.Main>
+                <AppShell.Main>{children}</AppShell.Main>
                 <AppShell.Aside p="md">
                     {asideOpen && (
                         <>
                             <div>Right Sidebar Content</div>
-                            <ActionIcon onClick={toggleAside} style={{ position: 'absolute', top: '50%', right: asideWidth - 27 }}>
+                            <ActionIcon
+                                onClick={toggleAside}
+                                style={{ position: "absolute", top: "50%", right: asideWidth - 27 }}
+                            >
                                 <IconChevronRight size={12} />
                             </ActionIcon>
                         </>
@@ -99,7 +93,8 @@ export function DualLayout({
                     {!asideOpen && (
                         <ActionIcon
                             onClick={toggleAside}
-                            style={{ position: 'absolute', top: '50%', right: asideWidth }}>
+                            style={{ position: "absolute", top: "50%", right: asideWidth }}
+                        >
                             <IconChevronLeft size={12} />
                         </ActionIcon>
                     )}

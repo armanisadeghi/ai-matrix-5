@@ -1,24 +1,25 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { useRecoilState, useRecoilValueLoadable } from 'recoil';
-import { activeChatIdAtom } from '@/state/aiAtoms/old/chatAtoms';
-import { chatSummariesSelector } from '@/app/trials/core-chat-trial/hooks/old/useChatAtomsDb';
-import { SimpleGrid, Button, Modal } from '@mantine/core';
+import { activeChatIdAtom, activeChatSelector } from "@/state/aiAtoms/aiChatAtoms";
+import { Button, Modal, SimpleGrid } from "@mantine/core";
+import React, { useState } from "react";
+import { useRecoilState, useRecoilValueLoadable } from "recoil";
 
 const ID_INDEX = 0;
 const NAME_INDEX = 1;
 
-const ChatModal: React.FC<{ showPopup: boolean, onClose: () => void, chat: any }> = ({ showPopup, onClose, chat }) => (
+const ChatModal: React.FC<{ showPopup: boolean; onClose: () => void; chat: any }> = ({ showPopup, onClose, chat }) => (
     <Modal opened={showPopup} onClose={onClose} title="Details">
         {Object.keys(chat).map((key, index) => (
-            <p key={index}><strong>{key}:</strong> {chat[key]}</p>
+            <p key={index}>
+                <strong>{key}:</strong> {chat[key]}
+            </p>
         ))}
     </Modal>
 );
 
 // ChatItem Component
-const ChatItem: React.FC<{ chat: any, handleButtonClick: (chat: any) => void }> = ({ chat, handleButtonClick }) => (
+const ChatItem: React.FC<{ chat: any; handleButtonClick: (chat: any) => void }> = ({ chat, handleButtonClick }) => (
     <>
         <SimpleGrid cols={2} spacing="sm" verticalSpacing="sm">
             <div>
@@ -41,7 +42,7 @@ function ChatSummaries() {
     const [activeChatId, setActiveChatId] = useRecoilState(activeChatIdAtom);
     const [showPopup, setShowPopup] = useState(false);
     const [selectedChat, setSelectedChat] = useState<any | null>(null);
-    const chatSummariesLoadable = useRecoilValueLoadable(chatSummariesSelector);
+    const chatSummariesLoadable = useRecoilValueLoadable(activeChatSelector);
 
     const handleButtonClick = (chat: any) => {
         const chatId = chat[Object.keys(chat)[ID_INDEX]];
@@ -50,25 +51,26 @@ function ChatSummaries() {
             setActiveChatId(chatId);
             setShowPopup(true);
         } else {
-            console.error('Error: id is undefined');
+            console.error("Error: id is undefined");
         }
     };
 
     switch (chatSummariesLoadable.state) {
-        case 'hasValue':
+        case "hasValue":
             return (
                 <>
-                    {chatSummariesLoadable.contents.map((chat: any, index: number) => (
-                        <ChatItem key={index} chat={chat} handleButtonClick={handleButtonClick} />
-                    ))}
+                    {Array.isArray(chatSummariesLoadable.contents) &&
+                        chatSummariesLoadable.contents.map((chat: any) => (
+                            <ChatItem key={chat.chatId} chat={chat} handleButtonClick={handleButtonClick} />
+                        ))}
                     {showPopup && selectedChat && (
                         <ChatModal showPopup={showPopup} onClose={() => setShowPopup(false)} chat={selectedChat} />
                     )}
                 </>
             );
-        case 'loading':
+        case "loading":
             return <div>Loading...</div>;
-        case 'hasError':
+        case "hasError":
             throw chatSummariesLoadable.contents;
         default:
             return null;

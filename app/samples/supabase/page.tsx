@@ -14,7 +14,7 @@ export default function Page() {
     const handleSubmit = async () => {
         if (tableName && field) {
             const {data} = await supabase
-                .from(tableName)
+                .from(tableName as 'messages' | 'broker' | 'category' | 'chats' | 'chats_copy' | 'component' | 'file_sharing' | 'organization' | 'user')
                 .select()
                 .ilike(field, `%${value}%`);
             setData(data || []);

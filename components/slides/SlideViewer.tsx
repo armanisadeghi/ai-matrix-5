@@ -1,19 +1,24 @@
 // components/slides/SlideViewer.tsx
 
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { Card, Image, Text, Button, Group, Stack, Select } from '@mantine/core';
-import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
-import { useFileManager } from '@/hooks/useFileManager';
+import React, { useState, useEffect } from "react";
+import { Card, Image, Text, Button, Group, Stack, Select } from "@mantine/core";
+import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
+import { useFileManager } from "@/hooks/useFileManager";
 
 interface Slide {
     id: string;
     content: string;
     imageUrl?: string;
+    slides?: any;
 }
 
-export default function SlideViewer() {
+interface SlideProps {
+    slides?: any;
+}
+
+export default function SlideViewer(props: SlideProps) {
     const [presentations, setPresentations] = useState<string[]>([]);
     const [selectedPresentation, setSelectedPresentation] = useState<string | null>(null);
     const [slides, setSlides] = useState<Slide[]>([]);
@@ -31,20 +36,20 @@ export default function SlideViewer() {
     }, [selectedPresentation]);
 
     const loadPresentations = async () => {
-        const files = await listFiles('presentations');
-        setPresentations(files.map(file => file.name));
+        const files = await listFiles("presentations");
+        setPresentations(files.map((file) => file.name));
     };
 
     const loadPresentation = async (presentationName: string) => {
         try {
-            const presentationData = await getFile(presentationName, 'presentations');
+            const presentationData = await getFile(presentationName, "presentations");
             if (presentationData) {
                 const parsedData = JSON.parse(presentationData);
                 setSlides(parsedData.slides);
                 setCurrentSlide(0);
             }
         } catch (error) {
-            console.error('Error loading presentation:', error);
+            console.error("Error loading presentation:", error);
         }
     };
 
@@ -83,11 +88,7 @@ export default function SlideViewer() {
             <Card shadow="sm" padding="lg" radius="md" withBorder>
                 {slides[currentSlide].imageUrl && (
                     <Card.Section>
-                        <Image
-                            src={slides[currentSlide].imageUrl}
-                            height={200}
-                            alt={`Slide ${currentSlide + 1}`}
-                        />
+                        <Image src={slides[currentSlide].imageUrl} height={200} alt={`Slide ${currentSlide + 1}`} />
                     </Card.Section>
                 )}
                 <Text mt="md" mb="xs" size="lg">
@@ -98,7 +99,9 @@ export default function SlideViewer() {
                 <Button onClick={prevSlide} leftSection={<IconChevronLeft size={14} />}>
                     Previous
                 </Button>
-                <Text>Slide {currentSlide + 1} of {slides.length}</Text>
+                <Text>
+                    Slide {currentSlide + 1} of {slides.length}
+                </Text>
                 <Button onClick={nextSlide} rightSection={<IconChevronRight size={14} />}>
                     Next
                 </Button>

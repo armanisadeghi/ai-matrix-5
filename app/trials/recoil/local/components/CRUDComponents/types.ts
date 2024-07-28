@@ -1,5 +1,5 @@
 export type CRUDDataItem = {
-    id: string;
+    id?: string;
     name?: string;
     [key: string]: any;
 };

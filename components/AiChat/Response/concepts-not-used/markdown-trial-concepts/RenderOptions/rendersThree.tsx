@@ -1,25 +1,34 @@
 // Enhanced renderers.tsx
-import AmeFastCodeHighlight from '@/ui/highlight/AmeFastCodeHighlight'; // Assuming this is the correct path
-import React, { ReactNode, useEffect, useState } from 'react';
-import {
-    CustomTable,
-    CustomTableHead,
-    CustomTableBody,
-    CustomTableRow,
-    CustomTableCell,
-    CustomTableHeaderCell
-} from './CustomTable';
-import { Code } from '@mantine/core';
+import AmeFastCodeHighlight from "@/ui/highlight/AmeFastCodeHighlight"; // Assuming this is the correct path
+import { Code } from "@mantine/core";
+import React, { ReactNode, useEffect, useState } from "react";
 
 const isBlockLevelElement = (element: ReactNode) => {
     if (!React.isValidElement(element)) return false;
-    const blockElements = ['table', 'thead', 'tbody', 'tr', 'th', 'td', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'code', 'pre', 'div'];
+    const blockElements = [
+        "table",
+        "thead",
+        "tbody",
+        "tr",
+        "th",
+        "td",
+        "li",
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "h6",
+        "code",
+        "pre",
+        "div",
+    ];
     return blockElements.includes(element.type as string);
 };
 
 const logRendererInfo = (type: string, props: any) => {
     console.log(`Renderer type: ${type}`);
-    console.log('Props received:', props);
+    console.log("Props received:", props);
 };
 
 interface RendererProps {
@@ -34,7 +43,7 @@ const RenderCode = React.memo(({ node, className, children, ...props }: Renderer
 
     return match ? (
         <AmeFastCodeHighlight
-            code={Array.isArray(children) ? children.join('').trim() : String(children).trim()}
+            code={Array.isArray(children) ? children.join("").trim() : String(children).trim()}
             language={match[1]}
             title={match[1].charAt(0).toUpperCase() + match[1].slice(1)}
             {...props}
@@ -44,7 +53,7 @@ const RenderCode = React.memo(({ node, className, children, ...props }: Renderer
     );
 });
 
-const useCodeChunks = (initialChunks: string = '') => {
+const useCodeChunks = (initialChunks: string = "") => {
     const [chunks, setChunks] = useState(initialChunks);
 
     const addChunk = (chunk: string) => {
@@ -57,13 +66,11 @@ const useCodeChunks = (initialChunks: string = '') => {
 const renderers = {
     code: React.memo(({ node, className, children, ...props }: RendererProps) => {
         const [chunks, addChunk] = useCodeChunks(
-            Array.isArray(children) ? children.join('').trim() : String(children).trim()
+            Array.isArray(children) ? children.join("").trim() : String(children).trim(),
         );
 
         useEffect(() => {
-            addChunk(
-                Array.isArray(children) ? children.join('').trim() : String(children).trim()
-            );
+            addChunk(Array.isArray(children) ? children.join("").trim() : String(children).trim());
         }, [children]);
 
         const match = /language-(\w+)/.exec(className ?? "");
@@ -80,12 +87,12 @@ const renderers = {
         );
     }),
 
-    table: ({ children }: { children: ReactNode }) => <CustomTable>{children}</CustomTable>,
-    thead: ({ children }: { children: ReactNode }) => <CustomTableHead>{children}</CustomTableHead>,
-    tbody: ({ children }: { children: ReactNode }) => <CustomTableBody>{children}</CustomTableBody>,
-    tr: ({ children }: { children: ReactNode }) => <CustomTableRow>{children}</CustomTableRow>,
-    th: ({ children }: { children: ReactNode }) => <CustomTableHeaderCell>{children}</CustomTableHeaderCell>,
-    td: ({ children }: { children: ReactNode }) => <CustomTableCell>{children}</CustomTableCell>,
+    table: ({ children }: { children: ReactNode }) => <table>{children}</table>,
+    thead: ({ children }: { children: ReactNode }) => <thead>{children}</thead>,
+    tbody: ({ children }: { children: ReactNode }) => <tbody>{children}</tbody>,
+    tr: ({ children }: { children: ReactNode }) => <tr>{children}</tr>,
+    th: ({ children }: { children: ReactNode }) => <th>{children}</th>,
+    td: ({ children }: { children: ReactNode }) => <td>{children}</td>,
     li: ({ children }: { children: ReactNode }) => <li>{children}</li>,
     h1: ({ children }: { children: ReactNode }) => <h1>{children}</h1>,
     h2: ({ children }: { children: ReactNode }) => <h2>{children}</h2>,

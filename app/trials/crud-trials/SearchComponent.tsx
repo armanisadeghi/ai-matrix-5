@@ -5,7 +5,8 @@ import { useRecoilState } from 'recoil';
 
 
 interface SearchComponentProps {
-    componentID: string;
+    componentID?: string;
+    moduleName?: string
 }
 
 

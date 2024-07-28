@@ -17,7 +17,7 @@ const Page: React.FC = () => {
                 label="JSON Input"
                 enabled={true}
                 value={jsonValue}
-                onChange={handleJsonChange}
+                onChange={(value: Record<string, any>) => handleJsonChange(JSON.stringify(value))}
                 showButton={true}
                 validateJson={true}
             />
