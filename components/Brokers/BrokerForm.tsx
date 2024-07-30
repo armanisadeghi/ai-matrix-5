@@ -105,7 +105,7 @@ export const BrokerForm = ({ id, newBroker }: BrokerFormProps) => {
             ]);
             return () => {
                 setBrokers((prev: Broker[]) => prev.filter((broker) => broker.id !== newBroker.id));
-                setComponents((prev: Component[]) => prev.filter((component) => component.id !== newBroker.id));
+                setComponents((prev: Component[]) => prev.filter((component) => component?.id !== newBroker.id));
             };
         } else {
             if (selectedComponent) {
@@ -114,6 +114,7 @@ export const BrokerForm = ({ id, newBroker }: BrokerFormProps) => {
             setCurrentData(currentBroker);
         }
     }, []);
+
     function SelectOption({ value, label, description }: Item) {
         return (
             <Group>
@@ -149,7 +150,7 @@ export const BrokerForm = ({ id, newBroker }: BrokerFormProps) => {
             !newBroker ? brokerManager.updateBroker(broker as Broker) : brokerManager.createBroker(broker as Broker);
             setBrokers([...brokers.filter((broker) => broker.id !== currentData?.id), broker as Broker]);
             setComponents([
-                ...components.filter((component) => component.id !== currentComponent.id),
+                ...components.filter((component) => component?.id !== currentComponent.id),
                 currentComponent,
             ]);
             Notifications.show({
@@ -181,7 +182,7 @@ export const BrokerForm = ({ id, newBroker }: BrokerFormProps) => {
             updatedComponent.type = value as ComponentTypeInfo["type"];
         }
         setCurrentComponent(updatedComponent);
-        setComponents([...components.filter((component) => component.id !== currentComponent.id), updatedComponent]);
+        setComponents([...components.filter((component) => component?.id !== currentComponent.id), updatedComponent]);
     };
 
     const selectedOption = dataTypeOptions.find((item) => item.value === currentData.dataType);
