@@ -40,15 +40,22 @@ export function createBrokerManager() {
         const dataTypes = [...new Set(brokers.map((broker: Broker) => broker.dataType))].filter((dataType: string) => dataType).sort();
 
         const components = brokers.map((broker: Broker) => {
-        const validationRules = JSON.parse(broker.validationRules || '{}');
-        return {
-            id: broker.id,
-            label: broker.displayName,
-            type: broker.componentType,
-            description: broker.description,
-            tooltip: broker.tooltip,
-            ...validationRules,
-        };
+            let validationRules;
+            if (typeof broker.validationRules === 'string') {
+                validationRules = JSON.parse(broker.validationRules);
+            } else if (typeof broker.validationRules === 'object') {
+                validationRules = broker.validationRules;
+            } else {
+                validationRules = {};
+            }
+            return {
+                id: broker.id,
+                label: broker.displayName,
+                type: broker.componentType,
+                description: broker.description,
+                tooltip: broker.tooltip,
+                ...validationRules,
+            };
         }) as Component[];
         
         setComponents(components);

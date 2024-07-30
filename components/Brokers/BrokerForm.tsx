@@ -7,7 +7,6 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { createBrokerManager } from '@/services/brokerService';
 import { BrokerEdit } from '../../app/dashboard/matrix-engine/brokers/add/BrokerEdit';
 import { Notifications } from "@mantine/notifications";
-import { IconCheck } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import BrokerComponent from './BrokerComponent';
 import { useCompleteUserProfile } from '@/hooks/users/useMatrixUser';
@@ -36,7 +35,6 @@ interface BrokerFormProps {
 
 export const BrokerForm = ({ id, newBroker }: BrokerFormProps) => {
     const brokerManager = createBrokerManager();
-    const [brokers, setBrokers] = useRecoilState(brokersAtom);
     const [components, setComponents] = useRecoilState(componentsAtom);
     const currentBroker = useRecoilValue(brokerByIdSelector(id));
     const selectedComponent = useRecoilValue(componentSelector(id));
@@ -65,10 +63,8 @@ export const BrokerForm = ({ id, newBroker }: BrokerFormProps) => {
 
             setCurrentData(newBroker);
             setCurrentComponent({ id: id, type: 'Input', label: '', description: '', tooltip: '' });
-            setBrokers(() => [...brokers, newBroker]);
             setComponents(() => [...components, { id: id, type: 'Input', label: 'Add a name', description: '', tooltip: '' }]);
             return () => {
-                setBrokers((prev: Broker[]) => prev.filter((broker) => broker.id !== newBroker.id));
                 setComponents((prev: Component[]) => prev.filter((component) => component.id !== newBroker.id));
             };
         } else {
@@ -112,18 +108,16 @@ export const BrokerForm = ({ id, newBroker }: BrokerFormProps) => {
                 validationRules: JSON.stringify(currentComponent)
             }
             !newBroker ? brokerManager.updateBroker(broker as Broker) : brokerManager.createBroker(broker as Broker);
-            setBrokers([...brokers.filter((broker) => broker.id !== currentData?.id), broker as Broker]);
-            setComponents([...components.filter((component) => component.id !== currentComponent.id), currentComponent]);
             Notifications.show({
-                title: `${currentData ? 'Broker updated' : 'Broker created'}`,
-                message: `${currentData ? 'Broker updated' : 'Broker created'} successfully`,
+                title: `${!newBroker ? 'Broker updated' : 'Broker created'}`,
+                message: `${!newBroker ? 'Broker updated' : 'Broker created'} successfully`,
                 autoClose: true,
                 color: 'teal',
             })
         } catch (error) {
             Notifications.show({
-                title: `Broker ${currentData ? 'update' : 'creation'} failed`,
-                message: `Broker ${currentData ? 'update' : 'creation'} failed`,
+                title: `Broker ${!newBroker ? 'update' : 'creation'} failed`,
+                message: `Broker ${!newBroker ? 'update' : 'creation'} failed`,
                 autoClose: true,
                 color: 'red',
             })

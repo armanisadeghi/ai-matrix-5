@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ActionIcon, Group, Tooltip } from '@mantine/core';
 import { IconEdit, IconTrash } from '@tabler/icons-react';
 import { DataTable, DataTableColumn, DataTableSortStatus } from 'mantine-datatable';
@@ -23,6 +23,7 @@ const BrokerTable = () => {
         columnAccessor: 'name',
         direction: 'asc',
     });
+    const [records, setRecords] = useState(filteredAndSortedData.slice(0, PAGE_SIZE));
     const { activeUser } = useCompleteUserProfile();
     const key = 'resize-example';
 
@@ -36,6 +37,12 @@ const BrokerTable = () => {
 
     };
 
+    useEffect(() => {
+        const from = (page - 1) * PAGE_SIZE;
+        const to = from + PAGE_SIZE;
+        setRecords(filteredAndSortedData.slice(from, to));
+    }, [page, filteredAndSortedData]);
+
     const columns: DataTableColumn<Broker>[] = [
         { accessor: 'displayName', title: 'Broker Name', sortable: true, resizable: true },
         { accessor: 'dataType', title: 'Data Type', width: 160, sortable: true, resizable: true },
@@ -48,17 +55,15 @@ const BrokerTable = () => {
             render: (broker: Broker) => (
                 <Group wrap="nowrap">
                     <Tooltip label="Delete broker">
-                        <ActionIcon onClick={() => handleDelete(broker)}>
+                        <ActionIcon onClick={() => handleDelete(broker)} disabled={activeUser.matrix_id !== broker.matrixId}>
                             <IconTrash size={14} />
                         </ActionIcon>
                     </Tooltip>
-                    {activeUser.matrix_id === broker.matrixId &&
-                        <Tooltip label="Edit broker">
-                            <ActionIcon onClick={() => handleEdit(broker)}>
-                                <IconEdit size={14} />
-                            </ActionIcon>
-                        </Tooltip>
-                    }
+                    <Tooltip label="Edit broker">
+                        <ActionIcon onClick={() => handleEdit(broker)} disabled={activeUser.matrix_id !== broker.matrixId}>
+                            <IconEdit size={14} />
+                        </ActionIcon>
+                    </Tooltip>
                 </Group>
             ),
         },
@@ -78,12 +83,11 @@ const BrokerTable = () => {
             striped
             totalRecords={filteredAndSortedData.length}
             minHeight={400}
-            maxHeight={1000}
             highlightOnHover
             page={page}
-            onPageChange={setPage}
+            onPageChange={(newPage) => setPage(newPage)}
             recordsPerPage={PAGE_SIZE}
-            records={filteredAndSortedData.map((broker) => ({
+            records={records.map((broker) => ({
                 ...broker, dataType: dataType[broker.dataType as keyof typeof dataType],
             }))}
             columns={columns}
