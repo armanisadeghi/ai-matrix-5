@@ -24,7 +24,7 @@ import {
     Text,
     TextInput,
     Textarea,
-    useCombobox,
+    useCombobox
 } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import { useEffect, useState } from "react";
@@ -105,9 +105,7 @@ export const BrokerForm = ({ id, newBroker }: BrokerFormProps) => {
             ]);
             return () => {
                 setBrokers((prev: Broker[]) => prev.filter((broker) => broker.id !== newBroker.id));
-                setComponents((prev: Component[]) =>
-                    prev.filter((component) => component?.id && component?.id !== newBroker.id),
-                );
+                setComponents((prev: Component[]) => prev.filter((component: any) => component?.id !== newBroker.id));
             };
         } else {
             if (selectedComponent) {
@@ -152,7 +150,7 @@ export const BrokerForm = ({ id, newBroker }: BrokerFormProps) => {
             !newBroker ? brokerManager.updateBroker(broker as Broker) : brokerManager.createBroker(broker as Broker);
             setBrokers([...brokers.filter((broker) => broker.id !== currentData?.id), broker as Broker]);
             setComponents([
-                ...components.filter((component) => component?.id && component?.id !== currentComponent.id),
+                ...components.filter((component: any) => component?.id !== currentComponent.id),
                 currentComponent,
             ]);
             Notifications.show({
