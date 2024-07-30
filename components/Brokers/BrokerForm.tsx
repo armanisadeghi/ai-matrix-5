@@ -182,7 +182,7 @@ export const BrokerForm = ({ id, newBroker }: BrokerFormProps) => {
             updatedComponent.type = value as ComponentTypeInfo["type"];
         }
         setCurrentComponent(updatedComponent);
-        setComponents([...components.filter((component) => component?.id !== currentComponent.id), updatedComponent]);
+        setComponents([...components.filter((component: any) => component?.id !== currentComponent.id), updatedComponent]);
     };
 
     const selectedOption = dataTypeOptions.find((item) => item.value === currentData.dataType);
