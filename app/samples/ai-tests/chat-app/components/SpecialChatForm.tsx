@@ -1,7 +1,7 @@
 // /chat-app/nice-working/SpecialChatForm.tsx
 
 import React from 'react';
-import { useForm } from "@/app/samples/ai-tests/chat-app/components/dynamic-forms/useForm";
+import { useForm } from './dynamic-forms/useForm';
 
 interface FormData {
     promptData: Array<{

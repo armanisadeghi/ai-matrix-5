@@ -1,6 +1,6 @@
 // chat-app/nice-working/response/AIResponse.tsx
 
-import React from 'react';
+import React from "react";
 import { Paper, Textarea } from '@mantine/core';
 
 interface AIResponseProps {

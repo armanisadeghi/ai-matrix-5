@@ -1,5 +1,5 @@
+import { useDynamicSocketHandler } from '@/hooks/ai/dynamicSocketHandler';
 import React, { useState } from 'react';
-import { useDynamicSocketHandler } from "@/hooks/ai/dynamicSocketHandler";
 
 const ChatComponent = () => {
     const [streamedData, setStreamedData] = useState<string>('');

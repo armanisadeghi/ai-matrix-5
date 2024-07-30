@@ -1,10 +1,8 @@
-// app/samples/atom-tester/OptionalStarterPage.tsx
-
-function Page() {
+function AtomTesterPage() {
     return <div>Atom Tester page</div>;
 }
 
-export default Page;
+export default AtomTesterPage;
 
 /*
 

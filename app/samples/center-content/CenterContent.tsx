@@ -1,6 +1,7 @@
-import styles from "@/ui/layout/AmeCenterContent/CenterContent.module.css";
 import { ScrollArea } from "@mantine/core";
 import { FC, ReactNode, RefObject } from "react";
+
+import styles from "./CenterContent.module.css";
 
 interface ResponsiveLayoutProps {
     textareaContainerRef?: RefObject<HTMLDivElement>;

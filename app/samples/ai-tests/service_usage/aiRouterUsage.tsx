@@ -1,8 +1,6 @@
-import { MessageEntry } from '@/app/samples/chats/shared/types/chatData';
-import React from 'react';
-import { useRecoilState } from 'recoil';
 import { requestEventTaskAtom, requestSocketEventAtom } from "@/state/aiAtoms/metadataAtoms";
-import { useRequestManager } from '@/services/chat-services/underTesting/RequestManager';
+import { useRecoilState } from "recoil";
+import { MessageEntry } from "../../chats/shared/types/chatData";
 
 const YourComponent = () => {
     const [eventTask, setEventTask] = useRecoilState(requestEventTaskAtom);
@@ -11,12 +9,12 @@ const YourComponent = () => {
     const { handleRequest } = useRequestManager();
 
     const handleClick = async () => {
-        const requestData: any = { key: 'value' }; // Replace with your actual request data
+        const requestData: any = { key: "value" }; // Replace with your actual request data
 
-        if (eventTask === 'directStream') {
+        if (eventTask === "directStream") {
             requestData.updatedChat = []; // Populate with MessageEntry[]
-            requestData.updateCallback = (message: MessageEntry) => console.log('Update:', message);
-            requestData.finalizeCallback = (message: MessageEntry) => console.log('Finalize:', message);
+            requestData.updateCallback = (message: MessageEntry) => console.log("Update:", message);
+            requestData.finalizeCallback = (message: MessageEntry) => console.log("Finalize:", message);
         }
 
         await handleRequest(requestData.updatedChat, requestData.updateCallback, requestData.finalizeCallback);

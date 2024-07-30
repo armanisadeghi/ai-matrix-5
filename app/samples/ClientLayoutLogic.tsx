@@ -1,20 +1,18 @@
 // app/dashboard/ClientLayoutLogic.tsx
-'use client'
+"use client";
 
-import { store } from '@/redux/store';
-import React, { ReactNode, useEffect } from 'react';
-import { RecoilRoot, useSetRecoilState } from 'recoil';
-import { LayoutProvider } from '@/context/LayoutContext';
-import ErrorBoundary from '@/components/ErrorManagement/ErrorBoundary';
-import { presetTypeAtom } from '@/state/layoutAtoms';
-import { AuthWrapper } from '@/components/Auth/AuthWrapperRedux';
-import { Provider as ReduxProvider } from 'react-redux';
+import { AuthWrapper } from "@/components/Auth/AuthWrapper";
+import React, { ReactNode, useEffect } from "react";
+import { RecoilRoot, useSetRecoilState } from "recoil";
+import { LayoutProvider } from "@/context/LayoutContext";
+import ErrorBoundary from "@/components/ErrorManagement/ErrorBoundary";
+import { presetTypeAtom } from "@/state/layoutAtoms";
 
 const LayoutGuard: React.FC<{ children: ReactNode }> = ({ children }) => {
     const setPresetType = useSetRecoilState(presetTypeAtom);
 
     useEffect(() => {
-        setPresetType('dashboard');
+        setPresetType("dashboard");
     }, []);
 
     return <>{children}</>;
@@ -24,17 +22,11 @@ export default function ClientLayoutLogic({ children }: { children: ReactNode })
     return (
         <ErrorBoundary>
             <RecoilRoot>
-                <ReduxProvider store={store}>
-
                 <AuthWrapper>
                     <LayoutGuard>
-                        <LayoutProvider>
-                            {children}
-                        </LayoutProvider>
+                        <LayoutProvider>{children}</LayoutProvider>
                     </LayoutGuard>
                 </AuthWrapper>
-                </ReduxProvider>
-
             </RecoilRoot>
         </ErrorBoundary>
     );

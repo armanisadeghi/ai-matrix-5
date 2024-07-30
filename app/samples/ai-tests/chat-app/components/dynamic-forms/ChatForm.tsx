@@ -2,15 +2,15 @@
 
 "use client"
 
-import { useState } from "react";
 import { Button, Group } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { useState } from "react";
 import {
-    SelectInput,
     CheckboxGroupInput,
     RadioGroupInput,
-    TextAreaInput,
+    SelectInput,
     SliderInput,
+    TextAreaInput,
     TextInput
 } from './AiFormElements';
 

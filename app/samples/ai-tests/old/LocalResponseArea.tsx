@@ -1,12 +1,12 @@
-'use client';
-import { useChatMessages } from '@/hooks/ai/useChatMessages';
-import React, { useRef } from 'react';
-import { Box, Grid, Space, LoadingOverlay } from '@mantine/core';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import UserMessagePaper from '@/components/AiChat/Response/UserMessagePaper';
-import AssistantMessage from '@/components/AiChat/Response/AssistantMessage';
-import { activeChatIdAtom, isNewChatAtom } from '@/state/aiAtoms/aiChatAtoms';
+"use client";
 
+import UserMessagePaper from "@/components/AiChat/Response/UserMessagePaper";
+import { useChatMessages } from "@/hooks/ai/useChatMessages";
+import { activeChatIdAtom, isNewChatAtom } from "@/state/aiAtoms/aiChatAtoms";
+import { Box, Grid, LoadingOverlay, Space } from "@mantine/core";
+import React, { useRef } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
+import AssistantMessage from "../response/AssistantMessage";
 
 export interface ResponseAreaProps {
     bottomPadding?: number;
@@ -14,15 +14,15 @@ export interface ResponseAreaProps {
     chatId: string;
 }
 
-const LocalResponseArea: React.FC<ResponseAreaProps> = ({bottomPadding = 0, className, chatId}) => {
+const LocalResponseArea: React.FC<ResponseAreaProps> = ({ bottomPadding = 0, className, chatId }) => {
     const scrollRef = useRef<HTMLDivElement>(null);
     const activeChatId = useRecoilValue(activeChatIdAtom);
     const [isNewChat, setIsNewChat] = useRecoilState(isNewChatAtom);
 
-    const {messages, loading, error} = useChatMessages(chatId);
+    const { messages, loading, error } = useChatMessages(chatId);
 
     if (loading) {
-        return <LoadingOverlay visible={true}/>;
+        return <LoadingOverlay visible={true} />;
     }
 
     if (error) {
@@ -37,19 +37,18 @@ const LocalResponseArea: React.FC<ResponseAreaProps> = ({bottomPadding = 0, clas
                         <Grid.Col span={0.5}></Grid.Col>
                         <Grid.Col span={11}>
                             <div>
-                                <Space h={10}/>
+                                <Space h={10} />
                                 <div>
-                                    {messages && messages.map((entry, entryIndex) => (
-                                        <div key={entryIndex}>
-                                            {entry.role === 'assistant' && (
-                                                <AssistantMessage text={entry.text}/>
-                                            )}
-                                            {entry.role === 'user' && (
-                                                <UserMessagePaper text={entry.text}/>
-                                            )}
-                                            <Space h={10}/>
-                                        </div>
-                                    ))}
+                                    {messages &&
+                                        messages.map((entry, entryIndex) => (
+                                            <div key={entryIndex}>
+                                                {entry.role === "assistant" && (
+                                                    <AssistantMessage content={entry.text} />
+                                                )}
+                                                {entry.role === "user" && <UserMessagePaper text={entry.text} />}
+                                                <Space h={10} />
+                                            </div>
+                                        ))}
                                 </div>
                             </div>
                         </Grid.Col>

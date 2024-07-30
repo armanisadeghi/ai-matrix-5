@@ -1,9 +1,7 @@
-import { Group, Space } from '@mantine/core';
-//@ts-ignore
-import UserMessage from '@/app/samples/ai-tests/chat/input/UserMessage';
-import AssistantMessage from '@/app/samples/ai-tests/response/AssistantMessage';
-//@ts-ignore
-import { eRoleType, iMessage } from "../types/types";
+import { Group, Space } from "@mantine/core";
+import UserMessage from "./UserMessage";
+import AssistantMessage from "./AssistantMessage";
+import { iMessage, eRoleType } from "../chat-app/types/types";
 
 interface ChatMessageProps {
     chatMsg: iMessage;
@@ -12,24 +10,19 @@ interface ChatMessageProps {
     streamText: string;
 }
 
-export const ChatMessage = (
-    {
-        chatMsg,
-        idx,
-        msgHistory,
-        streamText
-    }: ChatMessageProps) => {
-
+export const ChatMessage = ({ chatMsg, idx, msgHistory, streamText }: ChatMessageProps) => {
     return (
         <Group>
             {chatMsg.role === eRoleType.USER ? (
                 <UserMessage
-                    content={idx === msgHistory.length - 1 && streamText.length > 0 ? streamText : chatMsg.content}/>
+                    message={idx === msgHistory.length - 1 && streamText.length > 0 ? streamText : chatMsg.content}
+                />
             ) : (
                 <AssistantMessage
-                    content={idx === msgHistory.length - 1 && streamText.length > 0 ? streamText : chatMsg.content}/>
+                    content={idx === msgHistory.length - 1 && streamText.length > 0 ? streamText : chatMsg.content}
+                />
             )}
-            <Space my={16}/>
+            <Space my={16} />
         </Group>
     );
 };

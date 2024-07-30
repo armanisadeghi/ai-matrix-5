@@ -1,10 +1,10 @@
 // chat-app/nice-working/response/ResponseArea.tsx
 
-import React from 'react';
 import { ScrollArea } from '@mantine/core';
-import { useResponses } from '../../../../../../context/AiContext/ResponseContext';
-import UserMessage from './UserMessage';
+import { useResponses } from '../../../response/ResponseContext';
 import AIResponse from './AIResponse';
+import UserMessage from './UserMessage';
+import React from "react";
 
 interface ResponseAreaProps {
     bottomPadding: number;

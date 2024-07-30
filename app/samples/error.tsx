@@ -1,6 +1,6 @@
 'use client';
 
-import { Card, Title, Text, Button, Container, Center } from '@mantine/core';
+import { Button, Card, Center, Container, Text, Title } from '@mantine/core';
 
 const NotFoundPage = () => {
     return (

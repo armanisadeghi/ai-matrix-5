@@ -1,6 +1,6 @@
 'use client';
 
-import { Grid, Loader, Skeleton, Container, SimpleGrid } from "@mantine/core";
+import { Grid, Loader, SimpleGrid, Skeleton } from "@mantine/core";
 
 const LoadingPage = () => {
     return (

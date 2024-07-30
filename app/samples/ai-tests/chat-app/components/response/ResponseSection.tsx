@@ -1,8 +1,9 @@
 // chat-app/nice-working/response/ResponseSection.tsx
 'use client'
-import { Paper, Text, Space, Container } from '@mantine/core';
+
+import { Paper, Space, Text } from '@mantine/core';
+import { iMessage } from '../../types/types';
 import { ChatMessage } from './ChatMessage';
-import { iMessage } from "@/app/samples/ai-tests/chat-app/types/types";
 
 interface ResponseSectionProps {
     msgHistory: iMessage[];

@@ -1,25 +1,16 @@
+"use client";
 // components/FileManager/FileManagerBase.tsx
-'use client';
 
-import React, { useState, useEffect } from 'react';
-import { useFileManager } from '@/hooks/useFileManager';
-import { Button, Group, Text, Stack, Switch, TextInput, MultiSelect } from '@mantine/core';
+import React, { useEffect, useState } from "react";
+import { useFileManager } from "@/hooks/useFileManager";
+import { Button, Group, MultiSelect, Stack, Switch, Text } from "@mantine/core";
 
 interface FileManagerBaseProps {
     onClose?: () => void;
 }
 
 export const FileManagerBase: React.FC<FileManagerBaseProps> = ({ onClose }) => {
-    const {
-        uploadFile,
-        getFile,
-        updateFile,
-        deleteFile,
-        updateSharingSettings,
-        listFiles,
-        storageType,
-        setStorageType,
-    } = useFileManager();
+    const { uploadFile, deleteFile, updateSharingSettings, listFiles, storageType, setStorageType } = useFileManager();
 
     const [files, setFiles] = useState<any[]>([]);
     const [selectedFile, setSelectedFile] = useState<any | null>(null);
@@ -28,11 +19,11 @@ export const FileManagerBase: React.FC<FileManagerBaseProps> = ({ onClose }) => 
     const [sharedWithUsers, setSharedWithUsers] = useState<string[]>([]);
 
     useEffect(() => {
-        loadFiles();
+        void loadFiles();
     }, [storageType]);
 
     const loadFiles = async () => {
-    const fileList: any = await listFiles();
+        const fileList: any = await listFiles();
         setFiles(fileList);
     };
 
@@ -52,7 +43,7 @@ export const FileManagerBase: React.FC<FileManagerBaseProps> = ({ onClose }) => 
     const handleFileSelect = async (file: any) => {
         setSelectedFile(file);
         // Load sharing settings if it's a cloud file
-        if (storageType === 'cloud') {
+        if (storageType === "cloud") {
             // Implement this function to get sharing settings from Supabase
             // const sharingSettings = await getSharingSettings(file.id);
             // setIsPublic(sharingSettings.isPublic);
@@ -62,7 +53,7 @@ export const FileManagerBase: React.FC<FileManagerBaseProps> = ({ onClose }) => 
     };
 
     const handleUpdateSharingSettings = async () => {
-        if (selectedFile && storageType === 'cloud') {
+        if (selectedFile && storageType === "cloud") {
             await updateSharingSettings(selectedFile.id, isPublic, shareWithAll, sharedWithUsers);
         }
     };
@@ -73,12 +64,12 @@ export const FileManagerBase: React.FC<FileManagerBaseProps> = ({ onClose }) => 
                 <Text size="xl">File Manager</Text>
                 <Switch
                     label="Storage Type"
-                    checked={storageType === 'cloud'}
-                    onChange={() => setStorageType(storageType === 'cloud' ? 'local' : 'cloud')}
+                    checked={storageType === "cloud"}
+                    onChange={() => setStorageType(storageType === "cloud" ? "local" : "cloud")}
                 />
             </Group>
 
-            <input type="file" onChange={handleFileUpload} style={{ display: 'none' }} id="fileUpload" />
+            <input type="file" onChange={handleFileUpload} style={{ display: "none" }} id="fileUpload" />
             <Button component="label" htmlFor="fileUpload">
                 Upload File
             </Button>
@@ -88,16 +79,26 @@ export const FileManagerBase: React.FC<FileManagerBaseProps> = ({ onClose }) => 
                     <Text>{file.name}</Text>
                     <Group>
                         <Button onClick={() => handleFileSelect(file)}>Select</Button>
-                        <Button color="red" onClick={() => handleFileDelete(file.name)}>Delete</Button>
+                        <Button color="red" onClick={() => handleFileDelete(file.name)}>
+                            Delete
+                        </Button>
                     </Group>
                 </Group>
             ))}
 
-            {selectedFile && storageType === 'cloud' && (
+            {selectedFile && storageType === "cloud" && (
                 <Stack>
                     <Text size="lg">Sharing Settings</Text>
-                    <Switch label="Public" checked={isPublic} onChange={(event) => setIsPublic(event.currentTarget.checked)} />
-                    <Switch label="Share with All" checked={shareWithAll} onChange={(event) => setShareWithAll(event.currentTarget.checked)} />
+                    <Switch
+                        label="Public"
+                        checked={isPublic}
+                        onChange={(event) => setIsPublic(event.currentTarget.checked)}
+                    />
+                    <Switch
+                        label="Share with All"
+                        checked={shareWithAll}
+                        onChange={(event) => setShareWithAll(event.currentTarget.checked)}
+                    />
                     <MultiSelect
                         data={[]} // Add user list here
                         value={sharedWithUsers}
