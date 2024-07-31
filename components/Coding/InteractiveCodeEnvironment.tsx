@@ -15,7 +15,7 @@ import 'ace-builds/src-noconflict/ext-language_tools';
 interface InteractiveCodeEnvironmentProps {
     initialCode: string;
     language: 'python' | 'typescript' | 'html';
-    onExecute: (code: string, language: string) => Promise<string | void>;
+    onExecute: (code: string, language: string) => Promise<string | any>;
 }
 
 const InteractiveCodeEnvironment: React.FC<InteractiveCodeEnvironmentProps> = (
