@@ -1,9 +1,9 @@
 // app/samples/atom_tester/layout.tsx
-'use client'
+"use client";
 
-import React, { ReactNode, useEffect } from 'react';
-import { useSetRecoilState } from 'recoil';
 import { overrideFlagAtom, presetTypeAtom } from "@/state/layoutAtoms";
+import React, { ReactNode, useEffect } from "react";
+import { useSetRecoilState } from "recoil";
 
 type Props = {
     children: ReactNode;
@@ -15,15 +15,10 @@ const LayoutContent: React.FC<Props> = ({ children }) => {
 
     useEffect(() => {
         setOverrideFlag(true);
-        setPresetType('balanced');
-
+        setPresetType("balanced");
     }, []);
 
-    return (
-        <>
-            {children}
-        </>
-    );
+    return <>{children}</>;
 };
 
 export default LayoutContent;

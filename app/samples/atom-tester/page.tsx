@@ -1,3 +1,5 @@
+"use client";
+
 function AtomTesterPage() {
     return <div>Atom Tester page</div>;
 }
