@@ -1,10 +1,11 @@
-import React from 'react';
-import { atom, useRecoilState } from 'recoil';
-import { FaMicrophone } from 'react-icons/fa';
-import { ActionIcon } from '@mantine/core';
+"use client";
+
+import { atom, useRecoilState } from "recoil";
+import { FaMicrophone } from "react-icons/fa";
+import { ActionIcon } from "@mantine/core";
 
 export const audioStateAtom = atom({
-    key: 'audioState',
+    key: "audioState",
     default: false,
 });
 
@@ -17,17 +18,20 @@ const MicrophoneButton = () => {
 
     return (
         <ActionIcon
-            onClick={(e) => { e.stopPropagation(); handleClick(); }}
+            onClick={(e) => {
+                e.stopPropagation();
+                handleClick();
+            }}
             variant="outline"
             size="sm"
             radius="xl"
-            color={audioState ? 'blue' : undefined}
+            color={audioState ? "blue" : undefined}
             aria-label="Toggle Microphone"
-            style={{ transition: 'box-shadow 0.3s', boxShadow: '0 0 15px rgba(0, 0, 0, 0.2)' }}
-            onMouseEnter={e => e.currentTarget.style.boxShadow = '0 0 15px rgba(255, 255, 255, 0.5)'}
-            onMouseLeave={e => e.currentTarget.style.boxShadow = '0 0 15px rgba(0, 0, 0, 0.2)'}
+            style={{ transition: "box-shadow 0.3s", boxShadow: "0 0 15px rgba(0, 0, 0, 0.2)" }}
+            onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 0 15px rgba(255, 255, 255, 0.5)")}
+            onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "0 0 15px rgba(0, 0, 0, 0.2)")}
         >
-            <FaMicrophone style={{ width: '60%', height: '60%' }} />
+            <FaMicrophone style={{ width: "60%", height: "60%" }} />
         </ActionIcon>
     );
 };

@@ -1,4 +1,5 @@
-import React from 'react';
+"use client";
+
 import { atom, useRecoilState } from 'recoil';
 import { FaMicrophone } from 'react-icons/fa';
 import { ActionIcon } from '@mantine/core';
