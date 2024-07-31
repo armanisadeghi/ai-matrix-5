@@ -33,7 +33,7 @@ const nextConfig = {
                 new webpack.IgnorePlugin({
                     checkResource: (resource) => {
                         const ignoredPaths = [
-                            'app/samples',
+                            // 'app/samples',
                             'app/trials',
                             'armaniLocal'
                         ];
