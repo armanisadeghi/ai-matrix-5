@@ -5,7 +5,7 @@ import { FaMicrophone } from "react-icons/fa";
 import { ActionIcon } from "@mantine/core";
 
 export const audioStateAtom = atom({
-    key: "audioState",
+    key: "audioStateMicrophoneButton",
     default: false,
 });
 

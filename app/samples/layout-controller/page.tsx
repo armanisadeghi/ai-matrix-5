@@ -1,3 +1,5 @@
+"use client";
+
 /*
 'use client';
 
@@ -52,3 +54,7 @@ const ResponsiveLayoutComponent: React.FC = () => {
 
 export default ResponsiveLayoutComponent;
 */
+
+const Page = () => <>layout controlle page</>;
+
+export default Page;

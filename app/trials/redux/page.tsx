@@ -1,8 +1,5 @@
-import { Provider } from 'react-redux';
-import { store } from './store';
+"use client";
 
-const App = () => (
-    <>
-        {/* Your app components */}
-    </>
-);
+const Page = () => <>redux page</>;
+
+export default Page;
