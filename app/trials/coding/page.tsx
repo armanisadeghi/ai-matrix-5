@@ -1,11 +1,10 @@
-import InteractiveCodeEnvironment from '@/components/Coding/InteractiveCodeEnvironment';
-
+import InteractiveCodeEnvironment from "@/components/Coding/InteractiveCodeEnvironment";
 
 function CodeAssistantApp() {
     const handleExecuteCode = async (code: string, language: string) => {
         // This is where you'd send the code to your backend for execution
         // For demonstration, we'll just return a mock result
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate network delay
+        await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate network delay
         return `Executed ${language} code:\n\n${code}\n\nMock output: Success!`;
     };
 
