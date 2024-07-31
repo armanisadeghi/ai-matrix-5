@@ -1,3 +1,5 @@
+"use client";
+
 import VideoConverter from "@/components/Video/VideoConverter";
 import VideoEffects from "@/components/Video/VideoEffects";
 import VideoPlayer from "@/components/Video/VideoPlayer";

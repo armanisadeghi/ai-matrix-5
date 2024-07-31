@@ -1,3 +1,5 @@
+"use client";
+
 import { Flex, Group, Paper, rem, Text, Textarea } from "@mantine/core";
 import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import {

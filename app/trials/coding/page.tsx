@@ -1,3 +1,5 @@
+"use client";
+
 import InteractiveCodeEnvironment from "@/components/Coding/InteractiveCodeEnvironment";
 
 function CodeAssistantApp() {

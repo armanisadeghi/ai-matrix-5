@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, Group, Image, Stack, Text, rem, useMantineColorScheme, useMantineTheme } from "@mantine/core";
 import { Dropzone, FileWithPath } from "@mantine/dropzone";
 import { IconUpload, IconX } from "@tabler/icons-react";

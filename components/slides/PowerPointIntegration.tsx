@@ -1,12 +1,11 @@
 // components/slides/PowerPointIntegration.tsx
+"use client";
 
-'use client';
-
-import React, { useState, useEffect } from 'react';
-import { Button, Group, Text, Progress, Select } from '@mantine/core';
-import { IconUpload, IconDownload } from '@tabler/icons-react';
-import { useFileManager } from '@/hooks/useFileManager';
-import * as PPTX from 'pptxgenjs';
+import { useFileManager } from "@/hooks/useFileManager";
+import { Button, Group, Progress, Select } from "@mantine/core";
+import { IconDownload, IconUpload } from "@tabler/icons-react";
+import * as PPTX from "pptxgenjs";
+import React, { useEffect, useState } from "react";
 
 export default function PowerPointIntegration() {
     const [uploadProgress, setUploadProgress] = useState(0);
@@ -20,8 +19,8 @@ export default function PowerPointIntegration() {
     }, []);
 
     const loadPresentations = async () => {
-        const files = await listFiles('presentations');
-        setPresentations(files.map(file => file.name));
+        const files = await listFiles("presentations");
+        setPresentations(files.map((file) => file.name));
     };
 
     const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,12 +33,12 @@ export default function PowerPointIntegration() {
 
             for (let start = 0; start < totalSize; start += chunkSize) {
                 const chunk = file.slice(start, start + chunkSize);
-                await uploadFile(new File([chunk], file.name), 'powerpoint');
+                await uploadFile(new File([chunk], file.name), "powerpoint");
                 uploadedSize += chunk.size;
                 setUploadProgress(Math.round((uploadedSize / totalSize) * 100));
             }
 
-            console.log('Uploaded:', file.name);
+            console.log("Uploaded:", file.name);
             setUploadProgress(0);
             await loadPresentations();
         }
@@ -50,14 +49,14 @@ export default function PowerPointIntegration() {
 
         setDownloadProgress(0);
         try {
-            const presentationData = await getFile(selectedPresentation, 'presentations');
+            const presentationData = await getFile(selectedPresentation, "presentations");
             if (presentationData) {
                 const parsedData = JSON.parse(presentationData);
                 const pptx = new PPTX.default();
 
                 parsedData.slides.forEach((slide: any) => {
                     const pptxSlide = pptx.addSlide();
-                    pptxSlide.addText(slide.content, { x: 1, y: 1, w: '80%', h: 1 });
+                    pptxSlide.addText(slide.content, { x: 1, y: 1, w: "80%", h: 1 });
                     if (slide.imageUrl) {
                         pptxSlide.addImage({ path: slide.imageUrl, x: 1, y: 2, w: 8, h: 3 });
                     }
@@ -65,17 +64,17 @@ export default function PowerPointIntegration() {
 
                 const blob = await pptx.writeFile();
                 const url = window.URL.createObjectURL(new Blob([blob]));
-                const a = document.createElement('a');
-                a.style.display = 'none';
+                const a = document.createElement("a");
+                a.style.display = "none";
                 a.href = url;
-                a.download = selectedPresentation.replace('.json', '.pptx');
+                a.download = selectedPresentation.replace(".json", ".pptx");
                 document.body.appendChild(a);
                 a.click();
                 window.URL.revokeObjectURL(url);
                 setDownloadProgress(100);
             }
         } catch (error) {
-            console.error('Error downloading PowerPoint file:', error);
+            console.error("Error downloading PowerPoint file:", error);
         }
         setDownloadProgress(0);
     };
@@ -84,7 +83,7 @@ export default function PowerPointIntegration() {
         <Group align="flex-end">
             <Button component="label" leftSection={<IconUpload size={14} />}>
                 Upload PowerPoint
-                <input type="file" accept=".pptx" onChange={handleUpload} style={{ display: 'none' }} />
+                <input type="file" accept=".pptx" onChange={handleUpload} style={{ display: "none" }} />
             </Button>
             {uploadProgress > 0 && <Progress value={uploadProgress} size="sm" w={100} />}
 

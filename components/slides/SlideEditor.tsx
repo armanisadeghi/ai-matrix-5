@@ -1,11 +1,10 @@
 // components/slides/SlideEditor.tsx
-
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Textarea, Button, Group, Stack, TextInput, Select, FileInput, rem } from "@mantine/core";
 import { useFileManager } from "@/hooks/useFileManager";
+import { Button, FileInput, Group, rem, Select, Stack, Textarea, TextInput } from "@mantine/core";
 import { IconUpload } from "@tabler/icons-react";
+import { useEffect, useState } from "react";
 
 interface Slide {
     id: string;

@@ -1,19 +1,17 @@
 // components/slides/FileUploader.tsx
+"use client";
 
-'use client';
-
-import React, { useState } from 'react';
-import { Group, Text, useMantineTheme, rem, TextInput } from '@mantine/core';
-import { Dropzone, FileWithPath } from '@mantine/dropzone';
-import { IconUpload, IconX, IconFile } from '@tabler/icons-react';
-import { useFileManager } from '@/hooks/useFileManager';
-import { useMantineColorScheme } from '@mantine/core'; // Import the hook
+import { useFileManager } from "@/hooks/useFileManager";
+import { Group, rem, Text, TextInput, useMantineColorScheme, useMantineTheme } from "@mantine/core";
+import { Dropzone, FileWithPath } from "@mantine/dropzone";
+import { IconFile, IconUpload, IconX } from "@tabler/icons-react";
+import { useState } from "react";
 
 export default function FileUploader() {
     const theme = useMantineTheme();
     const { colorScheme } = useMantineColorScheme(); // Proper Usage of colorScheme
     const [files, setFiles] = useState<FileWithPath[]>([]);
-    const [currentPath, setCurrentPath] = useState('');
+    const [currentPath, setCurrentPath] = useState("");
     const { uploadFile } = useFileManager();
 
     const handleDrop = async (acceptedFiles: FileWithPath[]) => {
@@ -21,9 +19,9 @@ export default function FileUploader() {
         for (const file of acceptedFiles) {
             try {
                 await uploadFile(file, currentPath);
-                console.log('File uploaded:', file.name);
+                console.log("File uploaded:", file.name);
             } catch (error) {
-                console.error('Error uploading file:', error);
+                console.error("Error uploading file:", error);
             }
         }
     };
@@ -38,20 +36,32 @@ export default function FileUploader() {
             />
             <Dropzone
                 onDrop={handleDrop}
-                onReject={(files) => console.log('rejected files', files)}
+                onReject={(files) => console.log("rejected files", files)}
                 maxSize={3 * 1024 ** 2}
-                accept={['image/*', 'application/pdf', 'application/vnd.openxmlformats-officedocument.presentationml.presentation']}
+                accept={[
+                    "image/*",
+                    "application/pdf",
+                    "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                ]}
             >
-                <Group justify="center" gap="xl" style={{ minHeight: rem(220), pointerEvents: 'none' }}>
+                <Group justify="center" gap="xl" style={{ minHeight: rem(220), pointerEvents: "none" }}>
                     <Dropzone.Accept>
                         <IconUpload
-                            style={{ width: rem(52), height: rem(52), color: theme.colors[theme.primaryColor][colorScheme === 'dark' ? 6 : 4] }}
+                            style={{
+                                width: rem(52),
+                                height: rem(52),
+                                color: theme.colors[theme.primaryColor][colorScheme === "dark" ? 6 : 4],
+                            }}
                             stroke={1.5}
                         />
                     </Dropzone.Accept>
                     <Dropzone.Reject>
                         <IconX
-                            style={{ width: rem(52), height: rem(52), color: theme.colors.red[colorScheme === 'dark' ? 6 : 4] }}
+                            style={{
+                                width: rem(52),
+                                height: rem(52),
+                                color: theme.colors.red[colorScheme === "dark" ? 6 : 4],
+                            }}
                             stroke={1.5}
                         />
                     </Dropzone.Reject>
