@@ -34,7 +34,7 @@ const nextConfig = {
                     checkResource: (resource) => {
                         const ignoredPaths = [
                             // 'app/samples',
-                            'app/trials',
+                            // 'app/trials',
                             'armaniLocal'
                         ];
                         return ignoredPaths.some(ignorePath =>
