@@ -1,19 +1,14 @@
-'use client';
+"use client";
 
-import {
-    autoscrollStateAtom,
-    leftSidebarAtom,
-    overrideFlagAtom,
-    presetTypeAtom,
-    rightSidebarAtom
-} from '@/state/layoutAtoms';
-import { useAutoscroll } from '@/ui/layout/AmeCenterContent/useAutoscroll';
-import React, { useRef, ReactNode, useEffect, useMemo, useCallback } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { ScrollArea } from '@mantine/core';
-import VerticalSplitter from '@/ui/split/VerticalSplitter';
-import styles from '@/ui/layout/AmeCenterContent/CenterContent.module.css';
+import { ScrollArea } from "@mantine/core";
+import React, { ReactNode, useEffect, useMemo } from "react";
+import { useSetRecoilState } from "recoil";
 
+import { leftSidebarAtom, overrideFlagAtom, presetTypeAtom, rightSidebarAtom } from "@/state/layoutAtoms";
+import { useAutoscroll } from "@/ui/layout/AmeCenterContent/useAutoscroll";
+import VerticalSplitter from "@/ui/split/VerticalSplitter";
+
+import styles from "@/ui/layout/AmeCenterContent/CenterContent.module.css";
 
 interface PageLayoutProps {
     autoscroll?: boolean;
@@ -36,26 +31,28 @@ const defaultProps: PageLayoutProps = {
 };
 
 const PrimaryLayout: React.FC<PageLayoutProps & { scrollAreaRef: React.RefObject<HTMLDivElement> }> = React.memo(
-    ({topSectionContent, scrollAreaContent, bottomSectionContent, scrollAreaRef}) => {
+    ({ topSectionContent, scrollAreaContent, bottomSectionContent, scrollAreaRef }) => {
         return (
-            <div className={styles['ame-centerContent-container']}>
-                <div className={styles['ame-centerContent-leftGapColumn']}></div>
-                <div className={styles['ame-centerContent-centerColumn']}>
-                    <div className={styles['ame-centerContent-topSection']}>{topSectionContent}</div>
-                    <ScrollArea
-                        scrollbarSize={4}
-                        scrollHideDelay={100}
-                        className={styles['ame-centerContent-mainContent']}
-                        viewportRef={scrollAreaRef}
-                    >
-                        {scrollAreaContent}
-                    </ScrollArea>
-                    <div className={styles['ame-centerContent-bottomSection']}>{bottomSectionContent}</div>
+            <>
+                <div className={styles["ame-centerContent-container"]}>
+                    <div className={styles["ame-centerContent-leftGapColumn"]}></div>
+                    <div className={styles["ame-centerContent-centerColumn"]}>
+                        <div className={styles["ame-centerContent-topSection"]}>{topSectionContent}</div>
+                        <ScrollArea
+                            scrollbarSize={4}
+                            scrollHideDelay={100}
+                            className={styles["ame-centerContent-mainContent"]}
+                            viewportRef={scrollAreaRef}
+                        >
+                            {scrollAreaContent}
+                        </ScrollArea>
+                        <div className={styles["ame-centerContent-bottomSection"]}>{bottomSectionContent}</div>
+                    </div>
+                    <div className={styles["ame-centerContent-rightGapColumn"]}></div>
                 </div>
-                <div className={styles['ame-centerContent-rightGapColumn']}></div>
-            </div>
+            </>
         );
-    }
+    },
 );
 
 const CenterLayout: React.FC<PageLayoutProps> = (props) => {
@@ -68,7 +65,7 @@ const CenterLayout: React.FC<PageLayoutProps> = (props) => {
         centerSectionWidth = 100,
         leftMenuSectionWidth = 0,
         rightMenuSectionWidth = 0,
-    } = {...defaultProps, ...props};
+    } = { ...defaultProps, ...props };
 
     const setRightSidebarWidth = useSetRecoilState(rightSidebarAtom);
     const setLeftSidebarWidth = useSetRecoilState(leftSidebarAtom);
@@ -79,7 +76,7 @@ const CenterLayout: React.FC<PageLayoutProps> = (props) => {
 
     useEffect(() => {
         setOverrideFlag(true);
-        setPresetType('centerContent');
+        setPresetType("centerContent");
     }, []);
 
     useEffect(() => {
@@ -89,8 +86,14 @@ const CenterLayout: React.FC<PageLayoutProps> = (props) => {
         if (rightMenuSectionContent !== undefined && rightMenuSectionWidth > 0) {
             setRightSidebarWidth(0);
         }
-    }, [leftMenuSectionContent, leftMenuSectionWidth, rightMenuSectionContent, rightMenuSectionWidth, setLeftSidebarWidth, setRightSidebarWidth]);
-
+    }, [
+        leftMenuSectionContent,
+        leftMenuSectionWidth,
+        rightMenuSectionContent,
+        rightMenuSectionWidth,
+        setLeftSidebarWidth,
+        setRightSidebarWidth,
+    ]);
 
     const memoizedSections = useMemo(() => {
         const sections = [];
@@ -98,9 +101,9 @@ const CenterLayout: React.FC<PageLayoutProps> = (props) => {
 
         if (leftMenuSectionContent !== undefined && leftMenuSectionWidth > 0) {
             sections.push(
-                <div key="leftMenu" className={styles['ame-centerContent-leftMenu']}>
+                <div key="leftMenu" className={styles["ame-centerContent-leftMenu"]}>
                     {leftMenuSectionContent}
-                </div>
+                </div>,
             );
             sizes.push(leftMenuSectionWidth);
         }
@@ -112,21 +115,30 @@ const CenterLayout: React.FC<PageLayoutProps> = (props) => {
                 scrollAreaContent={scrollAreaContent}
                 bottomSectionContent={bottomSectionContent}
                 scrollAreaRef={scrollAreaRef}
-            />
+            />,
         );
         sizes.push(centerSectionWidth);
 
         if (rightMenuSectionContent !== undefined && rightMenuSectionWidth > 0) {
             sections.push(
-                <div key="rightMenu" className={styles['ame-centerContent-rightMenu']}>
+                <div key="rightMenu" className={styles["ame-centerContent-rightMenu"]}>
                     {rightMenuSectionContent}
-                </div>
+                </div>,
             );
             sizes.push(rightMenuSectionWidth);
         }
 
-        return {sections, sizes};
-    }, [leftMenuSectionContent, leftMenuSectionWidth, topSectionContent, scrollAreaContent, bottomSectionContent, centerSectionWidth, rightMenuSectionContent, rightMenuSectionWidth]);
+        return { sections, sizes };
+    }, [
+        leftMenuSectionContent,
+        leftMenuSectionWidth,
+        topSectionContent,
+        scrollAreaContent,
+        bottomSectionContent,
+        centerSectionWidth,
+        rightMenuSectionContent,
+        rightMenuSectionWidth,
+    ]);
 
     if (memoizedSections.sections.length === 1) {
         return memoizedSections.sections[0] as React.ReactElement;
