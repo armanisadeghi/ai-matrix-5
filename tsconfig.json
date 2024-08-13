@@ -1,18 +1,10 @@
 {
     "compilerOptions": {
-        "types": [
-            "node",
-            "jest",
-            "@testing-library/jest-dom"
-        ],
+        "types": ["node"],
         "target": "esnext",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "lib": [
-            "dom",
-            "dom.iterable",
-            "esnext"
-        ],
+        "lib": ["dom", "dom.iterable", "esnext"],
         "allowJs": true,
         "skipLibCheck": true,
         "strict": false,
@@ -64,12 +56,5 @@
         "types/**/*.d.ts",
         "services/**/*.ts"
     ],
-    "exclude": [
-        "node_modules",
-        ".next",
-        "**/*.md",
-        "**/*.mdx",
-        "org",
-        "armaniLocal"
-    ]
+    "exclude": ["node_modules", ".next", "**/*.md", "**/*.mdx", "org", "armaniLocal"]
 }
