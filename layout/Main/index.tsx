@@ -1,21 +1,24 @@
 "use client";
 
-import { AppShell, Box } from "@mantine/core";
-import React, { ReactNode, useEffect, useMemo } from 'react';
-import { Navbar } from "./Navbar";
-import { Header } from "./Header";
-import { Sidebar } from "./Sidebar";
+import useLayoutPresets from "@/hooks/layout/useLayoutPresets";
 import { Footer } from "@/layout/Main/Footer";
-import { useRecoilState, useRecoilValue } from "recoil";
 import {
-    rightSidebarAtom,
-    leftSidebarAtom,
+    deviceTypeAtom,
     footerAtom,
     headerAtom,
-    deviceTypeAtom, windowHeightState, windowWidthState, rememberedLeftSidebarSizeAtom,
-} from '@/state/layoutAtoms';
-import useLayoutPresets from "@/hooks/layout/useLayoutPresets";
+    leftSidebarAtom,
+    rememberedLeftSidebarSizeAtom,
+    rightSidebarAtom,
+    windowHeightState,
+    windowWidthState,
+} from "@/state/layoutAtoms";
+import { AppShell, Box } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
+import React, { ReactNode, useEffect, useMemo } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { Header } from "./Header";
+import { Navbar } from "./Navbar";
+import { Sidebar } from "./Sidebar";
 
 type Props = {
     children: ReactNode;
@@ -37,21 +40,21 @@ export const MainLayout = React.memo(function MainLayout({ children }: Props) {
     const [rememberedLeftSidebarSize, setRememberedLeftSidebarSize] = useRecoilState(rememberedLeftSidebarSizeAtom);
 
     useEffect(() => {
-        if (deviceType === 'mobile' && leftSideBarWidth !== 0) {
+        if (deviceType === "mobile" && leftSideBarWidth !== 0) {
             setRememberedLeftSidebarSize((prevSize) => ({
                 ...prevSize,
                 tablet: leftSideBarWidth,
             }));
             setLeftSideBarWidth(rememberedLeftSidebarSize.mobile);
         }
-        if (deviceType === 'tablet' && leftSideBarWidth > 200) {
+        if (deviceType === "tablet" && leftSideBarWidth > 200) {
             setRememberedLeftSidebarSize((prevSize) => ({
                 ...prevSize,
                 desktop: leftSideBarWidth,
             }));
             setLeftSideBarWidth(rememberedLeftSidebarSize.tablet);
         }
-        if (deviceType === 'desktop' && leftSideBarWidth > 200) {
+        if (deviceType === "desktop" && leftSideBarWidth > 200) {
             setRememberedLeftSidebarSize((prevSize) => ({
                 ...prevSize,
                 tablet: leftSideBarWidth,
@@ -60,7 +63,6 @@ export const MainLayout = React.memo(function MainLayout({ children }: Props) {
         }
     }, [deviceType]);
 
-
     useEffect(() => {
         setWindowWidth(window.innerWidth);
         setWindowHeight(window.innerHeight);
@@ -68,57 +70,60 @@ export const MainLayout = React.memo(function MainLayout({ children }: Props) {
 
     useEffect(() => {
         if (mobileMatch) {
-            setDeviceType('mobile');
+            setDeviceType("mobile");
         } else if (tabletMatch) {
-            setDeviceType('tablet');
+            setDeviceType("tablet");
         } else if (desktopMatch) {
-            setDeviceType('desktop');
+            setDeviceType("desktop");
         }
     }, [mobileMatch, tabletMatch, desktopMatch, setDeviceType]);
 
     useLayoutPresets();
 
-    const layoutContent = useMemo(() => (
-        <AppShell
-            layout="default"
-            header={{
-                height: headerHeight,
-            }}
-            navbar={{
-                width: leftSideBarWidth,
-                breakpoint: 0,
-            }}
-            aside={{
-                width: rightSideBarWidth,
-                breakpoint: 0,
-            }}
-            footer={{
-                height: footerHeight,
-            }}
-        >
-            <AppShell.Header>
-                <Header />
-            </AppShell.Header>
-            {leftSideBarWidth !== 0 && (
-                <AppShell.Navbar pt="xs" pb="xs" pl={0} pr={0}>
-                    <Navbar />
-                </AppShell.Navbar>
-            )}
-            <AppShell.Main>
-                <Box>{children}</Box>
-            </AppShell.Main>
-            {rightSideBarWidth !== 0 && (
-                <AppShell.Aside>
-                    <Sidebar />
-                </AppShell.Aside>
-            )}
-            {footerHeight !== 0 && (
-                <AppShell.Footer>
-                    <Footer />
-                </AppShell.Footer>
-            )}
-        </AppShell>
-    ), [headerHeight, leftSideBarWidth, rightSideBarWidth, footerHeight, children]);
+    const layoutContent = useMemo(
+        () => (
+            <AppShell
+                layout="default"
+                header={{
+                    height: headerHeight,
+                }}
+                navbar={{
+                    width: leftSideBarWidth,
+                    breakpoint: 0,
+                }}
+                aside={{
+                    width: rightSideBarWidth,
+                    breakpoint: 0,
+                }}
+                footer={{
+                    height: footerHeight,
+                }}
+            >
+                <AppShell.Header>
+                    <Header />
+                </AppShell.Header>
+                {leftSideBarWidth !== 0 && (
+                    <AppShell.Navbar pt="xs" pb="xs" pl={0} pr={0}>
+                        <Navbar />
+                    </AppShell.Navbar>
+                )}
+                <AppShell.Main>
+                    <Box>{children}</Box>
+                </AppShell.Main>
+                {rightSideBarWidth !== 0 && (
+                    <AppShell.Aside>
+                        <Sidebar />
+                    </AppShell.Aside>
+                )}
+                {footerHeight !== 0 && (
+                    <AppShell.Footer>
+                        <Footer />
+                    </AppShell.Footer>
+                )}
+            </AppShell>
+        ),
+        [headerHeight, leftSideBarWidth, rightSideBarWidth, footerHeight, children],
+    );
 
     return layoutContent;
 });
