@@ -13,7 +13,8 @@
     height: calc(100vh - var(--header-height) - var(--layout-padding));
 }
 
-.ame-centerContent-leftGapColumn, .rightGapColumn {
+.ame-centerContent-leftGapColumn,
+.rightGapColumn {
     flex-shrink: 1;
 }
 
@@ -25,24 +26,21 @@
     flex-direction: column;
     position: relative;
     overflow: hidden;
-
 }
 
 .ame-centerContent-mainContent {
     overflow: hidden;
-    flex-grow: 1;
+    flex-grow: 0;
     width: 100%; /* Add this line */
-
 }
-
 
 .ame-centerContent-topSection {
-    position: absolute;
+    max-width: var(--center-column-max-width);
+    /* position: absolute;
     top: 20px;
     left: 0;
-    right: 0;
+    right: 0; */
 }
-
 
 .ame-centerContent-bottomSection {
     position: absolute;
