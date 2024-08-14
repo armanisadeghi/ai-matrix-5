@@ -1,15 +1,15 @@
 // components/ThemeSelection/ThemeSelectionCardClient.tsx
 
-'use client';
+"use client";
 
-import React, { useState, useMemo, useCallback } from 'react';
-import { Flex, Grid, PaperProps, Radio, rem } from '@mantine/core';
-import { IconDeviceFloppy } from '@tabler/icons-react';
-import AmeRadioCard from '@/ui/radio/AmeRadioCard';
-import AmeTitle from '@/ui/typography/AmeTitle';
-import AmeButton from '@/ui/buttons/AmeButton';
-import AmeText from '@/ui/typography/AmeText';
-import AmePaper from '@/ui/surfaces/AmePaper';
+import React, { useState, useMemo, useCallback } from "react";
+import { Flex, Grid, PaperProps, Radio, rem } from "@mantine/core";
+import { IconDeviceFloppy } from "@tabler/icons-react";
+import AmeRadioCard from "@/ui/radio/AmeRadioCard";
+import AmeTitle from "@/ui/typography/AmeTitle";
+import AmeButton from "@/ui/buttons/AmeButton";
+import AmeText from "@/ui/typography/AmeText";
+import AmePaper from "@/ui/surfaces/AmePaper";
 
 interface ThemeSelectionCardClientProps extends PaperProps {
     showSaveButton?: boolean;
@@ -17,24 +17,25 @@ interface ThemeSelectionCardClientProps extends PaperProps {
 }
 
 export const ThemeSelectionCardClient = React.memo(function ThemeSelectionCardClient({
-                                                                                         showSaveButton,
-                                                                                         data,
-                                                                                         ...others
-                                                                                     }: ThemeSelectionCardClientProps) {
+    showSaveButton,
+    data,
+    ...others
+}: ThemeSelectionCardClientProps) {
     const [colorMode, setColorMode] = useState<string | null>(null);
 
     const handleColorModeChange = useCallback((value: string) => {
         setColorMode(value);
     }, []);
 
-    const cards = useMemo(() => data.map((item) => (
-        <AmeRadioCard value={item.name} key={item.name} {...item} />
-    )), [data]);
+    const cards = useMemo(
+        () => data.map((item) => <AmeRadioCard value={item.name} key={item.name} {...item} />),
+        [data],
+    );
 
     return (
         <AmePaper component="form" p="md" mb="md" {...others}>
             <Grid align="flex-start" mb="md">
-                <Grid.Col span={{ base: 12, md: 6, lg: 3 }}>
+                <Grid.Col span={{ base: 12, md: 6, lg: 4, xl: 3 }}>
                     <AmeTitle as="card-header" mb="md">
                         Color Mode
                     </AmeTitle>
@@ -42,7 +43,7 @@ export const ThemeSelectionCardClient = React.memo(function ThemeSelectionCardCl
                         Choose if app's appearance should be light or dark, or follow your computer's settings.
                     </AmeText>
                 </Grid.Col>
-                <Grid.Col span={{ base: 12, md: 6, lg: 9 }}>
+                <Grid.Col span={{ base: 12, md: 6, lg: 8, xl: 9 }}>
                     <Radio.Group value={colorMode} onChange={handleColorModeChange}>
                         <Flex gap="xs">{cards}</Flex>
                     </Radio.Group>
