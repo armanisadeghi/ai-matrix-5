@@ -24,7 +24,7 @@ export const TableSelectionFormClient = React.memo(function TableSelectionFormCl
 
     return (
         <Grid align="flex-start" mb="md">
-            <Grid.Col span={{ base: 12, md: 6, lg: 3 }}>
+            <Grid.Col span={{ base: 12, md: 6, lg: 4,xl: 3 }}>
                 <AmeTitle as="card-header" mb="md">
                     Table view
                 </AmeTitle>
@@ -32,7 +32,7 @@ export const TableSelectionFormClient = React.memo(function TableSelectionFormCl
                     Choose how tables are displayed in the app.
                 </AmeText>
             </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 6, lg: 9 }}>
+            <Grid.Col span={{ base: 12, md: 6, lg: 8,xl: 3 }}>
                 <Radio.Group value={tableMode} onChange={setTableMode}>
                     <Flex gap="xs">{cards}</Flex>
                 </Radio.Group>

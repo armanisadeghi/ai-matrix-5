@@ -23,7 +23,7 @@ export function UserDetailsForm({ ...others }: UserDetailsFormProps) {
     });
 
     return (
-        <Paper component="form" onSubmit={form.onSubmit(console.log)} p="md" withBorder {...others}>
+        <Paper component="form" onSubmit={form.onSubmit(console.log)} p="md" {...others}>
             <AmeTitle as="card-header" mb="md">
                 User details
             </AmeTitle>

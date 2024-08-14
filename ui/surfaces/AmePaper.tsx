@@ -3,7 +3,7 @@ import { ComponentProps, ReactNode } from "react";
 
 interface AmePaperProps extends PaperProps {
     children: ReactNode;
-    component: ComponentProps<any>;
+    component?: ComponentProps<any>;
 }
 
 function AmePaper({ children, ...others }: AmePaperProps) {

@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, FileButton, Flex, Group, Image, Paper, Stack, Text } from "@mantine/core";
+import { Button, Divider, FileButton, Flex, Group, Image, Paper, Stack, Text } from "@mantine/core";
 import { useState } from "react";
 import { UserDetailsForm } from "@/components";
 
@@ -9,7 +9,7 @@ function PersonalInformation() {
 
     return (
         <>
-            <Paper p="md" withBorder mb="md">
+            <Paper p="md" mb="md">
                 <Flex gap="md" align="center">
                     <Image
                         radius="50%"
@@ -33,8 +33,10 @@ function PersonalInformation() {
                     </FileButton>
                 </Flex>
             </Paper>
+            <Divider />
             <UserDetailsForm mb="md" />
-            <Paper component={Group} justify="space-between" p="md" withBorder>
+            <Divider />
+            <Paper component={Group} justify="space-between" p="md">
                 <Stack gap={2}>
                     <Text fw={600} size="lg">
                         Delete your account

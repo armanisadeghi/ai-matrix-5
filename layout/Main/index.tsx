@@ -108,7 +108,7 @@ export const MainLayout = React.memo(function MainLayout({ children }: Props) {
                     </AppShell.Navbar>
                 )}
                 <AppShell.Main>
-                    <Box>{children}</Box>
+                    <Box p="md">{children}</Box>
                 </AppShell.Main>
                 {rightSideBarWidth !== 0 && (
                     <AppShell.Aside>
