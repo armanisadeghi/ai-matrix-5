@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Group, Text } from "@mantine/core";
+import { Text } from "@mantine/core";
 import { useSearchParams } from "next/navigation";
 import React, { ReactNode, useMemo } from "react";
 
@@ -9,7 +9,6 @@ import { ResponseArea } from "@/components/AiChat";
 import AutoFetch from "@/components/AiChat/new/AutoFetch";
 import ChatSidebar from "@/components/AiChat/Sidebar/ChatSidebar";
 import CenterLayout from "@/ui/layout/AmeCenterContent/CenterLayout";
-import { IconExclamationCircle } from "@tabler/icons-react";
 
 type Props = {
     children: ReactNode;
@@ -32,14 +31,7 @@ export default function Layout({ children }: Props) {
                     rightMenuSectionContent={<MemoizedChatSidebar />}
                     rightMenuSectionWidth={17}
                     scrollAreaContent={<ResponseArea className="responseTextArea" bottomPadding={0} />}
-                    topSectionContent={
-                        <Group justify="space-between" py="xs">
-                            <Text>{chatTitle}</Text>
-                            <Button variant="subtle" leftSection={<IconExclamationCircle size={16} />}>
-                                Guided Tour
-                            </Button>
-                        </Group>
-                    }
+                    topSectionContent={<Text>{chatTitle}</Text>}
                 />
                 {children}
             </>

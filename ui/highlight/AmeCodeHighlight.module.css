@@ -1,7 +1,7 @@
 /* ui/highlight/AmeCodeHighlight.module.css */
 
 /* Global styles for dark mode */
-:global([data-mantine-color-scheme='dark']) {
+.localClass :global([data-mantine-color-scheme='dark']) {
     .codeSection :global(.m_1f5e827e) {
         --code-text-color: #ffffff; /* Bright white for general text */
         --code-background: #000000; /* Jet black for background */
@@ -38,7 +38,7 @@
 }
 
 /* Global styles for light mode */
-:global([data-mantine-color-scheme='light']) {
+.localClass :global([data-mantine-color-scheme='light']) {
     .codeSection :global(.m_1f5e827e) {
         --code-background: #e1e1e1; /* Slightly darker gray */
         --code-text-color: #000000; /* Black for general text */
