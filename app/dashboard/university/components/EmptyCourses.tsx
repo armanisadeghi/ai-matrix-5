@@ -4,17 +4,19 @@ import AmeText from "@/ui/typography/AmeText";
 import { Stack } from "@mantine/core";
 import { IconHourglassEmpty } from "@tabler/icons-react";
 
-export const EmptyCourses = () => {
+export function EmptyCourses() {
     return (
         <AmePaper withBorder p="lg">
-            <Stack align="center">
-                <IconHourglassEmpty />
-                <AmeText fw={600}>You haven't received any recommendations yet </AmeText>
+            <Stack align="center" gap="xs">
+                <IconHourglassEmpty size={36} />
+                <AmeText fw={600} mt="md">
+                    You haven't received any recommendations yet{" "}
+                </AmeText>
                 <AmeText fz="sm">Recommend a course to someone else?</AmeText>
-                <AmeButton title="browse courses" variant="primary">
+                <AmeButton title="browse courses" variant="primary" mt="md">
                     Browse courses
                 </AmeButton>
             </Stack>
         </AmePaper>
     );
-};
+}
