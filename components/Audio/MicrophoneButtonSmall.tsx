@@ -1,10 +1,9 @@
-import React from 'react';
-import { atom, useRecoilState } from 'recoil';
-import { FaMicrophone } from 'react-icons/fa';
-import { ActionIcon } from '@mantine/core';
+import { ActionIcon } from "@mantine/core";
+import { FaMicrophone } from "react-icons/fa";
+import { atom, useRecoilState } from "recoil";
 
 export const audioStateAtom = atom({
-    key: 'audioState',
+    key: "microAudioState",
     default: false,
 });
 
@@ -17,11 +16,14 @@ const MicrophoneButton = () => {
 
     return (
         <ActionIcon
-            onClick={(e) => { e.stopPropagation(); handleClick(); }}
+            onClick={(e) => {
+                e.stopPropagation();
+                handleClick();
+            }}
             variant="transparent"
             size="sm"
             radius="xl"
-            color={audioState ? 'blue' : '#909090'}
+            color={audioState ? "blue" : "#909090"}
         >
             <FaMicrophone />
         </ActionIcon>

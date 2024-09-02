@@ -77,7 +77,12 @@ export const CodeDiffEditor = (props: CodeEditorProps) => {
         <>
             <div>
                 <input type="file" onChange={handleFileChange} />
-                <AmeSelect label="Theme" data={["hc-black", "vs-dark", "vs-light"]} onChange={handleThemeChange} />
+                <AmeSelect
+                    label="Theme"
+                    data={["hc-black", "vs-dark", "vs-light"]}
+                    onChange={handleThemeChange}
+                    value={contextTheme}
+                />
             </div>
             <hr />
             <MonacoDiffEditor

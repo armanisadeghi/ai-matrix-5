@@ -32,7 +32,7 @@ const AmeCodeHighlight: React.FC<AmeCodeHighlightProps> = ({ code, language, tit
                     <button onClick={() => setExpanded(!expanded)} className={styles.expandButton}>
                         {expanded ? "Show less" : "Show full code"}
                     </button>
-                    <button onClick={open}>open editor</button>
+                    {title.toLowerCase() !== "sh" && <button onClick={open}>open editor</button>}
                 </div>
                 <CodeHighlight code={code} language={language} highlightOnClient={true} />
                 <Space h="xs" />

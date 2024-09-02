@@ -119,6 +119,7 @@
     "react-redux": "^9.1.2",
     "react-split": "latest",
     "react-syntax-highlighter": "^15.5.0",
+    "react-terminal": "^1.4.4",
     "react-window": "^1.8.10",
     "recharts": "^2.12.7",
     "recoil": "latest",
