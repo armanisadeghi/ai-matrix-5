@@ -1,7 +1,5 @@
 "use client";
 
-import { Text } from "@mantine/core";
-import { useSearchParams } from "next/navigation";
 import React, { ReactNode, useMemo } from "react";
 
 import UserInputArea from "@/app/dashboard/intelligence/ai-chat/components/UserInputArea";
@@ -19,9 +17,6 @@ const MemoizedChatSidebar = React.memo(ChatSidebar);
 const MemoizedCenterLayout = React.memo(CenterLayout);
 
 export default function Layout({ children }: Props) {
-    const searchParams = useSearchParams();
-    let chatTitle = searchParams.get("chatTitle") ?? "New chat";
-
     const memoizedLayout = useMemo(
         () => (
             <>
@@ -31,7 +26,6 @@ export default function Layout({ children }: Props) {
                     rightMenuSectionContent={<MemoizedChatSidebar />}
                     rightMenuSectionWidth={17}
                     scrollAreaContent={<ResponseArea className="responseTextArea" bottomPadding={0} />}
-                    topSectionContent={<Text>{chatTitle}</Text>}
                 />
                 {children}
             </>
