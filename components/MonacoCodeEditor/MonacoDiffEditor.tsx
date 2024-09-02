@@ -1,16 +1,19 @@
-import AmeSelect from "@/ui/select/AmeSelect/AmeSelect";
+import { useMantineColorScheme } from "@mantine/core";
 import { ChangeEvent, useEffect, useState } from "react";
 import { MonacoDiffEditor } from "react-monaco-editor";
+
+import AmeSelect from "@/ui/select/AmeSelect/AmeSelect";
 
 type CodeEditorProps = { originalCode: string; modifiedCode: string; language: string; theme?: "vs-dark" | "vs-light" };
 
 export const CodeDiffEditor = (props: CodeEditorProps) => {
     const { originalCode, modifiedCode, language, theme } = props;
+    const { colorScheme } = useMantineColorScheme();
     const [contextOriginalCode, setContextOriginalCode] = useState<any>(originalCode ?? "");
     const [contextModifiedCode, setContextModifiedCode] = useState<any>(modifiedCode ?? "");
     const [contextFile, setContextFile] = useState<any>();
     const [contextLanguage, setContextLanguage] = useState(language ?? "javascript");
-    const [contextTheme, setTheme] = useState<any>(theme ?? "vs-light");
+    const [contextTheme, setContextTheme] = useState<any>(theme ?? "vs-light");
 
     const options: any = {
         autoIndent: "full",
@@ -41,7 +44,7 @@ export const CodeDiffEditor = (props: CodeEditorProps) => {
     };
 
     const handleThemeChange = (value: string) => {
-        setTheme(value);
+        setContextTheme(value);
     };
 
     useEffect(() => {
@@ -59,6 +62,16 @@ export const CodeDiffEditor = (props: CodeEditorProps) => {
             setContextLanguage(newLanguage);
         }
     }, [contextFile]);
+
+    useEffect(() => {
+        if (colorScheme) {
+            if (colorScheme === "dark") {
+                setContextTheme("vs-dark");
+            } else {
+                setContextTheme("vs-light");
+            }
+        }
+    }, [colorScheme]);
 
     return (
         <>
