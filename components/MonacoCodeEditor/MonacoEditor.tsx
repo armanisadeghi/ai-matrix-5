@@ -1,12 +1,13 @@
 import { FileInput, Flex, useMantineColorScheme } from "@mantine/core";
 import { IconFileCode2, IconPlayerPlay } from "@tabler/icons-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import MonacoEditor from "react-monaco-editor";
 
 import AmeButton from "@/ui/buttons/AmeButton";
 import AmeSelect from "@/ui/select/AmeSelect/AmeSelect";
-import { AmeTerminal } from "@/ui/terminal";
 import AmePaper from "@/ui/surfaces/AmePaper";
+import { AmeTerminal } from "@/ui/terminal";
+import { PROGRAMMING_LANGUAGE_OPTIONS } from "@/constants";
 
 type CodeEditorProps = { code: string; language: string; theme?: "vs-dark" | "vs-light" };
 
@@ -42,6 +43,13 @@ export const CodeEditor = (props: CodeEditorProps) => {
         cursorStyle: "line",
         automaticLayout: true,
     };
+
+    const contextVersion: string = useMemo(() => {
+        return (
+            PROGRAMMING_LANGUAGE_OPTIONS.find((item) => item.language === contextLanguage.toLowerCase()).version ??
+            "1.0"
+        );
+    }, [contextLanguage]);
 
     const handleFileChange = (file: File) => {
         setContextFile(file);
@@ -79,7 +87,7 @@ export const CodeEditor = (props: CodeEditorProps) => {
             versionIndex: "0",
         };
 
-        const res = await fetch("/api/jdoodle/execute", {
+        const response = await fetch("/api/jdoodle/execute", {
             method: "POST",
             body: JSON.stringify(body),
             headers: {
@@ -87,8 +95,34 @@ export const CodeEditor = (props: CodeEditorProps) => {
             },
         });
 
-        const data = await res.json();
-        setCodeOutput(data);
+        const data = await response.json();
+        setCodeOutput(data?.output?.split("\n"));
+        setLoading(false);
+    };
+
+    const runCodeInPiston = async () => {
+        setLoading(true);
+
+        const body = {
+            language: contextLanguage,
+            version: contextVersion,
+            files: [
+                {
+                    content: contextCode,
+                },
+            ],
+        };
+
+        const response = await fetch("/api/piston/execute", {
+            method: "POST",
+            body: JSON.stringify(body),
+            headers: {
+                "Content-type": "application/json",
+            },
+        });
+
+        const data = await response.json();
+        setCodeOutput(data?.run?.output?.split("\n"));
         setLoading(false);
     };
 
@@ -122,6 +156,8 @@ export const CodeEditor = (props: CodeEditorProps) => {
         console.log("error rendering monaco editor");
     }
 
+    console.log(codeOutput);
+
     return (
         <>
             <Flex justify="space-between" mb="sm">
@@ -152,17 +188,42 @@ export const CodeEditor = (props: CodeEditorProps) => {
                     onChange={(value) => setContextCode(value)}
                 />
             </AmePaper>
-            <AmeButton
-                leftSection={<IconPlayerPlay size={16} />}
-                loading={loading}
-                mb="sm"
-                onClick={runCodeInJDoodle}
-                primary
-                title="Run code"
-            >
-                Run code
-            </AmeButton>
-            {codeOutput?.isCompiled && <AmeTerminal name={contextCode} terminalOutput={codeOutput?.output} />}
+            <Flex>
+                <AmeButton
+                    leftSection={<IconPlayerPlay size={16} />}
+                    loading={loading}
+                    mb="sm"
+                    onClick={runCode}
+                    primary
+                    title="Run code"
+                >
+                    Run code in eval
+                </AmeButton>
+                <AmeButton
+                    leftSection={<IconPlayerPlay size={16} />}
+                    loading={loading}
+                    mb="sm"
+                    onClick={runCodeInJDoodle}
+                    primary
+                    title="Run code"
+                >
+                    Run code in jdoodle
+                </AmeButton>
+                <AmeButton
+                    leftSection={<IconPlayerPlay size={16} />}
+                    loading={loading}
+                    mb="sm"
+                    onClick={runCodeInPiston}
+                    primary
+                    title="Run code"
+                >
+                    Run code in piston
+                </AmeButton>
+            </Flex>
+            {codeOutput &&
+                codeOutput.map((item) => {
+                    return <p key={item}>{item}</p>;
+                })}
         </>
     );
 };
