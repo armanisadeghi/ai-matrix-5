@@ -1,12 +1,11 @@
-'use client';
+"use client";
 
-import React, { useState, MouseEvent, useCallback } from 'react';
-import AmeChatMenu from '@/components/AiChat/ChatMenu/AmeChatMenu';
-import { ActionIcon, Flex } from '@mantine/core';
-import { BsThreeDotsVertical } from 'react-icons/bs';
-import useColorUtils from '@/utils/colorUtils';
-import AmeActionTextInput from '@/ui/input/AmeActionTextInput';
-
+import React, { useState, MouseEvent, useCallback } from "react";
+import AmeChatMenu from "@/components/AiChat/ChatMenu/AmeChatMenu";
+import { ActionIcon, Flex, useMantineTheme } from "@mantine/core";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import useColorUtils from "@/utils/colorUtils";
+import AmeActionTextInput from "@/ui/input/AmeActionTextInput";
 
 interface ChatSummaryEntryProps {
     chatId: string;
@@ -17,8 +16,9 @@ interface ChatSummaryEntryProps {
 }
 
 const ChatSidebarEntry: React.FC<ChatSummaryEntryProps> = React.memo(
-    ({chatId, chatTitle, isActive, onClick, editable = false}) => {
-        const {getDefaultBackgroundColor, getHoverBackgroundColor, getModerateTextColor} = useColorUtils();
+    ({ chatId, chatTitle, isActive, onClick, editable = false }) => {
+        const { getDefaultBackgroundColor, getHoverBackgroundColor, getModerateTextColor } = useColorUtils();
+        const theme = useMantineTheme();
 
         const backgroundColor = getDefaultBackgroundColor();
         const hoverBackgroundColor = getHoverBackgroundColor();
@@ -53,21 +53,33 @@ const ChatSidebarEntry: React.FC<ChatSummaryEntryProps> = React.memo(
                 align="center"
                 direction="row"
                 wrap="nowrap"
-                style={{width: '100%', margin: '0', padding: '0'}}
+                style={{ width: "100%", margin: "0", padding: "0" }}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
                 onClick={onClick}
             >
-                <div style={{display: 'flex', alignItems: 'center', width: '100%', backgroundColor: hovered ? hoverBackgroundColor : backgroundColor, color: textColor, transition: 'background-color 0.3s', borderRadius: '2px', padding: '0 5px', position: 'relative'}}>
-                    <div style={{flexGrow: 1, cursor: 'pointer', padding: '0', margin: '0'}}>
+                <div
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                        width: "100%",
+                        backgroundColor: hovered ? hoverBackgroundColor : backgroundColor,
+                        color: textColor,
+                        transition: "background-color 0.3s",
+                        borderRadius: theme.radius.sm,
+                        padding: "0 5px",
+                        position: "relative",
+                    }}
+                >
+                    <div style={{ flexGrow: 1, cursor: "pointer", padding: "0", margin: "0" }}>
                         <AmeActionTextInput
                             initialValue={chatTitle}
                             editable={editable}
-                            variant={'unstyled'}
+                            variant={"unstyled"}
                             style={{
-                                ...(isActive ? {fontWeight: 'bold'} : {}),
-                                textDecoration: 'none',
-                                padding: '0',
+                                ...(isActive ? { fontWeight: "bold" } : {}),
+                                textDecoration: "none",
+                                padding: "0",
                             }}
                             highlightOnClick={false}
                         />
@@ -83,10 +95,10 @@ const ChatSidebarEntry: React.FC<ChatSummaryEntryProps> = React.memo(
                                 <ActionIcon
                                     variant="transparent"
                                     size="xs"
-                                    style={{cursor: 'pointer', position: 'absolute', right: 0}}
+                                    style={{ cursor: "pointer", position: "absolute", right: 0 }}
                                     onClick={handleIconClick}
                                 >
-                                    <BsThreeDotsVertical/>
+                                    <BsThreeDotsVertical />
                                 </ActionIcon>
                             </AmeChatMenu.Target>
                         </AmeChatMenu>
@@ -94,7 +106,7 @@ const ChatSidebarEntry: React.FC<ChatSummaryEntryProps> = React.memo(
                 </div>
             </Flex>
         );
-    }
+    },
 );
 
 export default ChatSidebarEntry;

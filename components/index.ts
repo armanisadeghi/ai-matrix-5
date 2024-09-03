@@ -7,7 +7,6 @@ export * from "./CollapseNavLinks";
 export * from "./ColorSchemeToggle";
 export * from "./ColorSelectionForm";
 export * from "./GuestHero";
-export * from "./IDECodeEditor";
 export * from "./Logo";
 export * from "./NavbarLinksGroup";
 export * from "./NotesCard";

@@ -1,10 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
-import { v4 } from 'uuid';
-import { Button, Divider, Space, Stack, Text } from '@mantine/core';
-import styles from './SidebarAdmin.module.css';
+import { Stack } from "@mantine/core";
+import React, { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
+import { v4 } from "uuid";
+import styles from "./SidebarAdmin.module.css";
 
-import { activeChatIdAtom, chatTransitionAtom, isNewChatAtom, streamStatusAtom, submitChatIdAtom, chatMessagesAtomFamily } from '@/state/aiAtoms/aiChatAtoms';
+import {
+    activeChatIdAtom,
+    chatTransitionAtom,
+    isNewChatAtom,
+    streamStatusAtom,
+    submitChatIdAtom,
+} from "@/state/aiAtoms/aiChatAtoms";
+import AmeButton from "@/ui/buttons/AmeButton";
+import AmePaper from "@/ui/surfaces/AmePaper";
+import AmeTitle from "@/ui/typography/AmeTitle";
+import AmeText from "@/ui/typography/AmeText";
 
 interface SidebarAdminProps {
     chatSelectCount: number;
@@ -12,20 +22,16 @@ interface SidebarAdminProps {
 }
 
 const atomList = [
-    'isNewChat',
-    'chatTransition',
-    'chatSelectCount',
-    'newChatCount',
-    'activeChatId',
-    'submitChatId',
-    'streamStatus'
+    "isNewChat",
+    "chatTransition",
+    "chatSelectCount",
+    "newChatCount",
+    "activeChatId",
+    "submitChatId",
+    "streamStatus",
 ];
 
-const SidebarAdmin: React.FC<SidebarAdminProps> = (
-    {
-        chatSelectCount,
-        newChatCount,
-    }) => {
+const SidebarAdmin: React.FC<SidebarAdminProps> = ({ chatSelectCount, newChatCount }) => {
     const atomValues = {
         isNewChat: useRecoilValue(isNewChatAtom),
         chatTransition: useRecoilValue(chatTransitionAtom),
@@ -36,44 +42,54 @@ const SidebarAdmin: React.FC<SidebarAdminProps> = (
         streamStatus: useRecoilValue(streamStatusAtom),
     };
 
-    const [keys, setKeys] = useState<Record<string, string>>(atomList.reduce((acc, atom) => {
-        acc[atom] = v4();
-        return acc;
-    }, {} as Record<string, string>));
+    const [keys, setKeys] = useState<Record<string, string>>(
+        atomList.reduce(
+            (acc, atom) => {
+                acc[atom] = v4();
+                return acc;
+            },
+            {} as Record<string, string>,
+        ),
+    );
 
     useEffect(() => {
         const newKeys = Object.assign({}, keys);
-        atomList.forEach(atom => {
+        atomList.forEach((atom) => {
             newKeys[atom] = v4();
         });
         setKeys(newKeys);
     }, Object.values(atomValues));
 
     const formatAtomName = (name: string) => {
-        return name.split(/(?=[A-Z])/).join(' ').replace(/^\w/, c => c.toUpperCase());
+        return name
+            .split(/(?=[A-Z])/)
+            .join(" ")
+            .replace(/^\w/, (c) => c.toUpperCase());
     };
 
     const openAdminModal = () => {
-        console.log('Open Admin Modal');
+        console.log("Open Admin Modal");
     };
 
     return (
-        <>
-            <Text size="md" c="grape">Sidebar Admin</Text>
-            <Space h="xs"/>
+        <AmePaper withBorder p="sm">
+            <AmeTitle order={6} mb="sm">
+                Sidebar Admin
+            </AmeTitle>
             <Stack gap="xs">
-                {atomList.map(atom => (
+                {atomList.map((atom) => (
                     <div className={`${styles.gridItem} ${styles.highlightAnimation}`} key={keys[atom]}>
-                        <Text size="xs">{formatAtomName(atom)}:</Text>
-                        <Text size="xs">
-                            {atomValues[atom as keyof typeof atomValues]?.toString() || 'No Value'}
-                        </Text>
+                        <AmeText size="sm">{formatAtomName(atom)}:</AmeText>
+                        <AmeText size="sm">
+                            {atomValues[atom as keyof typeof atomValues]?.toString() || "No Value"}
+                        </AmeText>
                     </div>
                 ))}
             </Stack>
-            <Space h="md"/>
-            <Button fullWidth variant="filled" color="grape" size="xs" onClick={openAdminModal}>Admin modal</Button>
-        </>
+            <AmeButton title="admin modal" onClick={openAdminModal} fullWidth>
+                Admin modal
+            </AmeButton>
+        </AmePaper>
     );
 };
 

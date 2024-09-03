@@ -1,18 +1,24 @@
-import { FileInput, Flex, useMantineColorScheme } from "@mantine/core";
+import { Code, FileInput, Flex, useMantineColorScheme } from "@mantine/core";
 import { IconFileCode2, IconPlayerPlay } from "@tabler/icons-react";
-import { useEffect, useRef, useState, useMemo } from "react";
-import MonacoEditor from "react-monaco-editor";
+import { useEffect, useMemo, useRef, useState } from "react";
+import Editor from "@monaco-editor/react";
 
+import { PROGRAMMING_LANGUAGE_OPTIONS } from "@/constants";
 import AmeButton from "@/ui/buttons/AmeButton";
 import AmeSelect from "@/ui/select/AmeSelect/AmeSelect";
 import AmePaper from "@/ui/surfaces/AmePaper";
-import { AmeTerminal } from "@/ui/terminal";
-import { PROGRAMMING_LANGUAGE_OPTIONS } from "@/constants";
+import AmeTitle from "@/ui/typography/AmeTitle";
 
-type CodeEditorProps = { code: string; language: string; theme?: "vs-dark" | "vs-light" };
+type CodeEditorProps = {
+    code: string;
+    language: string;
+    theme?: "vs-dark" | "vs-light";
+    height?: string | number;
+    onChange?: (value?: string) => void;
+};
 
 export const CodeEditor = (props: CodeEditorProps) => {
-    const { code, language, theme } = props;
+    const { code, language, theme, onChange } = props;
     const editorRef = useRef(null);
     const { colorScheme } = useMantineColorScheme();
     const [contextCode, setContextCode] = useState<any>(code ?? "");
@@ -57,6 +63,21 @@ export const CodeEditor = (props: CodeEditorProps) => {
 
     const handleThemeChange = (value: string) => {
         setContextTheme(value);
+    };
+
+    const handleCodeChange = (value: string) => {
+        if (value) {
+            setContextCode(value);
+
+            if (onChange) {
+                onChange(value);
+            }
+        }
+    };
+
+    const handleEditorDidMount = (editor: any) => {
+        editorRef.current = editor;
+        editor.focus();
     };
 
     const runCode = () => {
@@ -152,11 +173,9 @@ export const CodeEditor = (props: CodeEditorProps) => {
         }
     }, [colorScheme]);
 
-    if (typeof window !== "undefined") {
+    if (typeof window === "undefined") {
         console.log("error rendering monaco editor");
     }
-
-    console.log(codeOutput);
 
     return (
         <>
@@ -177,24 +196,21 @@ export const CodeEditor = (props: CodeEditorProps) => {
                 />
             </Flex>
             <AmePaper mb="sm" py="xs" withBorder>
-                <MonacoEditor
+                <Editor
                     width="100%"
                     height="400"
                     language={contextLanguage}
                     theme={contextTheme}
                     value={contextCode}
                     options={options}
-                    editorDidMount={(editor) => (editorRef.current = editor)}
-                    onChange={(value) => setContextCode(value)}
+                    onMount={handleEditorDidMount}
                 />
             </AmePaper>
-            <Flex>
+            <Flex gap="sm" mb="sm">
                 <AmeButton
                     leftSection={<IconPlayerPlay size={16} />}
                     loading={loading}
-                    mb="sm"
                     onClick={runCode}
-                    primary
                     title="Run code"
                 >
                     Run code in eval
@@ -202,9 +218,7 @@ export const CodeEditor = (props: CodeEditorProps) => {
                 <AmeButton
                     leftSection={<IconPlayerPlay size={16} />}
                     loading={loading}
-                    mb="sm"
                     onClick={runCodeInJDoodle}
-                    primary
                     title="Run code"
                 >
                     Run code in jdoodle
@@ -212,18 +226,22 @@ export const CodeEditor = (props: CodeEditorProps) => {
                 <AmeButton
                     leftSection={<IconPlayerPlay size={16} />}
                     loading={loading}
-                    mb="sm"
                     onClick={runCodeInPiston}
-                    primary
                     title="Run code"
                 >
                     Run code in piston
                 </AmeButton>
             </Flex>
-            {codeOutput &&
-                codeOutput.map((item) => {
-                    return <p key={item}>{item}</p>;
-                })}
+            {codeOutput && (
+                <AmePaper withBorder p="sm">
+                    <AmeTitle order={6} mb="sm">
+                        Output
+                    </AmeTitle>
+                    {codeOutput?.map((item) => {
+                        return item ? <Code key={item}>{item}</Code> : "";
+                    })}
+                </AmePaper>
+            )}
         </>
     );
 };

@@ -60,7 +60,7 @@ export const PROGRAMMING_LANGUAGE_OPTIONS = [
     },
 ];
 
-export const DEFAULT_CODE_SNIPPETS = {
+export const CODE_SNIPPETS = {
     javascript: `function sum(a, b) {
   return a + b;
 }

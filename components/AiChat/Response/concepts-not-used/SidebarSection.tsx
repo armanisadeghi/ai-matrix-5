@@ -1,8 +1,12 @@
-import AmeActionTextInput from '@/ui/input/AmeActionTextInput';
-import React, { useState, useCallback } from 'react';
-import { Flex, ActionIcon, ScrollArea, Stack, Button, Text } from '@mantine/core';
-import { BsThreeDotsVertical } from 'react-icons/bs';
-import useColorUtils from '@/utils/colorUtils';
+import { ActionIcon, Button, Flex, ScrollArea, Stack, useMantineTheme } from "@mantine/core";
+import React, { useCallback, useState } from "react";
+import { BsThreeDotsVertical } from "react-icons/bs";
+
+import AmeActionTextInput from "@/ui/input/AmeActionTextInput";
+import AmePaper from "@/ui/surfaces/AmePaper";
+import AmeTitle from "@/ui/typography/AmeTitle";
+import useColorUtils from "@/utils/colorUtils";
+import AmeButton from "@/ui/buttons/AmeButton";
 
 interface SidebarItemData {
     id: string;
@@ -19,17 +23,25 @@ interface SidebarSectionProps {
     onSectionAction: () => void;
 }
 
-const SidebarItem: React.FC<{ item: SidebarItemData; onItemClick: (id: string) => void; onItemAction: (id: string) => void }> = ({ item, onItemClick, onItemAction }) => {
+const SidebarItem: React.FC<{
+    item: SidebarItemData;
+    onItemClick: (id: string) => void;
+    onItemAction: (id: string) => void;
+}> = ({ item, onItemClick, onItemAction }) => {
     const [hovered, setHovered] = useState(false);
     const { getDefaultBackgroundColor, getHoverBackgroundColor, getModerateTextColor } = useColorUtils();
+    const theme = useMantineTheme();
 
     const handleMouseEnter = useCallback(() => setHovered(true), []);
     const handleMouseLeave = useCallback(() => setHovered(false), []);
 
-    const handleIconClick = useCallback((event: React.MouseEvent) => {
-        event.stopPropagation();
-        onItemAction(item.id);
-    }, [item.id, onItemAction]);
+    const handleIconClick = useCallback(
+        (event: React.MouseEvent) => {
+            event.stopPropagation();
+            onItemAction(item.id);
+        },
+        [item.id, onItemAction],
+    );
 
     return (
         <Flex
@@ -39,33 +51,33 @@ const SidebarItem: React.FC<{ item: SidebarItemData; onItemClick: (id: string) =
             align="center"
             direction="row"
             wrap="nowrap"
-            style={{ width: '100%', margin: '0', padding: '0' }}
+            style={{ width: "100%", margin: "0", padding: "0" }}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onClick={() => onItemClick(item.id)}
         >
             <div
                 style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    width: '100%',
+                    display: "flex",
+                    alignItems: "center",
+                    width: "100%",
                     backgroundColor: hovered ? getHoverBackgroundColor() : getDefaultBackgroundColor(),
                     color: getModerateTextColor(),
-                    transition: 'background-color 0.3s',
-                    borderRadius: '2px',
-                    padding: '0 5px',
-                    position: 'relative'
+                    transition: "background-color 0.3s",
+                    padding: "0 5px",
+                    position: "relative",
+                    borderRadius: theme.radius.sm,
                 }}
             >
-                <div style={{ cursor: 'pointer', padding: '0', margin: '0', width: '100%' }}>
+                <div style={{ cursor: "pointer", padding: "0", margin: "0", width: "100%" }}>
                     <AmeActionTextInput
                         initialValue={`${item.name}: ${item.value}`}
                         editable={false}
-                        variant={'unstyled'}
+                        variant={"unstyled"}
                         style={{
-                            textDecoration: 'none',
-                            padding: '0',
-                            width: '100%',
+                            textDecoration: "none",
+                            padding: "0",
+                            width: "100%",
                         }}
                         highlightOnClick={false}
                     />
@@ -74,7 +86,7 @@ const SidebarItem: React.FC<{ item: SidebarItemData; onItemClick: (id: string) =
                     <ActionIcon
                         variant="transparent"
                         size="xs"
-                        style={{ cursor: 'pointer', position: 'absolute', right: 5 }}
+                        style={{ cursor: "pointer", position: "absolute", right: 5 }}
                         onClick={handleIconClick}
                     >
                         <BsThreeDotsVertical />
@@ -85,24 +97,30 @@ const SidebarItem: React.FC<{ item: SidebarItemData; onItemClick: (id: string) =
     );
 };
 
-const SidebarSection: React.FC<SidebarSectionProps> = ({ title, sectionItems, onItemClick, onItemAction, onSectionAction, actionTitle }) => {
+const SidebarSection: React.FC<SidebarSectionProps> = ({
+    title,
+    sectionItems,
+    onItemClick,
+    onItemAction,
+    onSectionAction,
+    actionTitle,
+}) => {
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--mantine-spacing-xs)' }}>
-            <Text size="md" c="grape">{title}</Text>
-            <ScrollArea h={200} scrollbarSize={4} scrollHideDelay={500}>
-                    {sectionItems.map(item => (
-                        <SidebarItem
-                            key={item.id}
-                            item={item}
-                            onItemClick={onItemClick}
-                            onItemAction={onItemAction}
-                        />
+        <AmePaper withBorder p="xs">
+            <AmeTitle order={6} mb="xs">
+                {title}
+            </AmeTitle>
+            <ScrollArea h={150} scrollbarSize={4} scrollHideDelay={500}>
+                <Stack gap={0}>
+                    {sectionItems.map((item) => (
+                        <SidebarItem key={item.id} item={item} onItemClick={onItemClick} onItemAction={onItemAction} />
                     ))}
+                </Stack>
             </ScrollArea>
-            <Button fullWidth variant="filled" color="grape" size="xs" onClick={onSectionAction}>
+            <AmeButton title={actionTitle} fullWidth onClick={onSectionAction}>
                 {actionTitle}
-            </Button>
-        </div>
+            </AmeButton>
+        </AmePaper>
     );
 };
 

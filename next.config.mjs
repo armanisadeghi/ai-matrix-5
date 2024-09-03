@@ -28,7 +28,6 @@ const nextConfig = {
     },
     webpack(config, { isServer }) {
         config.resolve.alias["@"] = path.resolve(__dirname);
-        config.plugins.push(new MonacoWebpackPlugin());
 
         if (isServer) {
             config.plugins.push(
@@ -42,7 +41,6 @@ const nextConfig = {
         }
         return config;
     },
-    cssLoaderOptions: { url: false },
 };
 
 export default withBundleAnalyzerConfig(nextConfig);
