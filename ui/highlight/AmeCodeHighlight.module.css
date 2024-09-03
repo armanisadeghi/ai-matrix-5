@@ -1,7 +1,7 @@
 /* ui/highlight/AmeCodeHighlight.module.css */
 
 /* Global styles for dark mode */
-.localClass :global([data-mantine-color-scheme='dark']) {
+.localClass :global([data-mantine-color-scheme="dark"]) {
     .codeSection :global(.m_1f5e827e) {
         --code-text-color: #ffffff; /* Bright white for general text */
         --code-background: #000000; /* Jet black for background */
@@ -28,7 +28,7 @@
     }
 
     .fadeOverlay {
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0), #2c2c2c); /* Dark mode fade */
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0), #2c2c2c); /* Dark mode fade */
     }
 
     .codeSection :global(.mantine-CodeHighlight-pre::-webkit-scrollbar-track),
@@ -38,7 +38,7 @@
 }
 
 /* Global styles for light mode */
-.localClass :global([data-mantine-color-scheme='light']) {
+.localClass :global([data-mantine-color-scheme="light"]) {
     .codeSection :global(.m_1f5e827e) {
         --code-background: #e1e1e1; /* Slightly darker gray */
         --code-text-color: #000000; /* Black for general text */
@@ -58,7 +58,7 @@
     }
 
     .fadeOverlay {
-    background: linear-gradient(to bottom, rgba(225, 225, 225, 0), #f1f1f1); /* Light mode fade */
+        background: linear-gradient(to bottom, rgba(225, 225, 225, 0), #f1f1f1); /* Light mode fade */
     }
 
     .codeSection :global(.mantine-CodeHighlight-pre::-webkit-scrollbar-track),
@@ -79,7 +79,7 @@
 
 .codeSection :global(.mantine-CodeHighlight-code),
 .codeSection :global(.mantine-CodeHighlightTabs-code) {
-    font-family: 'ui-monospace', monospace;
+    font-family: "ui-monospace", monospace;
     font-size: 12px;
 }
 
@@ -110,6 +110,7 @@
     align-items: center;
     justify-content: space-between;
     position: relative;
+    background: light-dark(var(--mantine-color-gray-1), var(--mantine-color-gray-8));
 }
 
 /* Local styles for the expand buttons */
@@ -148,4 +149,8 @@
     right: 0;
     height: 80px; /* Make the effect more noticeable */
     pointer-events: none; /* Ensure it doesn't interfere with user clicks */
+}
+
+.button {
+    font-family: "Inter", system-ui;
 }

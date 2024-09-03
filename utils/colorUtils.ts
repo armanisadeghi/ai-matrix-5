@@ -7,7 +7,7 @@ const useColorUtils = () => {
     const { colorScheme } = useMantineColorScheme();
 
     const getDefaultBackgroundColor = () => {
-        return colorScheme === "dark" ? theme.colors.dark[7] : theme.white;
+        return colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0];
     };
 
     const getHoverBackgroundColor = () => {

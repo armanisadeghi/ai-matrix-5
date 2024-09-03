@@ -111,7 +111,7 @@ const SidebarSection: React.FC<SidebarSectionProps> = ({
                 {title}
             </AmeTitle>
             <ScrollArea h={150} scrollbarSize={4} scrollHideDelay={500}>
-                <Stack gap={0}>
+                <Stack gap={4}>
                     {sectionItems.map((item) => (
                         <SidebarItem key={item.id} item={item} onItemClick={onItemClick} onItemAction={onItemAction} />
                     ))}

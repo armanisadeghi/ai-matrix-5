@@ -198,7 +198,7 @@ export const CodeEditor = (props: CodeEditorProps) => {
             <AmePaper mb="sm" py="xs" withBorder>
                 <Editor
                     width="100%"
-                    height="400"
+                    height="400px"
                     language={contextLanguage}
                     theme={contextTheme}
                     value={contextCode}

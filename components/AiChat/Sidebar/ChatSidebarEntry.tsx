@@ -67,7 +67,7 @@ const ChatSidebarEntry: React.FC<ChatSummaryEntryProps> = React.memo(
                         color: textColor,
                         transition: "background-color 0.3s",
                         borderRadius: theme.radius.sm,
-                        padding: "0 5px",
+                        padding: "4px 6px",
                         position: "relative",
                     }}
                 >

@@ -117,7 +117,7 @@ const ChatSidebar: React.FC = () => {
                         Recent Chats
                     </AmeTitle>
                     <ScrollArea h={150} scrollbarSize={4} scrollHideDelay={500}>
-                        <Stack align="stretch" justify="flex-start" gap="0">
+                        <Stack align="stretch" justify="flex-start" gap={4}>
                             {memoizedChatEntries}
                         </Stack>
                     </ScrollArea>

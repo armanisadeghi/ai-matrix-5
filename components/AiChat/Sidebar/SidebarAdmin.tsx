@@ -76,7 +76,7 @@ const SidebarAdmin: React.FC<SidebarAdminProps> = ({ chatSelectCount, newChatCou
             <AmeTitle order={6} mb="sm">
                 Sidebar Admin
             </AmeTitle>
-            <Stack gap="xs">
+            <Stack gap="4">
                 {atomList.map((atom) => (
                     <div className={`${styles.gridItem} ${styles.highlightAnimation}`} key={keys[atom]}>
                         <AmeText size="sm">{formatAtomName(atom)}:</AmeText>
