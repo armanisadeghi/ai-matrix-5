@@ -27,6 +27,7 @@ const AmeSelect: React.FC<AmeSelectProps> = (
         withAsterisk = false,
         error = 'This field is required',
         nothingFoundMessage = 'No matches...',
+        required = false,
         ...others
     }) => {
     const formattedData = data.map((item) => (typeof item === 'string' ? {value: item, label: item} : item));
@@ -39,6 +40,7 @@ const AmeSelect: React.FC<AmeSelectProps> = (
             nothingFoundMessage={nothingFoundMessage}
             withAsterisk={withAsterisk}
             error={error}
+            required={required}
             {...others}
         />
     );

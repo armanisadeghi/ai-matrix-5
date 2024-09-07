@@ -3,7 +3,7 @@
 'use client';
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { rem, TextInput, TextInputProps } from '@mantine/core';
+import { MantineSize, rem, TextInput, TextInputProps } from '@mantine/core';
 import { IconSearch } from '@tabler/icons-react';
 
 
@@ -20,6 +20,7 @@ const AmeSearchInputClient: React.FC<AmeSearchInputProps> = React.memo((
         value,
         onChange,
         otherStyles,
+        size = "xs",
         ...others
     }: AmeSearchInputProps) => {
     const [internalValue, setInternalValue] = useState<string>(value ? String(value) : '');
@@ -48,7 +49,7 @@ const AmeSearchInputClient: React.FC<AmeSearchInputProps> = React.memo((
         <TextInput
             placeholder="search"
             radius="md"
-            size="xs"
+            size={size}
             leftSection={icon}
             value={internalValue}
             onChange={handleChange}
