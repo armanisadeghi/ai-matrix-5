@@ -1,19 +1,26 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { ActionIcon, Button, Flex, Menu, Paper, Text, ThemeIcon } from "@mantine/core";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
+import { useDisclosure } from "@mantine/hooks";
+import { IconDotsVertical, IconFolder, IconTrash } from "@tabler/icons-react";
 import { indexedDBStore } from "../utils/indexedDB";
-import { Button } from "@mantine/core";
+import { NewProjectDrawer } from "./NewProjectDrawer";
 import { FileTree } from "./RepositoryStructure";
 
-interface RepoData {
+export interface IRepoData {
     name: string;
     files: { [path: string]: string };
 }
 
 export const Workspace: React.FC = () => {
-    const [repositories, setRepositories] = useState<RepoData[]>([]);
-    const [selectedRepo, setSelectedRepo] = useState<RepoData | null>(null);
+    const [repositories, setRepositories] = useState<IRepoData[]>([]);
+    const [selectedRepo, setSelectedRepo] = useState<IRepoData | null>(null);
     const [selectedFile, setSelectedFile] = useState<{ path: string; content: string } | null>(null);
+    const [opened, { open, close }] = useDisclosure(false);
+    const router = useRouter();
 
     useEffect(() => {
         loadRepositories();
@@ -33,6 +40,7 @@ export const Workspace: React.FC = () => {
             const repo = await indexedDBStore.getRepository(repoName);
             setSelectedRepo(repo || null);
             setSelectedFile(null);
+            router.push(`http://localhost:3000/dashboard/code-editor/edit/${encodeURIComponent(repoName)}`);
         } catch (error) {
             console.error("Error loading repository:", error);
         }
@@ -65,37 +73,46 @@ export const Workspace: React.FC = () => {
     };
 
     return (
-        <div className="space-y-4">
-            <h2 className="text-2xl font-bold">Workspace</h2>
-            <div className="flex">
-                <div className="w-1/3 pr-4">
-                    <h3 className="text-xl font-semibold mb-2">Cloned Repositories</h3>
+        <>
+            <div className="flex justify-between">
+                <h2 className="text-xl font-semibold capitalize mb-4">recent files</h2>
+                <Button onClick={open}>New project</Button>
+            </div>
+            <div className="space-y-4">
+                <div className="flex">
                     {repositories.map((repo) => (
                         <div key={repo.name} className="flex items-center justify-between mb-2">
-                            <Button onClick={() => handleRepoSelect(repo.name)} variant="ghost">
-                                {repo.name}
-                            </Button>
-                            <Button onClick={() => handleDeleteRepo(repo.name)} variant="destructive" size="sm">
-                                Delete
-                            </Button>
+                            <Paper withBorder p="sm">
+                                <Flex justify="space-between" align="center" mb="sm">
+                                    <ThemeIcon variant="transparent" size="xl">
+                                        <IconFolder />
+                                    </ThemeIcon>
+                                    <Menu shadow="md" width={200}>
+                                        <Menu.Target>
+                                            <ActionIcon variant="subtle">
+                                                <IconDotsVertical size={16} />
+                                            </ActionIcon>
+                                        </Menu.Target>
+
+                                        <Menu.Dropdown>
+                                            <Menu.Item
+                                                leftSection={<IconTrash size={16} />}
+                                                onClick={() => handleDeleteRepo(repo.name)}
+                                            >
+                                                Delete
+                                            </Menu.Item>
+                                        </Menu.Dropdown>
+                                    </Menu>
+                                </Flex>
+                                <Text component="button" fz="sm" onClick={() => handleRepoSelect(repo.name)}>
+                                    {repo.name}
+                                </Text>
+                            </Paper>
                         </div>
                     ))}
                 </div>
-                <div className="w-2/3">
-                    {selectedRepo && (
-                        <>
-                            <h3 className="text-xl font-semibold mb-2">Repository: {selectedRepo.name}</h3>
-                            <FileTree files={selectedRepo.files} onFileSelect={handleFileSelect} />
-                        </>
-                    )}
-                </div>
             </div>
-            {selectedFile && (
-                <div>
-                    <h3 className="text-xl font-semibold mb-2">File: {selectedFile.path}</h3>
-                    <pre className="bg-gray-100 p-4 rounded">{selectedFile.content}</pre>
-                </div>
-            )}
-        </div>
+            <NewProjectDrawer onClose={close} opened={opened} />
+        </>
     );
 };

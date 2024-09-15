@@ -5,10 +5,11 @@ import MonacoEditor, { EditorProps as MonacoEditorProps } from "@monaco-editor/r
 
 type EditorProps = MonacoEditorProps & {
     value: string;
+    language?: string;
     onChange: (newContent: string) => void;
 };
 
-export const Editor: React.FC<EditorProps> = ({ value, onChange }) => {
+export const Editor: React.FC<EditorProps> = ({ value, onChange, language = "javascript" }) => {
     const [content, setContent] = useState<string>(value);
 
     useEffect(() => {
@@ -18,7 +19,6 @@ export const Editor: React.FC<EditorProps> = ({ value, onChange }) => {
     return (
         <MonacoEditor
             height="400px"
-            language="javascript"
             theme="vs-dark"
             value={content}
             onChange={(newContent) => {
