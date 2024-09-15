@@ -1,9 +1,10 @@
-import React from 'react'
-import { Button, Center, Space, Stack } from '@mantine/core'
-import Link from 'next/link'
-import { IconArrowLeft, IconArrowRight } from '@tabler/icons-react'
-import { BrokerForm } from '@/components/Brokers/BrokerForm'
-import { v4 as uuid } from "uuid"
+import { BrokerForm } from "@/components/Brokers/BrokerForm";
+import { Button, Center, Space, Stack } from "@mantine/core";
+import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
+import Link from "next/link";
+import React from "react";
+import { v4 as uuid } from "uuid";
+
 const AddBrokerPage: React.FC = () => {
     const id = uuid();
 
@@ -11,26 +12,20 @@ const AddBrokerPage: React.FC = () => {
         <Stack>
             <Center>
                 <Link href="/dashboard/matrix-engine/brokers" scroll={false}>
-                    <Button
-                        variant="light"
-                        leftSection={<IconArrowLeft size={14} />}
-                    >
+                    <Button variant="light" leftSection={<IconArrowLeft size={14} />}>
                         Go to Brokers
                     </Button>
                 </Link>
                 <Space w="md" />
                 <Link href="test">
-                    <Button
-                        variant="light"
-                        rightSection={<IconArrowRight size={14} />}
-                    >
+                    <Button variant="light" rightSection={<IconArrowRight size={14} />}>
                         Go to a Testing Page
                     </Button>
                 </Link>
             </Center>
             <BrokerForm id={id} />
         </Stack>
-    )
-}
+    );
+};
 
-export default AddBrokerPage
+export default AddBrokerPage;

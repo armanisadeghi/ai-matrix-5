@@ -5,3 +5,7 @@
 
 /* 👇 Make sure the styles are applied in the correct order */
 @layer mantine, mantine-datatable;
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

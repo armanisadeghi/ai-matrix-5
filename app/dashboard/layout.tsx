@@ -11,12 +11,12 @@ type Props = {
 
 export default function Layout({ children }: Props) {
     return (
-        <UserProvider>
+        <>
             <ClientLayoutLogic>
                 <MainLayout>
                     {children}
                 </MainLayout>
             </ClientLayoutLogic>
-        </UserProvider>
+        </>
     );
 }

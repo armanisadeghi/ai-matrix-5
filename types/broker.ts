@@ -1,4 +1,3 @@
-
 export interface Broker {
     id: string;
     userId: string;
@@ -11,16 +10,19 @@ export interface Broker {
     validationRules?: string;
     tooltip?: string;
     sampleEntries?: string[];
+    name?: string;
+    defaultValue?: string;
+    category?: string;
 }
 
 export const dataType: { [key: string]: string } = {
-    'str': 'Text',
-    'int': 'Number without decimals',
-    'float': 'Number with decimals',
-    'bool': 'Yes/No',
-    'dict': 'Dictionary/JSON',
-    'list': 'List or Array',
-    'url': 'URL Link',
+    str: "Text",
+    int: "Number without decimals",
+    float: "Number with decimals",
+    bool: "Yes/No",
+    dict: "Dictionary/JSON",
+    list: "List or Array",
+    url: "URL Link",
 };
 
 interface TableDataRow {
@@ -86,25 +88,25 @@ export type ComponentTypeInfo = {
 };
 
 export const ComponentType: Record<string, ComponentTypeInfo> = {
-    Input: { type: 'str', label: 'Input' },
-    NumberInput: { type: 'int', label: 'Number Input' },
-    Textarea: { type: 'str', label: 'Textarea' },
-    Slider: { type: 'float', label: 'Slider' },
-    YesNo: { type: 'bool', label: 'Yes/No' },
-    Checkbox: { type: 'bool', label: 'Checkbox' },
-    CheckboxGroup: { type: 'list', label: 'Checkbox Group' },
-    CheckboxGroupWithOther: { type: 'list', label: 'Checkbox Group with Other' },
-    Switch: { type: 'bool', label: 'Switch' },
-    SwitchGroup: { type: 'list', label: 'Switch Group' },
-    SwitchGroupWithOther: { type: 'list', label: 'Switch Group with Other' },
-    Select: { type: 'list', label: 'Select' },
-    SelectWithOther: { type: 'list', label: 'Select with Other' },
-    Json: { type: 'json', label: 'JSON' },
-    AttachmentsVideo: { type: 'url', label: 'Attachments (Video)' },
-    AttachmentsAudio: { type: 'url', label: 'Attachments (Audio)' },
-    AttachmentsFile: { type: 'url', label: 'Attachments (File)' },
-    AttachmentsURL: { type: 'url', label: 'Attachments (URL)' },
-    Image: { type: 'url', label: 'Image' },
+    Input: { type: "str", label: "Input" },
+    NumberInput: { type: "int", label: "Number Input" },
+    Textarea: { type: "str", label: "Textarea" },
+    Slider: { type: "float", label: "Slider" },
+    YesNo: { type: "bool", label: "Yes/No" },
+    Checkbox: { type: "bool", label: "Checkbox" },
+    CheckboxGroup: { type: "list", label: "Checkbox Group" },
+    CheckboxGroupWithOther: { type: "list", label: "Checkbox Group with Other" },
+    Switch: { type: "bool", label: "Switch" },
+    SwitchGroup: { type: "list", label: "Switch Group" },
+    SwitchGroupWithOther: { type: "list", label: "Switch Group with Other" },
+    Select: { type: "list", label: "Select" },
+    SelectWithOther: { type: "list", label: "Select with Other" },
+    Json: { type: "json", label: "JSON" },
+    AttachmentsVideo: { type: "url", label: "Attachments (Video)" },
+    AttachmentsAudio: { type: "url", label: "Attachments (Audio)" },
+    AttachmentsFile: { type: "url", label: "Attachments (File)" },
+    AttachmentsURL: { type: "url", label: "Attachments (URL)" },
+    Image: { type: "url", label: "Image" },
 };
 
 export type BrokerData = Record<string, string | number | string[] | undefined>;

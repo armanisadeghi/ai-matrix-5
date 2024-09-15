@@ -1,9 +1,7 @@
 import withBundleAnalyzer from "@next/bundle-analyzer";
-import MonacoWebpackPlugin from "monaco-editor-webpack-plugin";
 import path from "path";
 import { fileURLToPath } from "url";
 import webpack from "webpack";
-
 // Create a __dirname equivalent in ES module
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

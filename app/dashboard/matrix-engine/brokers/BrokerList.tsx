@@ -1,16 +1,15 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
-import { ActionIcon, Group, TableTd, Tooltip } from "@mantine/core";
-import { Broker } from "@/types/broker";
-import { Table } from "@mantine/core";
-import { IconEdit, IconTrash } from "@tabler/icons-react";
-import { createBrokerManager } from "@/services/brokerService";
-import { Notifications } from "@mantine/notifications";
-import { useRouter } from "next/navigation";
 import Loading from "@/app/dashboard/loading";
+import { createBrokerManager } from "@/services/brokerService";
+import { Broker } from "@/types/broker";
 import { AmeDatatable } from "@/ui/tables";
+import { ActionIcon, Group, Table, TableTd, Tooltip } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
+import { IconEdit, IconTrash } from "@tabler/icons-react";
 import { DataTableProps } from "mantine-datatable";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useRef, useState } from "react";
 
 const BrokerList = ({ brokers }: { brokers: Broker[] }) => {
     const brokerManager = createBrokerManager();
@@ -32,12 +31,12 @@ const BrokerList = ({ brokers }: { brokers: Broker[] }) => {
         Notifications.show({
             title: "Broker Deleted",
             message: `${broker.displayName} has been deleted.`,
-        })
+        });
     };
 
     const handleEdit = (broker: Broker) => {
-        router.push(`brokers/edit/${broker.id}`)
-    }
+        router.push(`brokers/edit/${broker.id}`);
+    };
 
     const isTextTruncated = (element: HTMLElement) => {
         return element.scrollWidth > element.clientWidth;
@@ -71,16 +70,16 @@ const BrokerList = ({ brokers }: { brokers: Broker[] }) => {
         {
             accessor: "data_type",
             title: "Data type",
-            render: ({ data_type }) => <TruncatedTooltip text={data_type ?? ""} maxWidth={150} />,
+            render: ({ dataType }) => <TruncatedTooltip text={dataType ?? ""} maxWidth={150} />,
         },
         {
             accessor: "",
             title: "Component",
-            render: ({ component }) => <TruncatedTooltip text={component.type ?? ""} maxWidth={150} />,
+            render: ({ componentType }) => <TruncatedTooltip text={componentType ?? ""} maxWidth={150} />,
         },
         {
             accessor: "default_value",
-            render: ({ default_value }) => <TruncatedTooltip text={default_value ?? ""} maxWidth={100} />,
+            render: ({ defaultValue }) => <TruncatedTooltip text={defaultValue ?? ""} maxWidth={100} />,
         },
         {
             accessor: "category",
@@ -90,7 +89,7 @@ const BrokerList = ({ brokers }: { brokers: Broker[] }) => {
         {
             accessor: "official_name",
             title: "Official Name",
-            render: ({ official_name }) => <TruncatedTooltip text={official_name ?? ""} maxWidth={200} />,
+            render: ({ officialName }) => <TruncatedTooltip text={officialName ?? ""} maxWidth={200} />,
         },
         {
             accessor: "description",
@@ -123,7 +122,7 @@ const BrokerList = ({ brokers }: { brokers: Broker[] }) => {
             <AmeDatatable
                 // @ts-expect-error
                 columns={columns}
-                records={brokers}
+                records={brokers as any}
             />
 
             <h3>Old table</h3>
@@ -154,22 +153,19 @@ const BrokerList = ({ brokers }: { brokers: Broker[] }) => {
                                         <TruncatedTooltip text={broker.name || ""} maxWidth={200} />
                                     </TableTd>
                                     <TableTd>
-                                        <TruncatedTooltip text={broker.data_type || ""} maxWidth={150} />
+                                        <TruncatedTooltip text={broker.dataType || ""} maxWidth={150} />
                                     </TableTd>
                                     <TableTd>
-                                        <TruncatedTooltip text={broker.component.type || ""} maxWidth={150} />
+                                        <TruncatedTooltip text={broker.componentType || ""} maxWidth={150} />
                                     </TableTd>
                                     <TableTd>
-                                        <TruncatedTooltip
-                                            text={(broker.default_value as string) || ""}
-                                            maxWidth={100}
-                                        />
+                                        <TruncatedTooltip text={(broker.defaultValue as string) || ""} maxWidth={100} />
                                     </TableTd>
                                     <TableTd>
                                         <TruncatedTooltip text={broker.category || ""} maxWidth={150} />
                                     </TableTd>
                                     <TableTd>
-                                        <TruncatedTooltip text={broker.official_name || ""} maxWidth={200} />
+                                        <TruncatedTooltip text={broker.officialName || ""} maxWidth={200} />
                                     </TableTd>
                                     <TableTd>
                                         <TruncatedTooltip text={broker.description || ""} maxWidth={300} />
