@@ -2,7 +2,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 
 const GITHUB_API_URL = "https://api.github.com";
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+
+const GITHUB_TOKEN = process.env.NEXT_PUBLIC_GITHUB_TOKEN;
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { path } = req.query;
