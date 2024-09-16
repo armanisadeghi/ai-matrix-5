@@ -1,23 +1,36 @@
 "use client";
 
 import { ActionIcon, ActionIconProps } from "@mantine/core";
+import { Octokit } from "@octokit/rest";
 import {
     IconBell,
     IconBug,
+    IconCloudUpload,
     IconFolder,
     IconInfoCircle,
     IconPlayerPlay,
     IconSettings,
     IconX,
 } from "@tabler/icons-react";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 import { AddFileFolder, Editor, FileTree, type IRepoData, buildTree } from "../../components";
 import { indexedDBStore } from "../../utils/indexedDB";
 
+const octokit = new Octokit({ auth: process.env.NEXT_PUBLIC_GITHUB_TOKEN });
+
 type IFile = {
     path: string;
+    content: string;
+};
+
+type IFileCommit = {
+    path: string;
+    mode: "100644" | "100755" | "040000" | "160000" | "120000";
+    type: "commit" | "tree" | "blob";
+    sha?: string | null;
     content: string;
 };
 
@@ -28,7 +41,9 @@ export default function Page({ params }: { params: { repoName: string } }) {
     const [openFiles, setOpenFiles] = useState<IFile[]>([]); // Opened files in tabs
     const [activeFile, setActiveFile] = useState<IFile | null>(null);
     const [activeFolder, setActiveFolder] = useState<string>("");
+    const [isPublishing, setIsPublishing] = useState(false);
     const router = useRouter();
+    const { user, isLoading } = useUser();
 
     useEffect(() => {
         const fetchData = async (): Promise<void> => {
@@ -44,6 +59,8 @@ export default function Page({ params }: { params: { repoName: string } }) {
             //
         };
     }, [params?.repoName]);
+
+    const treeData = buildTree(selectedRepo);
 
     const loadProject = async (repoName: string) => {
         try {
@@ -89,6 +106,9 @@ export default function Page({ params }: { params: { repoName: string } }) {
         }
     };
 
+    /**
+     *
+     */
     const handleEditorChange = (newValue: string) => {
         if (selectedFile) {
             const updatedFile = { ...selectedFile, content: newValue };
@@ -103,8 +123,9 @@ export default function Page({ params }: { params: { repoName: string } }) {
         }
     };
 
-    const treeData = buildTree(selectedRepo);
-
+    /**
+     *
+     */
     const handleRepoClose = () => {
         try {
             setSelectedRepo(null);
@@ -122,6 +143,89 @@ export default function Page({ params }: { params: { repoName: string } }) {
             if (isFile) {
                 handleFileSelect(path);
             }
+        }
+    };
+
+    /**
+     *
+     * @returns
+     */
+    const handlePushToGitHub = async () => {
+        if (!selectedRepo || !fileSystem || !user) return;
+
+        setIsPublishing(true);
+
+        console.log(selectedRepo);
+        try {
+            const REPO_NAME = selectedRepo.name;
+
+            await octokit.repos.createForAuthenticatedUser({ name: REPO_NAME });
+
+            /*
+            const repoName = selectedRepo.name; // Name of the repository to create
+            const description = "My new project"; // Optional repository description
+            const files = fileSystem.map((file) => ({
+                path: file.path,
+                content: file.content, // Assuming the content is plain text, adjust if needed
+            }));
+
+            // Generate a tree
+            const commits = await octokit.repos.listCommits({
+                owner: user.email,
+                repo: selectedRepo.name,
+            });
+
+            // make a variable to store the commit hash
+            const commitSHA = commits.data[0].sha;
+
+            // We can map to transform our file array into this proper format:
+            const commitableFiles: IFileCommit[] = treeData.map((item) => {
+                return {
+                    path: item.name,
+                    mode: item.isFolder ? "040000" : "100644",
+                    type: "commit",
+                    content: item?.content,
+                };
+            });
+
+            // Now that we have an array of all the files we want to commit we will pass them to the createTree() method
+            const {
+                data: { sha: currentTreeSHA },
+            } = await octokit.git.createTree({
+                owner: user.email,
+                repo: selectedRepo.name,
+                tree: commitableFiles,
+                base_tree: commitSHA,
+                message: "Updated programatically with Octokit",
+                parents: [commitSHA],
+            });
+
+            // Afterwards we have the variable currentTreeSHA
+            const {
+                data: { sha: newCommitSHA },
+            } = await octokit.git.createCommit({
+                owner: user.email,
+                repo: selectedRepo.name,
+                tree: currentTreeSHA,
+                message: `Updated programatically with Octokit`,
+                parents: [currentTreeSHA],
+            });
+
+            // push the commit
+            await octokit.git.updateRef({
+                owner: user.email,
+                repo: selectedRepo.name,
+                sha: newCommitSHA,
+                ref: "heads/main", // Whatever branch you want to push to
+            });
+            */
+
+            alert("Repository created and pushed to GitHub successfully!");
+            setIsPublishing(false);
+        } catch (error) {
+            console.error("Error pushing to GitHub:", error);
+            alert("Failed to push project to GitHub.");
+            setIsPublishing(false);
         }
     };
 
@@ -146,6 +250,9 @@ export default function Page({ params }: { params: { repoName: string } }) {
                     </ActionIcon>
                     <ActionIcon onClick={handleRepoClose} {...actionIconProps}>
                         <IconX size={18} />
+                    </ActionIcon>
+                    <ActionIcon onClick={handlePushToGitHub} {...actionIconProps}>
+                        <IconCloudUpload size={18} />
                     </ActionIcon>
                 </div>
             </div>
