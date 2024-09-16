@@ -9,7 +9,11 @@ export function buildTree(repoData: IRepoData): IFileNode[] {
     const root: IFileNode[] = [];
 
     if (repoData?.files) {
-        for (const [key, value] of Object.entries(repoData.files)) {
+        // Get sorted keys before processing
+        const sortedKeys = Object.keys(repoData.files).sort((a, b) => a.localeCompare(b));
+
+        sortedKeys.forEach((key) => {
+            const value = repoData.files[key];
             const parts = key.split("/");
             let currentLevel = root;
 
@@ -35,7 +39,7 @@ export function buildTree(repoData: IRepoData): IFileNode[] {
                     currentLevel = existingNode.children!;
                 }
             });
-        }
+        });
     }
 
     return root;
