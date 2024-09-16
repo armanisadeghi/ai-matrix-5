@@ -30,6 +30,19 @@ export const AddFileFolder: React.FC<AddFileFolderProps> = ({ projectName, activ
                         project.files[newPath] = null;
                     }
 
+                    // Sort the files alphabetically by key
+                    const sortedFiles = Object.keys(project.files)
+                        .sort((a, b) => a.localeCompare(b))
+                        .reduce(
+                            (acc, key) => {
+                                acc[key] = project.files[key];
+                                return acc;
+                            },
+                            {} as typeof project.files,
+                        );
+
+                    project.files = sortedFiles;
+
                     await indexedDBStore.addRepository(project);
                     onAdd(newPath, isFile);
                 }
