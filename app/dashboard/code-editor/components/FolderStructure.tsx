@@ -19,15 +19,20 @@ export function buildTree(repoData: IRepoData): IFileNode[] {
                 let existingNode = currentLevel.find((node) => node.name === part);
 
                 if (!existingNode) {
-                    existingNode = { name: part, content: value };
+                    existingNode = {
+                        name: part,
+                        content: value,
+                        isFolder: value === null || index < parts.length - 1, // Folder if value is `null`
+                    };
                     currentLevel.push(existingNode);
                 }
 
+                if (existingNode.isFolder && !existingNode.children) {
+                    existingNode.children = [];
+                }
+
                 if (index < parts.length - 1) {
-                    if (!existingNode.children) {
-                        existingNode.children = [];
-                    }
-                    currentLevel = existingNode.children;
+                    currentLevel = existingNode.children!;
                 }
             });
         }
@@ -38,7 +43,8 @@ export function buildTree(repoData: IRepoData): IFileNode[] {
 
 type IFileNode = {
     name: string;
-    content?: string;
+    isFolder: boolean;
+    content?: string | null;
     children?: IFileNode[];
 };
 
@@ -65,7 +71,7 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node, path, onFileSelect, onFolderS
 
     return (
         <div {...others}>
-            {hasChildren ? (
+            {node.isFolder ? (
                 <div>
                     <Button
                         fullWidth
@@ -93,7 +99,7 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node, path, onFileSelect, onFolderS
                 <Button
                     fullWidth
                     justify="space-between"
-                    onClick={() => onFileSelect(fullPath, decodeBase64(node?.content ?? ""))}
+                    onClick={() => onFileSelect!(fullPath, decodeBase64(node?.content ?? ""))}
                     variant="subtle"
                     fw="normal"
                 >

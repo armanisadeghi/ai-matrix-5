@@ -26,8 +26,8 @@ export const AddFileFolder: React.FC<AddFileFolderProps> = ({ projectName, activ
                     if (isFile) {
                         project.files[newPath] = btoa(""); // Empty file content
                     } else {
-                        // Just add the folder without any content
-                        project.files[`${newPath}/`] = null; // Set folder without content
+                        // Just add the folder without any content, no trailing slash or content
+                        project.files[newPath] = null;
                     }
 
                     await indexedDBStore.addRepository(project);
