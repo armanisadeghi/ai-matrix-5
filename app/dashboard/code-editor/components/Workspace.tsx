@@ -1,13 +1,11 @@
-"use client";
-
-import { ActionIcon, Button, Flex, Menu, Paper, Text, ThemeIcon } from "@mantine/core";
-import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-
+import { Button, Paper, Text, ThemeIcon, Menu, ActionIcon, Flex } from "@mantine/core";
+import { useRouter } from "next/navigation";
 import { useDisclosure } from "@mantine/hooks";
 import { IconDotsVertical, IconFolder, IconTrash } from "@tabler/icons-react";
 import { indexedDBStore } from "../utils/indexedDB";
 import { NewProjectDrawer } from "./NewProjectDrawer";
+import { CreateProject } from "./CreateProject";
 
 export interface IRepoData {
     name: string;
@@ -39,7 +37,9 @@ export const Workspace: React.FC = () => {
             const repo = await indexedDBStore.getRepository(repoName);
             setSelectedRepo(repo || null);
             setSelectedFile(null);
-            router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/code-editor/edit/${encodeURIComponent(repoName)}`);
+            router.push(
+                `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/code-editor/edit/${encodeURIComponent(repoName)}`,
+            );
         } catch (error) {
             console.error("Error loading repository:", error);
         }
@@ -78,11 +78,14 @@ export const Workspace: React.FC = () => {
                 <Button onClick={open}>New project</Button>
             </div>
             <div className="space-y-4">
-                <div className="flex">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                     {repositories.map((repo) => (
-                        <div key={repo.name} className="flex items-center justify-between mb-2">
-                            <Paper withBorder p="sm">
-                                <Flex justify="space-between" align="center" mb="sm">
+                        <div
+                            key={repo.name}
+                            className="flex items-center justify-between p-4 border border-neutral-400 rounded-md"
+                        >
+                            <div className="flex flex-col gap-2 items-start w-full">
+                                <div className="flex justify-between items-center w-full">
                                     <ThemeIcon variant="transparent" size="xl">
                                         <IconFolder />
                                     </ThemeIcon>
@@ -102,16 +105,16 @@ export const Workspace: React.FC = () => {
                                             </Menu.Item>
                                         </Menu.Dropdown>
                                     </Menu>
-                                </Flex>
+                                </div>
                                 <Text component="button" fz="sm" onClick={() => handleRepoSelect(repo.name)}>
                                     {repo.name}
                                 </Text>
-                            </Paper>
+                            </div>
                         </div>
                     ))}
                 </div>
             </div>
-            <NewProjectDrawer onClose={close} opened={opened} />
+            <NewProjectDrawer onClose={close} opened={opened} onProjectCreated={loadRepositories} />
         </>
     );
 };

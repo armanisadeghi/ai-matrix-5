@@ -5,10 +5,6 @@ import { IconFileDots, IconFolder, IconFolderOpen } from "@tabler/icons-react";
 import React, { HTMLAttributes, useState } from "react";
 import { type IRepoData } from "./Workspace";
 
-type FileStructure = {
-    [key: string]: string | FileStructure;
-};
-
 export function buildTree(repoData: IRepoData): IFileNode[] {
     const root: IFileNode[] = [];
 
@@ -89,11 +85,6 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node, onFileSelect, ...others }) =>
         </div>
     );
 };
-
-// interface FileTreeProps {
-//     files: FileStructure;
-//     onFileSelect: (path: string, content: string) => void;
-// }
 
 interface FileTreeProps {
     treeData: IFileNode[];

@@ -13,7 +13,7 @@ import {
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { Editor, FileTree, type IRepoData, buildTree } from "../../components";
+import { AddFileFolder, Editor, FileTree, type IRepoData, buildTree } from "../../components";
 import { indexedDBStore } from "../../utils/indexedDB";
 
 type IFile = {
@@ -31,11 +31,9 @@ export default function Page({ params }: { params: { repoName: string } }) {
 
     useEffect(() => {
         const fetchData = async (): Promise<void> => {
-            if (params.repoName) {
+            if (params?.repoName) {
                 const repoName = decodeURIComponent(params.repoName);
-                const repo = await indexedDBStore.getRepository(repoName);
-                setSelectedRepo(repo || null);
-                setSelectedFile(null);
+                loadProject(repoName);
             }
         };
 
@@ -44,7 +42,17 @@ export default function Page({ params }: { params: { repoName: string } }) {
         return () => {
             //
         };
-    }, [params.repoName]);
+    }, [params?.repoName]);
+
+    const loadProject = async (repoName: string) => {
+        try {
+            const loadedProject = await indexedDBStore.getRepository(repoName);
+            setSelectedRepo(loadedProject || null);
+            setSelectedFile(null);
+        } catch (error) {
+            console.error("Error loading project:", error);
+        }
+    };
 
     const handleFileSelect = async (path: string) => {
         if (selectedRepo) {
@@ -81,10 +89,6 @@ export default function Page({ params }: { params: { repoName: string } }) {
 
     const treeData = buildTree(selectedRepo);
 
-    const actionIconProps: ActionIconProps = {
-        variant: "subtle",
-    };
-
     const handleRepoClose = () => {
         try {
             setSelectedRepo(null);
@@ -93,6 +97,10 @@ export default function Page({ params }: { params: { repoName: string } }) {
         } catch (error) {
             console.error("Error loading repository:", error);
         }
+    };
+
+    const actionIconProps: ActionIconProps = {
+        variant: "subtle",
     };
 
     if (!selectedRepo) {
@@ -131,6 +139,7 @@ export default function Page({ params }: { params: { repoName: string } }) {
                             <IconSettings size={18} />
                         </ActionIcon>
                     </div>
+                    <AddFileFolder projectName={selectedRepo.name} onAdd={() => loadProject(selectedRepo.name)} />
                     <FileTree treeData={treeData} onFileSelect={handleFileSelect} />
                 </div>
                 <div className="col-span-10 lg:col-span-9.5">
