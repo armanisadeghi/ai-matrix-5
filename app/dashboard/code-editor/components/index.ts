@@ -6,6 +6,5 @@ export * from "./GitHubImport2";
 export * from "./ImportedFiles";
 export * from "./NewProjectDrawer";
 export * from "./RepoContent";
-export * from "./RepositoryStructure";
+export * from "./FolderStructure";
 export * from "./Workspace";
-

@@ -18,7 +18,7 @@ export const Editor: React.FC<EditorProps> = ({ value, onChange, language = "jav
 
     return (
         <MonacoEditor
-            height="400px"
+            height="75dvh"
             theme="vs-dark"
             value={content}
             onChange={(newContent) => {

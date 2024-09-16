@@ -1,14 +1,13 @@
 "use client";
 
 import { ActionIcon, Button, Flex, Menu, Paper, Text, ThemeIcon } from "@mantine/core";
-import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
 import { useDisclosure } from "@mantine/hooks";
 import { IconDotsVertical, IconFolder, IconTrash } from "@tabler/icons-react";
 import { indexedDBStore } from "../utils/indexedDB";
 import { NewProjectDrawer } from "./NewProjectDrawer";
-import { FileTree } from "./RepositoryStructure";
 
 export interface IRepoData {
     name: string;
@@ -40,7 +39,7 @@ export const Workspace: React.FC = () => {
             const repo = await indexedDBStore.getRepository(repoName);
             setSelectedRepo(repo || null);
             setSelectedFile(null);
-            router.push(`http://localhost:3000/dashboard/code-editor/edit/${encodeURIComponent(repoName)}`);
+            router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/code-editor/edit/${encodeURIComponent(repoName)}`);
         } catch (error) {
             console.error("Error loading repository:", error);
         }

@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
 import { Button } from "@mantine/core";
+import { IconFileDots, IconFolder, IconFolderOpen } from "@tabler/icons-react";
+import React, { HTMLAttributes, useState } from "react";
 import { type IRepoData } from "./Workspace";
 
 type FileStructure = {
@@ -37,40 +38,53 @@ export function buildTree(repoData: IRepoData): IFileNode[] {
     return root;
 }
 
-interface IFileNode {
+type IFileNode = {
     name: string;
     content?: string;
     children?: IFileNode[];
-}
+};
 
-interface TreeNodeProps {
+type TreeNodeProps = HTMLAttributes<HTMLDivElement> & {
     node: IFileNode;
     onFileSelect?: (path: string, content: string) => void;
-}
+};
 
-const TreeNode: React.FC<TreeNodeProps> = ({ node, onFileSelect }) => {
+const TreeNode: React.FC<TreeNodeProps> = ({ node, onFileSelect, ...others }) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
     const hasChildren = node.children && node.children.length > 0;
 
     const decodeBase64 = (content: string) => atob(content);
 
-    const handleFileSelect = () => {
-        const content = node.content ? decodeBase64(node.content) : "";
-        onFileSelect(node.name, content);
-    };
-
     return (
-        <div style={{ marginLeft: "20px" }}>
+        <div {...others}>
             {hasChildren ? (
                 <div>
-                    <div onClick={() => setIsExpanded(!isExpanded)} style={{ cursor: "pointer" }}>
-                        {isExpanded ? "▼" : "►"} {node.name}
-                    </div>
-                    {isExpanded && node.children?.map((child) => <TreeNode key={child.name} node={child} />)}
+                    <Button
+                        fullWidth
+                        justify="space-between"
+                        onClick={() => setIsExpanded(!isExpanded)}
+                        variant={isExpanded ? "light" : "subtle"}
+                        fw={isExpanded ? "semibold" : "normal"}
+                    >
+                        {isExpanded ? <IconFolderOpen size={14} /> : <IconFolder size={14} />}&nbsp;{node.name}
+                    </Button>
+                    {isExpanded &&
+                        node.children?.map((child) => (
+                            <TreeNode key={child.name} node={child} style={{ marginLeft: 12 }} />
+                        ))}
                 </div>
             ) : (
-                <div onClick={() => onFileSelect(node.name, decodeBase64(node?.content ?? ""))}>{node.name}</div>
+                <Button
+                    fullWidth
+                    justify="space-between"
+                    onClick={() => onFileSelect(node.name, decodeBase64(node?.content ?? ""))}
+                    variant="subtle"
+                    fw="normal"
+                >
+                    <IconFileDots size={14} />
+                    &nbsp;{node.name}
+                </Button>
             )}
         </div>
     );
@@ -88,7 +102,8 @@ interface FileTreeProps {
 
 export const FileTree: React.FC<FileTreeProps> = ({ treeData, onFileSelect }) => {
     return (
-        <div>
+        <div className="h-full">
+            <p className="text-xs font-normal py-1.5 uppercase">Folder Structure</p>
             {treeData.map((node) => (
                 <TreeNode key={node.name} node={node} onFileSelect={onFileSelect} />
             ))}

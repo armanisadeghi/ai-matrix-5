@@ -1,10 +1,20 @@
 "use client";
 
-import { Grid } from "@mantine/core";
+import { ActionIcon, ActionIconProps } from "@mantine/core";
+import {
+    IconBell,
+    IconBug,
+    IconFolder,
+    IconInfoCircle,
+    IconPlayerPlay,
+    IconSettings,
+    IconX,
+} from "@tabler/icons-react";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
 import { Editor, FileTree, type IRepoData, buildTree } from "../../components";
 import { indexedDBStore } from "../../utils/indexedDB";
-import { IFileSystemNode } from "../../types";
 
 type IFile = {
     path: string;
@@ -17,6 +27,7 @@ export default function Page({ params }: { params: { repoName: string } }) {
     const [fileSystem, setFileSystem] = useState<IFile[] | null>([]);
     const [openFiles, setOpenFiles] = useState<IFile[]>([]); // Opened files in tabs
     const [activeFile, setActiveFile] = useState<IFile | null>(null);
+    const router = useRouter();
 
     useEffect(() => {
         const fetchData = async (): Promise<void> => {
@@ -70,18 +81,59 @@ export default function Page({ params }: { params: { repoName: string } }) {
 
     const treeData = buildTree(selectedRepo);
 
+    const actionIconProps: ActionIconProps = {
+        variant: "subtle",
+    };
+
+    const handleRepoClose = () => {
+        try {
+            setSelectedRepo(null);
+            setSelectedFile(null);
+            router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/dashboard//code-editor`);
+        } catch (error) {
+            console.error("Error loading repository:", error);
+        }
+    };
+
+    if (!selectedRepo) {
+        return <>select a repo to proceed</>;
+    }
+
     return (
-        <div className="space-y-4">
-            <Grid>
-                <Grid.Col span={3}>
-                    {selectedRepo && (
-                        <>
-                            <h3 className="text-xl font-semibold mb-2">Repository: {selectedRepo.name}</h3>
-                            <FileTree treeData={treeData} onFileSelect={handleFileSelect} />
-                        </>
-                    )}
-                </Grid.Col>
-                <Grid.Col span={9}>
+        <div className="space-y-2 bg-neutral-900 rounded-md">
+            <div className="flex justify-between px-3 py-1.5">
+                <p className="text-md font-semibold">Repository: {selectedRepo?.name}</p>
+                <div className="flex gap-2">
+                    <ActionIcon {...actionIconProps}>
+                        <IconBell size={18} />
+                    </ActionIcon>
+                    <ActionIcon {...actionIconProps}>
+                        <IconInfoCircle size={18} />
+                    </ActionIcon>
+                    <ActionIcon onClick={handleRepoClose} {...actionIconProps}>
+                        <IconX size={18} />
+                    </ActionIcon>
+                </div>
+            </div>
+            <div className="grid grid-cols-12 gap-4 min-h-screen">
+                <div className="col-span-2 lg:col-span-2.5 rounded-md p-2 border border-white">
+                    <div className="flex justify-between border-b border-white">
+                        <ActionIcon {...actionIconProps}>
+                            <IconFolder size={18} />
+                        </ActionIcon>
+                        <ActionIcon {...actionIconProps}>
+                            <IconPlayerPlay size={18} />
+                        </ActionIcon>
+                        <ActionIcon {...actionIconProps}>
+                            <IconBug size={18} />
+                        </ActionIcon>
+                        <ActionIcon {...actionIconProps}>
+                            <IconSettings size={18} />
+                        </ActionIcon>
+                    </div>
+                    <FileTree treeData={treeData} onFileSelect={handleFileSelect} />
+                </div>
+                <div className="col-span-10 lg:col-span-9.5">
                     <div style={{ flexGrow: 1, padding: "10px", display: "flex", flexDirection: "column" }}>
                         {/* Tabs */}
                         <div style={{ display: "flex", borderBottom: "1px solid #ddd" }}>
@@ -127,8 +179,8 @@ export default function Page({ params }: { params: { repoName: string } }) {
                             {!selectedFile && <div>Select a file to edit</div>}
                         </div>
                     </div>
-                </Grid.Col>
-            </Grid>
+                </div>
+            </div>
         </div>
     );
 }
