@@ -27,6 +27,7 @@ export default function Page({ params }: { params: { repoName: string } }) {
     const [fileSystem, setFileSystem] = useState<IFile[] | null>([]);
     const [openFiles, setOpenFiles] = useState<IFile[]>([]); // Opened files in tabs
     const [activeFile, setActiveFile] = useState<IFile | null>(null);
+    const [activeFolder, setActiveFolder] = useState<string>("");
     const router = useRouter();
 
     useEffect(() => {
@@ -49,6 +50,7 @@ export default function Page({ params }: { params: { repoName: string } }) {
             const loadedProject = await indexedDBStore.getRepository(repoName);
             setSelectedRepo(loadedProject || null);
             setSelectedFile(null);
+            setActiveFolder("");
         } catch (error) {
             console.error("Error loading project:", error);
         }
@@ -59,12 +61,13 @@ export default function Page({ params }: { params: { repoName: string } }) {
             try {
                 const file = await indexedDBStore.getFile(selectedRepo.name, path);
                 if (file) {
-                    setSelectedFile({ path: file.path, content: atob(file.content) });
+                    const decodedFile = { path: file.path, content: atob(file.content) };
+                    setSelectedFile(decodedFile);
                     const fileAlreadyOpen = openFiles.find((openFile) => openFile.path === path);
                     if (!fileAlreadyOpen) {
-                        setOpenFiles([...openFiles, file]);
+                        setOpenFiles([...openFiles, decodedFile]);
                     }
-                    setActiveFile(file); // Set as active file for editing
+                    setActiveFile(decodedFile); // Set as active file for editing
                 }
             } catch (error) {
                 console.error("Error loading file:", error);
@@ -72,18 +75,31 @@ export default function Page({ params }: { params: { repoName: string } }) {
         }
     };
 
+    const handleFolderSelect = (path: string) => {
+        setActiveFolder(path);
+    };
+
     // Handle closing a tab
     const handleCloseTab = (fileToClose: IFile) => {
         setOpenFiles(openFiles.filter((openFile) => openFile.path !== fileToClose.path));
-        if (activeFile.path === fileToClose.path) {
-            setSelectedFile(openFiles.length > 1 ? openFiles[0] : null); // Set new active file after closing
+        if (activeFile && activeFile.path === fileToClose.path) {
+            const newActiveFile = openFiles.length > 1 ? openFiles[0] : null;
+            setSelectedFile(newActiveFile);
+            setActiveFile(newActiveFile);
         }
     };
 
     const handleEditorChange = (newValue: string) => {
         if (selectedFile) {
-            selectedFile.content = newValue;
-            setFileSystem([...fileSystem]); // Trigger state update
+            const updatedFile = { ...selectedFile, content: newValue };
+            setSelectedFile(updatedFile);
+            setActiveFile(updatedFile);
+            setOpenFiles(openFiles.map((file) => (file.path === updatedFile.path ? updatedFile : file)));
+            setFileSystem((prevFileSystem) =>
+                prevFileSystem
+                    ? prevFileSystem.map((file) => (file.path === updatedFile.path ? updatedFile : file))
+                    : null,
+            );
         }
     };
 
@@ -93,9 +109,10 @@ export default function Page({ params }: { params: { repoName: string } }) {
         try {
             setSelectedRepo(null);
             setSelectedFile(null);
-            router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/dashboard//code-editor`);
+            setActiveFolder("");
+            router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/code-editor`);
         } catch (error) {
-            console.error("Error loading repository:", error);
+            console.error("Error closing repository:", error);
         }
     };
 
@@ -149,11 +166,17 @@ export default function Page({ params }: { params: { repoName: string } }) {
                         </ActionIcon>
                         <AddFileFolder
                             projectName={selectedRepo.name}
+                            activeFolder={activeFolder}
                             onAdd={handleAddFolderFile}
                             actionIconProps={actionIconProps}
                         />
                     </div>
-                    <FileTree treeData={treeData} onFileSelect={handleFileSelect} />
+                    <FileTree
+                        treeData={treeData}
+                        onFileSelect={handleFileSelect}
+                        onFolderSelect={handleFolderSelect}
+                        activeFolder={activeFolder}
+                    />
                 </div>
                 <div className="col-span-10 lg:col-span-9.5">
                     <div style={{ flexGrow: 1, padding: "10px", display: "flex", flexDirection: "column" }}>

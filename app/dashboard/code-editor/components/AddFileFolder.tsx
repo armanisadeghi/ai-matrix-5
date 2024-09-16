@@ -1,18 +1,16 @@
-"use client";
-
+import React, { useState } from "react";
 import { ActionIcon, ActionIconProps, Tooltip } from "@mantine/core";
 import { IconFilePlus, IconFolderPlus } from "@tabler/icons-react";
-import React, { useState } from "react";
-
 import { indexedDBStore } from "../utils/indexedDB";
 
 type AddFileFolderProps = {
     projectName: string;
+    activeFolder: string;
     onAdd: (path: string, isFile: boolean) => void;
     actionIconProps?: ActionIconProps;
 };
 
-export const AddFileFolder: React.FC<AddFileFolderProps> = ({ projectName, onAdd, actionIconProps }) => {
+export const AddFileFolder: React.FC<AddFileFolderProps> = ({ projectName, activeFolder, onAdd, actionIconProps }) => {
     const [isAdding, setIsAdding] = useState(false);
 
     const handleAdd = async (isFile: boolean) => {
@@ -23,13 +21,17 @@ export const AddFileFolder: React.FC<AddFileFolderProps> = ({ projectName, onAdd
             try {
                 const project = await indexedDBStore.getRepository(projectName);
                 if (project) {
+                    const newPath = activeFolder ? `${activeFolder}/${name}` : name;
+
                     if (isFile) {
-                        project.files[name] = btoa(""); // Empty file content
+                        project.files[newPath] = btoa(""); // Empty file content
                     } else {
-                        project.files[name + "/"] = btoa(JSON.stringify({})); // Empty folder
+                        // Just add the folder without any content
+                        project.files[`${newPath}/`] = null; // Set folder without content
                     }
+
                     await indexedDBStore.addRepository(project);
-                    onAdd(name, isFile);
+                    onAdd(newPath, isFile);
                 }
             } catch (error) {
                 console.error(`Error adding ${itemType}:`, error);

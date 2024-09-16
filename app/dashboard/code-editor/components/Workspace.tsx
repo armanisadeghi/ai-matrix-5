@@ -45,19 +45,6 @@ export const Workspace: React.FC = () => {
         }
     };
 
-    const handleFileSelect = async (path: string) => {
-        if (selectedRepo) {
-            try {
-                const file = await indexedDBStore.getFile(selectedRepo.name, path);
-                if (file) {
-                    setSelectedFile({ path: file.path, content: atob(file.content) });
-                }
-            } catch (error) {
-                console.error("Error loading file:", error);
-            }
-        }
-    };
-
     const handleDeleteRepo = async (repoName: string) => {
         try {
             await indexedDBStore.deleteRepository(repoName);
