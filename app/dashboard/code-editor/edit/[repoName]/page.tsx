@@ -1,7 +1,7 @@
 "use client";
 
+import { useUser } from "@auth0/nextjs-auth0/client";
 import { ActionIcon, ActionIconProps } from "@mantine/core";
-import { Octokit } from "@octokit/rest";
 import {
     IconBell,
     IconBug,
@@ -10,16 +10,14 @@ import {
     IconInfoCircle,
     IconPlayerPlay,
     IconSettings,
+    IconTrash,
     IconX,
 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useUser } from "@auth0/nextjs-auth0/client";
 
 import { AddFileFolder, Editor, FileTree, type IRepoData, buildTree } from "../../components";
-import { indexedDBStore } from "../../utils/indexedDB";
-
-const octokit = new Octokit({ auth: process.env.NEXT_PUBLIC_GITHUB_TOKEN });
+import { indexedDBStore, octokit } from "../../utils";
 
 type IFile = {
     path: string;
@@ -155,24 +153,17 @@ export default function Page({ params }: { params: { repoName: string } }) {
 
         setIsPublishing(true);
 
-        console.log(selectedRepo);
+        const REPO_NAME = selectedRepo.name; // Name of the repository to create
+        const REPO_OWNER = "kelvink96";
+        const REPO_DESC = ""; // Optional repository description
+
         try {
-            const REPO_NAME = selectedRepo.name;
-
-            await octokit.repos.createForAuthenticatedUser({ name: REPO_NAME });
-
-            /*
-            const repoName = selectedRepo.name; // Name of the repository to create
-            const description = "My new project"; // Optional repository description
-            const files = fileSystem.map((file) => ({
-                path: file.path,
-                content: file.content, // Assuming the content is plain text, adjust if needed
-            }));
+            await octokit.repos.createForAuthenticatedUser({ name: REPO_NAME, description: REPO_DESC });
 
             // Generate a tree
             const commits = await octokit.repos.listCommits({
-                owner: user.email,
-                repo: selectedRepo.name,
+                owner: REPO_OWNER,
+                repo: REPO_NAME,
             });
 
             // make a variable to store the commit hash
@@ -192,8 +183,8 @@ export default function Page({ params }: { params: { repoName: string } }) {
             const {
                 data: { sha: currentTreeSHA },
             } = await octokit.git.createTree({
-                owner: user.email,
-                repo: selectedRepo.name,
+                owner: REPO_OWNER,
+                repo: REPO_NAME,
                 tree: commitableFiles,
                 base_tree: commitSHA,
                 message: "Updated programatically with Octokit",
@@ -204,8 +195,8 @@ export default function Page({ params }: { params: { repoName: string } }) {
             const {
                 data: { sha: newCommitSHA },
             } = await octokit.git.createCommit({
-                owner: user.email,
-                repo: selectedRepo.name,
+                owner: REPO_OWNER,
+                repo: REPO_NAME,
                 tree: currentTreeSHA,
                 message: `Updated programatically with Octokit`,
                 parents: [currentTreeSHA],
@@ -213,18 +204,46 @@ export default function Page({ params }: { params: { repoName: string } }) {
 
             // push the commit
             await octokit.git.updateRef({
-                owner: user.email,
-                repo: selectedRepo.name,
+                owner: REPO_OWNER,
+                repo: REPO_NAME,
                 sha: newCommitSHA,
                 ref: "heads/main", // Whatever branch you want to push to
             });
-            */
 
             alert("Repository created and pushed to GitHub successfully!");
             setIsPublishing(false);
         } catch (error) {
             console.error("Error pushing to GitHub:", error);
             alert("Failed to push project to GitHub.");
+
+            setIsPublishing(false);
+        }
+    };
+
+    const handleDeleteFromGitHub = async () => {
+        if (!selectedRepo || !fileSystem || !user) return;
+
+        setIsPublishing(true);
+
+        const REPO_NAME = selectedRepo.name; // Name of the repository to create
+        const REPO_OWNER = "kelvink96";
+
+        console.log({ REPO_NAME, REPO_OWNER });
+
+        try {
+            await octokit.request("DELETE /repos/{owner}/{repo}", {
+                owner: REPO_OWNER,
+                repo: REPO_NAME,
+                headers: {
+                    "X-GitHub-Api-Version": "2022-11-28",
+                },
+            });
+
+            setIsPublishing(false);
+        } catch (error) {
+            console.error("Error deleting to GitHub:", error);
+            alert("Failed to delete project from GitHub.");
+
             setIsPublishing(false);
         }
     };
@@ -251,7 +270,10 @@ export default function Page({ params }: { params: { repoName: string } }) {
                     <ActionIcon onClick={handleRepoClose} {...actionIconProps}>
                         <IconX size={18} />
                     </ActionIcon>
-                    <ActionIcon onClick={handlePushToGitHub} {...actionIconProps}>
+                    <ActionIcon onClick={handleDeleteFromGitHub} loading={isPublishing} {...actionIconProps}>
+                        <IconTrash size={18} />
+                    </ActionIcon>
+                    <ActionIcon onClick={handlePushToGitHub} loading={isPublishing} {...actionIconProps}>
                         <IconCloudUpload size={18} />
                     </ActionIcon>
                 </div>

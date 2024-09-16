@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { Octokit } from "@octokit/rest";
 import { Button, Select } from "@mantine/core";
-import { indexedDBStore } from "../utils/indexedDB";
+import { useEffect, useState } from "react";
+import { indexedDBStore, octokit } from "../utils";
 
-interface Repository {
+type Repository = {
     id: number;
     name: string;
     full_name: string;
-}
-
-const octokit = new Octokit({ auth: process.env.NEXT_PUBLIC_GITHUB_TOKEN });
+};
 
 export const GitHubImport2 = ({ onRepoCloned }: { onRepoCloned: (files: any) => void }) => {
     const [repositories, setRepositories] = useState<Repository[]>([]);
