@@ -75,8 +75,8 @@ export default function Page({ params }: { params: { repoName: string } }) {
     // Handle closing a tab
     const handleCloseTab = (fileToClose: IFile) => {
         setOpenFiles(openFiles.filter((openFile) => openFile.path !== fileToClose.path));
-        if (activeFile === fileToClose) {
-            setActiveFile(openFiles.length > 1 ? openFiles[0] : null); // Set new active file after closing
+        if (activeFile.path === fileToClose.path) {
+            setSelectedFile(openFiles.length > 1 ? openFiles[0] : null); // Set new active file after closing
         }
     };
 
@@ -96,6 +96,15 @@ export default function Page({ params }: { params: { repoName: string } }) {
             router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/dashboard//code-editor`);
         } catch (error) {
             console.error("Error loading repository:", error);
+        }
+    };
+
+    const handleAddFolderFile = async (path: string, isFile: boolean) => {
+        if (selectedRepo) {
+            await loadProject(selectedRepo.name);
+            if (isFile) {
+                handleFileSelect(path);
+            }
         }
     };
 
@@ -138,8 +147,12 @@ export default function Page({ params }: { params: { repoName: string } }) {
                         <ActionIcon {...actionIconProps}>
                             <IconSettings size={18} />
                         </ActionIcon>
+                        <AddFileFolder
+                            projectName={selectedRepo.name}
+                            onAdd={handleAddFolderFile}
+                            actionIconProps={actionIconProps}
+                        />
                     </div>
-                    <AddFileFolder projectName={selectedRepo.name} onAdd={() => loadProject(selectedRepo.name)} />
                     <FileTree treeData={treeData} onFileSelect={handleFileSelect} />
                 </div>
                 <div className="col-span-10 lg:col-span-9.5">
@@ -152,12 +165,12 @@ export default function Page({ params }: { params: { repoName: string } }) {
                                     style={{
                                         padding: "5px 10px",
                                         cursor: "pointer",
-                                        backgroundColor: activeFile === file ? "#f0f0f0" : "#fff",
+                                        backgroundColor: selectedFile === file ? "#f0f0f0" : "#fff",
                                         borderRight: "1px solid #ddd",
                                         display: "flex",
                                         alignItems: "center",
                                     }}
-                                    onClick={() => setActiveFile(file)}
+                                    onClick={() => setSelectedFile(file)}
                                 >
                                     {file.path}
                                     <span

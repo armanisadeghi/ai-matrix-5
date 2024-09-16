@@ -1,57 +1,56 @@
+"use client";
+
+import { ActionIcon, ActionIconProps, Tooltip } from "@mantine/core";
+import { IconFilePlus, IconFolderPlus } from "@tabler/icons-react";
 import React, { useState } from "react";
-import { Button, TextInput, Select, Stack } from "@mantine/core";
+
 import { indexedDBStore } from "../utils/indexedDB";
 
-export const AddFileFolder: React.FC<{ projectName: string; onAdd: () => void }> = ({ projectName, onAdd }) => {
-    const [name, setName] = useState("");
-    const [type, setType] = useState("file");
-    const [content, setContent] = useState("");
+type AddFileFolderProps = {
+    projectName: string;
+    onAdd: (path: string, isFile: boolean) => void;
+    actionIconProps?: ActionIconProps;
+};
 
-    const handleAdd = async () => {
-        if (!name) {
-            // You might want to show an error message here
-            return;
-        }
+export const AddFileFolder: React.FC<AddFileFolderProps> = ({ projectName, onAdd, actionIconProps }) => {
+    const [isAdding, setIsAdding] = useState(false);
 
-        try {
-            const project = await indexedDBStore.getRepository(projectName);
-            if (project) {
-                if (type === "file") {
-                    project.files[name] = btoa(content); // Convert content to base64
-                } else {
-                    // For folders, we'll just add an empty object
-                    project.files[name] = btoa(JSON.stringify({}));
+    const handleAdd = async (isFile: boolean) => {
+        setIsAdding(true);
+        const itemType = isFile ? "file" : "folder";
+        const name = prompt(`Enter ${itemType} name:`);
+        if (name) {
+            try {
+                const project = await indexedDBStore.getRepository(projectName);
+                if (project) {
+                    if (isFile) {
+                        project.files[name] = btoa(""); // Empty file content
+                    } else {
+                        project.files[name + "/"] = btoa(JSON.stringify({})); // Empty folder
+                    }
+                    await indexedDBStore.addRepository(project);
+                    onAdd(name, isFile);
                 }
-                await indexedDBStore.addRepository(project);
-                setName("");
-                setContent("");
-                onAdd();
+            } catch (error) {
+                console.error(`Error adding ${itemType}:`, error);
+                alert(`Failed to add ${itemType}. Please try again.`);
             }
-        } catch (error) {
-            console.error("Error adding file/folder:", error);
-            // You might want to show an error message to the user here
         }
+        setIsAdding(false);
     };
 
     return (
-        <div className="flex flex-col gap-2">
-            <TextInput placeholder="Enter name" value={name} onChange={(event) => setName(event.currentTarget.value)} />
-            <Select
-                data={[
-                    { value: "file", label: "File" },
-                    { value: "folder", label: "Folder" },
-                ]}
-                value={type}
-                onChange={(value) => setType(value as string)}
-            />
-            {type === "file" && (
-                <TextInput
-                    placeholder="Enter content"
-                    value={content}
-                    onChange={(event) => setContent(event.currentTarget.value)}
-                />
-            )}
-            <Button onClick={handleAdd}>Add {type === "file" ? "File" : "Folder"}</Button>
-        </div>
+        <>
+            <Tooltip label="New File">
+                <ActionIcon onClick={() => handleAdd(true)} disabled={isAdding} {...actionIconProps}>
+                    <IconFilePlus size={18} />
+                </ActionIcon>
+            </Tooltip>
+            <Tooltip label="New Folder">
+                <ActionIcon onClick={() => handleAdd(false)} disabled={isAdding} {...actionIconProps}>
+                    <IconFolderPlus size={18} />
+                </ActionIcon>
+            </Tooltip>
+        </>
     );
 };
