@@ -3,6 +3,7 @@
 import { Button } from "@mantine/core";
 import { IconFileDots, IconFolder, IconFolderOpen } from "@tabler/icons-react";
 import React, { useState } from "react";
+import { getIconFromExtension } from "../utils";
 
 import { IRepoData } from "../types";
 
@@ -74,44 +75,32 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node, path, onFileSelect, onFolderS
 
     const decodeBase64 = (content: string) => atob(content);
 
+    const FileIcon = node.isFolder ? (isExpanded ? IconFolderOpen : IconFolder) : getIconFromExtension(node.name);
+
     return (
         <div {...others}>
-            {node.isFolder ? (
-                <div>
-                    <Button
-                        fullWidth
-                        justify="space-between"
-                        onClick={handleFolderClick}
-                        variant={isActive ? "filled" : isExpanded ? "light" : "subtle"}
-                        fw={isExpanded ? "semibold" : "normal"}
-                    >
-                        {isExpanded ? <IconFolderOpen size={14} /> : <IconFolder size={14} />}&nbsp;{node.name}
-                    </Button>
-                    {isExpanded &&
-                        node.children?.map((child) => (
-                            <TreeNode
-                                key={child.name}
-                                node={child}
-                                path={fullPath}
-                                onFileSelect={onFileSelect}
-                                onFolderSelect={onFolderSelect}
-                                activeFolder={activeFolder}
-                                style={{ marginLeft: 12 }}
-                            />
-                        ))}
-                </div>
-            ) : (
-                <Button
-                    fullWidth
-                    justify="space-between"
-                    onClick={() => onFileSelect!(fullPath, decodeBase64(node?.content ?? ""))}
-                    variant="subtle"
-                    fw="normal"
-                >
-                    <IconFileDots size={14} />
-                    &nbsp;{node.name}
-                </Button>
-            )}
+            <button
+                className={`w-full p-1 flex items-center gap-2 text-md rounded transition ease-in-out delay-150 border border-transparent hover:border-neutral-600 ${node.isFolder && isExpanded ? "font-medium" : "font-normal"} node.isFolder ? (isActive ? "filled" : isExpanded ? "light" : "subtle") : "subtle" `}
+                onClick={
+                    node.isFolder ? handleFolderClick : () => onFileSelect!(fullPath, decodeBase64(node?.content ?? ""))
+                }
+            >
+                <FileIcon size={16} />
+                <span>{node.name}</span>
+            </button>
+            {node.isFolder &&
+                isExpanded &&
+                node.children?.map((child) => (
+                    <TreeNode
+                        key={child.name}
+                        node={child}
+                        path={fullPath}
+                        onFileSelect={onFileSelect}
+                        onFolderSelect={onFolderSelect}
+                        activeFolder={activeFolder}
+                        style={{ marginLeft: 12 }}
+                    />
+                ))}
         </div>
     );
 };
@@ -126,7 +115,7 @@ type FileTreeProps = {
 export const FileTree: React.FC<FileTreeProps> = ({ treeData, onFileSelect, onFolderSelect, activeFolder }) => {
     return (
         <div className="h-full">
-            <p className="text-xs font-normal py-1.5 uppercase">Folder Structure</p>
+            <p className="text-xs font-normal py-2 uppercase">Explorer</p>
             {treeData.map((node) => (
                 <TreeNode
                     key={node.name}

@@ -283,7 +283,7 @@ export default function Page({ params }: { params: { repoName: string } }) {
                             {selectedFile && (
                                 <>
                                     <h3 className="text-xl font-semibold mb-2">File: {selectedFile.path}</h3>
-                                    <Editor value={selectedFile.content} onChange={handleEditorChange} />
+                                    <Editor filename={selectedFile.path} value={selectedFile.content} onChange={handleEditorChange} />
                                 </>
                             )}
 
