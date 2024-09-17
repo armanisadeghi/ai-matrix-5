@@ -1,15 +1,16 @@
 import { Button, Select } from "@mantine/core";
 import { useEffect, useState } from "react";
-import { indexedDBStore, octokit } from "../utils";
+import { octokit, indexedDBStore } from "../../utils";
+import { RepoCard } from "./RepoCard";
 
-type Repository = {
+export type IRepository = {
     id: number;
     name: string;
     full_name: string;
 };
 
 export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (files: any) => void }) => {
-    const [repositories, setRepositories] = useState<Repository[]>([]);
+    const [repositories, setRepositories] = useState<IRepository[]>([]);
     const [selectedRepo, setSelectedRepo] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -35,15 +36,19 @@ export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (files: any) => v
         setIsLoading(false);
     };
 
-    const cloneRepository = async () => {
-        if (!selectedRepo) {
+    const cloneRepository = async (repoName: string) => {
+        if (!repoName) {
             alert("Please select a repository");
+            return;
+        }
+
+        if (!confirm(`Are you sure you want to proceed cloning '${repoName}' repository?`)) {
             return;
         }
 
         setIsLoading(true);
         try {
-            const [owner, repo] = selectedRepo.split("/");
+            const [owner, repo] = repoName.split("/");
             const files = await fetchAllFiles(owner, repo);
             await indexedDBStore.addRepository({ name: selectedRepo, files });
             onRepoCloned(files);
@@ -91,7 +96,25 @@ export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (files: any) => v
                 data={repositories.map((repo) => ({ label: repo.name, value: repo.full_name }))}
             />
 
-            <Button onClick={cloneRepository} disabled={isLoading || !selectedRepo} loading={isLoading}>
+            <input type="text" placeholder="search repositories" />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {repositories.map((repo) => (
+                    <RepoCard
+                        key={repo.name + repo.full_name}
+                        repo={repo}
+                        handleCloneRepo={cloneRepository}
+                        loading={isLoading}
+                    />
+                ))}
+            </div>
+
+            <Button
+                onClick={() => {
+                    cloneRepository("");
+                }}
+                disabled={isLoading || !selectedRepo}
+                loading={isLoading}
+            >
                 {isLoading ? "Cloning..." : "Clone Repository"}
             </Button>
         </div>

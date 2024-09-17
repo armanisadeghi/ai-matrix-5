@@ -3,7 +3,7 @@ import { Paper, Title } from "@mantine/core";
 import { indexedDBStore } from "../utils/indexedDB";
 import { AddFileFolder } from "./AddFileFolder";
 import { FileTree, buildTree } from "./FolderStructure";
-import { IRepoData } from "./Workspace";
+import { IRepoData } from "./Workspace/Workspace";
 
 export const ProjectManager: React.FC<{ projectName: string }> = ({ projectName }) => {
     const [project, setProject] = useState<IRepoData | null>(null);

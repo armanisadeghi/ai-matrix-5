@@ -1,17 +1,17 @@
-import { ActionIcon, Button, Menu, Text, ThemeIcon } from "@mantine/core";
+import { Button } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconDotsVertical, IconFolder, IconTrash } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { IconFolderPlus } from "@tabler/icons-react";
 
-import { IRepoData } from "../types";
-import { indexedDBStore } from "../utils";
-import { NewProjectDrawer } from "./NewProjectDrawer";
+import { IRepoData } from "../../types";
+import { indexedDBStore } from "../../utils";
+import { NewProjectDrawer } from "../NewProjectDrawer";
+import { ProjectCard } from "./ProjectCard";
 
 export const Workspace: React.FC = () => {
     const [repositories, setRepositories] = useState<IRepoData[]>([]);
     const [selectedRepo, setSelectedRepo] = useState<IRepoData | null>(null);
-    const [selectedFile, setSelectedFile] = useState<{ path: string; content: string } | null>(null);
     const [opened, { open, close }] = useDisclosure(false);
     const router = useRouter();
 
@@ -32,7 +32,6 @@ export const Workspace: React.FC = () => {
         try {
             const repo = await indexedDBStore.getRepository(repoName);
             setSelectedRepo(repo || null);
-            setSelectedFile(null);
             router.push(
                 `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/code-editor/edit/${encodeURIComponent(repoName)}`,
             );
@@ -47,12 +46,24 @@ export const Workspace: React.FC = () => {
             loadRepositories();
             if (selectedRepo && selectedRepo.name === repoName) {
                 setSelectedRepo(null);
-                setSelectedFile(null);
             }
         } catch (error) {
             console.error("Error deleting repository:", error);
         }
     };
+
+    if (!repositories || repositories.length === 0) {
+        return (
+            <>
+                <div className="px-4 py-8 flex flex-col items-center gap-4 border border-neutral-700 rounded">
+                    <IconFolderPlus size={48} />
+                    <p className="text-2xl font-normal">No recent files added.</p>
+                    <Button onClick={open}>New project</Button>
+                </div>
+                <NewProjectDrawer onClose={close} opened={opened} onProjectCreated={loadRepositories} />
+            </>
+        );
+    }
 
     return (
         <>
@@ -63,35 +74,12 @@ export const Workspace: React.FC = () => {
             <div className="space-y-4">
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                     {repositories.map((repo) => (
-                        <div
+                        <ProjectCard
                             key={repo.name}
-                            className="flex items-center justify-between p-4 border border-neutral-600 rounded-md bg-neutral-800 hover:bg-neutral-700"
-                        >
-                            <div className="flex flex-col gap-4 items-start w-full">
-                                <div className="flex justify-between items-center w-full">
-                                    <IconFolder />
-                                    <Menu shadow="md" width={200}>
-                                        <Menu.Target>
-                                            <ActionIcon variant="subtle">
-                                                <IconDotsVertical size={16} />
-                                            </ActionIcon>
-                                        </Menu.Target>
-
-                                        <Menu.Dropdown>
-                                            <Menu.Item
-                                                leftSection={<IconTrash size={16} />}
-                                                onClick={() => handleDeleteRepo(repo.name)}
-                                            >
-                                                Delete
-                                            </Menu.Item>
-                                        </Menu.Dropdown>
-                                    </Menu>
-                                </div>
-                                <Text component="button" fz="sm" onClick={() => handleRepoSelect(repo.name)}>
-                                    {repo.name}
-                                </Text>
-                            </div>
-                        </div>
+                            repo={repo}
+                            handleDelete={handleDeleteRepo}
+                            handleSelect={handleRepoSelect}
+                        />
                     ))}
                 </div>
             </div>

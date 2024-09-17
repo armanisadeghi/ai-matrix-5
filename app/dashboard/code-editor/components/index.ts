@@ -5,5 +5,4 @@ export * from "./FolderStructure";
 export * from "./GitHubImport";
 export * from "./ProjectManager";
 export * from "./NewProjectDrawer";
-export * from "./RepoContent";
 export * from "./Workspace";

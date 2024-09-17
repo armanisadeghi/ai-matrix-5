@@ -13,9 +13,10 @@ export const NewProjectDrawer: React.FC<NewProjectDrawerProps> = ({ opened, onCl
     };
 
     return (
-        <Drawer opened={opened} onClose={onClose} title="Github repos cloner">
+        <Drawer opened={opened} onClose={onClose} title="Create a project" position="right" size="xl">
+            <p className="text-xl font-semibold mb-2">Create a blank project</p>
             <CreateProject onProjectCreated={onProjectCreated} />
-
+            <hr className="border border-neutral-700 my-4" />
             <GitHubImport onRepoCloned={handleRepoCloned} />
         </Drawer>
     );
