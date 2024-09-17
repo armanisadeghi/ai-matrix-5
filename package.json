@@ -130,6 +130,7 @@
     "remark-gfm": "latest",
     "replit-client": "latest",
     "sass": "^1.77.6",
+    "simple-git": "^3.26.0",
     "socket.io-client": "latest",
     "swr": "latest",
     "ts-node": "^10.9.2",

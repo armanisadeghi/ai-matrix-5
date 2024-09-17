@@ -1,16 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { Button, Paper, Text, ThemeIcon, Menu, ActionIcon, Flex } from "@mantine/core";
-import { useRouter } from "next/navigation";
+import { ActionIcon, Button, Menu, Text, ThemeIcon } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconDotsVertical, IconFolder, IconTrash } from "@tabler/icons-react";
-import { indexedDBStore } from "../utils/indexedDB";
-import { NewProjectDrawer } from "./NewProjectDrawer";
-import { CreateProject } from "./CreateProject";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
-export interface IRepoData {
-    name: string;
-    files: { [path: string]: string };
-}
+import { IRepoData } from "../types";
+import { indexedDBStore } from "../utils";
+import { NewProjectDrawer } from "./NewProjectDrawer";
 
 export const Workspace: React.FC = () => {
     const [repositories, setRepositories] = useState<IRepoData[]>([]);

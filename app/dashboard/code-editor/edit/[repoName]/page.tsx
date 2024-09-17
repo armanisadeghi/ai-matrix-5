@@ -16,19 +16,12 @@ import {
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { AddFileFolder, Editor, FileTree, type IRepoData, buildTree } from "../../components";
-import { indexedDBStore, octokit } from "../../utils";
+import { AddFileFolder, Editor, FileTree, buildTree } from "../../components";
+import { IRepoData } from "../../types";
+import { deleteGitHubRepo, indexedDBStore, publishToGitHubRepo, updateGitHubRepo } from "../../utils";
 
 type IFile = {
     path: string;
-    content: string;
-};
-
-type IFileCommit = {
-    path: string;
-    mode: "100644" | "100755" | "040000" | "160000" | "120000";
-    type: "commit" | "tree" | "blob";
-    sha?: string | null;
     content: string;
 };
 
@@ -154,61 +147,14 @@ export default function Page({ params }: { params: { repoName: string } }) {
         setIsPublishing(true);
 
         const REPO_NAME = selectedRepo.name; // Name of the repository to create
-        const REPO_OWNER = "kelvink96";
-        const REPO_DESC = ""; // Optional repository description
+        const REPO_IS_PUBLISHED = selectedRepo?.githubUrl;
 
         try {
-            await octokit.repos.createForAuthenticatedUser({ name: REPO_NAME, description: REPO_DESC });
-
-            // Generate a tree
-            const commits = await octokit.repos.listCommits({
-                owner: REPO_OWNER,
-                repo: REPO_NAME,
-            });
-
-            // make a variable to store the commit hash
-            const commitSHA = commits.data[0].sha;
-
-            // We can map to transform our file array into this proper format:
-            const commitableFiles: IFileCommit[] = treeData.map((item) => {
-                return {
-                    path: item.name,
-                    mode: item.isFolder ? "040000" : "100644",
-                    type: "commit",
-                    content: item?.content,
-                };
-            });
-
-            // Now that we have an array of all the files we want to commit we will pass them to the createTree() method
-            const {
-                data: { sha: currentTreeSHA },
-            } = await octokit.git.createTree({
-                owner: REPO_OWNER,
-                repo: REPO_NAME,
-                tree: commitableFiles,
-                base_tree: commitSHA,
-                message: "Updated programatically with Octokit",
-                parents: [commitSHA],
-            });
-
-            // Afterwards we have the variable currentTreeSHA
-            const {
-                data: { sha: newCommitSHA },
-            } = await octokit.git.createCommit({
-                owner: REPO_OWNER,
-                repo: REPO_NAME,
-                tree: currentTreeSHA,
-                message: `Updated programatically with Octokit`,
-                parents: [currentTreeSHA],
-            });
-
-            // push the commit
-            await octokit.git.updateRef({
-                owner: REPO_OWNER,
-                repo: REPO_NAME,
-                sha: newCommitSHA,
-                ref: "heads/main", // Whatever branch you want to push to
-            });
+            if (REPO_IS_PUBLISHED) {
+                await updateGitHubRepo(REPO_NAME);
+            } else {
+                await publishToGitHubRepo(REPO_NAME);
+            }
 
             alert("Repository created and pushed to GitHub successfully!");
             setIsPublishing(false);
@@ -226,18 +172,9 @@ export default function Page({ params }: { params: { repoName: string } }) {
         setIsPublishing(true);
 
         const REPO_NAME = selectedRepo.name; // Name of the repository to create
-        const REPO_OWNER = "kelvink96";
-
-        console.log({ REPO_NAME, REPO_OWNER });
 
         try {
-            await octokit.request("DELETE /repos/{owner}/{repo}", {
-                owner: REPO_OWNER,
-                repo: REPO_NAME,
-                headers: {
-                    "X-GitHub-Api-Version": "2022-11-28",
-                },
-            });
+            await deleteGitHubRepo(REPO_NAME);
 
             setIsPublishing(false);
         } catch (error) {

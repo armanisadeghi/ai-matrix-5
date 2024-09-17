@@ -1,13 +1,11 @@
+import { IRepoData } from "../types";
+
 // Constants for the database name and object store names.
 const DB_NAME = "GithubImportDB";
 const REPOS_STORE_NAME = "repositories";
 const FILES_STORE_NAME = "files";
 
 // Interfaces to define the structure of repository and file data.
-interface RepoData {
-    name: string; // Repository name
-    files: { [path: string]: string }; // Key-value pair of file paths and content
-}
 
 interface FileData {
     repoName: string; // Repository name the file belongs to
@@ -51,7 +49,7 @@ class IndexedDBStore {
     }
 
     // Adds a repository and its files to the database.
-    async addRepository(repo: RepoData): Promise<void> {
+    async addRepository(repo: IRepoData): Promise<void> {
         if (!this.db) await this.init(); // Ensure the database is initialized.
 
         return new Promise((resolve, reject) => {
@@ -76,7 +74,7 @@ class IndexedDBStore {
     }
 
     // Retrieves all repositories from the database.
-    async getRepositories(): Promise<RepoData[]> {
+    async getRepositories(): Promise<IRepoData[]> {
         if (!this.db) await this.init(); // Ensure the database is initialized.
 
         return new Promise((resolve, reject) => {
@@ -90,7 +88,7 @@ class IndexedDBStore {
     }
 
     // Retrieves a specific repository by its name.
-    async getRepository(name: string): Promise<RepoData | undefined> {
+    async getRepository(name: string): Promise<IRepoData | undefined> {
         if (!this.db) await this.init(); // Ensure the database is initialized.
 
         return new Promise((resolve, reject) => {
