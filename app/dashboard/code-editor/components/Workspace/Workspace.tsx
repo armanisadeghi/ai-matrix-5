@@ -12,6 +12,7 @@ import { ProjectCard } from "./ProjectCard";
 export const Workspace: React.FC = () => {
     const [repositories, setRepositories] = useState<IRepoData[]>([]);
     const [selectedRepo, setSelectedRepo] = useState<IRepoData | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
     const [opened, { open, close }] = useDisclosure(false);
     const router = useRouter();
 
@@ -21,10 +22,13 @@ export const Workspace: React.FC = () => {
 
     const loadRepositories = async () => {
         try {
+            setIsLoading(true);
             const repos = await indexedDBStore.getRepositories();
             setRepositories(repos);
+            setIsLoading(false);
         } catch (error) {
             console.error("Error loading repositories:", error);
+            setIsLoading(false);
         }
     };
 
@@ -63,6 +67,10 @@ export const Workspace: React.FC = () => {
                 <NewProjectDrawer onClose={close} opened={opened} onProjectCreated={loadRepositories} />
             </>
         );
+    }
+
+    if (isLoading) {
+        return <>loading</>;
     }
 
     return (

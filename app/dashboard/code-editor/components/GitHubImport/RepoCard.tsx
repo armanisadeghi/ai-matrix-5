@@ -3,7 +3,7 @@ import { IRepository } from "./GitHubImport";
 
 type RepoCardProps = HTMLAttributes<HTMLDivElement> & {
     repo: IRepository;
-    handleCloneRepo: (repoName: string) => Promise<void>;
+    handleCloneRepo: (repoName: IRepository) => Promise<void>;
     loading: boolean;
 };
 
@@ -16,7 +16,7 @@ export const RepoCard: React.FC<RepoCardProps> = ({ repo, handleCloneRepo, loadi
         <div
             className="p-2 cursor-pointer rounded-md border-2 border-neutral-700 transition ease-in-out hover:border-2 hover:border-neutral-400"
             onClick={() => {
-                handleCloneRepo(repo.full_name);
+                handleCloneRepo(repo);
             }}
             {...others}
         >

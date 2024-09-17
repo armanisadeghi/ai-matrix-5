@@ -42,7 +42,8 @@ class IndexedDBStore {
 
                 // Create object store for files with a composite key of repoName and path.
                 if (!db.objectStoreNames.contains(FILES_STORE_NAME)) {
-                    db.createObjectStore(FILES_STORE_NAME, { keyPath: ["repoName", "path"] });
+                    const filesStore = db.createObjectStore(FILES_STORE_NAME, { keyPath: ["repoName", "path"] });
+                    filesStore.createIndex("repoName", "repoName", { unique: false });
                 }
             };
         });
@@ -126,16 +127,16 @@ class IndexedDBStore {
 
             repoStore.delete(name); // Delete the repository from the store.
 
-            // Create an index on the file store by `repoName` and delete all files associated with the repository.
-            const fileIndex = fileStore.index("repoName");
-            const fileRequest = fileIndex.openKeyCursor(IDBKeyRange.only(name));
+            //TODO: fix error on deletion
+            // Use a cursor to iterate through all files and delete those belonging to the repository
+            const index = fileStore.index("repoName");
+            const request = index.openCursor(IDBKeyRange.only(name));
 
-            // Delete each file in the repository.
-            fileRequest.onsuccess = (event) => {
-                const cursor = (event.target as IDBRequest<IDBCursor>).result;
+            request.onsuccess = function (event) {
+                const cursor = (event.target as IDBRequest<IDBCursorWithValue>).result;
                 if (cursor) {
-                    fileStore.delete(cursor.primaryKey); // Delete the file
-                    cursor.continue(); // Move to the next file in the cursor
+                    fileStore.delete(cursor.primaryKey);
+                    cursor.continue();
                 }
             };
 

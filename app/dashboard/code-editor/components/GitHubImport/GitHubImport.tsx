@@ -2,14 +2,16 @@ import { Button, Select } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { octokit, indexedDBStore } from "../../utils";
 import { RepoCard } from "./RepoCard";
+import { IRepoData } from "../../types";
 
 export type IRepository = {
     id: number;
     name: string;
     full_name: string;
+    html_url: string;
 };
 
-export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (files: any) => void }) => {
+export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (repo: IRepoData) => void }) => {
     const [repositories, setRepositories] = useState<IRepository[]>([]);
     const [selectedRepo, setSelectedRepo] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -27,6 +29,7 @@ export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (files: any) => v
                     id: repo.id,
                     name: repo.name,
                     full_name: repo.full_name,
+                    html_url: repo.html_url,
                 })),
             );
         } catch (error) {
@@ -36,22 +39,22 @@ export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (files: any) => v
         setIsLoading(false);
     };
 
-    const cloneRepository = async (repoName: string) => {
-        if (!repoName) {
+    const cloneRepository = async (repository: IRepository) => {
+        if (!repository.name) {
             alert("Please select a repository");
             return;
         }
 
-        if (!confirm(`Are you sure you want to proceed cloning '${repoName}' repository?`)) {
+        if (!confirm(`Are you sure you want to proceed cloning '${repository.name}' repository?`)) {
             return;
         }
 
         setIsLoading(true);
         try {
-            const [owner, repo] = repoName.split("/");
+            const [owner, repo] = repository.name.split("/");
             const files = await fetchAllFiles(owner, repo);
-            await indexedDBStore.addRepository({ name: selectedRepo, files });
-            onRepoCloned(files);
+            await indexedDBStore.addRepository({ name: repository.name, files, githubUrl: repository.html_url });
+            onRepoCloned({ name: repository.name, files, githubUrl: repository.html_url });
         } catch (error) {
             console.error("Error cloning repository:", error);
             alert("Failed to clone repository. Please try again.");
@@ -87,8 +90,11 @@ export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (files: any) => v
         }
     };
 
+    console.log({ repositories });
+
     return (
         <div className="space-y-4">
+            <p className="text-xl font-semibold mb-2">Import project from GitHub</p>
             <Select
                 value={selectedRepo}
                 onChange={setSelectedRepo}
@@ -108,13 +114,7 @@ export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (files: any) => v
                 ))}
             </div>
 
-            <Button
-                onClick={() => {
-                    cloneRepository("");
-                }}
-                disabled={isLoading || !selectedRepo}
-                loading={isLoading}
-            >
+            <Button disabled={isLoading || !selectedRepo} loading={isLoading}>
                 {isLoading ? "Cloning..." : "Clone Repository"}
             </Button>
         </div>
