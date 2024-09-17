@@ -1,95 +1,98 @@
-"use client";
-
-import { Button, Input, Select } from "@mantine/core";
+import { Button, Select } from "@mantine/core";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { indexedDBStore, octokit } from "../utils";
 
-type GitHubImportProps = {
-    onImportSuccess: (owner: string, repo: string) => void;
+type Repository = {
+    id: number;
+    name: string;
+    full_name: string;
 };
 
-export const GitHubImport: React.FC<GitHubImportProps> = ({ onImportSuccess }) => {
-    const [importType, setImportType] = useState<"project" | "url" | string>("project");
-    const [projectList, setProjectList] = useState<string[]>([]);
-    const [selectedProject, setSelectedProject] = useState<string>("");
-    const [repoUrl, setRepoUrl] = useState<string>("");
+export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (files: any) => void }) => {
+    const [repositories, setRepositories] = useState<Repository[]>([]);
+    const [selectedRepo, setSelectedRepo] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(() => {
-        if (importType === "project") {
-            fetchProjects();
-        }
-    }, [importType]);
+        fetchRepositories();
+    }, []);
 
-    const fetchProjects = async () => {
+    const fetchRepositories = async () => {
         setIsLoading(true);
         try {
-            const response = await axios.get("/api/github/user/repos");
-            setProjectList(response.data);
+            const response = await octokit.repos.listForAuthenticatedUser();
+            setRepositories(
+                response.data.map((repo) => ({
+                    id: repo.id,
+                    name: repo.name,
+                    full_name: repo.full_name,
+                })),
+            );
         } catch (error) {
-            console.error("Error fetching projects:", error);
-            alert("Failed to fetch projects. Please check your GitHub authentication.");
+            console.error("Error fetching repositories:", error);
+            alert("Failed to fetch repositories. Please check your GitHub token.");
         }
         setIsLoading(false);
     };
 
-    const handleImport = async () => {
+    const cloneRepository = async () => {
+        if (!selectedRepo) {
+            alert("Please select a repository");
+            return;
+        }
+
         setIsLoading(true);
         try {
-            if (importType === "project") {
-                if (!selectedProject) {
-                    throw new Error("Please select a project");
+            const [owner, repo] = selectedRepo.split("/");
+            const files = await fetchAllFiles(owner, repo);
+            await indexedDBStore.addRepository({ name: selectedRepo, files });
+            onRepoCloned(files);
+        } catch (error) {
+            console.error("Error cloning repository:", error);
+            alert("Failed to clone repository. Please try again.");
+        }
+        setIsLoading(false);
+    };
+
+    const fetchAllFiles = async (owner: string, repo: string, path: string = ""): Promise<any> => {
+        const response = await octokit.repos.getContent({
+            owner,
+            repo,
+            path,
+        });
+
+        if (Array.isArray(response.data)) {
+            const files: any = {};
+            for (const item of response.data) {
+                if (item.type === "file") {
+                    const content = await octokit.repos.getContent({
+                        owner,
+                        repo,
+                        path: item.path,
+                    });
+                    files[item.path] = (content.data as any).content;
+                } else if (item.type === "dir") {
+                    const subFiles = await fetchAllFiles(owner, repo, item.path);
+                    Object.assign(files, subFiles);
                 }
-                const [owner, repo] = selectedProject.split("/");
-                onImportSuccess(owner, repo);
-            } else {
-                if (!repoUrl) {
-                    throw new Error("Please enter a valid repository URL");
-                }
-                const urlParts = repoUrl.split("/");
-                const owner = urlParts[urlParts.length - 2];
-                const repo = urlParts[urlParts.length - 1].replace(".git", "");
-                onImportSuccess(owner, repo);
             }
-        } catch (error) {
-            console.error("Error importing:", error);
-            alert(error.message || "Failed to import. Please try again.");
+            return files;
+        } else {
+            return { [path]: (response.data as any).content };
         }
-        setIsLoading(false);
     };
-
-    console.log({ importType });
-    console.log({ projectList });
 
     return (
         <div className="space-y-4">
             <Select
-                value={importType}
-                onChange={setImportType}
-                data={[
-                    { value: "project", label: "Import from My Projects" },
-                    { value: "url", label: "Import from URL" },
-                ]}
+                value={selectedRepo}
+                onChange={setSelectedRepo}
+                placeholder="Select a repository"
+                data={repositories.map((repo) => ({ label: repo.name, value: repo.full_name }))}
             />
 
-            {importType === "project" ? (
-                <Select
-                    value={selectedProject}
-                    onChange={setSelectedProject}
-                    placeholder="Select a project"
-                    data={projectList.map((project) => project)}
-                />
-            ) : (
-                <Input
-                    type="text"
-                    placeholder="Enter repository URL"
-                    value={repoUrl}
-                    onChange={(e) => setRepoUrl(e.target.value)}
-                />
-            )}
-
-            <Button onClick={handleImport} loading={isLoading}>
-                {isLoading ? "Importing..." : "Import"}
+            <Button onClick={cloneRepository} disabled={isLoading || !selectedRepo} loading={isLoading}>
+                {isLoading ? "Cloning..." : "Clone Repository"}
             </Button>
         </div>
     );

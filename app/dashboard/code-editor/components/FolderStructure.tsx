@@ -3,7 +3,8 @@
 import { Button } from "@mantine/core";
 import { IconFileDots, IconFolder, IconFolderOpen } from "@tabler/icons-react";
 import React, { useState } from "react";
-import { type IRepoData } from "./Workspace";
+
+import { IRepoData } from "../types";
 
 export function buildTree(repoData: IRepoData): IFileNode[] {
     const root: IFileNode[] = [];

@@ -65,13 +65,11 @@ export const Workspace: React.FC = () => {
                     {repositories.map((repo) => (
                         <div
                             key={repo.name}
-                            className="flex items-center justify-between p-4 border border-neutral-400 rounded-md"
+                            className="flex items-center justify-between p-4 border border-neutral-600 rounded-md bg-neutral-800 hover:bg-neutral-700"
                         >
-                            <div className="flex flex-col gap-2 items-start w-full">
+                            <div className="flex flex-col gap-4 items-start w-full">
                                 <div className="flex justify-between items-center w-full">
-                                    <ThemeIcon variant="transparent" size="xl">
-                                        <IconFolder />
-                                    </ThemeIcon>
+                                    <IconFolder />
                                     <Menu shadow="md" width={200}>
                                         <Menu.Target>
                                             <ActionIcon variant="subtle">

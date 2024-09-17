@@ -194,7 +194,7 @@ export default function Page({ params }: { params: { repoName: string } }) {
     }
 
     return (
-        <div className="space-y-2 bg-neutral-900 rounded-md">
+        <div className="space-y-2 p-2 bg-neutral-900 rounded-md">
             <div className="flex justify-between px-3 py-1.5">
                 <p className="text-md font-semibold">Repository: {selectedRepo?.name}</p>
                 <div className="flex gap-2">
