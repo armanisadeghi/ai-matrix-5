@@ -1,35 +1,72 @@
 "use client";
 
 import MonacoEditor, { EditorProps as MonacoEditorProps } from "@monaco-editor/react";
-import React, { useEffect, useState } from "react";
-import { getLanguageFromExtension } from "../utils";
+import React, { useEffect, useRef, useState } from "react";
+import { getLanguageFromExtension, indexedDBStore } from "../utils";
 
 type EditorProps = MonacoEditorProps & {
+    repoName: string;
     value: string;
     filename: string;
     onChange: (newContent: string) => void;
 };
 
-export const Editor: React.FC<EditorProps> = ({ value, onChange, filename }) => {
+export const Editor: React.FC<EditorProps> = ({ repoName, value, onChange, filename }) => {
     const [content, setContent] = useState<string>(value);
     const language = getLanguageFromExtension(filename);
+    const editorRef = useRef<any>(null);
+
+    function handleEditorDidMount(editor, _monaco) {
+        editorRef.current = editor;
+    }
+
+    function handleEditorChange(value, _event) {
+        console.log("here is the current model value:", value);
+        setContent(value);
+        onChange(value);
+    }
 
     useEffect(() => {
         setContent(value);
     }, [value]);
 
+    useEffect(() => {
+        if (editorRef.current) {
+            const editor = editorRef.current;
+
+            // Add keybinding for Ctrl + S
+            // @ts-expect-error - monaco instance throwing error
+            editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, () => {
+                saveFileContent();
+            });
+
+            // Save on blur (when editor loses focus)
+            editor.onDidBlurEditorWidget(() => {
+                saveFileContent();
+            });
+        }
+    }, [editorRef.current, filename]);
+
+    const saveFileContent = async () => {
+        if (editorRef.current) {
+            const currentContent = editorRef.current.getValue();
+            try {
+                await indexedDBStore.saveFileContent(repoName, filename, currentContent);
+                console.log(`File ${filename} saved to IndexedDB`);
+            } catch (error) {
+                console.error(`Error saving file ${filename}:`, error);
+            }
+        }
+    };
+
     return (
         <MonacoEditor
-            height="75dvh"
+            height="50dvh"
             theme="vs-dark"
             value={content}
             language={language}
-            onChange={(newContent) => {
-                if (newContent !== undefined) {
-                    setContent(newContent);
-                    onChange(newContent);
-                }
-            }}
+            onChange={handleEditorChange}
+            onMount={handleEditorDidMount}
         />
     );
 };

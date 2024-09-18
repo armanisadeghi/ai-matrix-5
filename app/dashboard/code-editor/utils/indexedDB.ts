@@ -17,7 +17,11 @@ interface FileData {
 class IndexedDBStore {
     private db: IDBDatabase | null = null; // Reference to the IndexedDB database
 
-    // Initializes the database by opening a connection and setting up object stores.
+    //
+    /**
+     * Initializes the database by opening a connection and setting up object stores.
+     * @returns
+     */
     async init(): Promise<void> {
         return new Promise((resolve, reject) => {
             const request = indexedDB.open(DB_NAME, 2); // Open the database (version 2)
@@ -49,7 +53,12 @@ class IndexedDBStore {
         });
     }
 
-    // Adds a repository and its files to the database.
+    //
+    /**
+     * Adds a repository and its files to the database.
+     * @param repo
+     * @returns
+     */
     async addRepository(repo: IRepoData): Promise<void> {
         if (!this.db) await this.init(); // Ensure the database is initialized.
 
@@ -74,7 +83,11 @@ class IndexedDBStore {
         });
     }
 
-    // Retrieves all repositories from the database.
+    //
+    /**
+     *  Retrieves all repositories from the database.
+     * @returns
+     */
     async getRepositories(): Promise<IRepoData[]> {
         if (!this.db) await this.init(); // Ensure the database is initialized.
 
@@ -88,7 +101,12 @@ class IndexedDBStore {
         });
     }
 
-    // Retrieves a specific repository by its name.
+    //
+    /**
+     * Retrieves a specific repository by its name.
+     * @param name
+     * @returns
+     */
     async getRepository(name: string): Promise<IRepoData | undefined> {
         if (!this.db) await this.init(); // Ensure the database is initialized.
 
@@ -102,7 +120,13 @@ class IndexedDBStore {
         });
     }
 
-    // Retrieves a specific file by its repository name and path.
+    //
+    /**
+     * Retrieves a specific file by its repository name and path.
+     * @param repoName
+     * @param path
+     * @returns
+     */
     async getFile(repoName: string, path: string): Promise<FileData | undefined> {
         if (!this.db) await this.init(); // Ensure the database is initialized.
 
@@ -116,7 +140,12 @@ class IndexedDBStore {
         });
     }
 
-    // Deletes a repository and all its associated files from the database.
+    //
+    /**
+     * Deletes a repository and all its associated files from the database.
+     * @param name
+     * @returns
+     */
     async deleteRepository(name: string): Promise<void> {
         if (!this.db) await this.init(); // Ensure the database is initialized.
 
@@ -144,6 +173,223 @@ class IndexedDBStore {
             transaction.oncomplete = () => resolve();
 
             // Reject the promise if there's an error during the transaction.
+            transaction.onerror = () => reject(transaction.error);
+        });
+    }
+
+    //
+    /**
+     * Add this new method to save or update file content
+     * @param repoName
+     * @param path
+     * @param content
+     * @returns
+     */
+    async saveFileContent(repoName: string, path: string, content: string): Promise<void> {
+        if (!this.db) await this.init(); // Ensure the database is initialized.
+
+        return new Promise((resolve, reject) => {
+            const transaction = this.db!.transaction([FILES_STORE_NAME], "readwrite");
+            const store = transaction.objectStore(FILES_STORE_NAME);
+
+            // Encode the content before saving
+            const encodedContent = btoa(unescape(encodeURIComponent(content)));
+            const fileData: FileData = { repoName, path, content: encodedContent };
+            const request = store.put(fileData);
+
+            request.onerror = () => reject(request.error);
+            request.onsuccess = () => {
+                console.log(`File ${path} in repository ${repoName} saved successfully.`);
+                resolve();
+            };
+        });
+    }
+
+    /**
+     *
+     * @param repoName
+     * @param oldPath
+     * @param newPath
+     * @param content
+     * @returns
+     */
+    async updateFile(repoName: string, oldPath: string, newPath: string, content: string): Promise<void> {
+        if (!this.db) await this.init();
+
+        return new Promise((resolve, reject) => {
+            const transaction = this.db!.transaction([FILES_STORE_NAME, REPOS_STORE_NAME], "readwrite");
+            const fileStore = transaction.objectStore(FILES_STORE_NAME);
+            const repoStore = transaction.objectStore(REPOS_STORE_NAME);
+
+            // Delete the old file entry
+            fileStore.delete([repoName, oldPath]);
+
+            // Add the new file entry
+            const encodedContent = btoa(unescape(encodeURIComponent(content)));
+            const newFileData: FileData = { repoName, path: newPath, content: encodedContent };
+            fileStore.put(newFileData);
+
+            // Update the repository data
+            const repoRequest = repoStore.get(repoName);
+            repoRequest.onsuccess = () => {
+                const repo = repoRequest.result;
+                if (repo) {
+                    delete repo.files[oldPath];
+                    repo.files[newPath] = encodedContent;
+                    repoStore.put(repo);
+                }
+            };
+
+            transaction.oncomplete = () => {
+                console.log(`File updated: ${oldPath} -> ${newPath} in repository ${repoName}`);
+                resolve();
+            };
+            transaction.onerror = () => reject(transaction.error);
+        });
+    }
+
+    /**
+     *
+     * @param repoName
+     * @param oldPath
+     * @param newPath
+     * @returns
+     */
+    async updateFolder(repoName: string, oldPath: string, newPath: string): Promise<void> {
+        if (!this.db) await this.init();
+
+        return new Promise((resolve, reject) => {
+            const transaction = this.db!.transaction([FILES_STORE_NAME, REPOS_STORE_NAME], "readwrite");
+            const fileStore = transaction.objectStore(FILES_STORE_NAME);
+            const repoStore = transaction.objectStore(REPOS_STORE_NAME);
+
+            const index = fileStore.index("repoName");
+            const request = index.openCursor(IDBKeyRange.only(repoName));
+
+            request.onsuccess = (event) => {
+                const cursor = (event.target as IDBRequest<IDBCursorWithValue>).result;
+                if (cursor) {
+                    const file = cursor.value;
+                    if (file.path.startsWith(oldPath + "/")) {
+                        const newFilePath = newPath + file.path.substring(oldPath.length);
+                        fileStore.delete(cursor.primaryKey);
+                        file.path = newFilePath;
+                        fileStore.put(file);
+                    }
+                    cursor.continue();
+                }
+            };
+
+            // Update the repository data
+            const repoRequest = repoStore.get(repoName);
+            repoRequest.onsuccess = () => {
+                const repo = repoRequest.result;
+                if (repo) {
+                    const updatedFiles: { [key: string]: string } = {};
+                    Object.entries(repo.files).forEach(([path, content]) => {
+                        if (path.startsWith(oldPath + "/")) {
+                            const newFilePath = newPath + path.substring(oldPath.length);
+                            updatedFiles[newFilePath] = content as string;
+                        } else {
+                            updatedFiles[path] = content as string;
+                        }
+                    });
+                    repo.files = updatedFiles;
+                    repoStore.put(repo);
+                }
+            };
+
+            transaction.oncomplete = () => {
+                console.log(`Folder updated: ${oldPath} -> ${newPath} in repository ${repoName}`);
+                resolve();
+            };
+            transaction.onerror = () => reject(transaction.error);
+        });
+    }
+
+    /**
+     *
+     * @param repoName
+     * @param path
+     * @returns
+     */
+    async deleteFile(repoName: string, path: string): Promise<void> {
+        if (!this.db) await this.init();
+
+        return new Promise((resolve, reject) => {
+            const transaction = this.db!.transaction([FILES_STORE_NAME, REPOS_STORE_NAME], "readwrite");
+            const fileStore = transaction.objectStore(FILES_STORE_NAME);
+            const repoStore = transaction.objectStore(REPOS_STORE_NAME);
+
+            // Delete the file entry
+            fileStore.delete([repoName, path]);
+
+            // Update the repository data
+            const repoRequest = repoStore.get(repoName);
+            repoRequest.onsuccess = () => {
+                const repo = repoRequest.result;
+                if (repo) {
+                    delete repo.files[path];
+                    repoStore.put(repo);
+                }
+            };
+
+            transaction.oncomplete = () => {
+                console.log(`File deleted: ${path} in repository ${repoName}`);
+                resolve();
+            };
+            transaction.onerror = () => reject(transaction.error);
+        });
+    }
+
+    /**
+     *
+     * @param repoName
+     * @param path
+     * @returns
+     */
+    async deleteFolder(repoName: string, path: string): Promise<void> {
+        if (!this.db) await this.init();
+
+        return new Promise((resolve, reject) => {
+            const transaction = this.db!.transaction([FILES_STORE_NAME, REPOS_STORE_NAME], "readwrite");
+            const fileStore = transaction.objectStore(FILES_STORE_NAME);
+            const repoStore = transaction.objectStore(REPOS_STORE_NAME);
+
+            const index = fileStore.index("repoName");
+            const request = index.openCursor(IDBKeyRange.only(repoName));
+
+            request.onsuccess = (event) => {
+                const cursor = (event.target as IDBRequest<IDBCursorWithValue>).result;
+                if (cursor) {
+                    const file = cursor.value;
+                    if (file.path.startsWith(path + "/")) {
+                        fileStore.delete(cursor.primaryKey);
+                    }
+                    cursor.continue();
+                }
+            };
+
+            // Update the repository data
+            const repoRequest = repoStore.get(repoName);
+            repoRequest.onsuccess = () => {
+                const repo = repoRequest.result;
+                if (repo) {
+                    const updatedFiles: { [key: string]: string } = {};
+                    Object.entries(repo.files).forEach(([filePath, content]) => {
+                        if (!filePath.startsWith(path + "/")) {
+                            updatedFiles[filePath] = content as string;
+                        }
+                    });
+                    repo.files = updatedFiles;
+                    repoStore.put(repo);
+                }
+            };
+
+            transaction.oncomplete = () => {
+                console.log(`Folder deleted: ${path} in repository ${repoName}`);
+                resolve();
+            };
             transaction.onerror = () => reject(transaction.error);
         });
     }

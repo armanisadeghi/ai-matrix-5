@@ -18,7 +18,13 @@ import { useEffect, useState } from "react";
 
 import { AddFileFolder, Editor, FileTree, buildTree } from "../../components";
 import { IRepoData } from "../../types";
-import { deleteGitHubRepo, indexedDBStore, publishToGitHubRepo, updateGitHubRepo } from "../../utils";
+import {
+    deleteGitHubRepo,
+    getIconFromExtension,
+    indexedDBStore,
+    publishToGitHubRepo,
+    updateGitHubRepo,
+} from "../../utils";
 
 type IFile = {
     path: string;
@@ -53,7 +59,8 @@ export default function Page({ params }: { params: { repoName: string } }) {
 
     const treeData = buildTree(selectedRepo);
 
-    const loadProject = async (repoName: string) => {
+    const loadProject = async (repoName?: string) => {
+        if (!repoName) return;
         try {
             const loadedProject = await indexedDBStore.getRepository(repoName);
             setSelectedRepo(loadedProject || null);
@@ -138,7 +145,7 @@ export default function Page({ params }: { params: { repoName: string } }) {
     };
 
     /**
-     *
+     * publish local repo to github
      * @returns
      */
     const handlePushToGitHub = async () => {
@@ -166,6 +173,10 @@ export default function Page({ params }: { params: { repoName: string } }) {
         }
     };
 
+    /**
+     * delete repo from github
+     * @returns
+     */
     const handleDeleteFromGitHub = async () => {
         if (!selectedRepo || !fileSystem || !user) return;
 
@@ -185,6 +196,40 @@ export default function Page({ params }: { params: { repoName: string } }) {
         }
     };
 
+    /**
+     *
+     * @param repoName
+     * @param oldPath
+     * @param newPath
+     * @param content
+     */
+    const handleFileUpdate = async (repoName: string, oldPath: string, newPath: string, content: string) => {
+        try {
+            await indexedDBStore.updateFile(repoName, oldPath, newPath, content);
+            // Update your UI or state as needed
+        } catch (error) {
+            console.error("Error updating file:", error);
+            // Handle the error (e.g., show an error message to the user)
+        }
+    };
+
+    //
+    /**
+     * In your folder renaming component
+     * @param repoName
+     * @param oldPath
+     * @param newPath
+     */
+    const handleFolderRename = async (repoName: string, oldPath: string, newPath: string) => {
+        try {
+            await indexedDBStore.updateFolder(repoName, oldPath, newPath);
+            // Update your UI or state as needed
+        } catch (error) {
+            console.error("Error renaming folder:", error);
+            // Handle the error (e.g., show an error message to the user)
+        }
+    };
+
     const actionIconProps: ActionIconProps = {
         variant: "subtle",
     };
@@ -195,7 +240,7 @@ export default function Page({ params }: { params: { repoName: string } }) {
 
     return (
         <div className="space-y-2 p-2 bg-neutral-900 rounded-md">
-            <div className="flex justify-between px-3 py-1.5">
+            <div className="flex justify-between px-3 py-1.5 rounded bg-neutral-800">
                 <p className="text-md font-semibold">Repository: {selectedRepo?.name}</p>
                 <div className="flex gap-2">
                     <ActionIcon {...actionIconProps}>
@@ -216,7 +261,7 @@ export default function Page({ params }: { params: { repoName: string } }) {
                 </div>
             </div>
             <div className="grid grid-cols-12 gap-4 min-h-screen">
-                <div className="col-span-2 lg:col-span-2.5 rounded-md p-2 border border-white">
+                <div className="col-span-2 lg:col-span-2.5 p-2 rounded bg-neutral-800">
                     <div className="flex justify-between border-b border-white">
                         <ActionIcon {...actionIconProps}>
                             <IconFolder size={18} />
@@ -238,52 +283,53 @@ export default function Page({ params }: { params: { repoName: string } }) {
                         />
                     </div>
                     <FileTree
-                        treeData={treeData}
+                        activeFolder={activeFolder}
                         onFileSelect={handleFileSelect}
                         onFolderSelect={handleFolderSelect}
-                        activeFolder={activeFolder}
+                        onUpdate={loadProject}
+                        repoName={selectedRepo.name}
+                        treeData={treeData}
                     />
                 </div>
                 <div className="col-span-10 lg:col-span-9.5">
-                    <div style={{ flexGrow: 1, padding: "10px", display: "flex", flexDirection: "column" }}>
+                    <div className="flex flex-col grow">
                         {/* Tabs */}
-                        <div style={{ display: "flex", borderBottom: "1px solid #ddd" }}>
-                            {openFiles.map((file, idx) => (
-                                <div
-                                    key={idx}
-                                    style={{
-                                        padding: "5px 10px",
-                                        cursor: "pointer",
-                                        backgroundColor: selectedFile === file ? "#f0f0f0" : "#fff",
-                                        borderRight: "1px solid #ddd",
-                                        display: "flex",
-                                        alignItems: "center",
-                                    }}
-                                    onClick={() => setSelectedFile(file)}
-                                >
-                                    {file.path}
-                                    <span
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleCloseTab(file);
-                                        }}
-                                        style={{
-                                            marginLeft: "10px",
-                                            cursor: "pointer",
-                                            color: "red",
-                                        }}
+                        <div className="flex gap-1">
+                            {openFiles.map((file, idx) => {
+                                const FileIcon = getIconFromExtension(file.path ?? "");
+
+                                return (
+                                    <div
+                                        key={idx}
+                                        className={`px-2 py-1 text-sm rounded text-white cursor-pointer flex items-center gap-2 hover:bg-neutral-700 ${selectedFile === file ? "bg-neutral-700 font-medium" : "bg-neutral-900 font-normal"}`}
+                                        onClick={() => setSelectedFile(file)}
                                     >
-                                        &times;
-                                    </span>
-                                </div>
-                            ))}
+                                        <FileIcon size={16} />
+                                        <span>{file.path}</span>
+                                        <button
+                                            className="ml-4 cursor-pointer text-rose-600"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleCloseTab(file);
+                                            }}
+                                        >
+                                            &times;
+                                        </button>
+                                    </div>
+                                );
+                            })}
                         </div>
                         {/* Editor */}
-                        <div style={{ flexGrow: 1 }}>
+                        <div className="grow rounded bg-neutral-800 mt-2">
                             {selectedFile && (
                                 <>
-                                    <h3 className="text-xl font-semibold mb-2">File: {selectedFile.path}</h3>
-                                    <Editor filename={selectedFile.path} value={selectedFile.content} onChange={handleEditorChange} />
+                                    <p className="text-xs font-semibold m-2">{selectedFile.path}</p>
+                                    <Editor
+                                        repoName={selectedRepo.name}
+                                        filename={selectedFile.path}
+                                        value={selectedFile.content}
+                                        onChange={handleEditorChange}
+                                    />
                                 </>
                             )}
 
