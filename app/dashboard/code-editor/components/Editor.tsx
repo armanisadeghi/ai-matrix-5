@@ -13,6 +13,7 @@ type EditorProps = MonacoEditorProps & {
 
 export const Editor: React.FC<EditorProps> = ({ repoName, value, onChange, filename }) => {
     const [content, setContent] = useState<string>(value);
+    const [isLoading, setIsLoading] = useState(false);
     const language = getLanguageFromExtension(filename);
     const editorRef = useRef<any>(null);
 
@@ -49,19 +50,26 @@ export const Editor: React.FC<EditorProps> = ({ repoName, value, onChange, filen
 
     const saveFileContent = async () => {
         if (editorRef.current) {
+            setIsLoading(true);
             const currentContent = editorRef.current.getValue();
             try {
                 await indexedDBStore.saveFileContent(repoName, filename, currentContent);
                 console.log(`File ${filename} saved to IndexedDB`);
+                setIsLoading(false);
             } catch (error) {
                 console.error(`Error saving file ${filename}:`, error);
+                setIsLoading(false);
             }
         }
     };
 
+    if (isLoading) {
+        return <>loading</>;
+    }
+
     return (
         <MonacoEditor
-            height="50dvh"
+            height="10dvh"
             theme="vs-dark"
             value={content}
             language={language}

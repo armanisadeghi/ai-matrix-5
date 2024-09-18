@@ -59,6 +59,11 @@ export default function Page({ params }: { params: { repoName: string } }) {
 
     const treeData = buildTree(selectedRepo);
 
+    /**
+     *
+     * @param repoName
+     * @returns
+     */
     const loadProject = async (repoName?: string) => {
         if (!repoName) return;
         try {
@@ -66,11 +71,35 @@ export default function Page({ params }: { params: { repoName: string } }) {
             setSelectedRepo(loadedProject || null);
             setSelectedFile(null);
             setActiveFolder("");
+
+            // Load opened files
+            try {
+                const openedFiles = await indexedDBStore.getOpenedFiles(repoName);
+                const loadedOpenFiles = await Promise.all(
+                    openedFiles.map(async (file) => {
+                        try {
+                            const fileData = await indexedDBStore.getFile(repoName, file.path);
+                            return fileData ? { path: fileData.path, content: atob(fileData.content) } : null;
+                        } catch (error) {
+                            console.error(`Error loading file ${file.path}:`, error);
+                            return null;
+                        }
+                    }),
+                );
+                setOpenFiles(loadedOpenFiles.filter((file): file is IFile => file !== null));
+            } catch (error) {
+                console.error("Error loading opened files:", error);
+                setOpenFiles([]);
+            }
         } catch (error) {
             console.error("Error loading project:", error);
         }
     };
 
+    /**
+     *
+     * @param path
+     */
     const handleFileSelect = async (path: string) => {
         if (selectedRepo) {
             try {
@@ -80,9 +109,18 @@ export default function Page({ params }: { params: { repoName: string } }) {
                     setSelectedFile(decodedFile);
                     const fileAlreadyOpen = openFiles.find((openFile) => openFile.path === path);
                     if (!fileAlreadyOpen) {
-                        setOpenFiles([...openFiles, decodedFile]);
+                        const newOpenFiles = [...openFiles, decodedFile];
+                        setOpenFiles(newOpenFiles);
+                        try {
+                            await indexedDBStore.saveOpenedFiles(
+                                selectedRepo.name,
+                                newOpenFiles.map((f) => ({ repoName: selectedRepo.name, path: f.path })),
+                            );
+                        } catch (error) {
+                            console.error("Error saving opened files:", error);
+                        }
                     }
-                    setActiveFile(decodedFile); // Set as active file for editing
+                    setActiveFile(decodedFile);
                 }
             } catch (error) {
                 console.error("Error loading file:", error);
@@ -90,15 +128,30 @@ export default function Page({ params }: { params: { repoName: string } }) {
         }
     };
 
+    /**
+     *
+     * @param path
+     */
     const handleFolderSelect = (path: string) => {
         setActiveFolder(path);
     };
 
-    // Handle closing a tab
-    const handleCloseTab = (fileToClose: IFile) => {
-        setOpenFiles(openFiles.filter((openFile) => openFile.path !== fileToClose.path));
+    //
+    /**
+     * Handle closing a tab
+     * @param fileToClose
+     */
+    const handleCloseTab = async (fileToClose: IFile) => {
+        const newOpenFiles = openFiles.filter((openFile) => openFile.path !== fileToClose.path);
+        setOpenFiles(newOpenFiles);
+        if (selectedRepo) {
+            await indexedDBStore.saveOpenedFiles(
+                selectedRepo.name,
+                newOpenFiles.map((f) => ({ repoName: selectedRepo.name, path: f.path })),
+            );
+        }
         if (activeFile && activeFile.path === fileToClose.path) {
-            const newActiveFile = openFiles.length > 1 ? openFiles[0] : null;
+            const newActiveFile = newOpenFiles.length > 0 ? newOpenFiles[0] : null;
             setSelectedFile(newActiveFile);
             setActiveFile(newActiveFile);
         }
@@ -135,6 +188,11 @@ export default function Page({ params }: { params: { repoName: string } }) {
         }
     };
 
+    /**
+     *
+     * @param path
+     * @param isFile
+     */
     const handleAddFolderFile = async (path: string, isFile: boolean) => {
         if (selectedRepo) {
             await loadProject(selectedRepo.name);
@@ -260,7 +318,7 @@ export default function Page({ params }: { params: { repoName: string } }) {
                     </ActionIcon>
                 </div>
             </div>
-            <div className="grid grid-cols-12 gap-4 min-h-screen">
+            <div className="grid grid-cols-12 gap-4 min-h-[80dvh]">
                 <div className="col-span-2 lg:col-span-2.5 p-2 rounded bg-neutral-800">
                     <div className="flex justify-between border-b border-white">
                         <ActionIcon {...actionIconProps}>

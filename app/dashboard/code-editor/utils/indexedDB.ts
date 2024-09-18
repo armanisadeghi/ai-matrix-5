@@ -4,13 +4,18 @@ import { IRepoData } from "../types";
 const DB_NAME = "GithubImportDB";
 const REPOS_STORE_NAME = "repositories";
 const FILES_STORE_NAME = "files";
+const OPENED_FILES_STORE_NAME = "openedFiles";
 
 // Interfaces to define the structure of repository and file data.
-
 interface FileData {
     repoName: string; // Repository name the file belongs to
     path: string; // Path to the file
     content: string; // Content of the file
+}
+
+interface OpenedFile {
+    repoName: string;
+    path: string;
 }
 
 // Class to handle IndexedDB operations.
@@ -24,30 +29,30 @@ class IndexedDBStore {
      */
     async init(): Promise<void> {
         return new Promise((resolve, reject) => {
-            const request = indexedDB.open(DB_NAME, 2); // Open the database (version 2)
+            const request = indexedDB.open(DB_NAME, 3); // Increment version to 3
 
-            // Handle errors while opening the database.
             request.onerror = () => reject(request.error);
 
-            // On success, store the database reference and resolve the promise.
             request.onsuccess = () => {
                 this.db = request.result;
                 resolve();
             };
 
-            // If the database needs to be upgraded (or created), create the necessary object stores.
             request.onupgradeneeded = (event) => {
                 const db = (event.target as IDBOpenDBRequest).result;
 
-                // Create object store for repositories if it doesn't already exist.
                 if (!db.objectStoreNames.contains(REPOS_STORE_NAME)) {
                     db.createObjectStore(REPOS_STORE_NAME, { keyPath: "name" });
                 }
 
-                // Create object store for files with a composite key of repoName and path.
                 if (!db.objectStoreNames.contains(FILES_STORE_NAME)) {
                     const filesStore = db.createObjectStore(FILES_STORE_NAME, { keyPath: ["repoName", "path"] });
                     filesStore.createIndex("repoName", "repoName", { unique: false });
+                }
+
+                // Create object store for opened files if it doesn't exist
+                if (!db.objectStoreNames.contains(OPENED_FILES_STORE_NAME)) {
+                    db.createObjectStore(OPENED_FILES_STORE_NAME, { keyPath: "repoName" });
                 }
             };
         });
@@ -391,6 +396,51 @@ class IndexedDBStore {
                 resolve();
             };
             transaction.onerror = () => reject(transaction.error);
+        });
+    }
+
+    /**
+     *
+     * @param repoName
+     * @param files
+     * @returns
+     */
+    async saveOpenedFiles(repoName: string, files: OpenedFile[]): Promise<void> {
+        if (!this.db) await this.init();
+
+        return new Promise((resolve, reject) => {
+            const transaction = this.db!.transaction([OPENED_FILES_STORE_NAME], "readwrite");
+            const store = transaction.objectStore(OPENED_FILES_STORE_NAME);
+
+            const request = store.put({ repoName, files });
+
+            request.onerror = () => reject(request.error);
+            request.onsuccess = () => {
+                console.log(`Opened files for repository ${repoName} saved successfully.`);
+                resolve();
+            };
+        });
+    }
+
+    /**
+     *
+     * @param repoName
+     * @returns
+     */
+    async getOpenedFiles(repoName: string): Promise<OpenedFile[]> {
+        if (!this.db) await this.init();
+
+        return new Promise((resolve, reject) => {
+            const transaction = this.db!.transaction([OPENED_FILES_STORE_NAME], "readonly");
+            const store = transaction.objectStore(OPENED_FILES_STORE_NAME);
+
+            const request = store.get(repoName);
+
+            request.onerror = () => reject(request.error);
+            request.onsuccess = () => {
+                const result = request.result;
+                resolve(result ? result.files : []);
+            };
         });
     }
 }
