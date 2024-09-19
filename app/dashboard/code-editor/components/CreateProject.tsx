@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Button, TextInput, Stack } from "@mantine/core";
+import { Button } from "../components";
 import { indexedDBStore } from "../utils/indexedDB";
+import { TextInput } from "./Inputs";
 
 export const CreateProject: React.FC<{ onProjectCreated: () => void }> = ({ onProjectCreated }) => {
     const [projectName, setProjectName] = useState("");
@@ -27,13 +28,16 @@ export const CreateProject: React.FC<{ onProjectCreated: () => void }> = ({ onPr
     };
 
     return (
-        <Stack>
+        <div className="flex items-center gap-2">
             <TextInput
+                className="flex-grow"
                 placeholder="Enter project name"
                 value={projectName}
                 onChange={(event) => setProjectName(event.currentTarget.value)}
             />
-            <Button onClick={handleCreateProject}>Create Blank Project</Button>
-        </Stack>
+            <Button onClick={handleCreateProject} variant="primary">
+                Create Blank Project
+            </Button>
+        </div>
     );
 };

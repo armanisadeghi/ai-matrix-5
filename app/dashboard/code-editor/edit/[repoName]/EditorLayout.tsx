@@ -1,6 +1,5 @@
 "use client";
 
-import { ActionIcon, ActionIconProps } from "@mantine/core";
 import {
     IconBell,
     IconBug,
@@ -13,10 +12,12 @@ import {
     IconX,
 } from "@tabler/icons-react";
 import Split from "react-split";
+import { ActionIcon, Button } from "../../components";
+import { IRepoData } from "../../types";
 
 type EditorLayoutProps = {
     children: React.ReactNode;
-    selectedRepo: string | null;
+    selectedRepo: IRepoData | null;
     onRepoClose: () => void;
     onDeleteFromGitHub: () => void;
     onPushToGitHub: () => void;
@@ -35,35 +36,38 @@ export default function EditorLayout({
     sidebar,
     fileTree,
 }: EditorLayoutProps) {
-    const actionIconProps: ActionIconProps = {
-        variant: "subtle",
-    };
-
     if (!selectedRepo) {
         return <>select a repo to proceed</>;
     }
 
     return (
-        <div className="h-screen flex flex-col bg-neutral-900 rounded border border-neutral-600">
+        <div className="h-screen flex flex-col gap-2 p-2 bg-neutral-900 rounded border border-neutral-700">
             {/* Header */}
-            <div className="flex justify-between px-3 py-2 bg-neutral-800">
-                <p className="text-md font-semibold text-white">Repository: {selectedRepo}</p>
-                <div className="flex gap-2">
-                    <ActionIcon {...actionIconProps}>
-                        <IconBell size={18} />
-                    </ActionIcon>
-                    <ActionIcon {...actionIconProps}>
-                        <IconInfoCircle size={18} />
-                    </ActionIcon>
-                    <ActionIcon onClick={onRepoClose} {...actionIconProps}>
-                        <IconX size={18} />
-                    </ActionIcon>
-                    <ActionIcon onClick={onDeleteFromGitHub} loading={isPublishing} {...actionIconProps}>
-                        <IconTrash size={18} />
-                    </ActionIcon>
-                    <ActionIcon onClick={onPushToGitHub} loading={isPublishing} {...actionIconProps}>
-                        <IconCloudUpload size={18} />
-                    </ActionIcon>
+            <div className="flex items-center justify-between px-3 py-2 bg-neutral-800 rounded">
+                <p className="text-md font-medium text-white">{selectedRepo.name}</p>
+                <div className="flex items-center gap-2">
+                    {selectedRepo.githubUrl && (
+                        <Button
+                            leftSection={<IconTrash size={18} />}
+                            onClick={onDeleteFromGitHub}
+                            loading={isPublishing}
+                            variant="danger"
+                        >
+                            Delete
+                        </Button>
+                    )}
+                    <Button
+                        leftSection={<IconCloudUpload size={18} />}
+                        onClick={onPushToGitHub}
+                        loading={isPublishing}
+                        variant="primary"
+                    >
+                        Publish to GitHub
+                    </Button>
+                    <>|</>
+                    <Button onClick={onRepoClose} rightSection={<IconX size={18} />} variant="danger">
+                        Close
+                    </Button>
                 </div>
             </div>
 
@@ -81,18 +85,18 @@ export default function EditorLayout({
                 className="flex-grow flex overflow-hidden"
             >
                 {/* Sidebar */}
-                <div className="bg-neutral-800 p-2 flex flex-col">
-                    <div className="flex justify-between border-b border-neutral-700 pb-2 mb-2">
-                        <ActionIcon {...actionIconProps}>
+                <div className="bg-neutral-800 p-2 flex flex-col rounded">
+                    <div className="flex items-center justify-between border-b border-neutral-700 pb-2 mb-2">
+                        <ActionIcon>
                             <IconFolder size={18} />
                         </ActionIcon>
-                        <ActionIcon {...actionIconProps}>
+                        <ActionIcon>
                             <IconPlayerPlay size={18} />
                         </ActionIcon>
-                        <ActionIcon {...actionIconProps}>
+                        <ActionIcon>
                             <IconBug size={18} />
                         </ActionIcon>
-                        <ActionIcon {...actionIconProps}>
+                        <ActionIcon>
                             <IconSettings size={18} />
                         </ActionIcon>
                         {sidebar}

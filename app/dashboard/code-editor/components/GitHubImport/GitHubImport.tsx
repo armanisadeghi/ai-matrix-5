@@ -1,8 +1,9 @@
 import { Button, Select } from "@mantine/core";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { octokit, indexedDBStore } from "../../utils";
 import { RepoCard } from "./RepoCard";
 import { IRepoData } from "../../types";
+import { TextInput } from "../Inputs";
 
 export type IRepository = {
     id: number;
@@ -13,6 +14,9 @@ export type IRepository = {
 
 export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (repo: IRepoData) => void }) => {
     const [repositories, setRepositories] = useState<IRepository[]>([]);
+    const [filteredRepositories, setFilteredRepositories] = useState<IRepository[]>([]);
+    const [filtered, setFiltered] = useState(false);
+    const [searchText, setSearchText] = useState("");
     const [selectedRepo, setSelectedRepo] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -90,21 +94,21 @@ export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (repo: IRepoData)
         }
     };
 
-    console.log({ repositories });
+    const handleSearchInput = (evt: ChangeEvent<HTMLInputElement>) => {
+        const value = evt.currentTarget.value.toLowerCase();
+        const filtered = repositories.filter((repo) => repo.name.toLowerCase() === value || repo.name.toLowerCase().includes(value));
+        setFiltered(true);
+        setSearchText(value);
+        setFilteredRepositories(filtered);
+    };
 
     return (
         <div className="space-y-4">
             <p className="text-xl font-semibold mb-2">Import project from GitHub</p>
-            <Select
-                value={selectedRepo}
-                onChange={setSelectedRepo}
-                placeholder="Select a repository"
-                data={repositories.map((repo) => ({ label: repo.name, value: repo.full_name }))}
-            />
+            <TextInput type="text" placeholder="search repositories" value={searchText} onChange={handleSearchInput} />
 
-            <input type="text" placeholder="search repositories" />
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {repositories.map((repo) => (
+                {(filtered ? filteredRepositories : repositories).map((repo) => (
                     <RepoCard
                         key={repo.name + repo.full_name}
                         repo={repo}

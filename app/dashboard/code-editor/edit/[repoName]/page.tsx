@@ -1,23 +1,11 @@
 "use client";
 
 import { useUser } from "@auth0/nextjs-auth0/client";
-import { ActionIcon, ActionIconProps } from "@mantine/core";
-import {
-    IconBell,
-    IconBug,
-    IconCloudUpload,
-    IconFolder,
-    IconInfoCircle,
-    IconPlayerPlay,
-    IconSettings,
-    IconTrash,
-    IconX,
-} from "@tabler/icons-react";
+import { ActionIconProps } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import Split from "react-split";
 
-import { AddFileFolder, Editor, FileTree, buildTree } from "../../components";
+import { AddFileFolder, Editor, FileTree, Footer, buildTree } from "../../components";
 import { IRepoData } from "../../types";
 import {
     deleteGitHubRepo,
@@ -27,8 +15,8 @@ import {
     updateGitHubRepo,
 } from "../../utils";
 
-import "./style.css";
 import EditorLayout from "./EditorLayout";
+import "./style.css";
 
 export type IFile = {
     path: string;
@@ -185,6 +173,9 @@ export default function Page({ params }: { params: { repoName: string } }) {
      *
      */
     const handleRepoClose = () => {
+        if (!confirm(`Are you sure you want to proceed closing this '${selectedRepo.name}' repository?`)) {
+            return;
+        }
         try {
             setSelectedRepo(null);
             setSelectedFile(null);
@@ -216,6 +207,10 @@ export default function Page({ params }: { params: { repoName: string } }) {
     const handlePushToGitHub = async () => {
         if (!selectedRepo || !fileSystem || !user) return;
 
+        if (!confirm(`Are you sure you want to proceed pushing this '${selectedRepo.name}' repository to GitHub?`)) {
+            return;
+        }
+
         setIsPublishing(true);
 
         const REPO_NAME = selectedRepo.name; // Name of the repository to create
@@ -245,6 +240,10 @@ export default function Page({ params }: { params: { repoName: string } }) {
     const handleDeleteFromGitHub = async () => {
         if (!selectedRepo || !fileSystem || !user) return;
 
+        if (!confirm(`Are you sure you want to proceed deleting this '${selectedRepo.name}' repository from GitHub?`)) {
+            return;
+        }
+
         setIsPublishing(true);
 
         const REPO_NAME = selectedRepo.name; // Name of the repository to create
@@ -258,40 +257,6 @@ export default function Page({ params }: { params: { repoName: string } }) {
             alert("Failed to delete project from GitHub.");
 
             setIsPublishing(false);
-        }
-    };
-
-    /**
-     *
-     * @param repoName
-     * @param oldPath
-     * @param newPath
-     * @param content
-     */
-    const handleFileUpdate = async (repoName: string, oldPath: string, newPath: string, content: string) => {
-        try {
-            await indexedDBStore.updateFile(repoName, oldPath, newPath, content);
-            // Update your UI or state as needed
-        } catch (error) {
-            console.error("Error updating file:", error);
-            // Handle the error (e.g., show an error message to the user)
-        }
-    };
-
-    //
-    /**
-     * In your folder renaming component
-     * @param repoName
-     * @param oldPath
-     * @param newPath
-     */
-    const handleFolderRename = async (repoName: string, oldPath: string, newPath: string) => {
-        try {
-            await indexedDBStore.updateFolder(repoName, oldPath, newPath);
-            // Update your UI or state as needed
-        } catch (error) {
-            console.error("Error renaming folder:", error);
-            // Handle the error (e.g., show an error message to the user)
         }
     };
 
@@ -332,7 +297,7 @@ export default function Page({ params }: { params: { repoName: string } }) {
 
     return (
         <EditorLayout
-            selectedRepo={selectedRepo?.name || null}
+            selectedRepo={selectedRepo}
             onRepoClose={handleRepoClose}
             onDeleteFromGitHub={handleDeleteFromGitHub}
             onPushToGitHub={handlePushToGitHub}
@@ -341,7 +306,7 @@ export default function Page({ params }: { params: { repoName: string } }) {
             fileTree={fileTreeContent}
         >
             {/* Editor area */}
-            <div className="flex flex-col overflow-hidden py-2 pr-2">
+            <div className="flex flex-col overflow-hidden py-2 pr-2 rounded">
                 {/* Tabs */}
                 <div className="flex gap-1 px-1 mb-2 overflow-x-auto rounded">
                     {openFiles.map((file, idx) => {
@@ -378,14 +343,15 @@ export default function Page({ params }: { params: { repoName: string } }) {
                             onChange={handleEditorChange}
                         />
                     ) : (
-                        <div className="h-full flex items-center justify-center text-white">Select a file to edit</div>
+                        <div className="h-full flex items-center justify-center text-white rounded">
+                            Select a file to edit
+                        </div>
                     )}
                 </div>
             </div>
             {/* Footer */}
-            <div className=" bg-neutral-800 p-2 overflow-auto rounded">
-                <p className="text-white">Footer content</p>
-                {/* Add more footer content here */}
+            <div className="bg-neutral-800 overflow-auto rounded w-full">
+                <Footer />
             </div>
         </EditorLayout>
     );

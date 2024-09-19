@@ -1,12 +1,12 @@
-import { Button } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { IconFolderPlus } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { IconFolderPlus } from "@tabler/icons-react";
 
 import { IRepoData } from "../../types";
 import { indexedDBStore } from "../../utils";
 import { NewProjectDrawer } from "../NewProjectDrawer";
+import { Button } from "../Buttons";
 import { ProjectCard } from "./ProjectCard";
 
 export const Workspace: React.FC = () => {
@@ -62,7 +62,9 @@ export const Workspace: React.FC = () => {
                 <div className="px-4 py-8 flex flex-col items-center gap-4 border border-neutral-700 rounded">
                     <IconFolderPlus size={48} />
                     <p className="text-2xl font-normal">No recent files added.</p>
-                    <Button onClick={open}>New project</Button>
+                    <Button onClick={open} leftSection={<IconFolderPlus size={16} />} variant="primary">
+                        New project
+                    </Button>
                 </div>
                 <NewProjectDrawer onClose={close} opened={opened} onProjectCreated={loadRepositories} />
             </>
@@ -75,9 +77,11 @@ export const Workspace: React.FC = () => {
 
     return (
         <>
-            <div className="flex justify-between">
-                <h2 className="text-xl font-semibold capitalize mb-4">recent files</h2>
-                <Button onClick={open}>New project</Button>
+            <div className="flex items-center justify-between pb-4 mb-4 border-b border-neutral-700">
+                <h2 className="text-xl font-semibold capitalize">recent files</h2>
+                <Button onClick={open} leftSection={<IconFolderPlus size={16} />} variant="primary">
+                    New project
+                </Button>
             </div>
             <div className="space-y-4">
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
