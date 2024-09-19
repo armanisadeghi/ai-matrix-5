@@ -15,6 +15,7 @@ import {
 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import Split from "react-split";
 
 import { AddFileFolder, Editor, FileTree, buildTree } from "../../components";
 import { IRepoData } from "../../types";
@@ -25,6 +26,9 @@ import {
     publishToGitHubRepo,
     updateGitHubRepo,
 } from "../../utils";
+
+import "./style.css";
+import EditorLayout from "./EditorLayout";
 
 type IFile = {
     path: string;
@@ -298,123 +302,87 @@ export default function Page({ params }: { params: { repoName: string } }) {
         return <>select a repo to proceed</>;
     }
 
+    const sidebarContent = (
+        <>
+            <AddFileFolder
+                projectName={selectedRepo?.name || ""}
+                activeFolder={activeFolder}
+                onAdd={handleAddFolderFile}
+                actionIconProps={actionIconProps}
+            />
+        </>
+    );
+
+    const fileTreeContent = (
+        <>
+            <FileTree
+                activeFolder={activeFolder}
+                onFileSelect={handleFileSelect}
+                onFolderSelect={handleFolderSelect}
+                onUpdate={loadProject}
+                repoName={selectedRepo?.name || ""}
+                treeData={treeData}
+            />
+        </>
+    );
+
     return (
-        <div className="h-screen flex flex-col bg-neutral-900">
-            {/* Header */}
-            <div className="flex justify-between px-3 py-2 bg-neutral-800">
-                <p className="text-md font-semibold text-white">Repository: {selectedRepo?.name}</p>
-                <div className="flex gap-2">
-                    <ActionIcon {...actionIconProps}>
-                        <IconBell size={18} />
-                    </ActionIcon>
-                    <ActionIcon {...actionIconProps}>
-                        <IconInfoCircle size={18} />
-                    </ActionIcon>
-                    <ActionIcon onClick={handleRepoClose} {...actionIconProps}>
-                        <IconX size={18} />
-                    </ActionIcon>
-                    <ActionIcon onClick={handleDeleteFromGitHub} loading={isPublishing} {...actionIconProps}>
-                        <IconTrash size={18} />
-                    </ActionIcon>
-                    <ActionIcon onClick={handlePushToGitHub} loading={isPublishing} {...actionIconProps}>
-                        <IconCloudUpload size={18} />
-                    </ActionIcon>
+        <EditorLayout
+            selectedRepo={selectedRepo?.name || null}
+            onRepoClose={handleRepoClose}
+            onDeleteFromGitHub={handleDeleteFromGitHub}
+            onPushToGitHub={handlePushToGitHub}
+            isPublishing={isPublishing}
+            sidebar={sidebarContent}
+            fileTree={fileTreeContent}
+        >
+            {/* Editor area */}
+            <div className="flex flex-col overflow-hidden py-2 pr-2">
+                {/* Tabs */}
+                <div className="flex gap-1 bg-neutral-800 p-1 overflow-x-auto">
+                    {openFiles.map((file, idx) => {
+                        const FileIcon = getIconFromExtension(file.path ?? "");
+                        return (
+                            <div
+                                key={idx}
+                                className={`px-2 py-1 text-sm rounded text-white cursor-pointer flex items-center gap-2 hover:bg-neutral-700 ${selectedFile === file ? "bg-neutral-700 font-medium" : "bg-neutral-900 font-normal"}`}
+                                onClick={() => setSelectedFile(file)}
+                            >
+                                <FileIcon size={16} />
+                                <span>{file.path}</span>
+                                <button
+                                    className="ml-4 cursor-pointer text-rose-600"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleCloseTab(file);
+                                    }}
+                                >
+                                    &times;
+                                </button>
+                            </div>
+                        );
+                    })}
+                </div>
+
+                {/* Editor */}
+                <div className="flex-grow overflow-hidden">
+                    {selectedFile ? (
+                        <Editor
+                            repoName={selectedRepo.name}
+                            filename={selectedFile.path}
+                            value={selectedFile.content}
+                            onChange={handleEditorChange}
+                        />
+                    ) : (
+                        <div className="h-full flex items-center justify-center text-white">Select a file to edit</div>
+                    )}
                 </div>
             </div>
-
-            {/* Main content and Footer container */}
-            <div className="flex-grow flex flex-col">
-                {/* Main content */}
-                <div className="flex-grow flex overflow-hidden h-[75%]">
-                    {/* Sidebar */}
-                    <div className="w-64 bg-neutral-800 p-2 flex flex-col">
-                        <div className="flex justify-between border-b border-neutral-700 pb-2 mb-2">
-                            <ActionIcon {...actionIconProps}>
-                                <IconFolder size={18} />
-                            </ActionIcon>
-                            <ActionIcon {...actionIconProps}>
-                                <IconPlayerPlay size={18} />
-                            </ActionIcon>
-                            <ActionIcon {...actionIconProps}>
-                                <IconBug size={18} />
-                            </ActionIcon>
-                            <ActionIcon {...actionIconProps}>
-                                <IconSettings size={18} />
-                            </ActionIcon>
-                            <AddFileFolder
-                                projectName={selectedRepo.name}
-                                activeFolder={activeFolder}
-                                onAdd={handleAddFolderFile}
-                                actionIconProps={actionIconProps}
-                            />
-                        </div>
-                        <div className="flex-grow overflow-auto">
-                            <FileTree
-                                activeFolder={activeFolder}
-                                onFileSelect={handleFileSelect}
-                                onFolderSelect={handleFolderSelect}
-                                onUpdate={loadProject}
-                                repoName={selectedRepo.name}
-                                treeData={treeData}
-                            />
-                        </div>
-                    </div>
-
-                    {/* Editor and Footer container */}
-                    <div className="flex-grow flex flex-col">
-                        {/* Editor area */}
-                        <div className="h-3/5 flex flex-col overflow-hidden">
-                            {/* Tabs */}
-                            <div className="flex gap-1 bg-neutral-800 p-1 overflow-x-auto">
-                                {openFiles.map((file, idx) => {
-                                    const FileIcon = getIconFromExtension(file.path ?? "");
-                                    return (
-                                        <div
-                                            key={idx}
-                                            className={`px-2 py-1 text-sm rounded text-white cursor-pointer flex items-center gap-2 hover:bg-neutral-700 ${selectedFile === file ? "bg-neutral-700 font-medium" : "bg-neutral-900 font-normal"}`}
-                                            onClick={() => setSelectedFile(file)}
-                                        >
-                                            <FileIcon size={16} />
-                                            <span>{file.path}</span>
-                                            <button
-                                                className="ml-4 cursor-pointer text-rose-600"
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    handleCloseTab(file);
-                                                }}
-                                            >
-                                                &times;
-                                            </button>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-
-                            {/* Editor */}
-                            <div className="flex-grow overflow-hidden">
-                                {selectedFile ? (
-                                    <Editor
-                                        repoName={selectedRepo.name}
-                                        filename={selectedFile.path}
-                                        value={selectedFile.content}
-                                        onChange={handleEditorChange}
-                                    />
-                                ) : (
-                                    <div className="h-full flex items-center justify-center text-white">
-                                        Select a file to edit
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-
-                        {/* Footer */}
-                        <div className="h-2/5 bg-neutral-900 p-2 overflow-auto">
-                            <p className="text-white">Footer content</p>
-                            {/* Add more footer content here */}
-                        </div>
-                    </div>
-                </div>
+            {/* Footer */}
+            <div className=" bg-neutral-900 p-2 overflow-auto">
+                <p className="text-white">Footer content</p>
+                {/* Add more footer content here */}
             </div>
-        </div>
+        </EditorLayout>
     );
 }
