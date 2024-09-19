@@ -1,11 +1,11 @@
 /* PageLayout.module.css */
-:root {
-    .ame-centerContent-container {
-        --header-height: 60px;
-        --layout-padding: 0px;
-        --center-column-max-width: 800px;
-    }
+/* :root { */
+.ame-centerContent-container {
+    --header-height: 60px;
+    --layout-padding: 0px;
+    --center-column-max-width: 800px;
 }
+/* } */
 
 .ame-centerContent-container {
     display: flex;

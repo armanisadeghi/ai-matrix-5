@@ -87,6 +87,8 @@ export default function Page({ params }: { params: { repoName: string } }) {
                     }),
                 );
                 setOpenFiles(loadedOpenFiles.filter((file): file is IFile => file !== null));
+                setActiveFile(loadedOpenFiles.filter((file): file is IFile => file !== null)[0]);
+                setSelectedFile(loadedOpenFiles.filter((file): file is IFile => file !== null)[0]);
             } catch (error) {
                 console.error("Error loading opened files:", error);
                 setOpenFiles([]);
@@ -297,9 +299,10 @@ export default function Page({ params }: { params: { repoName: string } }) {
     }
 
     return (
-        <div className="space-y-2 p-2 bg-neutral-900 rounded-md">
-            <div className="flex justify-between px-3 py-1.5 rounded bg-neutral-800">
-                <p className="text-md font-semibold">Repository: {selectedRepo?.name}</p>
+        <div className="h-screen flex flex-col bg-neutral-900">
+            {/* Header */}
+            <div className="flex justify-between px-3 py-2 bg-neutral-800">
+                <p className="text-md font-semibold text-white">Repository: {selectedRepo?.name}</p>
                 <div className="flex gap-2">
                     <ActionIcon {...actionIconProps}>
                         <IconBell size={18} />
@@ -318,80 +321,96 @@ export default function Page({ params }: { params: { repoName: string } }) {
                     </ActionIcon>
                 </div>
             </div>
-            <div className="grid grid-cols-12 gap-4 min-h-[80dvh]">
-                <div className="col-span-2 lg:col-span-2.5 p-2 rounded bg-neutral-800">
-                    <div className="flex justify-between border-b border-white">
-                        <ActionIcon {...actionIconProps}>
-                            <IconFolder size={18} />
-                        </ActionIcon>
-                        <ActionIcon {...actionIconProps}>
-                            <IconPlayerPlay size={18} />
-                        </ActionIcon>
-                        <ActionIcon {...actionIconProps}>
-                            <IconBug size={18} />
-                        </ActionIcon>
-                        <ActionIcon {...actionIconProps}>
-                            <IconSettings size={18} />
-                        </ActionIcon>
-                        <AddFileFolder
-                            projectName={selectedRepo.name}
-                            activeFolder={activeFolder}
-                            onAdd={handleAddFolderFile}
-                            actionIconProps={actionIconProps}
-                        />
-                    </div>
-                    <FileTree
-                        activeFolder={activeFolder}
-                        onFileSelect={handleFileSelect}
-                        onFolderSelect={handleFolderSelect}
-                        onUpdate={loadProject}
-                        repoName={selectedRepo.name}
-                        treeData={treeData}
-                    />
-                </div>
-                <div className="col-span-10 lg:col-span-9.5">
-                    <div className="flex flex-col grow">
-                        {/* Tabs */}
-                        <div className="flex gap-1">
-                            {openFiles.map((file, idx) => {
-                                const FileIcon = getIconFromExtension(file.path ?? "");
 
-                                return (
-                                    <div
-                                        key={idx}
-                                        className={`px-2 py-1 text-sm rounded text-white cursor-pointer flex items-center gap-2 hover:bg-neutral-700 ${selectedFile === file ? "bg-neutral-700 font-medium" : "bg-neutral-900 font-normal"}`}
-                                        onClick={() => setSelectedFile(file)}
-                                    >
-                                        <FileIcon size={16} />
-                                        <span>{file.path}</span>
-                                        <button
-                                            className="ml-4 cursor-pointer text-rose-600"
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                handleCloseTab(file);
-                                            }}
-                                        >
-                                            &times;
-                                        </button>
-                                    </div>
-                                );
-                            })}
+            {/* Main content and Footer container */}
+            <div className="flex-grow flex flex-col">
+                {/* Main content */}
+                <div className="flex-grow flex overflow-hidden h-[75%]">
+                    {/* Sidebar */}
+                    <div className="w-64 bg-neutral-800 p-2 flex flex-col">
+                        <div className="flex justify-between border-b border-neutral-700 pb-2 mb-2">
+                            <ActionIcon {...actionIconProps}>
+                                <IconFolder size={18} />
+                            </ActionIcon>
+                            <ActionIcon {...actionIconProps}>
+                                <IconPlayerPlay size={18} />
+                            </ActionIcon>
+                            <ActionIcon {...actionIconProps}>
+                                <IconBug size={18} />
+                            </ActionIcon>
+                            <ActionIcon {...actionIconProps}>
+                                <IconSettings size={18} />
+                            </ActionIcon>
+                            <AddFileFolder
+                                projectName={selectedRepo.name}
+                                activeFolder={activeFolder}
+                                onAdd={handleAddFolderFile}
+                                actionIconProps={actionIconProps}
+                            />
                         </div>
-                        {/* Editor */}
-                        <div className="grow rounded bg-neutral-800 mt-2">
-                            {selectedFile && (
-                                <>
-                                    <p className="text-xs font-semibold m-2">{selectedFile.path}</p>
+                        <div className="flex-grow overflow-auto">
+                            <FileTree
+                                activeFolder={activeFolder}
+                                onFileSelect={handleFileSelect}
+                                onFolderSelect={handleFolderSelect}
+                                onUpdate={loadProject}
+                                repoName={selectedRepo.name}
+                                treeData={treeData}
+                            />
+                        </div>
+                    </div>
+
+                    {/* Editor and Footer container */}
+                    <div className="flex-grow flex flex-col">
+                        {/* Editor area */}
+                        <div className="h-3/5 flex flex-col overflow-hidden">
+                            {/* Tabs */}
+                            <div className="flex gap-1 bg-neutral-800 p-1 overflow-x-auto">
+                                {openFiles.map((file, idx) => {
+                                    const FileIcon = getIconFromExtension(file.path ?? "");
+                                    return (
+                                        <div
+                                            key={idx}
+                                            className={`px-2 py-1 text-sm rounded text-white cursor-pointer flex items-center gap-2 hover:bg-neutral-700 ${selectedFile === file ? "bg-neutral-700 font-medium" : "bg-neutral-900 font-normal"}`}
+                                            onClick={() => setSelectedFile(file)}
+                                        >
+                                            <FileIcon size={16} />
+                                            <span>{file.path}</span>
+                                            <button
+                                                className="ml-4 cursor-pointer text-rose-600"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleCloseTab(file);
+                                                }}
+                                            >
+                                                &times;
+                                            </button>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+
+                            {/* Editor */}
+                            <div className="flex-grow overflow-hidden">
+                                {selectedFile ? (
                                     <Editor
                                         repoName={selectedRepo.name}
                                         filename={selectedFile.path}
                                         value={selectedFile.content}
                                         onChange={handleEditorChange}
                                     />
-                                </>
-                            )}
+                                ) : (
+                                    <div className="h-full flex items-center justify-center text-white">
+                                        Select a file to edit
+                                    </div>
+                                )}
+                            </div>
+                        </div>
 
-                            {!selectedFile && <div>Select a file to edit</div>}
+                        {/* Footer */}
+                        <div className="h-2/5 bg-neutral-900 p-2 overflow-auto">
+                            <p className="text-white">Footer content</p>
+                            {/* Add more footer content here */}
                         </div>
                     </div>
                 </div>

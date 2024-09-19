@@ -9,9 +9,10 @@ type EditorProps = MonacoEditorProps & {
     value: string;
     filename: string;
     onChange: (newContent: string) => void;
+    height?: number | string;
 };
 
-export const Editor: React.FC<EditorProps> = ({ repoName, value, onChange, filename }) => {
+export const Editor: React.FC<EditorProps> = ({ repoName, value, onChange, filename, height }) => {
     const [content, setContent] = useState<string>(value);
     const [isLoading, setIsLoading] = useState(false);
     const language = getLanguageFromExtension(filename);
@@ -64,17 +65,23 @@ export const Editor: React.FC<EditorProps> = ({ repoName, value, onChange, filen
     };
 
     if (isLoading) {
-        return <>loading</>;
+        return <div className="h-full flex items-center justify-center">Loading...</div>;
     }
 
     return (
-        <MonacoEditor
-            height="10dvh"
-            theme="vs-dark"
-            value={content}
-            language={language}
-            onChange={handleEditorChange}
-            onMount={handleEditorDidMount}
-        />
+        <div className="h-full">
+            <MonacoEditor
+                height={height || "100%"}
+                theme="vs-dark"
+                value={content}
+                language={language}
+                onChange={handleEditorChange}
+                onMount={handleEditorDidMount}
+                options={{
+                    scrollBeyondLastLine: false,
+                    minimap: { enabled: false },
+                }}
+            />
+        </div>
     );
 };
