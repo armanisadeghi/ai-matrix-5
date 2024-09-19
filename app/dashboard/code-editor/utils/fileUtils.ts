@@ -1,17 +1,18 @@
 import {
-    IconFileDots,
+    IconBrandPython,
+    IconBrandTypescript,
     IconFileCode,
-    IconFileText,
+    IconFileDots,
     IconFileSpreadsheet,
-    IconFileZip,
-    IconFileTypePdf,
-    IconVideo,
-    IconMusic,
-    IconPhoto,
+    IconFileText,
     IconFileTypeJs,
     IconFileTypeJsx,
+    IconFileTypePdf,
     IconFileTypeTsx,
-    IconBrandTypescript,
+    IconFileZip,
+    IconMusic,
+    IconPhoto,
+    IconVideo,
 } from "@tabler/icons-react";
 
 export function getLanguageFromExtension(filename: string): string {
@@ -77,6 +78,7 @@ export function getIconFromExtension(filename: string) {
         jpeg: IconPhoto,
         png: IconPhoto,
         gif: IconPhoto,
+        py: IconBrandPython,
         // Add more mappings as needed
     };
 

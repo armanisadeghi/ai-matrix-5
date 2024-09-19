@@ -30,7 +30,7 @@ import {
 import "./style.css";
 import EditorLayout from "./EditorLayout";
 
-type IFile = {
+export type IFile = {
     path: string;
     content: string;
 };
@@ -70,6 +70,7 @@ export default function Page({ params }: { params: { repoName: string } }) {
      */
     const loadProject = async (repoName?: string) => {
         if (!repoName) return;
+        console.log("renaming");
         try {
             const loadedProject = await indexedDBStore.getRepository(repoName);
             setSelectedRepo(loadedProject || null);
@@ -319,9 +320,12 @@ export default function Page({ params }: { params: { repoName: string } }) {
                 activeFolder={activeFolder}
                 onFileSelect={handleFileSelect}
                 onFolderSelect={handleFolderSelect}
-                onUpdate={loadProject}
+                onUpdate={() => {
+                    loadProject(selectedRepo?.name || "");
+                }}
                 repoName={selectedRepo?.name || ""}
                 treeData={treeData}
+                selectedFile={selectedFile}
             />
         </>
     );
@@ -339,13 +343,13 @@ export default function Page({ params }: { params: { repoName: string } }) {
             {/* Editor area */}
             <div className="flex flex-col overflow-hidden py-2 pr-2">
                 {/* Tabs */}
-                <div className="flex gap-1 bg-neutral-800 p-1 overflow-x-auto">
+                <div className="flex gap-1 px-1 mb-2 overflow-x-auto rounded">
                     {openFiles.map((file, idx) => {
                         const FileIcon = getIconFromExtension(file.path ?? "");
                         return (
                             <div
                                 key={idx}
-                                className={`px-2 py-1 text-sm rounded text-white cursor-pointer flex items-center gap-2 hover:bg-neutral-700 ${selectedFile === file ? "bg-neutral-700 font-medium" : "bg-neutral-900 font-normal"}`}
+                                className={`px-2 py-1 text-sm rounded text-white cursor-pointer flex items-center gap-2 hover:bg-neutral-700 ${selectedFile?.path === file?.path ? "bg-neutral-900 font-medium" : "bg-neutral-800 font-normal"}`}
                                 onClick={() => setSelectedFile(file)}
                             >
                                 <FileIcon size={16} />
@@ -379,7 +383,7 @@ export default function Page({ params }: { params: { repoName: string } }) {
                 </div>
             </div>
             {/* Footer */}
-            <div className=" bg-neutral-900 p-2 overflow-auto">
+            <div className=" bg-neutral-800 p-2 overflow-auto rounded">
                 <p className="text-white">Footer content</p>
                 {/* Add more footer content here */}
             </div>

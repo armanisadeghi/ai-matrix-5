@@ -1,11 +1,12 @@
 "use client";
 
-import { Button } from "@mantine/core";
-import { IconFolder, IconFolderOpen, IconPencil, IconTrash } from "@tabler/icons-react";
-import React, { useState } from "react";
-import { getIconFromExtension, indexedDBStore } from "../utils";
+import { Menu } from "@mantine/core";
+import { IconDotsVertical, IconFolder, IconFolderOpen, IconPencil, IconTrash } from "@tabler/icons-react";
+import React, { useEffect, useState } from "react";
 
+import { IFile } from "../edit/[repoName]/page";
 import { IRepoData } from "../types";
+import { getIconFromExtension, indexedDBStore } from "../utils";
 
 export function buildTree(repoData: IRepoData): IFileNode[] {
     const root: IFileNode[] = [];
@@ -62,6 +63,7 @@ type TreeNodeProps = React.HTMLAttributes<HTMLDivElement> & {
     onFolderSelect: (path: string) => void;
     onUpdate: () => void;
     activeFolder: string;
+    selectedFile: IFile;
 };
 
 const TreeNode: React.FC<TreeNodeProps> = ({
@@ -72,12 +74,12 @@ const TreeNode: React.FC<TreeNodeProps> = ({
     onFolderSelect,
     onUpdate,
     activeFolder,
+    selectedFile,
     ...others
 }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [isRenaming, setIsRenaming] = useState(false);
     const [newName, setNewName] = useState(node.name);
-    const hasChildren = node.children && node.children.length > 0;
     const fullPath = path ? `${path}/${node.name}` : node.name;
     const isActive = fullPath === activeFolder;
 
@@ -128,6 +130,19 @@ const TreeNode: React.FC<TreeNodeProps> = ({
         }
     };
 
+    const activeFolderClass = node.isFolder
+        ? isActive
+            ? "bg-neutral-700 font-medium"
+            : isExpanded
+              ? "bg-neutral-700 font-medium"
+              : "font-normal"
+        : "subtle";
+    const activeFileClass = !node.isFolder && selectedFile?.path === fullPath ? "bg-neutral-700" : "bg-neutral-0";
+
+    useEffect(() => {
+        setIsExpanded(node.isFolder && node.name === fullPath && selectedFile?.path.split("/").includes(fullPath));
+    }, [selectedFile]);
+
     return (
         <div {...others}>
             <div className="flex items-center gap-2">
@@ -140,9 +155,9 @@ const TreeNode: React.FC<TreeNodeProps> = ({
                     />
                 ) : (
                     <button
-                        className={`flex-grow p-1 flex items-center gap-2 text-md rounded transition ease-in-out delay-150 border border-transparent hover:border-neutral-600 ${
-                            node.isFolder && isExpanded ? "font-medium" : "font-normal"
-                        } ${node.isFolder ? (isActive ? "filled" : isExpanded ? "light" : "subtle") : "subtle"}`}
+                        className={`flex-grow p-1 flex items-center gap-2 text-sm text-white rounded transition ease-in-out delay-150 border border-transparent hover:border-neutral-500
+                             ${activeFolderClass} ${activeFileClass}
+                             `}
                         onClick={
                             node.isFolder
                                 ? handleFolderClick
@@ -153,12 +168,21 @@ const TreeNode: React.FC<TreeNodeProps> = ({
                         <span>{node.name}</span>
                     </button>
                 )}
-                <Button variant="subtle" size="xs" onClick={handleRename}>
-                    <IconPencil size={16} />
-                </Button>
-                <Button variant="subtle" size="xs" onClick={handleDelete}>
-                    <IconTrash size={16} />
-                </Button>
+                <Menu shadow="md" width={200}>
+                    <Menu.Target>
+                        <button className="">
+                            <IconDotsVertical size={16} />
+                        </button>
+                    </Menu.Target>
+                    <Menu.Dropdown>
+                        <Menu.Item leftSection={<IconPencil size={16} />} onClick={handleRename}>
+                            Rename
+                        </Menu.Item>
+                        <Menu.Item leftSection={<IconTrash size={16} />} onClick={handleDelete}>
+                            Delete
+                        </Menu.Item>
+                    </Menu.Dropdown>
+                </Menu>
             </div>
             {node.isFolder &&
                 isExpanded &&
@@ -173,6 +197,7 @@ const TreeNode: React.FC<TreeNodeProps> = ({
                         onUpdate={onUpdate}
                         activeFolder={activeFolder}
                         style={{ marginLeft: 12 }}
+                        selectedFile={selectedFile}
                     />
                 ))}
         </div>
@@ -184,8 +209,9 @@ type FileTreeProps = {
     repoName: string;
     onFileSelect: (path: string, content: string) => void;
     onFolderSelect: (path: string) => void;
-    onUpdate: () => Promise<void>;
+    onUpdate: () => Promise<void> | void;
     activeFolder: string;
+    selectedFile: IFile;
 };
 
 export const FileTree: React.FC<FileTreeProps> = ({
@@ -195,6 +221,7 @@ export const FileTree: React.FC<FileTreeProps> = ({
     onFolderSelect,
     onUpdate,
     activeFolder,
+    selectedFile,
 }) => {
     return (
         <div className="h-full">
@@ -209,6 +236,7 @@ export const FileTree: React.FC<FileTreeProps> = ({
                     onFolderSelect={onFolderSelect}
                     onUpdate={onUpdate}
                     activeFolder={activeFolder}
+                    selectedFile={selectedFile}
                 />
             ))}
         </div>

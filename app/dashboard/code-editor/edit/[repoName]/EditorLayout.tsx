@@ -44,7 +44,7 @@ export default function EditorLayout({
     }
 
     return (
-        <div className="h-screen flex flex-col bg-neutral-900">
+        <div className="h-screen flex flex-col bg-neutral-900 rounded border border-neutral-600">
             {/* Header */}
             <div className="flex justify-between px-3 py-2 bg-neutral-800">
                 <p className="text-md font-semibold text-white">Repository: {selectedRepo}</p>
@@ -111,7 +111,7 @@ export default function EditorLayout({
                     dragInterval={1}
                     direction="vertical"
                     cursor="row-resize"
-                    className="flex flex-col"
+                    className="flex flex-col bg-neutral-800"
                 >
                     {/* Main content area (children) */}
                     {children}

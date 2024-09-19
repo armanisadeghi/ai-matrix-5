@@ -361,6 +361,7 @@ class IndexedDBStore {
             const fileStore = transaction.objectStore(FILES_STORE_NAME);
             const repoStore = transaction.objectStore(REPOS_STORE_NAME);
 
+            // TODO: fix this line throwing erro
             const index = fileStore.index("repoName");
             const request = index.openCursor(IDBKeyRange.only(repoName));
 
