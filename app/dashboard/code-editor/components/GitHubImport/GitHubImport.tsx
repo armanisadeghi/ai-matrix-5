@@ -18,6 +18,8 @@ export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (repo: IRepoData)
     const [searchText, setSearchText] = useState("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const reposPerPage = 9;
 
     useEffect(() => {
         checkGitHubAuth();
@@ -29,7 +31,7 @@ export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (repo: IRepoData)
             const data = await response.json();
             setIsAuthenticated(data.isAuthenticated);
             if (data.isAuthenticated) {
-                await fetchRepositories();
+                await fetchAllRepositories();
             }
         } catch (error) {
             console.error("Error checking GitHub auth status:", error);
@@ -40,19 +42,38 @@ export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (repo: IRepoData)
         window.location.href = "/api/auth/github";
     };
 
-    const fetchRepositories = async () => {
+    const fetchAllRepositories = async () => {
         setIsLoading(true);
         try {
             const octokit = await getOctokit();
-            const response = await octokit.repos.listForAuthenticatedUser();
-            setRepositories(
-                response.data.map((repo) => ({
+            let page = 1;
+            let allRepos: IRepository[] = [];
+            let hasNextPage = true;
+
+            while (hasNextPage) {
+                const response = await octokit.repos.listForAuthenticatedUser({
+                    per_page: 100,
+                    page: page,
+                });
+
+                const newRepos = response.data.map((repo) => ({
                     id: repo.id,
                     name: repo.name,
                     full_name: repo.full_name,
                     html_url: repo.html_url,
-                })),
-            );
+                }));
+
+                allRepos = [...allRepos, ...newRepos];
+
+                if (response.data.length < 100) {
+                    hasNextPage = false;
+                } else {
+                    page++;
+                }
+            }
+
+            setRepositories(allRepos);
+            setFilteredRepositories(allRepos);
         } catch (error) {
             console.error("Error fetching repositories:", error);
             alert("Failed to fetch repositories. Please check your GitHub token.");
@@ -119,7 +140,14 @@ export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (repo: IRepoData)
         );
         setSearchText(value);
         setFilteredRepositories(filtered);
+        setCurrentPage(1); // Reset to first page when searching
     };
+
+    const indexOfLastRepo = currentPage * reposPerPage;
+    const indexOfFirstRepo = indexOfLastRepo - reposPerPage;
+    const currentRepos = filteredRepositories.slice(indexOfFirstRepo, indexOfLastRepo);
+
+    const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
     return (
         <div className="space-y-4">
@@ -139,7 +167,7 @@ export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (repo: IRepoData)
                     />
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {(searchText ? filteredRepositories : repositories).map((repo) => (
+                        {currentRepos.map((repo) => (
                             <RepoCard
                                 key={repo.id}
                                 repo={repo}
@@ -149,7 +177,22 @@ export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (repo: IRepoData)
                         ))}
                     </div>
 
-                    <Button onClick={fetchRepositories} loading={isLoading}>
+                    <div className="flex justify-between items-center mt-4">
+                        <Button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>
+                            Previous
+                        </Button>
+                        <span>
+                            Page {currentPage} of {Math.ceil(filteredRepositories.length / reposPerPage)}
+                        </span>
+                        <Button
+                            onClick={() => paginate(currentPage + 1)}
+                            disabled={currentPage === Math.ceil(filteredRepositories.length / reposPerPage)}
+                        >
+                            Next
+                        </Button>
+                    </div>
+
+                    <Button onClick={fetchAllRepositories} loading={isLoading}>
                         {isLoading ? "Refreshing..." : "Refresh Repositories"}
                     </Button>
                 </>
