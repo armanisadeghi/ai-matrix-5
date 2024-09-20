@@ -32,10 +32,12 @@ export const Button: React.FC<Props> = ({
 
     const buttonStyles = `${baseStyles} ${variantStyles[variant]} ${loading ? loadingStyles : ""}`;
 
+    const buttonContent = loading ? "loading" : children;
+
     return (
         <button className={buttonStyles} disabled={disabled} {...others}>
             {leftSection}
-            {children}
+            {buttonContent}
             {rightSection}
         </button>
     );

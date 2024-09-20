@@ -1,5 +1,5 @@
 import { useDisclosure } from "@mantine/hooks";
-import { IconFolderPlus } from "@tabler/icons-react";
+import { IconFolderPlus, IconReload } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -72,16 +72,26 @@ export const Workspace: React.FC = () => {
     }
 
     if (isLoading) {
-        return <>loading</>;
+        return (
+            <div className="flex flex-col gap-2 items-center">
+                <IconReload />
+                <p className="text-md">loading</p>
+            </div>
+        );
     }
 
     return (
         <>
             <div className="flex items-center justify-between pb-4 mb-4 border-b border-neutral-700">
                 <h2 className="text-xl font-semibold capitalize">recent files</h2>
-                <Button onClick={open} leftSection={<IconFolderPlus size={16} />} variant="primary">
-                    New project
-                </Button>
+                <div className="flex gap-2 items-center">
+                    <Button onClick={open} leftSection={<IconFolderPlus size={16} />} variant="primary">
+                        New project
+                    </Button>
+                    <Button onClick={loadRepositories} leftSection={<IconReload size={16} />} variant="subtle">
+                        Refresh
+                    </Button>
+                </div>
             </div>
             <div className="space-y-4">
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">

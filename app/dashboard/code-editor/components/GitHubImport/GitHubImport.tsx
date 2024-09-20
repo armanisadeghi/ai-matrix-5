@@ -21,6 +21,9 @@ export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (repo: IRepoData)
     const [checkAuthLoading, setCheckAuthLoading] = useState<boolean>(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
+    const [isCloning, setIsCloning] = useState<boolean>(false);
+    const [currentCloningFile, setCurrentCloningFile] = useState<string>("");
+
     const reposPerPage = 9;
 
     useEffect(() => {
@@ -96,7 +99,7 @@ export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (repo: IRepoData)
             return;
         }
 
-        setIsLoading(true);
+        setIsCloning(true);
         try {
             const [owner, repo] = repository.full_name.split("/");
             const octokit = await getOctokit();
@@ -107,7 +110,8 @@ export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (repo: IRepoData)
             console.error("Error cloning repository:", error);
             alert("Failed to clone repository. Please try again.");
         }
-        setIsLoading(false);
+        setIsCloning(false);
+        setCurrentCloningFile("");
     };
 
     const fetchAllFiles = async (octokit: any, owner: string, repo: string, path: string = ""): Promise<any> => {
@@ -120,6 +124,8 @@ export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (repo: IRepoData)
         if (Array.isArray(response.data)) {
             const files: any = {};
             for (const item of response.data) {
+                setCurrentCloningFile(item.path);
+
                 if (item.type === "file") {
                     const content = await octokit.repos.getContent({
                         owner,
@@ -161,7 +167,7 @@ export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (repo: IRepoData)
             {!isAuthenticated ? (
                 <Button
                     onClick={handleGitHubLogin}
-                    loading={isLoading}
+                    loading={checkAuthLoading}
                     variant="primary"
                     leftSection={<IconBrandGithub size={16} />}
                 >
@@ -176,41 +182,64 @@ export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (repo: IRepoData)
                         onChange={handleSearchInput}
                     />
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {currentRepos.map((repo) => (
-                            <RepoCard
-                                key={repo.id}
-                                repo={repo}
-                                handleCloneRepo={handleCloneRepository}
-                                loading={isLoading}
-                            />
-                        ))}
-                    </div>
+                    {isCloning && (
+                        <div className="mt-4 p-4 bg-neutral-700 border border-neutral-500 rounded text-white">
+                            <p className="text-sm font-semibold mb-2">Cloning repository...</p>
+                            <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
+                                <div className="h-full bg-blue-500 rounded-full animate-indeterminate-progress"></div>
+                            </div>
+                            <p className="text-xs mt-2 ">Current file: {currentCloningFile}</p>
+                        </div>
+                    )}
 
-                    <div className="flex justify-between items-center mt-4">
-                        <Button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1} variant="subtle">
-                            Previous
-                        </Button>
-                        <span>
-                            Page {currentPage} of {Math.ceil(filteredRepositories.length / reposPerPage)}
-                        </span>
-                        <Button
-                            onClick={() => paginate(currentPage + 1)}
-                            disabled={currentPage === Math.ceil(filteredRepositories.length / reposPerPage)}
-                            variant="subtle"
-                        >
-                            Next
-                        </Button>
-                    </div>
+                    {!isCloning && (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {currentRepos.map((repo) => (
+                                <RepoCard
+                                    key={repo.id}
+                                    repo={repo}
+                                    handleCloneRepo={handleCloneRepository}
+                                    loading={isLoading}
+                                />
+                            ))}
+                        </div>
+                    )}
 
-                    <Button
-                        onClick={fetchAllRepositories}
-                        loading={isLoading}
-                        leftSection={<IconReload size={16} />}
-                        variant="subtle"
-                    >
-                        {isLoading ? "Refreshing..." : "Refresh Repositories"}
-                    </Button>
+                    {!isCloning && (
+                        <>
+                            <div className="flex justify-between items-center mt-4">
+                                <Button
+                                    onClick={() => paginate(currentPage - 1)}
+                                    disabled={currentPage === 1 || isCloning}
+                                    variant="subtle"
+                                >
+                                    Previous
+                                </Button>
+                                <span>
+                                    Page {currentPage} of {Math.ceil(filteredRepositories.length / reposPerPage)}
+                                </span>
+                                <Button
+                                    onClick={() => paginate(currentPage + 1)}
+                                    disabled={
+                                        currentPage === Math.ceil(filteredRepositories.length / reposPerPage) ||
+                                        isCloning
+                                    }
+                                    variant="subtle"
+                                >
+                                    Next
+                                </Button>
+                            </div>
+
+                            <Button
+                                onClick={fetchAllRepositories}
+                                loading={isLoading || isCloning}
+                                leftSection={<IconReload size={16} />}
+                                variant="subtle"
+                            >
+                                {isLoading ? "Refreshing..." : "Refresh Repositories"}
+                            </Button>
+                        </>
+                    )}
                 </>
             )}
         </div>
