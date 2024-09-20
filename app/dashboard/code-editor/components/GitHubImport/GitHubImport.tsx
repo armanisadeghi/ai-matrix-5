@@ -1,9 +1,10 @@
-import { Button } from "@mantine/core";
 import { ChangeEvent, useEffect, useState } from "react";
 import { getOctokit, indexedDBStore } from "../../utils";
 import { RepoCard } from "./RepoCard";
 import { IRepoData } from "../../types";
 import { TextInput } from "../Inputs";
+import { Button } from "../Buttons";
+import { IconBrandGithub, IconReload } from "@tabler/icons-react";
 
 export type IRepository = {
     id: number;
@@ -17,6 +18,7 @@ export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (repo: IRepoData)
     const [filteredRepositories, setFilteredRepositories] = useState<IRepository[]>([]);
     const [searchText, setSearchText] = useState("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [checkAuthLoading, setCheckAuthLoading] = useState<boolean>(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const reposPerPage = 9;
@@ -27,14 +29,17 @@ export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (repo: IRepoData)
 
     const checkGitHubAuth = async () => {
         try {
+            setCheckAuthLoading(true);
             const response = await fetch("/api/auth/github-status");
             const data = await response.json();
             setIsAuthenticated(data.isAuthenticated);
             if (data.isAuthenticated) {
                 await fetchAllRepositories();
             }
+            setCheckAuthLoading(false);
         } catch (error) {
             console.error("Error checking GitHub auth status:", error);
+            setCheckAuthLoading(false);
         }
     };
 
@@ -151,10 +156,15 @@ export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (repo: IRepoData)
 
     return (
         <div className="space-y-4">
-            <p className="text-xl font-semibold mb-2">Import project from GitHub</p>
+            <p className="text-xl font-semibold">Import project from GitHub</p>
 
             {!isAuthenticated ? (
-                <Button onClick={handleGitHubLogin} loading={isLoading}>
+                <Button
+                    onClick={handleGitHubLogin}
+                    loading={isLoading}
+                    variant="primary"
+                    leftSection={<IconBrandGithub size={16} />}
+                >
                     {isLoading ? "Logging in..." : "Login with GitHub"}
                 </Button>
             ) : (
@@ -178,7 +188,7 @@ export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (repo: IRepoData)
                     </div>
 
                     <div className="flex justify-between items-center mt-4">
-                        <Button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>
+                        <Button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1} variant="subtle">
                             Previous
                         </Button>
                         <span>
@@ -187,12 +197,18 @@ export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (repo: IRepoData)
                         <Button
                             onClick={() => paginate(currentPage + 1)}
                             disabled={currentPage === Math.ceil(filteredRepositories.length / reposPerPage)}
+                            variant="subtle"
                         >
                             Next
                         </Button>
                     </div>
 
-                    <Button onClick={fetchAllRepositories} loading={isLoading}>
+                    <Button
+                        onClick={fetchAllRepositories}
+                        loading={isLoading}
+                        leftSection={<IconReload size={16} />}
+                        variant="subtle"
+                    >
                         {isLoading ? "Refreshing..." : "Refresh Repositories"}
                     </Button>
                 </>

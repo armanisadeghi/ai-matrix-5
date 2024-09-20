@@ -1,7 +1,7 @@
 "use client";
 
 import { Menu } from "@mantine/core";
-import { IconDotsVertical, IconFolder, IconFolderOpen, IconPencil, IconTrash } from "@tabler/icons-react";
+import { IconDotsVertical, IconFolderFilled, IconFolderOpen, IconPencil, IconTrash } from "@tabler/icons-react";
 import React, { useEffect, useState } from "react";
 
 import { IFile } from "../edit/[repoName]/page";
@@ -90,7 +90,7 @@ const TreeNode: React.FC<TreeNodeProps> = ({
 
     const decodeBase64 = (content: string) => atob(content);
 
-    const FileIcon = node.isFolder ? (isExpanded ? IconFolderOpen : IconFolder) : getIconFromExtension(node.name);
+    const FileIcon = node.isFolder ? (isExpanded ? IconFolderOpen : IconFolderFilled) : getIconFromExtension(node.name);
 
     const handleRename = async () => {
         if (isRenaming) {
@@ -132,9 +132,9 @@ const TreeNode: React.FC<TreeNodeProps> = ({
 
     const activeFolderClass = node.isFolder
         ? isActive
-            ? "bg-neutral-700 font-medium"
+            ? "font-medium"
             : isExpanded
-              ? "bg-neutral-700 font-medium"
+              ? "font-medium"
               : "font-normal"
         : "subtle";
     const activeFileClass = !node.isFolder && selectedFile?.path === fullPath ? "bg-neutral-700" : "bg-neutral-0";
@@ -164,7 +164,7 @@ const TreeNode: React.FC<TreeNodeProps> = ({
                                 : () => onFileSelect!(fullPath, decodeBase64(node?.content ?? ""))
                         }
                     >
-                        <FileIcon size={16} />
+                        <FileIcon size={16} className={node.isFolder ? "text-yellow-400" : ""} />
                         <span>{node.name}</span>
                     </button>
                 )}

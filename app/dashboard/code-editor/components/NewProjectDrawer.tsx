@@ -20,7 +20,6 @@ export const NewProjectDrawer: React.FC<NewProjectDrawerProps> = ({ opened, onCl
 
     return (
         <Drawer opened={opened} onClose={onClose} title="Create a project" position="right" size="xl">
-            <p className="text-xl font-semibold mb-2">Create a blank project</p>
             <CreateProject onProjectCreated={handleCloseDrawer} />
             <hr className="border border-neutral-700 my-4" />
             <GitHubImport onRepoCloned={handleCloseDrawer} />

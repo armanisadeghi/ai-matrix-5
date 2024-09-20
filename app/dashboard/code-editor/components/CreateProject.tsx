@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button } from "../components";
 import { indexedDBStore } from "../utils/indexedDB";
 import { TextInput } from "./Inputs";
+import { IconCirclePlus } from "@tabler/icons-react";
 
 export const CreateProject: React.FC<{ onProjectCreated: () => void }> = ({ onProjectCreated }) => {
     const [projectName, setProjectName] = useState("");
@@ -28,16 +29,20 @@ export const CreateProject: React.FC<{ onProjectCreated: () => void }> = ({ onPr
     };
 
     return (
-        <div className="flex items-center gap-2">
-            <TextInput
-                className="flex-grow"
-                placeholder="Enter project name"
-                value={projectName}
-                onChange={(event) => setProjectName(event.currentTarget.value)}
-            />
-            <Button onClick={handleCreateProject} variant="primary">
-                Create Blank Project
-            </Button>
+        <div className="space-y-4">
+            <p className="text-xl font-semibold">Create a blank project</p>
+
+            <div className="flex items-center gap-2">
+                <TextInput
+                    className="flex-grow"
+                    placeholder="Enter project name"
+                    value={projectName}
+                    onChange={(event) => setProjectName(event.currentTarget.value)}
+                />
+                <Button onClick={handleCreateProject} variant="primary" leftSection={<IconCirclePlus size={16} />}>
+                    Create Blank Project
+                </Button>
+            </div>
         </div>
     );
 };
