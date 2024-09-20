@@ -9,4 +9,5 @@ export interface IRepoData {
     name: string; // Repository name
     files: { [path: string]: string }; // Key-value pair of file paths and content
     githubUrl?: string;
+    description?: string;
 }

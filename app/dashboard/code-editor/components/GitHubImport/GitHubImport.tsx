@@ -1,6 +1,6 @@
-import { Button, Select } from "@mantine/core";
+import { Button } from "@mantine/core";
 import { ChangeEvent, useEffect, useState } from "react";
-import { octokit, indexedDBStore } from "../../utils";
+import { getOctokit, indexedDBStore } from "../../utils";
 import { RepoCard } from "./RepoCard";
 import { IRepoData } from "../../types";
 import { TextInput } from "../Inputs";
@@ -15,18 +15,35 @@ export type IRepository = {
 export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (repo: IRepoData) => void }) => {
     const [repositories, setRepositories] = useState<IRepository[]>([]);
     const [filteredRepositories, setFilteredRepositories] = useState<IRepository[]>([]);
-    const [filtered, setFiltered] = useState(false);
     const [searchText, setSearchText] = useState("");
-    const [selectedRepo, setSelectedRepo] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     useEffect(() => {
-        fetchRepositories();
+        checkGitHubAuth();
     }, []);
+
+    const checkGitHubAuth = async () => {
+        try {
+            const response = await fetch("/api/auth/github-status");
+            const data = await response.json();
+            setIsAuthenticated(data.isAuthenticated);
+            if (data.isAuthenticated) {
+                await fetchRepositories();
+            }
+        } catch (error) {
+            console.error("Error checking GitHub auth status:", error);
+        }
+    };
+
+    const handleGitHubLogin = () => {
+        window.location.href = "/api/auth/github";
+    };
 
     const fetchRepositories = async () => {
         setIsLoading(true);
         try {
+            const octokit = await getOctokit();
             const response = await octokit.repos.listForAuthenticatedUser();
             setRepositories(
                 response.data.map((repo) => ({
@@ -43,7 +60,7 @@ export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (repo: IRepoData)
         setIsLoading(false);
     };
 
-    const cloneRepository = async (repository: IRepository) => {
+    const handleCloneRepository = async (repository: IRepository) => {
         if (!repository.name) {
             alert("Please select a repository");
             return;
@@ -55,8 +72,9 @@ export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (repo: IRepoData)
 
         setIsLoading(true);
         try {
-            const [owner, repo] = repository.name.split("/");
-            const files = await fetchAllFiles(owner, repo);
+            const [owner, repo] = repository.full_name.split("/");
+            const octokit = await getOctokit();
+            const files = await fetchAllFiles(octokit, owner, repo);
             await indexedDBStore.addRepository({ name: repository.name, files, githubUrl: repository.html_url });
             onRepoCloned({ name: repository.name, files, githubUrl: repository.html_url });
         } catch (error) {
@@ -66,7 +84,7 @@ export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (repo: IRepoData)
         setIsLoading(false);
     };
 
-    const fetchAllFiles = async (owner: string, repo: string, path: string = ""): Promise<any> => {
+    const fetchAllFiles = async (octokit: any, owner: string, repo: string, path: string = ""): Promise<any> => {
         const response = await octokit.repos.getContent({
             owner,
             repo,
@@ -84,7 +102,7 @@ export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (repo: IRepoData)
                     });
                     files[item.path] = (content.data as any).content;
                 } else if (item.type === "dir") {
-                    const subFiles = await fetchAllFiles(owner, repo, item.path);
+                    const subFiles = await fetchAllFiles(octokit, owner, repo, item.path);
                     Object.assign(files, subFiles);
                 }
             }
@@ -96,8 +114,9 @@ export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (repo: IRepoData)
 
     const handleSearchInput = (evt: ChangeEvent<HTMLInputElement>) => {
         const value = evt.currentTarget.value.toLowerCase();
-        const filtered = repositories.filter((repo) => repo.name.toLowerCase() === value || repo.name.toLowerCase().includes(value));
-        setFiltered(true);
+        const filtered = repositories.filter(
+            (repo) => repo.name.toLowerCase().includes(value) || repo.full_name.toLowerCase().includes(value),
+        );
         setSearchText(value);
         setFilteredRepositories(filtered);
     };
@@ -105,22 +124,36 @@ export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (repo: IRepoData)
     return (
         <div className="space-y-4">
             <p className="text-xl font-semibold mb-2">Import project from GitHub</p>
-            <TextInput type="text" placeholder="search repositories" value={searchText} onChange={handleSearchInput} />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {(filtered ? filteredRepositories : repositories).map((repo) => (
-                    <RepoCard
-                        key={repo.name + repo.full_name}
-                        repo={repo}
-                        handleCloneRepo={cloneRepository}
-                        loading={isLoading}
+            {!isAuthenticated ? (
+                <Button onClick={handleGitHubLogin} loading={isLoading}>
+                    {isLoading ? "Logging in..." : "Login with GitHub"}
+                </Button>
+            ) : (
+                <>
+                    <TextInput
+                        type="text"
+                        placeholder="Search repositories"
+                        value={searchText}
+                        onChange={handleSearchInput}
                     />
-                ))}
-            </div>
 
-            <Button disabled={isLoading || !selectedRepo} loading={isLoading}>
-                {isLoading ? "Cloning..." : "Clone Repository"}
-            </Button>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {(searchText ? filteredRepositories : repositories).map((repo) => (
+                            <RepoCard
+                                key={repo.id}
+                                repo={repo}
+                                handleCloneRepo={handleCloneRepository}
+                                loading={isLoading}
+                            />
+                        ))}
+                    </div>
+
+                    <Button onClick={fetchRepositories} loading={isLoading}>
+                        {isLoading ? "Refreshing..." : "Refresh Repositories"}
+                    </Button>
+                </>
+            )}
         </div>
     );
 };

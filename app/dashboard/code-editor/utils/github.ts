@@ -1,4 +1,4 @@
-import { indexedDBStore, octokit } from ".";
+import { getOctokit, indexedDBStore } from ".";
 import { IRepoData } from "../types";
 
 export async function publishToGitHubRepo(repoName: string) {
@@ -12,6 +12,8 @@ export async function publishToGitHubRepo(repoName: string) {
     if (!repoData) {
         throw new Error(`Repository ${repoName} not found in IndexedDB`);
     }
+
+    const octokit = await getOctokit();
 
     // Step 3: Create a new repository on GitHub
     const { data: githubRepoData } = await octokit.repos.createForAuthenticatedUser({
@@ -67,6 +69,8 @@ export async function deleteGitHubRepo(repoName: string): Promise<void> {
     const owner = urlParts[1];
     const repo = urlParts[2];
 
+    const octokit = await getOctokit();
+
     // Delete the repository from GitHub
     await octokit.repos.delete({
         owner,
@@ -108,6 +112,7 @@ export async function updateGitHubRepo(repoName: string): Promise<string> {
             console.warn(`Skipping file ${filePath} due to invalid content type`);
             continue;
         }
+        const octokit = await getOctokit();
 
         try {
             // Try to get the file first
@@ -146,4 +151,42 @@ export async function updateGitHubRepo(repoName: string): Promise<string> {
 
     console.log(`Successfully updated repository ${repoName} on GitHub`);
     return repoData.githubUrl;
+}
+
+export async function fetchAndStoreRepos() {
+    const octokit = await getOctokit();
+    const { data: repos } = await octokit.repos.listForAuthenticatedUser();
+
+    for (const repo of repos) {
+        const { data: contents } = await octokit.repos.getContent({
+            owner: repo.owner.login,
+            repo: repo.name,
+            path: "",
+        });
+
+        const files: { [key: string]: string } = {};
+
+        for (const item of contents as any) {
+            if (item.type === "file") {
+                const { data: fileContent } = await octokit.repos.getContent({
+                    owner: repo.owner.login,
+                    repo: repo.name,
+                    path: item.path,
+                });
+
+                if ("content" in fileContent) {
+                    const decodedContent = Buffer.from(fileContent.content, "base64").toString("utf-8");
+                    files[item.path] = decodedContent;
+                }
+            }
+        }
+
+        const repoData: IRepoData = {
+            name: repo.name,
+            description: repo.description || "",
+            files: files,
+        };
+
+        await indexedDBStore.addRepository(repoData);
+    }
 }

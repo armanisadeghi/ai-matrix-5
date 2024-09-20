@@ -5,8 +5,8 @@ import React, { useEffect, useState } from "react";
 
 import { IRepoData } from "../../types";
 import { indexedDBStore } from "../../utils";
-import { NewProjectDrawer } from "../NewProjectDrawer";
 import { Button } from "../Buttons";
+import { NewProjectDrawer } from "../NewProjectDrawer";
 import { ProjectCard } from "./ProjectCard";
 
 export const Workspace: React.FC = () => {
