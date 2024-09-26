@@ -56,6 +56,15 @@ export const Workspace: React.FC = () => {
         }
     };
 
+    if (isLoading) {
+        return (
+            <div className="flex flex-col gap-2 items-center">
+                <IconReload />
+                <p className="text-md">loading</p>
+            </div>
+        );
+    }
+
     if (!repositories || repositories.length === 0) {
         return (
             <>
@@ -68,15 +77,6 @@ export const Workspace: React.FC = () => {
                 </div>
                 <NewProjectDrawer onClose={close} opened={opened} onProjectCreated={loadRepositories} />
             </>
-        );
-    }
-
-    if (isLoading) {
-        return (
-            <div className="flex flex-col gap-2 items-center">
-                <IconReload />
-                <p className="text-md">loading</p>
-            </div>
         );
     }
 

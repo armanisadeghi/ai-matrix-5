@@ -5,17 +5,19 @@ import { ActionIconProps } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { AddFileFolder, Editor, FileTree, Footer, buildTree } from "../../components";
+import { AddFileFolder, buildTree, Editor, FileTree, Footer } from "../../components";
 import { IRepoData } from "../../types";
 import {
+    analyzeRepo,
+    CodeAnalyzer,
     deleteGitHubRepo,
     getIconFromExtension,
     indexedDBStore,
     publishToGitHubRepo,
     updateGitHubRepo,
 } from "../../utils";
-
 import EditorLayout from "./EditorLayout";
+
 import "./style.css";
 
 export type IFile = {
@@ -23,7 +25,32 @@ export type IFile = {
     content: string;
 };
 
+// If you want to add custom rules or languages:
+const customAnalyzer = new CodeAnalyzer();
+
+// Add a custom rule for JavaScript
+customAnalyzer.addRule("JavaScript", {
+    name: "noVar",
+    test: (content) => /\bvar\b/.test(content),
+    message: "Use 'let' or 'const' instead of 'var'",
+});
+
+// Add support for a new language
+customAnalyzer.addLanguage({
+    name: "Ruby",
+    extensions: [".rb"],
+    rules: [
+        {
+            name: "noSelfOutsideClass",
+            test: (content) => /^self\./.test(content),
+            message: "Avoid using 'self' outside of class context",
+        },
+    ],
+});
+
 export default function Page({ params }: { params: { repoName: string } }) {
+    const router = useRouter();
+    const { user, isLoading } = useUser();
     const [selectedRepo, setSelectedRepo] = useState<IRepoData | null>(null);
     const [selectedFile, setSelectedFile] = useState<IFile | null>(null);
     const [fileSystem, setFileSystem] = useState<IFile[] | null>([]);
@@ -31,23 +58,7 @@ export default function Page({ params }: { params: { repoName: string } }) {
     const [activeFile, setActiveFile] = useState<IFile | null>(null);
     const [activeFolder, setActiveFolder] = useState<string>("");
     const [isPublishing, setIsPublishing] = useState(false);
-    const router = useRouter();
-    const { user, isLoading } = useUser();
-
-    useEffect(() => {
-        const fetchData = async (): Promise<void> => {
-            if (params?.repoName) {
-                const repoName = decodeURIComponent(params.repoName);
-                loadProject(repoName);
-            }
-        };
-
-        fetchData();
-
-        return () => {
-            //
-        };
-    }, [params?.repoName]);
+    const [analysisResults, setAnalysisResults] = useState<any>();
 
     const treeData = buildTree(selectedRepo);
 
@@ -260,13 +271,27 @@ export default function Page({ params }: { params: { repoName: string } }) {
         }
     };
 
+    /**
+     * analyze code
+     */
+    const handleAnalyzeCode = async () => {
+        if (selectedRepo) {
+            try {
+                const results = await analyzeRepo(selectedRepo.name);
+                console.log("Analysis complete:", results);
+                // Update your UI with the results
+                // For example:
+                setAnalysisResults(results);
+            } catch (error) {
+                console.error("Failed to analyze repository:", error);
+                // Handle the error in your UI
+            }
+        }
+    };
+
     const actionIconProps: ActionIconProps = {
         variant: "subtle",
     };
-
-    if (!selectedRepo) {
-        return <>select a repo to proceed</>;
-    }
 
     const sidebarContent = (
         <>
@@ -295,6 +320,27 @@ export default function Page({ params }: { params: { repoName: string } }) {
         </>
     );
 
+    console.log({ analysisResults });
+
+    useEffect(() => {
+        const fetchData = async (): Promise<void> => {
+            if (params?.repoName) {
+                const repoName = decodeURIComponent(params.repoName);
+                loadProject(repoName);
+            }
+        };
+
+        fetchData();
+
+        return () => {
+            //
+        };
+    }, [params?.repoName]);
+
+    if (!selectedRepo) {
+        return <>select a repo to proceed</>;
+    }
+
     return (
         <EditorLayout
             selectedRepo={selectedRepo}
@@ -304,6 +350,7 @@ export default function Page({ params }: { params: { repoName: string } }) {
             isPublishing={isPublishing}
             sidebar={sidebarContent}
             fileTree={fileTreeContent}
+            onCodeAnalyze={handleAnalyzeCode}
         >
             {/* Editor area */}
             <div className="flex flex-col overflow-hidden py-2 pr-2 rounded">

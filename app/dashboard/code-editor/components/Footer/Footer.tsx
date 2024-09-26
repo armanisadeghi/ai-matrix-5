@@ -10,8 +10,8 @@ export const Footer = () => {
         { id: 0, title: "Problems", content: "No problems have been detected in the workspace." },
         { id: 1, title: "Output", content: "No output have been detected in the workspace." },
         { id: 2, title: "Terminal", content: <Terminal /> },
-        { id: 2, title: "Ports", content: "No ports have been detected in the workspace." },
-        { id: 2, title: "Debug Console", content: "No debug console have been detected in the workspace." },
+        { id: 3, title: "Ports", content: "No ports have been detected in the workspace." },
+        { id: 4, title: "Debug Console", content: "No debug console have been detected in the workspace." },
     ];
     return (
         <>

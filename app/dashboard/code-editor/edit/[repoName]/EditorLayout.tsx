@@ -1,11 +1,10 @@
 "use client";
 
 import {
-    IconBell,
+    IconBolt,
     IconBug,
     IconCloudUpload,
     IconFolder,
-    IconInfoCircle,
     IconPlayerPlay,
     IconSettings,
     IconTrash,
@@ -24,6 +23,7 @@ type EditorLayoutProps = {
     isPublishing: boolean;
     sidebar: React.ReactNode;
     fileTree: React.ReactNode;
+    onCodeAnalyze: () => void;
 };
 
 export default function EditorLayout({
@@ -35,6 +35,7 @@ export default function EditorLayout({
     isPublishing,
     sidebar,
     fileTree,
+    onCodeAnalyze,
 }: EditorLayoutProps) {
     if (!selectedRepo) {
         return <>select a repo to proceed</>;
@@ -56,6 +57,9 @@ export default function EditorLayout({
                             Delete
                         </Button>
                     )}
+                    <Button leftSection={<IconBolt size={18} />} onClick={onCodeAnalyze} loading={isPublishing}>
+                        Analyze
+                    </Button>
                     <Button
                         leftSection={<IconCloudUpload size={18} />}
                         onClick={onPushToGitHub}
