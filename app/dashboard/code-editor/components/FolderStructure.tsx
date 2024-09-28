@@ -1,19 +1,37 @@
 "use client";
 
 import { Menu } from "@mantine/core";
-import { IconDotsVertical, IconFolderFilled, IconFolderOpen, IconPencil, IconTrash } from "@tabler/icons-react";
-import React, { useEffect, useState } from "react";
+import {
+    IconChevronDown,
+    IconChevronRight,
+    IconDotsVertical,
+    IconFolderFilled,
+    IconFolderOpen,
+    IconPencil,
+    IconSearch,
+    IconTrash,
+} from "@tabler/icons-react";
+import React, { useEffect, useMemo, useState } from "react";
 
-import { IFile } from "../edit/[repoName]/page";
 import { IRepoData } from "../types";
 import { getIconFromExtension, indexedDBStore } from "../utils";
+import { IFile } from "../workspace/[repoName]/page";
+import { TextInput } from "./Inputs";
+
+type IFileNode = {
+    name: string;
+    isFolder: boolean;
+    content?: string | null;
+    children?: IFileNode[];
+    matches?: boolean;
+    path: string;
+};
 
 export function buildTree(repoData: IRepoData): IFileNode[] {
     const root: IFileNode[] = [];
 
     if (repoData?.files) {
-        // Get sorted keys before processing
-        const sortedKeys = Object.keys(repoData.files).sort((a, b) => a.localeCompare(b));
+        const sortedKeys = Object.keys(repoData.files).sort();
 
         sortedKeys.forEach((key) => {
             const value = repoData.files[key];
@@ -28,14 +46,12 @@ export function buildTree(repoData: IRepoData): IFileNode[] {
                 if (!existingNode) {
                     existingNode = {
                         name: part,
-                        content: value,
-                        isFolder: value === null || index < parts.length - 1, // Folder if value is `null`
+                        content: index === parts.length - 1 ? value : null,
+                        isFolder: index < parts.length - 1,
+                        children: index < parts.length - 1 ? [] : undefined,
+                        path: key,
                     };
                     currentLevel.push(existingNode);
-                }
-
-                if (existingNode.isFolder && !existingNode.children) {
-                    existingNode.children = [];
                 }
 
                 if (index < parts.length - 1) {
@@ -45,14 +61,73 @@ export function buildTree(repoData: IRepoData): IFileNode[] {
         });
     }
 
-    return root;
+    // Recursive function to sort each level of the tree
+    const sortLevel = (level: IFileNode[]): IFileNode[] => {
+        return level
+            .sort((a, b) => {
+                if (a.isFolder && !b.isFolder) return -1;
+                if (!a.isFolder && b.isFolder) return 1;
+                return a.name.localeCompare(b.name);
+            })
+            .map((node) => {
+                if (node.children) {
+                    node.children = sortLevel(node.children);
+                }
+                return node;
+            });
+    };
+
+    // Sort the entire tree
+    return sortLevel(root);
 }
 
-type IFileNode = {
-    name: string;
-    isFolder: boolean;
-    content?: string | null;
-    children?: IFileNode[];
+const flattenTree = (nodes: IFileNode[], parentPath: string = ""): IFileNode[] => {
+    return nodes.reduce((acc: IFileNode[], node) => {
+        const currentPath = parentPath ? `${parentPath}/${node.name}` : node.name;
+        const newNode = { ...node, path: currentPath };
+        acc.push(newNode);
+        if (node.children) {
+            acc.push(...flattenTree(node.children, currentPath));
+        }
+        return acc;
+    }, []);
+};
+
+const buildSearchTree = (results: IFileNode[]): IFileNode[] => {
+    const tree: IFileNode[] = [];
+    const map = new Map<string, IFileNode>();
+
+    results.forEach((node) => {
+        const parts = node.path.split("/");
+        let currentPath = "";
+        parts.forEach((part, index) => {
+            currentPath += (currentPath ? "/" : "") + part;
+
+            if (!map.has(currentPath)) {
+                const isFolder = index < parts.length - 1 || node.isFolder;
+                const newNode: IFileNode = {
+                    name: part,
+                    isFolder: isFolder,
+                    children: isFolder ? [] : undefined,
+                    path: currentPath,
+                    matches: currentPath === node.path,
+                    content: !isFolder ? node.content : undefined,
+                };
+                map.set(currentPath, newNode);
+                if (index === 0) {
+                    tree.push(newNode);
+                } else {
+                    const parentPath = parts.slice(0, index).join("/");
+                    const parent = map.get(parentPath);
+                    if (parent && parent.children) {
+                        parent.children.push(newNode);
+                    }
+                }
+            }
+        });
+    });
+
+    return tree;
 };
 
 type TreeNodeProps = React.HTMLAttributes<HTMLDivElement> & {
@@ -223,22 +298,128 @@ export const FileTree: React.FC<FileTreeProps> = ({
     activeFolder,
     selectedFile,
 }) => {
+    const [searchQuery, setSearchQuery] = useState("");
+    const [searchResults, setSearchResults] = useState<IFileNode[]>([]);
+
+    const allNodes = useMemo(() => flattenTree(treeData), [treeData]);
+
+    useEffect(() => {
+        if (searchQuery) {
+            const results = allNodes.filter(
+                (node) =>
+                    node.path.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    node.name.toLowerCase().includes(searchQuery.toLowerCase()),
+            );
+            setSearchResults(buildSearchTree(results));
+        } else {
+            setSearchResults([]);
+        }
+    }, [searchQuery, allNodes]);
+
+    const handleSearchResultSelect = (node: IFileNode) => {
+        if (node.isFolder) {
+            onFolderSelect(node.path!);
+        } else {
+            onFileSelect(node.path!, node.content || "");
+        }
+    };
+
     return (
         <div className="h-full">
             <p className="text-xs font-normal py-2 uppercase">Explorer</p>
-            {treeData.map((node) => (
-                <TreeNode
-                    key={node.name}
-                    node={node}
-                    path=""
-                    repoName={repoName}
-                    onFileSelect={onFileSelect}
-                    onFolderSelect={onFolderSelect}
-                    onUpdate={onUpdate}
-                    activeFolder={activeFolder}
-                    selectedFile={selectedFile}
-                />
-            ))}
+            <TextInput
+                placeholder="Search files..."
+                value={searchQuery}
+                onChange={(event) => setSearchQuery(event.currentTarget.value)}
+                icon={<IconSearch size={16} />}
+            />
+            {searchQuery
+                ? searchResults.map((node, index) => (
+                      <SearchResultNode
+                          key={index}
+                          node={node}
+                          onSelect={handleSearchResultSelect}
+                          depth={0}
+                          searchQuery={searchQuery}
+                      />
+                  ))
+                : treeData.map((node) => (
+                      <TreeNode
+                          key={node.name}
+                          node={node}
+                          path=""
+                          repoName={repoName}
+                          onFileSelect={onFileSelect}
+                          onFolderSelect={onFolderSelect}
+                          onUpdate={onUpdate}
+                          activeFolder={activeFolder}
+                          selectedFile={selectedFile}
+                      />
+                  ))}
+        </div>
+    );
+};
+
+interface SearchResultNodeProps {
+    node: IFileNode;
+    onSelect: (node: IFileNode) => void;
+    depth: number;
+    searchQuery: string;
+}
+
+const SearchResultNode: React.FC<SearchResultNodeProps> = ({ node, onSelect, depth, searchQuery }) => {
+    const [isExpanded, setIsExpanded] = useState(!node.matches); // Expand if it's not the matching node
+    const FileIcon = node.isFolder ? (isExpanded ? IconFolderOpen : IconFolderFilled) : getIconFromExtension(node.name);
+    const hasChildren = node.children && node.children.length > 0;
+
+    const toggleExpand = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setIsExpanded(!isExpanded);
+    };
+
+    const highlight = (text: string) => {
+        if (!searchQuery) return text;
+        const parts = text.split(new RegExp(`(${searchQuery})`, "gi"));
+        return parts.map((part, index) =>
+            part.toLowerCase() === searchQuery.toLowerCase() ? (
+                <span key={index} className="bg-yellow-500 text-black">
+                    {part}
+                </span>
+            ) : (
+                part
+            ),
+        );
+    };
+
+    return (
+        <div style={{ marginLeft: `${depth * 16}px` }}>
+            <div
+                className={`flex items-center gap-2 p-1 cursor-pointer hover:bg-neutral-700 ${
+                    node.matches ? "bg-blue-500" : ""
+                }`}
+                onClick={() => onSelect(node)}
+            >
+                {node.isFolder && (
+                    <span onClick={toggleExpand}>
+                        {isExpanded ? <IconChevronDown size={16} /> : <IconChevronRight size={16} />}
+                    </span>
+                )}
+                <FileIcon size={16} className={node.isFolder ? "text-yellow-400" : ""} />
+                <span>{highlight(node.name)}</span>
+            </div>
+            {isExpanded && hasChildren && (
+                <div>
+                    {node.children!.map((child, index) => (
+                        <SearchResultNode
+                            key={index}
+                            node={child}
+                            onSelect={onSelect}
+                            depth={depth + 1}
+                            searchQuery={searchQuery}
+                        />
+                    ))}
+                </div>
+            )}
         </div>
     );
 };
