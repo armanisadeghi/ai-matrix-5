@@ -37,7 +37,7 @@ export const Workspace: React.FC = () => {
             const repo = await indexedDBStore.getRepository(repoName);
             setSelectedRepo(repo || null);
             router.push(
-                `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/code-editor/edit/${encodeURIComponent(repoName)}`,
+                `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/code-editor/workspace/${encodeURIComponent(repoName)}`,
             );
         } catch (error) {
             console.error("Error loading repository:", error);

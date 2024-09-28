@@ -4,16 +4,15 @@ import { Menu } from "@mantine/core";
 import { IconDotsVertical, IconFolderFilled, IconFolderOpen, IconPencil, IconTrash } from "@tabler/icons-react";
 import React, { useEffect, useState } from "react";
 
-import { IFile } from "../edit/[repoName]/page";
 import { IRepoData } from "../types";
 import { getIconFromExtension, indexedDBStore } from "../utils";
+import { IFile } from "../workspace/[repoName]/page";
 
 export function buildTree(repoData: IRepoData): IFileNode[] {
     const root: IFileNode[] = [];
 
     if (repoData?.files) {
-        // Get sorted keys before processing
-        const sortedKeys = Object.keys(repoData.files).sort((a, b) => a.localeCompare(b));
+        const sortedKeys = Object.keys(repoData.files).sort();
 
         sortedKeys.forEach((key) => {
             const value = repoData.files[key];
@@ -28,14 +27,11 @@ export function buildTree(repoData: IRepoData): IFileNode[] {
                 if (!existingNode) {
                     existingNode = {
                         name: part,
-                        content: value,
-                        isFolder: value === null || index < parts.length - 1, // Folder if value is `null`
+                        content: index === parts.length - 1 ? value : null,
+                        isFolder: index < parts.length - 1,
+                        children: index < parts.length - 1 ? [] : undefined,
                     };
                     currentLevel.push(existingNode);
-                }
-
-                if (existingNode.isFolder && !existingNode.children) {
-                    existingNode.children = [];
                 }
 
                 if (index < parts.length - 1) {
@@ -45,7 +41,24 @@ export function buildTree(repoData: IRepoData): IFileNode[] {
         });
     }
 
-    return root;
+    // Recursive function to sort each level of the tree
+    const sortLevel = (level: IFileNode[]): IFileNode[] => {
+        return level
+            .sort((a, b) => {
+                if (a.isFolder && !b.isFolder) return -1;
+                if (!a.isFolder && b.isFolder) return 1;
+                return a.name.localeCompare(b.name);
+            })
+            .map((node) => {
+                if (node.children) {
+                    node.children = sortLevel(node.children);
+                }
+                return node;
+            });
+    };
+
+    // Sort the entire tree
+    return sortLevel(root);
 }
 
 type IFileNode = {
