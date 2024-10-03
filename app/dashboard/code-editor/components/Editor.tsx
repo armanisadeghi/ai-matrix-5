@@ -2,7 +2,7 @@
 
 import MonacoEditor, { EditorProps as MonacoEditorProps } from "@monaco-editor/react";
 import React, { useEffect, useRef, useState } from "react";
-import { getLanguageFromExtension, indexedDBStore } from "../utils";
+import { getLanguageFromExtension, supabaseIndexedDBStore } from "../utils";
 
 type EditorProps = MonacoEditorProps & {
     repoName: string;
@@ -54,7 +54,7 @@ export const Editor: React.FC<EditorProps> = ({ repoName, value, onChange, filen
             setIsLoading(true);
             const currentContent = editorRef.current.getValue();
             try {
-                await indexedDBStore.saveFileContent(repoName, filename, currentContent);
+                await supabaseIndexedDBStore.saveFileContent(repoName, filename, currentContent);
                 console.log(`File ${filename} saved to IndexedDB`);
                 setIsLoading(false);
             } catch (error) {

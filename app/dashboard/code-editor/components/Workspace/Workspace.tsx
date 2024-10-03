@@ -1,13 +1,17 @@
+"use client";
+
 import { useDisclosure } from "@mantine/hooks";
 import { IconFolderPlus, IconReload } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 import { IRepoData } from "../../types";
-import { getSyncManager, supabaseIndexedDBStore } from "../../utils";
+import { indexedDBStore } from "../../utils";
 import { Button } from "../Buttons";
 import { NewProjectDrawer } from "../NewProjectDrawer";
 import { ProjectCard } from "./ProjectCard";
+
+const store = indexedDBStore;
 
 export const Workspace: React.FC = () => {
     const [repositories, setRepositories] = useState<IRepoData[]>([]);
@@ -16,24 +20,25 @@ export const Workspace: React.FC = () => {
     const [opened, { open, close }] = useDisclosure(false);
     const router = useRouter();
 
+    // let syncManagerInstance = null; // Declare this variable outside the useEffect
+
+    /*    // start supabase sync
     useEffect(() => {
-        let syncManagerInstance = null;
-
-        const setupSyncManager = async () => {
+        const setupAndStartSync = async () => {
             try {
-                // Retrieve the SyncManager instance
-                syncManagerInstance = await getSyncManager();
+                // Initialize the sync manager
+                syncManagerInstance = await setupSyncManager();
 
-                // Start periodic synchronization immediately
+                // Assume setupSyncManager returns an instance setup correctly for use
                 syncManagerInstance.startPeriodicSync();
-
-                // Real-time listener logic can be handled inside SyncManager if needed
                 console.log("Periodic sync started");
 
-                // Return a cleanup function
+                // Cleanup function to stop the sync
                 return () => {
-                    syncManagerInstance.stopPeriodicSync();
-                    console.log("Periodic sync stopped");
+                    if (syncManagerInstance) {
+                        syncManagerInstance.stopPeriodicSync();
+                        console.log("Periodic sync stopped");
+                    }
                 };
             } catch (error) {
                 console.error("Failed to setup SyncManager:", error);
@@ -43,22 +48,25 @@ export const Workspace: React.FC = () => {
         // Declare a variable to store the cleanup function
         let executeCleanup: (() => void) | undefined;
 
-        // Execute the setup function and capture any cleanup it returns
         (async () => {
-            executeCleanup = await setupSyncManager(); // Store the resolved function
+            executeCleanup = await setupAndStartSync();
         })();
-        // Cleanup on component unmount
+
         return () => {
             if (executeCleanup) {
                 executeCleanup();
             }
         };
+    }, []);*/
+
+    useEffect(() => {
+        loadRepositories();
     }, []);
 
     const loadRepositories = async () => {
         try {
             setIsLoading(true);
-            const repos = await supabaseIndexedDBStore.getRepositories();
+            const repos = await store.getRepositories();
             setRepositories(repos);
             setIsLoading(false);
         } catch (error) {
@@ -67,9 +75,11 @@ export const Workspace: React.FC = () => {
         }
     };
 
+    console.log({ repositories });
+
     const handleRepoSelect = async (repoName: string) => {
         try {
-            const repo = await supabaseIndexedDBStore.getRepository(repoName);
+            const repo = await store.getRepository(repoName);
             setSelectedRepo(repo || null);
             router.push(
                 `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/code-editor/workspace/${encodeURIComponent(repoName)}`,
@@ -81,7 +91,7 @@ export const Workspace: React.FC = () => {
 
     const handleDeleteRepo = async (repoName: string) => {
         try {
-            await supabaseIndexedDBStore.deleteRepository(repoName);
+            await store.deleteRepository(repoName);
             loadRepositories();
             if (selectedRepo && selectedRepo.name === repoName) {
                 setSelectedRepo(null);

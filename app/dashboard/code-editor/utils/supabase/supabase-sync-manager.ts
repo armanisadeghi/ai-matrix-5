@@ -102,3 +102,10 @@ export async function getSyncManager() {
     }
     return syncManagerInstance;
 }
+
+export async function setupSyncManager() {
+    if (!syncManagerInstance) {
+        syncManagerInstance = new SyncManager();
+        syncManagerInstance.startPeriodicSync();
+    }
+}

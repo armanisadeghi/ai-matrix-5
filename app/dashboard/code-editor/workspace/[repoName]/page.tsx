@@ -20,6 +20,8 @@ import EditorLayout from "./EditorLayout";
 
 import "./style.css";
 
+const store = indexedDBStore;
+
 export type IFile = {
     path: string;
     content: string;
@@ -69,20 +71,19 @@ export default function Page({ params }: { params: { repoName: string } }) {
      */
     const loadProject = async (repoName?: string) => {
         if (!repoName) return;
-        console.log("renaming");
         try {
-            const loadedProject = await indexedDBStore.getRepository(repoName);
+            const loadedProject = await store.getRepository(repoName);
             setSelectedRepo(loadedProject || null);
             setSelectedFile(null);
             setActiveFolder("");
 
             // Load opened files
             try {
-                const openedFiles = await indexedDBStore.getOpenedFiles(repoName);
+                const openedFiles = await store.getOpenedFiles(repoName);
                 const loadedOpenFiles = await Promise.all(
                     openedFiles.map(async (file) => {
                         try {
-                            const fileData = await indexedDBStore.getFile(repoName, file.path);
+                            const fileData = await store.getFile(repoName, file.path);
                             return fileData ? { path: fileData.path, content: atob(fileData.content) } : null;
                         } catch (error) {
                             console.error(`Error loading file ${file.path}:`, error);
@@ -109,7 +110,7 @@ export default function Page({ params }: { params: { repoName: string } }) {
     const handleFileSelect = async (path: string) => {
         if (selectedRepo) {
             try {
-                const file = await indexedDBStore.getFile(selectedRepo.name, path);
+                const file = await store.getFile(selectedRepo.name, path);
                 if (file) {
                     const decodedFile = { path: file.path, content: atob(file.content) };
                     setSelectedFile(decodedFile);
@@ -118,7 +119,7 @@ export default function Page({ params }: { params: { repoName: string } }) {
                         const newOpenFiles = [...openFiles, decodedFile];
                         setOpenFiles(newOpenFiles);
                         try {
-                            await indexedDBStore.saveOpenedFiles(
+                            await store.saveOpenedFiles(
                                 selectedRepo.name,
                                 newOpenFiles.map((f) => ({ repoName: selectedRepo.name, path: f.path })),
                             );
@@ -151,7 +152,7 @@ export default function Page({ params }: { params: { repoName: string } }) {
         const newOpenFiles = openFiles.filter((openFile) => openFile.path !== fileToClose.path);
         setOpenFiles(newOpenFiles);
         if (selectedRepo) {
-            await indexedDBStore.saveOpenedFiles(
+            await store.saveOpenedFiles(
                 selectedRepo.name,
                 newOpenFiles.map((f) => ({ repoName: selectedRepo.name, path: f.path })),
             );
