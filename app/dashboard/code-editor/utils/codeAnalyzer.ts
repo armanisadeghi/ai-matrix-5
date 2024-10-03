@@ -1,4 +1,4 @@
-import { indexedDBStore } from "./indexedDB";
+import { indexedDBStore } from "./local-indexedDB";
 import { IRepoData } from "../types";
 
 interface AnalysisRule {

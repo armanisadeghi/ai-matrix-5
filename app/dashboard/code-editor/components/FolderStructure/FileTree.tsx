@@ -12,20 +12,20 @@ type FileTreeProps = {
     treeData: IFileNode[];
     repoName: string;
     onFileSelect: (path: string, content: string) => void;
-    onFolderSelect: (path: string) => void;
-    onUpdate: () => Promise<void> | void;
-    activeFolder: string;
-    selectedFile: IFile;
+    onFolderSelect?: (path: string) => void;
+    onUpdate?: () => Promise<void> | void;
+    activeFolder?: string;
+    selectedFile?: IFile;
 };
 
 export const FileTree: React.FC<FileTreeProps> = ({
     treeData,
     repoName,
+    activeFolder,
+    selectedFile,
     onFileSelect,
     onFolderSelect,
     onUpdate,
-    activeFolder,
-    selectedFile,
 }) => {
     const [searchQuery, setSearchQuery] = useState("");
     const [searchResults, setSearchResults] = useState<IFileNode[]>([]);

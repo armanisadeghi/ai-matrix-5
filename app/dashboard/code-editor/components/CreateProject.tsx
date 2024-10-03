@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "../components";
-import { indexedDBStore } from "../utils/indexedDB";
+import { indexedDBStore } from "../utils/local-indexedDB";
 import { TextInput } from "./Inputs";
 import { IconCirclePlus } from "@tabler/icons-react";
 

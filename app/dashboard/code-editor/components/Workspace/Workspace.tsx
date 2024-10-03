@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 import { IRepoData } from "../../types";
-import { indexedDBStore } from "../../utils";
+import { getSyncManager, supabaseIndexedDBStore } from "../../utils";
 import { Button } from "../Buttons";
 import { NewProjectDrawer } from "../NewProjectDrawer";
 import { ProjectCard } from "./ProjectCard";
@@ -17,13 +17,48 @@ export const Workspace: React.FC = () => {
     const router = useRouter();
 
     useEffect(() => {
-        loadRepositories();
+        let syncManagerInstance = null;
+
+        const setupSyncManager = async () => {
+            try {
+                // Retrieve the SyncManager instance
+                syncManagerInstance = await getSyncManager();
+
+                // Start periodic synchronization immediately
+                syncManagerInstance.startPeriodicSync();
+
+                // Real-time listener logic can be handled inside SyncManager if needed
+                console.log("Periodic sync started");
+
+                // Return a cleanup function
+                return () => {
+                    syncManagerInstance.stopPeriodicSync();
+                    console.log("Periodic sync stopped");
+                };
+            } catch (error) {
+                console.error("Failed to setup SyncManager:", error);
+            }
+        };
+
+        // Declare a variable to store the cleanup function
+        let executeCleanup: (() => void) | undefined;
+
+        // Execute the setup function and capture any cleanup it returns
+        (async () => {
+            executeCleanup = await setupSyncManager(); // Store the resolved function
+        })();
+        // Cleanup on component unmount
+        return () => {
+            if (executeCleanup) {
+                executeCleanup();
+            }
+        };
     }, []);
 
     const loadRepositories = async () => {
         try {
             setIsLoading(true);
-            const repos = await indexedDBStore.getRepositories();
+            const repos = await supabaseIndexedDBStore.getRepositories();
             setRepositories(repos);
             setIsLoading(false);
         } catch (error) {
@@ -34,7 +69,7 @@ export const Workspace: React.FC = () => {
 
     const handleRepoSelect = async (repoName: string) => {
         try {
-            const repo = await indexedDBStore.getRepository(repoName);
+            const repo = await supabaseIndexedDBStore.getRepository(repoName);
             setSelectedRepo(repo || null);
             router.push(
                 `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/code-editor/workspace/${encodeURIComponent(repoName)}`,
@@ -46,7 +81,7 @@ export const Workspace: React.FC = () => {
 
     const handleDeleteRepo = async (repoName: string) => {
         try {
-            await indexedDBStore.deleteRepository(repoName);
+            await supabaseIndexedDBStore.deleteRepository(repoName);
             loadRepositories();
             if (selectedRepo && selectedRepo.name === repoName) {
                 setSelectedRepo(null);

@@ -1,12 +1,12 @@
 import { ActionIconProps } from "@mantine/core";
 import { IconFilePlus, IconFolderPlus } from "@tabler/icons-react";
 import React, { useState } from "react";
-import { indexedDBStore } from "../utils/indexedDB";
+import { indexedDBStore } from "../utils/local-indexedDB";
 import { ActionIcon } from "./Buttons";
 
 type AddFileFolderProps = {
     projectName: string;
-    activeFolder: string;
+    activeFolder?: string;
     onAdd: (path: string, isFile: boolean) => void;
     actionIconProps?: ActionIconProps;
 };

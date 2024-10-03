@@ -1,4 +1,5 @@
 import { IRepoData } from "../types";
+import { getSyncManager } from "@/app/dashboard/code-editor/utils/supabase/supabase-sync-manager";
 
 // Constants for the database name and object store names.
 const DB_NAME = "GithubImportDB";
@@ -19,7 +20,7 @@ interface OpenedFile {
 }
 
 // Class to handle IndexedDB operations.
-class IndexedDBStore {
+export class IndexedDBStore {
     private db: IDBDatabase | null = null; // Reference to the IndexedDB database
 
     //
