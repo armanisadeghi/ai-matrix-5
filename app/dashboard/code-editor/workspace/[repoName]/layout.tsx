@@ -32,5 +32,5 @@ export default function CodeEditorLayout({ children }: { children: React.ReactNo
     //     };
     // }, []);
 
-    return <div className="h-screen flex flex-col bg-neutral-900">{children}</div>;
+    return <>{children}</>;
 }

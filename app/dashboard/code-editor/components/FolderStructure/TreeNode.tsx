@@ -38,7 +38,6 @@ export const TreeNode: React.FC<TreeNodeProps> = ({
 
     const handleFolderClick = () => {
         setIsExpanded(!isExpanded);
-        console.log({ fullPath });
         onFolderSelect(fullPath === activeFolder ? "" : fullPath);
     };
 
@@ -99,7 +98,7 @@ export const TreeNode: React.FC<TreeNodeProps> = ({
 
     return (
         <div {...others}>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 rounded transition ease-in-out delay-150 border border-transparent hover:border-neutral-500">
                 {isRenaming ? (
                     <input
                         value={newName}
@@ -109,9 +108,7 @@ export const TreeNode: React.FC<TreeNodeProps> = ({
                     />
                 ) : (
                     <button
-                        className={`flex-grow p-1 flex items-center gap-2 text-sm text-white rounded transition ease-in-out delay-150 border border-transparent hover:border-neutral-500
-                             ${activeFolderClass} ${activeFileClass}
-                             `}
+                        className={`flex-grow p-1 flex items-center gap-2 text-sm text-white ${activeFolderClass} ${activeFileClass}`}
                         onClick={
                             node.isFolder
                                 ? handleFolderClick

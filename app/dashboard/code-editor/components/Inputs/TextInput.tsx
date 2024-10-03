@@ -27,8 +27,8 @@ export const TextInput: React.FC<TextInputProps> = ({
     // Define size-specific classes
     const sizeClass = {
         sm: "px-2 py-1 text-sm", // Small size: smaller padding and text size
-        md: "px-3 py-2 text-base", // Medium size: default padding and text size
-        lg: "px-4 py-3 text-lg", // Large size: larger padding and text size
+        md: "px-3 py-1.5 text-base", // Medium size: default padding and text size
+        lg: "px-4 py-2 text-lg", // Large size: larger padding and text size
     };
 
     const inputClass = `${baseClass} ${sizeClass[size]} ${className}`;
