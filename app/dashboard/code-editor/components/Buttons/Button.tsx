@@ -6,6 +6,7 @@ type Props = HTMLAttributes<HTMLButtonElement> & {
     disabled?: boolean;
     rightSection?: ReactNode;
     variant?: "primary" | "secondary" | "light" | "subtle" | "danger";
+    className?: string;
 };
 
 export const Button: React.FC<Props> = ({
@@ -15,6 +16,7 @@ export const Button: React.FC<Props> = ({
     rightSection,
     variant = "subtle",
     disabled = false,
+    className,
     ...others
 }) => {
     const baseStyles =
@@ -30,7 +32,7 @@ export const Button: React.FC<Props> = ({
 
     const loadingStyles = "opacity-50 cursor-not-allowed";
 
-    const buttonStyles = `${baseStyles} ${variantStyles[variant]} ${loading ? loadingStyles : ""}`;
+    const buttonStyles = `${baseStyles} ${variantStyles[variant]} ${className} ${loading ? loadingStyles : ""}`;
 
     const buttonContent = loading ? "loading" : children;
 

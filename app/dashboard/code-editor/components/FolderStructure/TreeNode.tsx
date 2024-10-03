@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { getIconFromExtension, indexedDBStore } from "../../utils";
 import { IFile } from "../../workspace/[repoName]/page";
 import { IFileNode } from "./utils";
+import { TextInput } from "@/app/dashboard/code-editor/components";
 
 type TreeNodeProps = React.HTMLAttributes<HTMLDivElement> & {
     node: IFileNode;
@@ -71,6 +72,10 @@ export const TreeNode: React.FC<TreeNodeProps> = ({
 
     const handleDelete = async () => {
         try {
+            if (!confirm(`Are you sure you want to delete this "${node.name}"?`)) {
+                return;
+            }
+
             if (node.isFolder) {
                 await indexedDBStore.deleteFolder(repoName, fullPath);
             } else {
@@ -90,6 +95,7 @@ export const TreeNode: React.FC<TreeNodeProps> = ({
               ? "font-medium"
               : "font-normal"
         : "subtle";
+
     const activeFileClass = !node.isFolder && selectedFile?.path === fullPath ? "bg-neutral-700" : "bg-neutral-0";
 
     useEffect(() => {
@@ -98,42 +104,46 @@ export const TreeNode: React.FC<TreeNodeProps> = ({
 
     return (
         <div {...others}>
-            <div className="flex items-center gap-2 rounded transition ease-in-out delay-150 border border-transparent hover:border-neutral-500">
+            <div className="flex items-center gap-2 rounded transition ease-in-out delay-150 border border-transparent hover:bg-neutral-800">
                 {isRenaming ? (
-                    <input
+                    <TextInput
                         value={newName}
                         onChange={(e) => setNewName(e.target.value)}
                         onBlur={handleRename}
                         autoFocus
+                        className="w-full"
+                        size="sm"
                     />
                 ) : (
-                    <button
-                        className={`flex-grow p-1 flex items-center gap-2 text-sm text-white ${activeFolderClass} ${activeFileClass}`}
-                        onClick={
-                            node.isFolder
-                                ? handleFolderClick
-                                : () => onFileSelect!(fullPath, decodeBase64(node?.content ?? ""))
-                        }
-                    >
-                        <FileIcon size={16} className={node.isFolder ? "text-yellow-400" : ""} />
-                        <span>{node.name}</span>
-                    </button>
-                )}
-                <Menu shadow="md" width={200}>
-                    <Menu.Target>
-                        <button className="">
-                            <IconDotsVertical size={16} />
+                    <>
+                        <button
+                            className={`flex-grow p-1 flex items-center gap-2 text-sm text-white ${activeFolderClass} ${activeFileClass}`}
+                            onClick={
+                                node.isFolder
+                                    ? handleFolderClick
+                                    : () => onFileSelect!(fullPath, decodeBase64(node?.content ?? ""))
+                            }
+                        >
+                            <FileIcon size={16} className={node.isFolder ? "text-yellow-400" : ""} />
+                            <span>{node.name}</span>
                         </button>
-                    </Menu.Target>
-                    <Menu.Dropdown>
-                        <Menu.Item leftSection={<IconPencil size={16} />} onClick={handleRename}>
-                            Rename
-                        </Menu.Item>
-                        <Menu.Item leftSection={<IconTrash size={16} />} onClick={handleDelete}>
-                            Delete
-                        </Menu.Item>
-                    </Menu.Dropdown>
-                </Menu>
+                        <Menu shadow="md" width={200}>
+                            <Menu.Target>
+                                <button className="rounded p-2 hover:bg-neutral-700">
+                                    <IconDotsVertical size={16} />
+                                </button>
+                            </Menu.Target>
+                            <Menu.Dropdown>
+                                <Menu.Item leftSection={<IconPencil size={16} />} onClick={handleRename}>
+                                    Rename
+                                </Menu.Item>
+                                <Menu.Item leftSection={<IconTrash size={16} />} onClick={handleDelete}>
+                                    Delete
+                                </Menu.Item>
+                            </Menu.Dropdown>
+                        </Menu>
+                    </>
+                )}
             </div>
             {node.isFolder &&
                 isExpanded &&

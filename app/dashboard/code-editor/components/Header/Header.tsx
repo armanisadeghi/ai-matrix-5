@@ -1,15 +1,18 @@
 import { ActionIcon, Button } from "@/app/dashboard/code-editor/components/Buttons";
 import {
     IconBolt,
-    IconCloudUpload,
+    IconCategory2,
     IconHome,
     IconLayoutSidebar,
+    IconLayoutSidebarRight,
     IconQuestionMark,
     IconTrash,
-    IconX,
 } from "@tabler/icons-react";
 import { IRepoData } from "@/app/dashboard/code-editor/types";
 import { TextInput } from "@/app/dashboard/code-editor/components";
+import { useState } from "react";
+
+const iconSize = 18;
 
 type HeaderProps = {
     selectedRepo: IRepoData;
@@ -18,6 +21,8 @@ type HeaderProps = {
     onCodeAnalyze: () => void;
     onRepoClose: () => void;
     onPushToGitHub: () => void;
+    detailsOpen: () => void;
+    toggleSidebar: () => void; // Add this line
 };
 
 export const Header: React.FC<HeaderProps> = ({
@@ -26,27 +31,41 @@ export const Header: React.FC<HeaderProps> = ({
     onDeleteFromGitHub,
     onCodeAnalyze,
     isPublishing,
-    onPushToGitHub,
+    detailsOpen,
+    toggleSidebar,
 }) => {
+    const [sidebarState, setSidebarState] = useState(true);
+
+    const handleSidebarToggle = () => {
+        setSidebarState(!sidebarState);
+        toggleSidebar();
+    };
+
     return (
         <div className="flex items-center justify-between px-3 py-2 rounded">
             <div className="flex items-center">
-                <ActionIcon>
-                    <IconLayoutSidebar />
+                <ActionIcon onClick={handleSidebarToggle}>
+                    {sidebarState ? <IconLayoutSidebar size={iconSize} /> : <IconLayoutSidebarRight size={iconSize} />}
                 </ActionIcon>
-                <ActionIcon>
-                    <IconHome />
+                <ActionIcon onClick={onRepoClose}>
+                    <IconHome size={iconSize} />
                 </ActionIcon>
-                <Button variant="subtle">{selectedRepo.name}</Button>
+                <Button
+                    variant="subtle"
+                    onClick={detailsOpen}
+                    leftSection={<IconCategory2 size={iconSize} color="green" />}
+                >
+                    {selectedRepo.name}
+                </Button>
             </div>
             <div className="flex items-center gap-2">
                 <TextInput type="text" placeholder="ask AI and search" />
                 <ActionIcon>
-                    <IconQuestionMark />
+                    <IconQuestionMark size={iconSize} />
                 </ActionIcon>
                 {selectedRepo.githubUrl && (
                     <Button
-                        leftSection={<IconTrash size={18} />}
+                        leftSection={<IconTrash size={iconSize} />}
                         onClick={onDeleteFromGitHub}
                         loading={isPublishing}
                         variant="danger"
@@ -54,20 +73,8 @@ export const Header: React.FC<HeaderProps> = ({
                         Delete
                     </Button>
                 )}
-                <Button leftSection={<IconBolt size={18} />} onClick={onCodeAnalyze} loading={isPublishing}>
+                <Button leftSection={<IconBolt size={iconSize} />} onClick={onCodeAnalyze} loading={isPublishing}>
                     Analyze
-                </Button>
-                <Button
-                    leftSection={<IconCloudUpload size={18} />}
-                    onClick={onPushToGitHub}
-                    loading={isPublishing}
-                    variant="primary"
-                >
-                    Publish to GitHub
-                </Button>
-                <>|</>
-                <Button onClick={onRepoClose} rightSection={<IconX size={18} />} variant="danger">
-                    Close
                 </Button>
             </div>
         </div>

@@ -1,18 +1,12 @@
 "use client";
 
-import {
-    IconBolt,
-    IconBug,
-    IconCloudUpload,
-    IconFolder,
-    IconPlayerPlay,
-    IconSettings,
-    IconTrash,
-    IconX,
-} from "@tabler/icons-react";
 import Split from "react-split";
-import { ActionIcon, Button, Header, Sidebar } from "../../components";
+import { Button, Header, Sidebar, Textarea, TextInput } from "../../components";
 import { IRepoData } from "../../types";
+import { Modal } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import { IconCloudUpload } from "@tabler/icons-react";
+import { useState } from "react";
 
 type EditorLayoutProps = {
     children: React.ReactNode;
@@ -37,55 +31,108 @@ export default function EditorLayout({
     fileTree,
     onCodeAnalyze,
 }: EditorLayoutProps) {
+    const [detailsOpened, { open: detailsOpen, close: detailsClose }] = useDisclosure(false);
+    const [verticalSizes, setVerticalSizes] = useState([75, 25]);
+    const initialSidebarSize = 20;
+    const [horizontalSizes, setHorizontalSizes] = useState([initialSidebarSize, 100 - initialSidebarSize]);
+
+    const toggleSidebar = () => {
+        setHorizontalSizes((prevSizes) => {
+            if (prevSizes[0] === 0) {
+                // If sidebar is currently hidden, restore it to the original size
+                return [initialSidebarSize, 100 - initialSidebarSize];
+            } else {
+                // If sidebar is visible, hide it by setting its size to 0
+                return [0, 100];
+            }
+        });
+    };
+
+    const resetHorizontalView = () => {
+        setHorizontalSizes([20, 80]);
+    };
+
+    const resetVerticalView = () => {
+        setVerticalSizes([25, 75]);
+    };
+
+    const resetView = () => {
+        resetHorizontalView();
+        resetVerticalView();
+    };
+
     if (!selectedRepo) {
         return <>select a repo to proceed</>;
     }
 
     return (
-        <div className="h-screen flex flex-col gap-2 bg-neutral-900">
-            {/* Header */}
-            <Header
-                selectedRepo={selectedRepo}
-                onRepoClose={onRepoClose}
-                onCodeAnalyze={onCodeAnalyze}
-                onDeleteFromGitHub={onDeleteFromGitHub}
-                isPublishing={isPublishing}
-                onPushToGitHub={onPushToGitHub}
-            />
+        <>
+            <div className="h-screen flex flex-col gap-2 bg-neutral-900">
+                {/* Header */}
+                <Header
+                    selectedRepo={selectedRepo}
+                    onRepoClose={onRepoClose}
+                    onCodeAnalyze={onCodeAnalyze}
+                    onDeleteFromGitHub={onDeleteFromGitHub}
+                    isPublishing={isPublishing}
+                    onPushToGitHub={onPushToGitHub}
+                    detailsOpen={detailsOpen}
+                    toggleSidebar={toggleSidebar} // New prop
+                />
 
-            {/* Main content container */}
-            <Split
-                sizes={[20, 80]}
-                minSize={100}
-                expandToMin={false}
-                gutterSize={10}
-                gutterAlign="center"
-                snapOffset={30}
-                dragInterval={1}
-                direction="horizontal"
-                cursor="col-resize"
-                className="flex-grow flex overflow-hidden"
-            >
-                {/* Sidebar */}
-                <Sidebar fileTree={fileTree} addFileFolder={sidebar} />
-
-                {/* Editor and Footer container */}
+                {/* Main content container */}
                 <Split
-                    sizes={[75, 25]}
-                    minSize={100}
-                    expandToMin={false}
+                    sizes={horizontalSizes}
+                    minSize={[0, 100]}
+                    expandToMin={true}
                     gutterSize={10}
                     gutterAlign="center"
                     snapOffset={30}
                     dragInterval={1}
-                    direction="vertical"
-                    cursor="row-resize"
-                    className="flex flex-col bg-neutral-800"
+                    direction="horizontal"
+                    cursor="col-resize"
+                    className="flex-grow flex overflow-hidden"
                 >
-                    {/* Main content area (children) */}
-                    {children}
+                    {/* Sidebar */}
+                    <Sidebar
+                        fileTree={fileTree}
+                        addFileFolder={sidebar}
+                        className={horizontalSizes[0] <= 0 ? "hidden" : ""}
+                    />
+
+                    {/* Editor and Footer container */}
+                    <Split
+                        sizes={verticalSizes}
+                        minSize={100}
+                        expandToMin={false}
+                        gutterSize={10}
+                        gutterAlign="center"
+                        snapOffset={30}
+                        dragInterval={1}
+                        direction="vertical"
+                        cursor="row-resize"
+                        className="flex flex-col bg-neutral-800"
+                    >
+                        {/* Main content area (children) */}
+                        {children}
+                    </Split>
                 </Split>
-            </Split>
-        </div>
+            </div>
+            <Modal opened={detailsOpened} onClose={detailsClose} title="Project details">
+                <div className="flex flex-col gap-4">
+                    <TextInput label="Name" placeholder="Default name:" className="w-full" />
+                    <Textarea label="Description" placeholder="What does this project do?" className="w-full" />
+                    <Button
+                        leftSection={<IconCloudUpload size={18} />}
+                        onClick={onPushToGitHub}
+                        loading={isPublishing}
+                        variant="primary"
+                        className="justify-center"
+                    >
+                        Publish to GitHub
+                    </Button>
+                </div>
+            </Modal>
+        </>
     );
 }

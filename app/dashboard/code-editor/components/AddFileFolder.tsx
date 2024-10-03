@@ -1,5 +1,5 @@
 import { ActionIconProps } from "@mantine/core";
-import { IconFilePlus, IconFolderPlus } from "@tabler/icons-react";
+import { IconDotsVertical, IconFilePlus, IconFolderPlus } from "@tabler/icons-react";
 import React, { useState } from "react";
 import { indexedDBStore } from "../utils/local-indexedDB";
 import { ActionIcon } from "./Buttons";
@@ -66,6 +66,9 @@ export const AddFileFolder: React.FC<AddFileFolderProps> = ({ projectName, activ
             </ActionIcon>
             <ActionIcon onClick={() => handleAdd(false)} loading={isAdding} tooltip="new folder">
                 <IconFolderPlus size={18} />
+            </ActionIcon>
+            <ActionIcon>
+                <IconDotsVertical size={18} />
             </ActionIcon>
         </>
     );

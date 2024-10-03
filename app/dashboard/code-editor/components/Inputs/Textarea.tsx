@@ -1,17 +1,17 @@
 import React, { HTMLAttributes, ReactNode } from "react";
 
-type TextInputProps = HTMLAttributes<HTMLInputElement> & {
+type TextareaProps = HTMLAttributes<HTMLTextAreaElement> & {
     label?: string;
     type?: string;
     placeholder?: string;
     value?: string;
-    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
     className?: string;
     icon?: ReactNode;
     size?: "sm" | "md" | "lg";
 };
 
-export const TextInput: React.FC<TextInputProps> = ({
+export const Textarea: React.FC<TextareaProps> = ({
     label,
     type = "text",
     placeholder = "",
@@ -39,13 +39,13 @@ export const TextInput: React.FC<TextInputProps> = ({
             <div className="flex">
                 {/* Render icon if provided */}
                 {icon && <span className="mr-2">{icon}</span>}
-                <input
-                    type={type}
+                <textarea
+                    rows={3}
                     placeholder={placeholder}
                     value={value}
                     onChange={onChange}
                     className={`${inputClass}`}
-                />
+                ></textarea>
             </div>
         </div>
     );

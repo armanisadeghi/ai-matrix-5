@@ -55,13 +55,12 @@ export const FileTree: React.FC<FileTreeProps> = ({
 
     return (
         <div className="h-full">
-            <p className="text-xs font-normal py-2 uppercase">Explorer</p>
             <TextInput
                 placeholder="Search files..."
                 value={searchQuery}
                 onChange={(event) => setSearchQuery(event.currentTarget.value)}
                 size="sm"
-                className="w-full"
+                className="w-full my-1"
             />
             {searchQuery
                 ? searchResults.map((node, index) => (

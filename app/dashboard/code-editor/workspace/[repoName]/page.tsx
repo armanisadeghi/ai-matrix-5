@@ -52,7 +52,7 @@ customAnalyzer.addLanguage({
 
 export default function Page({ params }: { params: { repoName: string } }) {
     const router = useRouter();
-    const { user, isLoading } = useUser();
+    const { user } = useUser();
     const [selectedRepo, setSelectedRepo] = useState<IRepoData | null>(null);
     const [selectedFile, setSelectedFile] = useState<IFile | null>(null);
     const [fileSystem, setFileSystem] = useState<IFile[] | null>([]);
@@ -322,7 +322,6 @@ export default function Page({ params }: { params: { repoName: string } }) {
     );
 
     console.log({ analysisResults });
-    console.log({ activeFolder });
 
     useEffect(() => {
         const fetchData = async (): Promise<void> => {
