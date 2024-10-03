@@ -38,7 +38,8 @@ export const TreeNode: React.FC<TreeNodeProps> = ({
 
     const handleFolderClick = () => {
         setIsExpanded(!isExpanded);
-        onFolderSelect(fullPath);
+        console.log({ fullPath });
+        onFolderSelect(fullPath === activeFolder ? "" : fullPath);
     };
 
     const decodeBase64 = (content: string) => atob(content);

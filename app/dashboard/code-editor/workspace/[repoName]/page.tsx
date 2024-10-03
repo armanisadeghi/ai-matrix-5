@@ -322,6 +322,7 @@ export default function Page({ params }: { params: { repoName: string } }) {
     );
 
     console.log({ analysisResults });
+    console.log({ activeFolder });
 
     useEffect(() => {
         const fetchData = async (): Promise<void> => {

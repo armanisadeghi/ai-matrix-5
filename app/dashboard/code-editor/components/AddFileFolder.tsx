@@ -22,7 +22,11 @@ export const AddFileFolder: React.FC<AddFileFolderProps> = ({ projectName, activ
             try {
                 const project = await indexedDBStore.getRepository(projectName);
                 if (project) {
-                    const newPath = activeFolder ? `${activeFolder}/${name}` : name;
+                    let newPath = activeFolder ? `${activeFolder}/${name}` : name;
+
+                    if (!isFile) {
+                        newPath = newPath + "/";
+                    }
 
                     if (isFile) {
                         project.files[newPath] = btoa(""); // Empty file content
