@@ -2,24 +2,24 @@ import React, { HTMLAttributes, ReactNode } from "react";
 
 type TextareaProps = HTMLAttributes<HTMLTextAreaElement> & {
     label?: string;
-    type?: string;
     placeholder?: string;
     value?: string;
     onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
     className?: string;
     icon?: ReactNode;
     size?: "sm" | "md" | "lg";
+    ref?: any;
 };
 
 export const Textarea: React.FC<TextareaProps> = ({
     label,
-    type = "text",
     placeholder = "",
     value = "",
     onChange,
     className = "",
     icon,
     size = "md",
+    ref,
 }) => {
     const baseClass =
         "border border-transparent bg-neutral-700 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-700 outline-none transition duration-150 ease-in-out placeholder:text-sm";
@@ -40,6 +40,7 @@ export const Textarea: React.FC<TextareaProps> = ({
                 {/* Render icon if provided */}
                 {icon && <span className="mr-2">{icon}</span>}
                 <textarea
+                    ref={ref}
                     rows={3}
                     placeholder={placeholder}
                     value={value}

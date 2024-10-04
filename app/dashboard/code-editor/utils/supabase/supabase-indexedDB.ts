@@ -11,8 +11,8 @@ class SupabaseIndexedDBStore extends IndexedDBStore {
     }
 
     private async initSyncManager() {
-        this.syncManager = await getSyncManager();
-        this.syncManager.startPeriodicSync(); // Start syncing when initialized
+        // this.syncManager = await getSyncManager();
+        // this.syncManager.startPeriodicSync(); // Start syncing when initialized
     }
 
     // Override methods to integrate sync operations if needed
