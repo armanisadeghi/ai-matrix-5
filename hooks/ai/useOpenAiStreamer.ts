@@ -1,9 +1,13 @@
-import { useEffect } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { AiParamsType } from '@/types';
-import { streamTriggerAtomFamily, streamStatusAtom, chatMessagesAtomFamily, assistantTextStreamAtom } from '@/state/aiAtoms/aiChatAtoms';
-import { OpenAiStream } from '@/app/api/openai/route';
-
+import { useEffect, useState } from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { AiParamsType } from "@/types";
+import {
+    streamTriggerAtomFamily,
+    streamStatusAtom,
+    chatMessagesAtomFamily,
+    assistantTextStreamAtom,
+} from "@/state/aiAtoms/aiChatAtoms";
+import { OpenAiStream } from "@/app/api/openai/route";
 
 export interface MatrixStreamHookProps {
     chatId: string;
@@ -12,34 +16,36 @@ export interface MatrixStreamHookProps {
     index?: number;
 }
 
-function useOpenAiStreamer({chatId, model = 'gpt-4o', options, index = 0}: MatrixStreamHookProps) {
-    const hookId = 'OpenAiStream';
-    const [streamTrigger, setStreamTrigger] = useRecoilState(streamTriggerAtomFamily({hookId, index}));
+function useOpenAiStreamer({ chatId, model = "gpt-4o", options, index = 0 }: MatrixStreamHookProps) {
+    const hookId = "OpenAiStream";
+    const [streamTrigger, setStreamTrigger] = useRecoilState(streamTriggerAtomFamily({ hookId, index }));
     const setStreamStatus = useSetRecoilState(streamStatusAtom);
     const [messages, setMessages] = useRecoilState(chatMessagesAtomFamily(chatId));
     const setStreamMessage = useSetRecoilState(assistantTextStreamAtom);
+    const [message, setMessage] = useState<string>();
 
     useEffect(() => {
+        console.log({ streamTrigger });
         if (!streamTrigger) return;
         setStreamTrigger(false);
 
-        const openAiArray = messages.map(message => ({
-            role: message.role as 'system' | 'user' | 'assistant',
+        const openAiArray = messages.map((message) => ({
+            role: message.role as "system" | "user" | "assistant",
             content: message.text,
         }));
 
-        let buffer = '';
+        let buffer = "";
         let count = 0;
 
         const flushBuffer = () => {
             if (buffer.length > 0) {
                 setStreamMessage((prevStreamMessage) => prevStreamMessage + buffer);
-                console.log(count, '-', buffer);
-                buffer = '';
+                console.log(count, "-", buffer);
+                buffer = "";
             }
         };
 
-        let fullText = '';
+        let fullText = "";
         const callback = (chunk: string) => {
             fullText += chunk;
             buffer += chunk;
@@ -51,39 +57,45 @@ function useOpenAiStreamer({chatId, model = 'gpt-4o', options, index = 0}: Matri
         };
 
         const streamOptions: { model: string; options?: AiParamsType } = {
-            model, ...(options ? {options} : {})
+            model,
+            ...(options ? { options } : {}),
         };
 
-        setStreamStatus('streaming');
+        setStreamStatus("streaming");
 
-        OpenAiStream(openAiArray, callback, streamOptions.model, streamOptions.options).then(() => {
-            // Flush any remaining buffer
-            flushBuffer();
+        OpenAiStream(openAiArray, callback, streamOptions.model, streamOptions.options)
+            .then(() => {
+                // Flush any remaining buffer
+                flushBuffer();
 
-            // Update the messages state with the full text from the stream
-            setMessages((prevMessages) => {
-                const updatedMessages = prevMessages.map((message, i) => {
-                    if (i === prevMessages.length - 1) {
-                        return {...message, text: fullText};
-                    }
-                    return message;
+                // Update the messages state with the full text from the stream
+                setMessages((prevMessages) => {
+                    const updatedMessages = prevMessages.map((message, i) => {
+                        if (i === prevMessages.length - 1) {
+                            return { ...message, text: fullText };
+                        }
+                        return message;
+                    });
+                    return updatedMessages;
                 });
-                return updatedMessages;
+
+                setStreamStatus("success");
+
+                setMessage(fullText);
+            })
+            .catch((error) => {
+                console.error(error);
+                setStreamStatus("error");
+            })
+            .finally(() => {
+                setStreamMessage("");
+                setStreamTrigger(false);
             });
-
-            setStreamStatus('success');
-
-        }).catch((error) => {
-            console.error(error);
-            setStreamStatus('error');
-        }).finally(() => {
-            setStreamMessage('');
-            setStreamTrigger(false);
-        });
-
     }, [streamTrigger, model, options, setStreamTrigger, hookId, index, messages, setMessages, setStreamMessage]);
 
-    return null;
+    return {
+        message,
+    };
 }
 
 export default useOpenAiStreamer;

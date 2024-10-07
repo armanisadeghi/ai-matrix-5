@@ -11,10 +11,9 @@ import { Modal } from "@mantine/core";
 import { Textarea } from "@/app/dashboard/code-editor/components/Inputs";
 import { ActionIcon } from "@/app/dashboard/code-editor/components/Buttons";
 import { IconSend } from "@tabler/icons-react";
-import { createChatStart, sendUserPrompt } from "@/app/dashboard/code-editor/supabase/aiChat";
+import { createChatStart, sendAiMessage } from "@/app/dashboard/code-editor/supabase/aiChat";
 import { useRecoilValue } from "recoil";
 import { activeUserAtom } from "@/state/userAtoms";
-import useOpenAiStreamer from "@/hooks/ai/useOpenAiStreamer";
 import IStandaloneEditorConstructionOptions = coreEditor.IStandaloneEditorConstructionOptions;
 
 const OPTIONS: IStandaloneEditorConstructionOptions = {
@@ -91,9 +90,7 @@ export const Editor: React.FC<EditorProps> = ({ repoName, value, onChange, filen
     const editorRef = useRef<any>(null);
     const { saveFileContent } = useEditorSave(editorRef, repoName, filename, setIsLoading);
     const userId = useRecoilValue(activeUserAtom).matrixId;
-    const [activeChatId, setActiveChatId] = useState("");
-
-    useOpenAiStreamer({ chatId: activeChatId });
+    const [aiResponse, setAiResponse] = useState();
 
     const handleEditorDidMount = (editor, _monacoInstance) => {
         editorRef.current = editor;
@@ -159,11 +156,17 @@ export const Editor: React.FC<EditorProps> = ({ repoName, value, onChange, filen
 
             console.log({ newChat });
 
-            setActiveChatId(newChat.chatId);
+            const response: { data: string } = await sendAiMessage({
+                chatId: newChat.chatId,
+                messagesEntry: newChat?.messages,
+            });
 
-            const response = await sendUserPrompt(text, newChat.chatId, newChat);
+            // const response = await sendUserPrompt(text, newChat.chatId, newChat);
 
             console.log({ response });
+
+            // @ts-ignore
+            setAiResponse(response.data);
         } else {
             aiClose();
         }
@@ -201,6 +204,8 @@ export const Editor: React.FC<EditorProps> = ({ repoName, value, onChange, filen
                 <ActionIcon onClick={handleSubmitMessage}>
                     <IconSend />
                 </ActionIcon>
+
+                {aiResponse && <p>{aiResponse}</p>}
             </Modal>
         </>
     );

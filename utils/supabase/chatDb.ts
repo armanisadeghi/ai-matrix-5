@@ -1,44 +1,47 @@
 // utils/supabase/chatDb.ts
 
-import { ChatDetailsType, ChatId, ChatType, Json, MessageType } from '@/types';
-import supabase from '@/utils/supabase/client';
-
+import { ChatDetailsType, ChatId, ChatType, Json, MessageType } from "@/types";
+import supabase from "@/utils/supabase/client";
 
 async function fetchUserChats(userId: string): Promise<ChatType[]> {
-    if (!userId) return console.error('Missing userId'), [];
-    const {data, error} = await supabase.rpc('fetch_user_chats', {user_matrix_id: userId});
+    if (!userId) return console.error("Missing userId"), [];
+    const { data, error } = await supabase.rpc("fetch_user_chats", { user_matrix_id: userId });
     if (error) {
-        console.error('Error fetching user chats:', error);
+        console.error("Error fetching user chats:", error);
         return [];
     } else {
-        console.log('fetchUserChats User chats:', data);
+        console.log("fetchUserChats User chats:", data);
         return data;
     }
 }
 
 async function fetchChatMessages(chatId: string): Promise<MessageType[]> {
-    if (!chatId || chatId === '') {
+    if (!chatId || chatId === "") {
         return [];
     }
 
-    const {data, error} = await supabase.rpc('fetch_messages', {matrix_chat_id: chatId});
-    console.log('fetchChatMessages fetched Message data: ', data)
+    const { data, error } = await supabase.rpc("fetch_messages", { matrix_chat_id: chatId });
+    console.log("fetchChatMessages fetched Message data: ", data);
     if (error) {
-        console.error('Error fetching chat messages:', error);
+        console.error("Error fetching chat messages:", error);
         throw error;
     } else {
-        console.log('fetchChatMessages Chat messages:', data);
+        console.log("fetchChatMessages Chat messages:", data);
         return data;
     }
 }
 
 async function createChatStartEntry(startChatObject: ChatDetailsType) {
-    if (!startChatObject || Object.keys(startChatObject).length === 0) return console.error('Missing or empty startChatObject');
-    const {data, error} = await supabase.rpc('create_chat_and_messages', {start_chat: startChatObject as unknown as Json});
+    if (!startChatObject || Object.keys(startChatObject).length === 0)
+        return console.error("Missing or empty startChatObject");
+    const { data, error } = await supabase.rpc("create_chat_and_messages", {
+        start_chat: startChatObject as unknown as Json,
+    });
+
     if (error) {
-        console.error('Error adding assistant message:', error);
+        console.error("Error adding assistant message:", error);
     } else {
-        console.log('createChatStartEntry Chat Created:', data);
+        console.log("createChatStartEntry Chat Created:", data);
     }
 }
 
@@ -48,66 +51,66 @@ async function updateLastAssistantText(messages: { id: string; text: string }[])
 }
 
 async function addSystemMessage(chatId: string, message: string) {
-    if (!chatId) return console.error('Missing chatId');
-    const {data, error} = await supabase.rpc('add_system_message', {chat_id: chatId, message});
+    if (!chatId) return console.error("Missing chatId");
+    const { data, error } = await supabase.rpc("add_system_message", { chat_id: chatId, message });
     if (error) {
-        console.error('Error adding system message:', error);
+        console.error("Error adding system message:", error);
     } else {
-        console.log('addSystemMessage System message added:', data);
+        console.log("addSystemMessage System message added:", data);
     }
 }
 
 async function addUserMessage(chatId: string, message: string) {
-    if (!chatId) return console.error('Missing chatId');
-    const {data, error} = await supabase.rpc('add_user_message', {chat_id: chatId, message});
+    if (!chatId) return console.error("Missing chatId");
+    const { data, error } = await supabase.rpc("add_user_message", { chat_id: chatId, message });
     if (error) {
-        console.error('Error adding user message:', error);
+        console.error("Error adding user message:", error);
     } else {
-        console.log('addUserMessage User message added:', data);
+        console.log("addUserMessage User message added:", data);
     }
 }
 
 async function editMessage(updates: Partial<MessageType> & { id: string }) {
     if (!updates.id) {
-        console.error('Missing required field: id');
-        return {data: null, error: new Error('Missing required field: id')};
+        console.error("Missing required field: id");
+        return { data: null, error: new Error("Missing required field: id") };
     }
-    const {data, error} = await supabase.rpc('edit_message', {
+    const { data, error } = await supabase.rpc("edit_message", {
         p_message_id: updates.id,
-        p_updates: updates
+        p_updates: updates,
     });
 
-    return {data, error};
+    return { data, error };
 }
 
 async function updateMessageText(id: string, text: string) {
     if (!id) {
-        console.error('Missing required field: id');
-        return {data: null, error: new Error('Missing required field: id')};
+        console.error("Missing required field: id");
+        return { data: null, error: new Error("Missing required field: id") };
     }
-    const {data, error} = await supabase.rpc('edit_message', {
+    const { data, error } = await supabase.rpc("edit_message", {
         p_message_id: id,
-        p_updates: {text}
+        p_updates: { text },
     });
-    return {data, error};
+    return { data, error };
 }
 
 async function addAssistantMessage(chatId: string, message: string) {
-    if (!chatId) return console.error('Missing chatId');
-    const {data, error} = await supabase.rpc('add_assistant_message', {chatid: chatId, message});
+    if (!chatId) return console.error("Missing chatId");
+    const { data, error } = await supabase.rpc("add_assistant_message", { chatid: chatId, message });
     if (error) {
-        console.error('Error adding assistant message:', error);
+        console.error("Error adding assistant message:", error);
     } else {
-        console.log('addAssistantMessage Assistant message added:', data);
+        console.log("addAssistantMessage Assistant message added:", data);
     }
 }
 
 async function addCustomMessage(chatId: ChatId, newEntry: MessageType) {
     if (!chatId || !newEntry?.role || !newEntry?.text) {
-        console.error('Missing required fields');
-        return {data: null, error: new Error('Missing required fields')};
+        console.error("Missing required fields");
+        return { data: null, error: new Error("Missing required fields") };
     }
-    const {data, error} = await supabase.rpc('add_custom_message', {
+    const { data, error } = await supabase.rpc("add_custom_message", {
         chat_id: chatId,
         id: newEntry.id,
         role: newEntry.role,
@@ -115,27 +118,27 @@ async function addCustomMessage(chatId: ChatId, newEntry: MessageType) {
         index: newEntry.index,
         created_at: newEntry.createdAt,
     });
-    return {data, error};
+    return { data, error };
 }
 
 async function addMultipleCustomMessages(chatId: ChatId, newEntries: MessageType[]) {
     if (!chatId || !Array.isArray(newEntries) || newEntries.length === 0) {
-        console.error('Invalid input: chatId must be provided and newEntries must be a non-empty array');
-        return {data: null, error: new Error('Invalid input')};
+        console.error("Invalid input: chatId must be provided and newEntries must be a non-empty array");
+        return { data: null, error: new Error("Invalid input") };
     }
 
     const results = [];
     const errors = [];
 
     for (const entry of newEntries) {
-        if (!entry.role || (entry.text === undefined || entry.text === null)) {
-            console.warn('Skipping entry due to missing role or text:', entry);
-            errors.push({entry, error: new Error('Missing role or text')});
+        if (!entry.role || entry.text === undefined || entry.text === null) {
+            console.warn("Skipping entry due to missing role or text:", entry);
+            errors.push({ entry, error: new Error("Missing role or text") });
             continue;
         }
 
         try {
-            const {data, error} = await supabase.rpc('add_custom_message', {
+            const { data, error } = await supabase.rpc("add_custom_message", {
                 chat_id: chatId,
                 id: entry.id,
                 role: entry.role,
@@ -145,47 +148,52 @@ async function addMultipleCustomMessages(chatId: ChatId, newEntries: MessageType
             });
 
             if (error) {
-                console.error('Error adding message:', error);
-                errors.push({entry, error});
+                console.error("Error adding message:", error);
+                errors.push({ entry, error });
             } else {
                 results.push(data);
             }
-        }
-        catch (error) {
-            console.error('Exception while adding message:', error);
-            errors.push({entry, error});
+        } catch (error) {
+            console.error("Exception while adding message:", error);
+            errors.push({ entry, error });
         }
     }
 
     return {
         data: results,
-        errors: errors.length > 0 ? errors : null
+        errors: errors.length > 0 ? errors : null,
     };
 }
 
 async function cloneChat(originalChatId: string): Promise<ChatType> {
-    if (!originalChatId) throw new Error('Missing originalChatId');
-    const {data, error} = await supabase.rpc('clone_chat', {original_chat_id: originalChatId});
+    if (!originalChatId) throw new Error("Missing originalChatId");
+    const { data, error } = await supabase.rpc("clone_chat", { original_chat_id: originalChatId });
 
     if (error) {
-        console.error('Error cloning chat:', error);
+        console.error("Error cloning chat:", error);
         throw error;
     } else {
         return data as unknown as ChatType;
     }
 }
 
-async function cloneAndEditChat(originalChatId: string, editedIndex: number, newMessage: string, newMessageRole: string): Promise<ChatType> {
-    if (!originalChatId || !newMessage || !newMessageRole || typeof editedIndex !== 'number') throw new Error('Missing or invalid required fields');
-    const {data, error} = await supabase.rpc('clone_and_edit_chat', {
+async function cloneAndEditChat(
+    originalChatId: string,
+    editedIndex: number,
+    newMessage: string,
+    newMessageRole: string,
+): Promise<ChatType> {
+    if (!originalChatId || !newMessage || !newMessageRole || typeof editedIndex !== "number")
+        throw new Error("Missing or invalid required fields");
+    const { data, error } = await supabase.rpc("clone_and_edit_chat", {
         original_chat_id: originalChatId,
         edited_index: editedIndex,
         new_message: newMessage,
-        new_message_role: newMessageRole
+        new_message_role: newMessageRole,
     });
 
     if (error) {
-        console.error('Error cloning and editing chat:', error);
+        console.error("Error cloning and editing chat:", error);
         throw error;
     } else {
         return data as unknown as ChatType;

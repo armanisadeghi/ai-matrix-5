@@ -1,7 +1,8 @@
-import { ChatId, MessageType } from "@/types";
+import { AiParamsType, ChatId, MessageType } from "@/types";
 import { v4 as uuidv4 } from "uuid";
 import { createChatStartEntry } from "@/utils/supabase/chatDb";
 import supabase from "@/utils/supabase/client";
+import { OpenAiStream } from "@/app/api/openai/route";
 
 const chatId = uuidv4();
 
@@ -76,82 +77,87 @@ export const createChatStart = async (
     return chatStartObject;
 };
 
-const addCustomMessage = async (chatId: ChatId, newEntry: MessageType) => {
-    if (!chatId || !newEntry?.role || !newEntry?.text) {
-        console.error("Missing required fields");
-        return { data: null, error: new Error("Missing required fields") };
-    }
-    const { data, error } = await supabase.rpc("add_custom_message", {
-        chat_id: chatId,
-        id: newEntry.id,
-        role: newEntry.role,
-        text: newEntry.text,
-        index: newEntry.index,
-        created_at: newEntry.createdAt,
-    });
-
-    if (!data) {
-        throw new Error("No data returned from add_custom_message RPC");
-    }
-
-    return { data, error };
-};
-
-export const sendUserPrompt = async (userMessage: string, chatId: string, newChat: INewChat) => {
+export const fetchMessages = async (chatId: string) => {
     const { data, error } = await supabase.rpc("fetch_messages", { matrix_chat_id: chatId });
 
     if (error) {
         return [];
     }
 
-    const messageEntry: MessageType = {
-        chatId: chatId,
-        id: uuidv4(),
-        createdAt: new Date().toISOString(),
-        index: 3,
-        role: "user",
-        text: userMessage,
+    return {
+        data,
+        error,
     };
-
-    const response = await supabase.rpc("add_custom_message", {
-        chat_id: chatId,
-        id: uuidv4(),
-        role: "user",
-        text: userMessage,
-        index: 3,
-        created_at: new Date().toISOString(),
-    });
-
-    console.log({ response });
-
-    await supabase.rpc("edit_message", {
-        p_message_id: newChat.messages[1].id,
-        p_updates: { userMessage },
-    });
-
-    // const response = await addCustomMessage(chatId, messageEntry);
-    //
-    // console.log({ response });
-
-    // const response = await getPromptResult(newChat.messages[1].id, userMessage);
-
-    if (error) {
-        console.error("Error adding user message:", error);
-    } else {
-        console.log("addUserMessage User message added:", data);
-    }
-
-    return response;
 };
 
-async function getPromptResult(messageId: string, text: string) {
-    if (!messageId) {
-        console.error("Missing required field: id");
-        return { data: null, error: new Error("Missing required field: id") };
-    }
-    const { data, error } = await supabase.rpc("edit_message", {
-        p_message_id: messageId,
-        p_updates: { text },
-    });
-    return { data, error };
+export interface SendMessageParams {
+    chatId: string;
+    model?: string;
+    options?: AiParamsType;
+    index?: number;
+    messagesEntry: any;
 }
+
+export const sendAiMessage = async ({
+    chatId,
+    model = "gpt-4o",
+    options,
+    index = 0,
+    messagesEntry,
+}: SendMessageParams) => {
+    try {
+        let messages: string[] = [];
+        const streamTrigger = true;
+        if (!streamTrigger) return;
+
+        const openAiArray = messagesEntry.map((message) => ({
+            role: message.role as "system" | "user" | "assistant",
+            content: message.text,
+        }));
+
+        let buffer = "";
+        let count = 0;
+
+        const flushBuffer = () => {
+            if (buffer.length > 0) {
+                // setStreamMessage((prevStreamMessage) => prevStreamMessage + buffer);
+                console.log(count, "-", buffer);
+                buffer = "";
+            }
+        };
+
+        let fullText = "";
+        const callback = (chunk: string) => {
+            fullText += chunk;
+            buffer += chunk;
+            count++;
+
+            if (count % 10 === 0) {
+                flushBuffer();
+            }
+        };
+
+        const streamOptions: { model: string; options?: AiParamsType } = {
+            model,
+            ...(options ? { options } : {}),
+        };
+
+        console.log("streaming");
+
+        await OpenAiStream(openAiArray, callback, streamOptions.model, streamOptions.options);
+
+        console.log("success");
+
+        // Flush any remaining buffer
+        flushBuffer();
+
+        console.log("streaming ended");
+
+        return {
+            data: fullText,
+        };
+    } catch (e) {
+        console.log("streaming ended");
+        console.log(e);
+    }
+};
