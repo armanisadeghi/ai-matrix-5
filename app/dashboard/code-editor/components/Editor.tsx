@@ -11,11 +11,11 @@ import { Modal } from "@mantine/core";
 import { Textarea } from "@/app/dashboard/code-editor/components/Inputs";
 import { ActionIcon } from "@/app/dashboard/code-editor/components/Buttons";
 import { IconSend } from "@tabler/icons-react";
-import IStandaloneEditorConstructionOptions = coreEditor.IStandaloneEditorConstructionOptions;
-import { sendUserPrompt } from "@/app/dashboard/code-editor/supabase/aiChat";
-import { useUser } from "@auth0/nextjs-auth0/client";
+import { createChatStart, sendUserPrompt } from "@/app/dashboard/code-editor/supabase/aiChat";
 import { useRecoilValue } from "recoil";
 import { activeUserAtom } from "@/state/userAtoms";
+import useOpenAiStreamer from "@/hooks/ai/useOpenAiStreamer";
+import IStandaloneEditorConstructionOptions = coreEditor.IStandaloneEditorConstructionOptions;
 
 const OPTIONS: IStandaloneEditorConstructionOptions = {
     acceptSuggestionOnCommitCharacter: true,
@@ -91,6 +91,9 @@ export const Editor: React.FC<EditorProps> = ({ repoName, value, onChange, filen
     const editorRef = useRef<any>(null);
     const { saveFileContent } = useEditorSave(editorRef, repoName, filename, setIsLoading);
     const userId = useRecoilValue(activeUserAtom).matrixId;
+    const [activeChatId, setActiveChatId] = useState("");
+
+    useOpenAiStreamer({ chatId: activeChatId });
 
     const handleEditorDidMount = (editor, _monacoInstance) => {
         editorRef.current = editor;
@@ -115,6 +118,7 @@ export const Editor: React.FC<EditorProps> = ({ repoName, value, onChange, filen
             void handleSaveContent();
         });
     };
+
     const handleEditorChange = (value, _event) => {
         console.log("here is the current model value:", value);
         setContent(value);
@@ -149,8 +153,17 @@ export const Editor: React.FC<EditorProps> = ({ repoName, value, onChange, filen
         if (text.trim().length === 0) return;
 
         if (text) {
-            console.log(text);
-            await sendUserPrompt(text, userId);
+            console.log(`User input:: ${text}`);
+
+            const newChat = await createChatStart(text, userId);
+
+            console.log({ newChat });
+
+            setActiveChatId(newChat.chatId);
+
+            const response = await sendUserPrompt(text, newChat.chatId, newChat);
+
+            console.log({ response });
         } else {
             aiClose();
         }
