@@ -1,10 +1,8 @@
-import { AiParamsType, ChatId, MessageType } from "@/types";
+import { AiParamsType, MessageType } from "@/types";
 import { v4 as uuidv4 } from "uuid";
 import { createChatStartEntry } from "@/utils/supabase/chatDb";
 import supabase from "@/utils/supabase/client";
 import { OpenAiStream } from "@/app/api/openai/route";
-
-const chatId = uuidv4();
 
 export interface INewChat {
     chatId: string;
@@ -28,6 +26,8 @@ export const createChatStart = async (
     metadata: any;
     messages: MessageType[];
 }> => {
+    const chatId = uuidv4();
+
     const systemMessageEntry: MessageType = {
         chatId: chatId,
         id: uuidv4(),
@@ -106,13 +106,14 @@ export const sendAiMessage = async ({
     messagesEntry,
 }: SendMessageParams) => {
     try {
-        let messages: string[] = [];
         const streamTrigger = true;
         if (!streamTrigger) return;
 
+        console.log({ messagesEntry });
+
         const openAiArray = messagesEntry.map((message) => ({
             role: message.role as "system" | "user" | "assistant",
-            content: message.text,
+            content: message.content || message.text,
         }));
 
         let buffer = "";
@@ -127,6 +128,7 @@ export const sendAiMessage = async ({
         };
 
         let fullText = "";
+
         const callback = (chunk: string) => {
             fullText += chunk;
             buffer += chunk;

@@ -2,8 +2,8 @@
 
 import MonacoEditor, { EditorProps as MonacoEditorProps } from "@monaco-editor/react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { getLanguageFromExtension, indexedDBStore } from "../utils";
-import * as monaco from "monaco-editor"; // Ensure monaco-editor is imported correctly
+import { getLanguageFromExtension } from "../utils";
+import * as monaco from "monaco-editor";
 import { editor as coreEditor } from "monaco-editor-core";
 import { useEditorSave } from "@/app/dashboard/code-editor/hooks";
 import { useDisclosure } from "@mantine/hooks";
@@ -71,8 +71,6 @@ const OPTIONS: IStandaloneEditorConstructionOptions = {
     wrappingIndent: "none",
 };
 
-const store = indexedDBStore;
-
 type EditorProps = MonacoEditorProps & {
     repoName: string;
     value: string;
@@ -90,9 +88,14 @@ export const Editor: React.FC<EditorProps> = ({ repoName, value, onChange, filen
     const editorRef = useRef<any>(null);
     const { saveFileContent } = useEditorSave(editorRef, repoName, filename, setIsLoading);
     const userId = useRecoilValue(activeUserAtom).matrixId;
-    const [aiResponse, setAiResponse] = useState();
+    const [aiResponse, setAiResponse] = useState("");
+    const [aiResponseLoading, setAiResponseLoading] = useState(false);
 
-    const handleEditorDidMount = (editor, _monacoInstance) => {
+    const [aiInstructions, setAiInstructions] = useState("");
+    const [aiSuggestions, setAiSuggestions] = useState("");
+    const suggestionsWidgetRef = useRef<any>(null);
+
+    const handleEditorDidMount = (editor, monacoInstance) => {
         editorRef.current = editor;
 
         // Add keybinding for Ctrl + S
@@ -101,18 +104,59 @@ export const Editor: React.FC<EditorProps> = ({ repoName, value, onChange, filen
         });
 
         editor.addAction({
-            id: "ask-ai-matrx",
+            id: "askAiMatrx",
             label: "Ask AI",
-            contextMenuGroupId: "0_customGroup", // High-precedence group
-            contextMenuOrder: 0, // Top order within the group
-            run: (editor) => {
+            contextMenuGroupId: "0_customGroup",
+            contextMenuOrder: 0,
+            run: (_editor) => {
                 handleAiOpen();
+            },
+        });
+
+        editor.addAction({
+            id: "triggerAiSuggestions",
+            label: "Trigger AI Suggestions",
+            contextMenuGroupId: "0_customGroup",
+            contextMenuOrder: 0,
+            keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyI], // Ctrl+I or Cmd+I
+            run: (ed) => {
+                // ed.trigger("", "editor.action.triggerSuggest", {});
+                showAiSuggestionsWidget(editor);
             },
         });
 
         // Save on blur
         editor.onDidBlurEditorWidget(() => {
             void handleSaveContent();
+        });
+
+        // Add AI suggestion provider
+        monacoInstance.languages.registerCompletionItemProvider(language, {
+            provideCompletionItems: async (model, position) => {
+                const wordUntilPosition = model.getWordUntilPosition(position);
+                const range = {
+                    startLineNumber: position.lineNumber,
+                    endLineNumber: position.lineNumber,
+                    startColumn: wordUntilPosition.startColumn,
+                    endColumn: wordUntilPosition.endColumn,
+                };
+
+                // Get the current line content
+                const lineContent = model.getLineContent(position.lineNumber);
+
+                // Send the current line to your AI service
+                const aiSuggestions = await getAiSuggestions(lineContent);
+
+                // Convert AI suggestions to Monaco completion items
+                const suggestions = aiSuggestions.map((suggestion) => ({
+                    label: suggestion,
+                    kind: monacoInstance.languages.CompletionItemKind.Text,
+                    insertText: suggestion,
+                    range: range,
+                }));
+
+                return { suggestions };
+            },
         });
     };
 
@@ -170,6 +214,142 @@ export const Editor: React.FC<EditorProps> = ({ repoName, value, onChange, filen
         } else {
             aiClose();
         }
+    };
+
+    const getAiSuggestions = async (lineContent: string) => {
+        // Implement this function to call your AI service
+        // and return an array of suggestion strings
+        // For example:
+        const response = await sendAiMessage({
+            chatId: "inline-suggestions",
+            messagesEntry: [{ role: "user", content: `Suggest completions for: ${lineContent}` }],
+        });
+        return response.data.split("\n"); // Assuming the AI returns suggestions separated by newlines
+    };
+
+    const formatMessage = (currentContent: string, instructions: string): string => {
+        const greetings = "Hello AI!\\n\\n";
+        const currentCode = `This is my current code:\\n\\n${currentContent}.`;
+        const command = `\\n\\nInstructions: ${instructions}.`;
+        const returnAs = `Format code in this language: ${language}.`;
+
+        return greetings + currentCode + command + returnAs;
+    };
+
+    const showAiSuggestionsWidget = (editor) => {
+        const lineNumber = editor.getPosition().lineNumber;
+        const column = editor.getPosition().column;
+
+        if (suggestionsWidgetRef.current) {
+            suggestionsWidgetRef.current.dispose();
+        }
+
+        const domNode = document.createElement("div");
+        domNode.innerHTML = `
+      <div style="background: #1e1e1e; color: #d4d4d4; padding: 8px; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); width: 300px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <span>AI Suggestions</span>
+          <button id="closeSuggestions" style="background: none; border: none; color: #d4d4d4; cursor: pointer;">×</button>
+        </div>
+        <input type="text" id="aiInstructions" placeholder="Enter AI instructions" style="width: 100%; margin-bottom: 8px; padding: 4px; background: #2d2d2d; color: #d4d4d4; border: 1px solid #3c3c3c; border-radius: 2px;">
+        <button id="submitAiInstructions" style="width: 100%; padding: 4px 8px; background: #0e639c; color: white; border: none; border-radius: 2px; cursor: pointer;">Get Suggestions</button>
+        <div id="aiSuggestions" style="margin-top: 8px;"></div>
+        <div id="aiResponse" style="margin-top: 8px; border-top: 1px solid #3c3c3c; padding-top: 8px;"></div>
+      </div>
+    `;
+
+        const inputElement = domNode.querySelector("#aiInstructions") as HTMLInputElement;
+        const buttonElement = domNode.querySelector("#submitAiInstructions") as HTMLButtonElement;
+        const suggestionsElement = domNode.querySelector("#aiSuggestions") as HTMLDivElement;
+        const responseElement = domNode.querySelector("#aiResponse") as HTMLDivElement;
+        const closeButton = domNode.querySelector("#closeSuggestions") as HTMLButtonElement;
+
+        const updateWidget = () => {
+            if (suggestionsWidgetRef.current) {
+                suggestionsWidgetRef.current.position = {
+                    position: { lineNumber: editor.getPosition().lineNumber, column: editor.getPosition().column },
+                    preference: [monaco.editor.ContentWidgetPositionPreference.BELOW],
+                };
+            }
+        };
+
+        const closeSuggestionsWidget = () => {
+            domNode.remove();
+
+            if (suggestionsWidgetRef.current) {
+                suggestionsWidgetRef.current.dispose();
+                suggestionsWidgetRef.current = null;
+            }
+        };
+
+        closeButton.addEventListener("click", closeSuggestionsWidget);
+
+        buttonElement.addEventListener("click", async () => {
+            const instructions = inputElement.value;
+            if (instructions.trim().length === 0) return;
+
+            buttonElement.disabled = true;
+            buttonElement.textContent = "Loading...";
+            suggestionsElement.innerHTML = "";
+            responseElement.innerHTML = "";
+
+            try {
+                const currentContent = editor.getValue();
+                const inputMessage = formatMessage(currentContent, instructions);
+                const newChat = await createChatStart(inputMessage, userId);
+
+                const response = await sendAiMessage({
+                    chatId: newChat.chatId,
+                    messagesEntry: [
+                        {
+                            role: "user",
+                            content: inputMessage,
+                        },
+                    ],
+                });
+
+                const aiResponse = response.data;
+                responseElement.innerHTML = `<div style="white-space: pre-wrap;">${aiResponse}</div>`;
+
+                suggestionsElement.innerHTML = `
+          <button id="applySuggestion" style="margin-top: 8px; width: 100%; padding: 4px 8px; background: #0e639c; color: white; border: none; border-radius: 2px; cursor: pointer;">Apply Suggestion</button>
+        `;
+
+                const applyButton = suggestionsElement.querySelector("#applySuggestion") as HTMLButtonElement;
+                applyButton.addEventListener("click", () => {
+                    const position = editor.getPosition();
+                    editor.executeEdits("ai-suggestion", [
+                        {
+                            range: new monaco.Range(
+                                position.lineNumber,
+                                position.column,
+                                position.lineNumber,
+                                position.column,
+                            ),
+                            text: aiResponse,
+                            forceMoveMarkers: true,
+                        },
+                    ]);
+                    updateWidget();
+                });
+            } catch (error) {
+                console.error("Error getting AI suggestions:", error);
+                responseElement.textContent = "Error fetching suggestions. Please try again.";
+            } finally {
+                buttonElement.disabled = false;
+                buttonElement.textContent = "Get Suggestions";
+                updateWidget();
+            }
+        });
+
+        suggestionsWidgetRef.current = editor.addContentWidget({
+            getDomNode: () => domNode,
+            getId: () => "ai-suggestions-widget",
+            getPosition: () => ({
+                position: { lineNumber, column },
+                preference: [monaco.editor.ContentWidgetPositionPreference.BELOW],
+            }),
+        });
     };
 
     useEffect(() => {
