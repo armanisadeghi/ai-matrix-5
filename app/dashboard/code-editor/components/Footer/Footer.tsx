@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 import { Terminal } from "./tabs/Terminal";
+import { AskAi } from "@/app/dashboard/code-editor/components";
 
 export const Footer = () => {
     const [activeTab, setActiveTab] = useState(0);
 
     const tabData = [
-        { id: 0, title: "Problems", content: "No problems have been detected in the workspace." },
+        { id: 0, title: "Ask AI", content: <AskAi /> },
         { id: 1, title: "Output", content: "No output have been detected in the workspace." },
         { id: 2, title: "Terminal", content: <Terminal /> },
         { id: 3, title: "Ports", content: "No ports have been detected in the workspace." },

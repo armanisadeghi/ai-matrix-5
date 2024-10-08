@@ -1,16 +1,11 @@
 "use client";
 
 import MonacoEditor, { EditorProps as MonacoEditorProps } from "@monaco-editor/react";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { findParentStructure, getLanguageFromExtension, getPlaceholderText, IParentStructure } from "../utils";
 import * as monaco from "monaco-editor";
 import { editor as coreEditor } from "monaco-editor-core";
 import { useEditorSave } from "@/app/dashboard/code-editor/hooks";
-import { useDisclosure } from "@mantine/hooks";
-import { Modal } from "@mantine/core";
-import { Textarea } from "@/app/dashboard/code-editor/components/Inputs";
-import { ActionIcon } from "@/app/dashboard/code-editor/components/Buttons";
-import { IconSend, IconX } from "@tabler/icons-react";
 import { createChatStart, sendAiMessage } from "@/app/dashboard/code-editor/supabase/aiChat";
 import { useRecoilValue } from "recoil";
 import { activeUserAtom } from "@/state/userAtoms";
@@ -181,14 +176,10 @@ type EditorProps = MonacoEditorProps & {
 export const Editor: React.FC<EditorProps> = ({ repoName, value, onChange, filename, height }) => {
     const [content, setContent] = useState<string>(value);
     const [isLoading, setIsLoading] = useState(false);
-    const [aiOpened, { open: aiOpen, close: aiClose }] = useDisclosure(false);
-    const [userInput, setUserInput] = useState("");
     const language = getLanguageFromExtension(filename);
     const editorRef = useRef<any>(null);
     const { saveFileContent } = useEditorSave(editorRef, repoName, filename, setIsLoading);
     const userId = useRecoilValue(activeUserAtom).matrixId;
-    const [aiResponse, setAiResponse] = useState("");
-    const [aiResponseLoading, setAiResponseLoading] = useState(false);
     const suggestionsWidgetRef = useRef<monaco.editor.IContentWidget | null>(null);
 
     const handleEditorDidMount = (editor, monacoInstance) => {
@@ -197,16 +188,6 @@ export const Editor: React.FC<EditorProps> = ({ repoName, value, onChange, filen
         // Add keybinding for Ctrl + S
         editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, () => {
             void handleSaveContent();
-        });
-
-        editor.addAction({
-            id: "askAiMatrx",
-            label: "Ask AI",
-            contextMenuGroupId: "0_customGroup",
-            contextMenuOrder: 0,
-            run: (_editor) => {
-                handleAiOpen();
-            },
         });
 
         editor.addAction({
@@ -242,42 +223,6 @@ export const Editor: React.FC<EditorProps> = ({ repoName, value, onChange, filen
                 console.error(`Error saving file ${filename}:`, error);
                 setIsLoading(false);
             }
-        }
-    };
-
-    const handleAiOpen = () => {
-        aiOpen();
-    };
-
-    const handleInputChange = useCallback((event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setUserInput(event.target.value);
-    }, []);
-
-    const handleSubmitMessage = async () => {
-        const text = userInput || "";
-
-        if (text.trim().length === 0) return;
-
-        if (text) {
-            console.log(`User input:: ${text}`);
-
-            const newChat = await createChatStart(text, userId);
-
-            console.log({ newChat });
-
-            const response: { data: string } = await sendAiMessage({
-                chatId: newChat.chatId,
-                messagesEntry: newChat?.messages,
-            });
-
-            // const response = await sendUserPrompt(text, newChat.chatId, newChat);
-
-            console.log({ response });
-
-            // @ts-ignore
-            setAiResponse(response.data);
-        } else {
-            aiClose();
         }
     };
 
@@ -459,20 +404,6 @@ export const Editor: React.FC<EditorProps> = ({ repoName, value, onChange, filen
                     options={OPTIONS}
                 />
             </div>
-            <Modal opened={aiOpened} onClose={aiClose} title="Ask AI Matrx" centered>
-                <Textarea
-                    label="Prompt"
-                    placeholder="Enter a prompt to generate new code"
-                    className="w-full"
-                    value={userInput}
-                    onChange={handleInputChange}
-                />
-                <ActionIcon onClick={handleSubmitMessage}>
-                    <IconSend />
-                </ActionIcon>
-
-                {aiResponse && <p>{aiResponse}</p>}
-            </Modal>
         </>
     );
 };

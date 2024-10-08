@@ -98,18 +98,10 @@ export interface SendMessageParams {
     messagesEntry: any;
 }
 
-export const sendAiMessage = async ({
-    chatId,
-    model = "gpt-4o",
-    options,
-    index = 0,
-    messagesEntry,
-}: SendMessageParams) => {
+export const sendAiMessage = async ({ model = "gpt-4o", options, messagesEntry }: SendMessageParams) => {
     try {
         const streamTrigger = true;
         if (!streamTrigger) return;
-
-        console.log({ messagesEntry });
 
         const openAiArray = messagesEntry.map((message) => ({
             role: message.role as "system" | "user" | "assistant",

@@ -331,7 +331,7 @@ export default function Page({ params }: { params: { repoName: string } }) {
             }
         };
 
-        fetchData();
+        void fetchData();
 
         return () => {
             //
@@ -398,7 +398,7 @@ export default function Page({ params }: { params: { repoName: string } }) {
                 </div>
             </div>
             {/* Footer */}
-            <div className="bg-neutral-800 overflow-auto rounded w-full">
+            <div className="overflow-auto rounded w-full">
                 <Footer />
             </div>
         </EditorLayout>

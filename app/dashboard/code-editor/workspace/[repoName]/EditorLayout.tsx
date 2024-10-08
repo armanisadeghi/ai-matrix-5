@@ -32,7 +32,7 @@ export default function EditorLayout({
     onCodeAnalyze,
 }: EditorLayoutProps) {
     const [detailsOpened, { open: detailsOpen, close: detailsClose }] = useDisclosure(false);
-    const [verticalSizes, setVerticalSizes] = useState([75, 25]);
+    const [verticalSizes, setVerticalSizes] = useState([70, 30]);
     const initialSidebarSize = 20;
     const [horizontalSizes, setHorizontalSizes] = useState([initialSidebarSize, 100 - initialSidebarSize]);
 
@@ -53,12 +53,7 @@ export default function EditorLayout({
     };
 
     const resetVerticalView = () => {
-        setVerticalSizes([25, 75]);
-    };
-
-    const resetView = () => {
-        resetHorizontalView();
-        resetVerticalView();
+        setVerticalSizes([30, 70]);
     };
 
     if (!selectedRepo) {
@@ -111,7 +106,7 @@ export default function EditorLayout({
                         dragInterval={1}
                         direction="vertical"
                         cursor="row-resize"
-                        className="flex flex-col bg-neutral-800"
+                        className="flex flex-col"
                     >
                         {/* Main content area (children) */}
                         {children}
