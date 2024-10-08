@@ -68,7 +68,7 @@ export const createChatStart = async (
         messages: initialMessages,
     };
 
-    console.log("chatStarter: Chat Start Object:", chatStartObject);
+    // console.log("chatStarter: Chat Start Object:", chatStartObject);
 
     await createChatStartEntry(chatStartObject).catch((error) => {
         console.error("Failed to add custom message:", error);
