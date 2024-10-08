@@ -10,7 +10,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { Modal } from "@mantine/core";
 import { Textarea } from "@/app/dashboard/code-editor/components/Inputs";
 import { ActionIcon } from "@/app/dashboard/code-editor/components/Buttons";
-import { IconSend } from "@tabler/icons-react";
+import { IconSend, IconX } from "@tabler/icons-react";
 import { createChatStart, sendAiMessage } from "@/app/dashboard/code-editor/supabase/aiChat";
 import { useRecoilValue } from "recoil";
 import { activeUserAtom } from "@/state/userAtoms";
@@ -71,10 +71,27 @@ const OPTIONS: IStandaloneEditorConstructionOptions = {
     wrappingIndent: "none",
 };
 
-// Define a type for the widget ref
-type SuggestionsWidgetRef = {
-    current: monaco.editor.IContentWidget | null;
+const containerClass = "bg-neutral-800 p-2.5 rounded-md border border-neutral-600 shadow";
+
+const textareaClass =
+    "mb-2 px-3 py-1.5 text-base border border-transparent bg-neutral-700 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-700 outline-none transition duration-150 ease-in-out placeholder:text-sm";
+
+const buttonClass =
+    "px-3 py-1.5 flex items-center gap-2 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 text-sm";
+
+const buttonVariantClass = {
+    primary: "text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-700 focus:ring-blue-500",
+    secondary: "text-gray-700 bg-gray-200 hover:bg-gray-300 active:bg-gray-400 focus:ring-gray-500",
+    light: "text-neutral-700 bg-white border border-neutral-300 hover:bg-neutral-100 active:bg-neutral-200 focus:ring-neutral-500",
+    subtle: "text-white bg-neutral-700 border border-transparent hover:bg-neutral-600 active:bg-neutral-200 focus:ring-neutral-500",
+    danger: "text-rose-600 border border-transparent hover:bg-rose-700 hover:text-white active:bg-rose-200 focus:ring-rose-500",
 };
+
+const suggestionsContainerClass = "";
+
+const responseContainerClass = "mt-4";
+
+const responseContentClass = "p-2 border border-neutral-700 rounded-md";
 
 const createWidgetContent = (parentStructure: IParentStructure): string => {
     const placeholder = getPlaceholderText(parentStructure);
@@ -84,31 +101,33 @@ const createWidgetContent = (parentStructure: IParentStructure): string => {
             : parentStructure.name || parentStructure.type;
 
     return `
-        <div class="ai-suggestions-widget">
-            <div class="widget-header">
+        <div class="ai-suggestions-widget ${containerClass}">
+            <div class="widget-header flex justify-between items-center mb-4">
                 <span>AI Suggestions for ${structureType}</span>
-                <button id="closeSuggestions" class="close-button">×</button>
+                <button id="closeSuggestions" class="close-button ${buttonClass} ${buttonVariantClass.danger}" title="close widget">
+                    Close
+                </button>
             </div>
-            <input type="text" id="aiInstructions" class="ai-input" placeholder="${placeholder}">
-            <button id="submitAiInstructions" class="submit-button">Generate Content</button>
-            <div id="aiSuggestions" class="suggestions-container"></div>
-            <div id="aiResponse" class="response-container"></div>
+            <textarea id="aiInstructions" class="ai-input ${textareaClass}" placeholder="${placeholder}"></textarea>
+            <button id="submitAiInstructions" class="submit-button ${buttonClass} ${buttonVariantClass.subtle}">Generate Content</button>
+            <div id="aiSuggestions" class="suggestions-container ${suggestionsContainerClass}"></div>
+            <div id="aiResponse" class="response-container ${responseContainerClass}"></div>
         </div>
     `;
 };
 
 const formatMessage = (structure: IParentStructure, instructions: string, language: string): string => {
     return `
-Context: I have a ${structure.type} ${structure.name ? `named ${structure.name}` : ""} in ${language}.
-Current content:
-\`\`\`${language}
-${structure.innerContent}
-\`\`\`
-
-Instructions: ${instructions}
-
-Please provide the complete implementation in ${language}. Keep the existing structure and naming, but modify or add to the content as requested.
-`;
+        Context: I have a ${structure.type} ${structure.name ? `named ${structure.name}` : ""} in ${language}.
+        Current content:
+        \`\`\`${language}
+        ${structure.innerContent}
+        \`\`\`
+        
+        Instructions: ${instructions}
+        
+        Please provide the complete implementation in ${language}. Keep the existing structure and naming, but modify or add to the content as requested.
+    `;
 };
 
 const addWidgetStyles = () => {
@@ -119,64 +138,33 @@ const addWidgetStyles = () => {
     styleElement.id = styleId;
     styleElement.innerHTML = `
         .ai-suggestions-widget {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            padding: 12px;
-            border-radius: 4px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-            width: 300px;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            width: 700px;
         }
         .widget-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
+
         }
         .close-button {
-            background: none;
-            border: none;
-            color: #d4d4d4;
             cursor: pointer;
             font-size: 16px;
         }
         .ai-input {
             width: 100%;
-            margin-bottom: 8px;
-            padding: 6px;
-            background: #2d2d2d;
-            color: #d4d4d4;
-            border: 1px solid #3c3c3c;
-            border-radius: 2px;
         }
         .submit-button, .apply-button {
-            width: 100%;
-            padding: 6px;
-            background: #0e639c;
-            color: white;
-            border: none;
-            border-radius: 2px;
-            cursor: pointer;
+            width: auto;
         }
         .submit-button:disabled {
             background: #1e1e1e;
             cursor: not-allowed;
         }
         .response-container {
-            margin-top: 8px;
-            border-top: 1px solid #3c3c3c; 
-            padding-top: 8px;
+
         }
         .response-content pre {
-            margin: 0;
-            padding: 8px;
-            background: #2d2d2d;
-            border-radius: 2px;
-            overflow-x: auto;
+
         }
         .error-message {
-            color: #f48771;
-            margin-top: 8px;
+
         }
     `;
     document.head.appendChild(styleElement);
@@ -358,8 +346,6 @@ export const Editor: React.FC<EditorProps> = ({ repoName, value, onChange, filen
         editor.addContentWidget(newWidget);
         suggestionsWidgetRef.current = newWidget;
 
-        console.log({ suggestionsWidgetRef });
-
         // 7. Add CSS styles
         addWidgetStyles();
     };
@@ -414,8 +400,10 @@ export const Editor: React.FC<EditorProps> = ({ repoName, value, onChange, filen
                 const aiResponse = response.data;
                 responseElement.innerHTML = `
                 <div class="response-content">
-                    <pre style="max-height: 100px; overflow: auto"><code>${aiResponse}</code></pre>
-                    <button id="applyResponse" class="apply-button">Apply Response</button>
+                    <pre class="${responseContentClass} overflow-x-auto" style="max-height: 150px;">
+                        <code>${aiResponse}</code>
+                    </pre>
+                    <button id="applyResponse" class="apply-button mt-2 ${buttonClass} ${buttonVariantClass.primary}">Apply Response</button>
                 </div>
             `;
 
