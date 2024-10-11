@@ -78,7 +78,7 @@ export default function EditorLayout({
                     isPublishing={isPublishing}
                     onPushToGitHub={onPushToGitHub}
                     detailsOpen={detailsOpen}
-                    toggleSidebar={toggleSidebar} // New prop
+                    toggleSidebar={toggleSidebar}
                     selectedFile={selectedFile}
                     onRunCode={onRunCode}
                     isExecuting={isExecuting}
@@ -122,19 +122,35 @@ export default function EditorLayout({
                     </Split>
                 </Split>
             </div>
-            <Modal opened={detailsOpened} onClose={detailsClose} title="Project details">
+            <Modal opened={detailsOpened} onClose={detailsClose} title="Project details" centered size="lg">
                 <div className="flex flex-col gap-4">
-                    <TextInput label="Name" placeholder="Default name:" className="w-full" />
-                    <Textarea label="Description" placeholder="What does this project do?" className="w-full" />
-                    <Button
-                        leftSection={<IconCloudUpload size={18} />}
-                        onClick={onPushToGitHub}
-                        loading={isPublishing}
-                        variant="primary"
-                        className="justify-center"
-                    >
-                        Publish to GitHub
-                    </Button>
+                    <TextInput label="Name" placeholder="Default name:" className="w-full" value={selectedRepo.name} />
+                    <Textarea
+                        label="Description"
+                        placeholder="What does this project do?"
+                        className="w-full"
+                        value={selectedRepo.description}
+                    />
+                    <div className="flex gap-2">
+                        <Button
+                            leftSection={<IconCloudUpload size={18} />}
+                            onClick={onPushToGitHub}
+                            loading={isPublishing}
+                            variant="light"
+                            className="justify-center flex-auto"
+                        >
+                            Save your changes
+                        </Button>
+                        <Button
+                            leftSection={<IconCloudUpload size={18} />}
+                            onClick={onPushToGitHub}
+                            loading={isPublishing}
+                            variant="primary"
+                            className="justify-center flex-auto"
+                        >
+                            Publish to GitHub
+                        </Button>
+                    </div>
                 </div>
             </Modal>
         </>

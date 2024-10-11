@@ -3,15 +3,14 @@
 import { ActionIcon, Button, RunCode } from "@/app/dashboard/code-editor/components/Buttons";
 import {
     IconBolt,
-    IconCategory2,
     IconHome,
     IconLayoutSidebar,
     IconLayoutSidebarRight,
+    IconPackages,
     IconQuestionMark,
     IconTrash,
 } from "@tabler/icons-react";
 import { IRepoData } from "@/app/dashboard/code-editor/types";
-import { TextInput } from "@/app/dashboard/code-editor/components";
 import { useState } from "react";
 
 const iconSize = 18;
@@ -58,16 +57,19 @@ export const Header: React.FC<HeaderProps> = ({
                 <ActionIcon onClick={onRepoClose}>
                     <IconHome size={iconSize} />
                 </ActionIcon>
+            </div>
+            <div className="flex items-center gap-2">
+                <p className="mb-0 px-2 py-0.5 text-sm flex bg-neutral-800 rounded-lg">Drafts</p>
                 <Button
                     variant="subtle"
                     onClick={detailsOpen}
-                    leftSection={<IconCategory2 size={iconSize} color="green" />}
+                    leftSection={<IconPackages size={iconSize} />}
+                    className="px-2 py-0.5 text-sm"
                 >
                     {selectedRepo.name}
                 </Button>
             </div>
             <div className="flex items-center gap-2">
-                <TextInput type="text" placeholder="ask AI and search" />
                 <ActionIcon>
                     <IconQuestionMark size={iconSize} />
                 </ActionIcon>
