@@ -1,14 +1,14 @@
 "use client";
 
 import { useDisclosure } from "@mantine/hooks";
-import { IconFolderPlus, IconReload } from "@tabler/icons-react";
+import { IconBrandGithub, IconFolderOpen, IconFolderPlus, IconReload } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 import { IRepoData } from "../../types";
 import { indexedDBStore } from "../../utils";
 import { Button } from "../Buttons";
-import { NewProjectDrawer } from "../NewProjectDrawer";
+import { NewProjectDrawer, NewTabOptions } from "../NewProjectDrawer";
 import { ProjectCard } from "./ProjectCard";
 
 const store = indexedDBStore;
@@ -19,6 +19,7 @@ export const Workspace: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [opened, { open, close }] = useDisclosure(false);
     const router = useRouter();
+    const [selectedNewTab, setSelectedNewTab] = useState<NewTabOptions>();
 
     // let syncManagerInstance = null; // Declare this variable outside the useEffect
 
@@ -101,6 +102,11 @@ export const Workspace: React.FC = () => {
         }
     };
 
+    const handleNewOpen = (tab: NewTabOptions) => {
+        open();
+        setSelectedNewTab(tab);
+    };
+
     if (isLoading) {
         return (
             <div className="flex flex-col gap-2 items-center">
@@ -113,9 +119,9 @@ export const Workspace: React.FC = () => {
     if (!repositories || repositories.length === 0) {
         return (
             <>
-                <div className="px-4 py-8 flex flex-col items-center gap-4 border border-neutral-700 rounded">
-                    <IconFolderPlus size={48} />
-                    <p className="text-2xl font-normal">No recent files added.</p>
+                <div className="px-4 py-8 flex flex-col items-center gap-4 border border-dashed border-neutral-700 rounded">
+                    <IconFolderPlus className="text-neutral-300" size={48} />
+                    <p className="text-1.5xl font-medium">No recent files added.</p>
                     <Button onClick={open} leftSection={<IconFolderPlus size={16} />} variant="primary">
                         New project
                     </Button>
@@ -126,31 +132,52 @@ export const Workspace: React.FC = () => {
     }
 
     return (
-        <>
-            <div className="flex items-center justify-between pb-4 mb-4 border-b border-neutral-700">
-                <h2 className="text-xl font-semibold capitalize">recent files</h2>
+        <div className="space-y-4">
+            <div className="flex items-center justify-between">
                 <div className="flex gap-2 items-center">
-                    <Button onClick={open} leftSection={<IconFolderPlus size={16} />} variant="primary">
-                        New project
+                    <IconFolderOpen />
+                    <h2 className="text-xl font-medium capitalize mb-0">Files</h2>
+                </div>
+                <div className="flex gap-2 items-center">
+                    <Button
+                        onClick={() => {
+                            handleNewOpen("new-project-github");
+                        }}
+                        leftSection={<IconBrandGithub size={16} />}
+                        variant="light"
+                    >
+                        Import from GitHub
                     </Button>
-                    <Button onClick={loadRepositories} leftSection={<IconReload size={16} />} variant="subtle">
+                    <Button
+                        onClick={() => {
+                            handleNewOpen("new-project-blank");
+                        }}
+                        leftSection={<IconFolderPlus size={16} />}
+                        variant="primary"
+                    >
+                        Create
+                    </Button>
+                    <Button onClick={loadRepositories} leftSection={<IconReload size={16} />} variant="light">
                         Refresh
                     </Button>
                 </div>
             </div>
-            <div className="space-y-4">
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                    {repositories.map((repo) => (
-                        <ProjectCard
-                            key={repo.name}
-                            repo={repo}
-                            handleDelete={handleDeleteRepo}
-                            handleSelect={handleRepoSelect}
-                        />
-                    ))}
-                </div>
+            <div className="grid grid-cols-1 gap-3">
+                {repositories.map((repo) => (
+                    <ProjectCard
+                        key={repo.name}
+                        repo={repo}
+                        handleDelete={handleDeleteRepo}
+                        handleSelect={handleRepoSelect}
+                    />
+                ))}
             </div>
-            <NewProjectDrawer onClose={close} opened={opened} onProjectCreated={loadRepositories} />
-        </>
+            <NewProjectDrawer
+                onClose={close}
+                opened={opened}
+                onProjectCreated={loadRepositories}
+                selectedTab={selectedNewTab}
+            />
+        </div>
     );
 };

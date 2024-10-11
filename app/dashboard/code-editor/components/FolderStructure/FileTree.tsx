@@ -54,7 +54,7 @@ export const FileTree: React.FC<FileTreeProps> = ({
     };
 
     return (
-        <div className="h-full">
+        <div className="h-full overflow-auto">
             <TextInput
                 placeholder="Search files..."
                 value={searchQuery}

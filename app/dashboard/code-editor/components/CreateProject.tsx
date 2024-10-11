@@ -1,11 +1,15 @@
-import React, { useState } from "react";
-import { Button } from "../components";
+import React, { useEffect, useState } from "react";
+import { Button, Textarea } from "../components";
 import { indexedDBStore } from "../utils/local-indexedDB";
 import { TextInput } from "./Inputs";
 import { IconCirclePlus } from "@tabler/icons-react";
+import { generate } from "random-words";
+
+const randomNouns = generate({ exactly: 2, join: "" });
 
 export const CreateProject: React.FC<{ onProjectCreated: () => void }> = ({ onProjectCreated }) => {
     const [projectName, setProjectName] = useState("");
+    const [projectDesc, setProjectDesc] = useState("");
 
     const handleCreateProject = async () => {
         if (!projectName) {
@@ -15,6 +19,7 @@ export const CreateProject: React.FC<{ onProjectCreated: () => void }> = ({ onPr
 
         const newProject = {
             name: projectName,
+            description: projectDesc,
             files: {},
         };
 
@@ -28,16 +33,30 @@ export const CreateProject: React.FC<{ onProjectCreated: () => void }> = ({ onPr
         }
     };
 
+    useEffect(() => {
+        setProjectName(randomNouns);
+    }, [randomNouns]);
+
     return (
         <div className="space-y-4">
-            <p className="text-xl font-semibold">Create a blank project</p>
+            <p className="text-lg font-semibold">Create a blank project</p>
 
-            <div className="flex items-center gap-2">
+            <div className="space-y-3">
                 <TextInput
-                    className="flex-grow"
-                    placeholder="Enter project name"
+                    label="Title"
+                    className="w-full"
+                    placeholder="Enter project title"
+                    defaultValue={projectName}
                     value={projectName}
                     onChange={(event) => setProjectName(event.currentTarget.value)}
+                />
+                <Textarea
+                    label="Description"
+                    className="w-full"
+                    placeholder="Enter project description"
+                    defaultValue={projectDesc}
+                    value={projectDesc}
+                    onChange={(event) => setProjectDesc(event.currentTarget.value)}
                 />
                 <Button onClick={handleCreateProject} variant="primary" leftSection={<IconCirclePlus size={16} />}>
                     Create Blank Project

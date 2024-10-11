@@ -1,4 +1,6 @@
-import { ActionIcon, Button } from "@/app/dashboard/code-editor/components/Buttons";
+"use client";
+
+import { ActionIcon, Button, RunCode } from "@/app/dashboard/code-editor/components/Buttons";
 import {
     IconBolt,
     IconCategory2,
@@ -23,6 +25,9 @@ type HeaderProps = {
     onPushToGitHub: () => void;
     detailsOpen: () => void;
     toggleSidebar: () => void; // Add this line
+    selectedFile: { path: string; content: string } | null;
+    onRunCode: () => Promise<void>;
+    isExecuting?: boolean;
 };
 
 export const Header: React.FC<HeaderProps> = ({
@@ -33,6 +38,9 @@ export const Header: React.FC<HeaderProps> = ({
     isPublishing,
     detailsOpen,
     toggleSidebar,
+    selectedFile,
+    onRunCode,
+    isExecuting,
 }) => {
     const [sidebarState, setSidebarState] = useState(true);
 
@@ -76,6 +84,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <Button leftSection={<IconBolt size={iconSize} />} onClick={onCodeAnalyze} loading={isPublishing}>
                     Analyze
                 </Button>
+                {selectedFile && <RunCode onRunCode={onRunCode} loading={isExecuting} />}
             </div>
         </div>
     );

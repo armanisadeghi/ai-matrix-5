@@ -1,11 +1,10 @@
 "use client";
 
 import { useUser } from "@auth0/nextjs-auth0/client";
-import { ActionIconProps } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { AddFileFolder, buildTree, Editor, FileTree, Footer } from "../../components";
+import { ActionIcon, AddFileFolder, buildTree, CodeEditor, FileTree, Footer } from "../../components";
 import { IRepoData } from "../../types";
 import {
     analyzeRepo,
@@ -17,6 +16,9 @@ import {
     updateGitHubRepo,
 } from "../../utils";
 import EditorLayout from "./EditorLayout";
+
+import { CodeDiffEditor } from "@/app/dashboard/code-editor/components/CodeEditor/DiffEditor";
+import { IconColumns2 } from "@tabler/icons-react";
 
 import "./style.css";
 
@@ -50,6 +52,24 @@ customAnalyzer.addLanguage({
     ],
 });
 
+function getLanguageFromFilePath(filePath: string): string | null {
+    const extension = filePath.split(".").pop()?.toLowerCase();
+    switch (extension) {
+        case "py":
+            return "python";
+        case "js":
+            return "javascript";
+        case "ts":
+            return "typescript";
+        case "java":
+            return "java";
+        case "cs":
+            return "csharp";
+        default:
+            return null;
+    }
+}
+
 export default function Page({ params }: { params: { repoName: string } }) {
     const router = useRouter();
     const { user } = useUser();
@@ -61,6 +81,11 @@ export default function Page({ params }: { params: { repoName: string } }) {
     const [activeFolder, setActiveFolder] = useState<string>("");
     const [isPublishing, setIsPublishing] = useState(false);
     const [analysisResults, setAnalysisResults] = useState<any>();
+    const [executionResult, setExecutionResult] = useState<any>();
+    const [isExecuting, setIsExecuting] = useState(false);
+    const [executionError, setExecutionError] = useState<any>(null);
+    const [newFileContent, setNewFileContent] = useState<string>();
+    const [diffView, setDiffView] = useState(false);
 
     const treeData = buildTree(selectedRepo);
 
@@ -207,7 +232,7 @@ export default function Page({ params }: { params: { repoName: string } }) {
         if (selectedRepo) {
             await loadProject(selectedRepo.name);
             if (isFile) {
-                handleFileSelect(path);
+                await handleFileSelect(path);
             }
         }
     };
@@ -290,8 +315,46 @@ export default function Page({ params }: { params: { repoName: string } }) {
         }
     };
 
-    const actionIconProps: ActionIconProps = {
-        variant: "subtle",
+    /**
+     * execute code
+     */
+    const handleRunCode = async () => {
+        if (!selectedFile) {
+            setExecutionError("No file selected");
+            return;
+        }
+
+        setIsExecuting(true);
+        setExecutionError(null);
+        setExecutionResult(null);
+
+        try {
+            const response = await fetch("https://dz3ft52mmw.us-east-1.awsapprunner.com/execute", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    language: getLanguageFromFilePath(selectedFile.path),
+                    code: selectedFile.content,
+                    repoName: selectedRepo.name,
+                    filePath: selectedFile.path,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error("Execution failed");
+            }
+
+            const result = await response.json();
+            setExecutionResult(result.output);
+        } catch (error) {
+            setExecutionError(error.message || "An error occurred while running the code");
+        } finally {
+            setIsExecuting(false);
+        }
+    };
+
+    const openDiffView = () => {
+        setDiffView(true);
     };
 
     const sidebarContent = (
@@ -300,7 +363,6 @@ export default function Page({ params }: { params: { repoName: string } }) {
                 projectName={selectedRepo?.name || ""}
                 activeFolder={activeFolder}
                 onAdd={handleAddFolderFile}
-                actionIconProps={actionIconProps}
             />
         </>
     );
@@ -312,7 +374,7 @@ export default function Page({ params }: { params: { repoName: string } }) {
                 onFileSelect={handleFileSelect}
                 onFolderSelect={handleFolderSelect}
                 onUpdate={() => {
-                    loadProject(selectedRepo?.name || "");
+                    void loadProject(selectedRepo?.name || "");
                 }}
                 repoName={selectedRepo?.name || ""}
                 treeData={treeData}
@@ -352,44 +414,69 @@ export default function Page({ params }: { params: { repoName: string } }) {
             sidebar={sidebarContent}
             fileTree={fileTreeContent}
             onCodeAnalyze={handleAnalyzeCode}
+            selectedFile={selectedFile}
+            isExecuting={isExecuting}
+            onRunCode={handleRunCode}
         >
             {/* Editor area */}
             <div className="flex flex-col overflow-hidden py-2 pr-2 rounded">
                 {/* Tabs */}
-                <div className="flex gap-1 px-1 mb-2 overflow-x-auto rounded">
-                    {openFiles.map((file, idx) => {
-                        const FileIcon = getIconFromExtension(file.path ?? "");
-                        return (
-                            <div
-                                key={idx}
-                                className={`px-2 py-1 text-sm rounded text-white cursor-pointer flex items-center gap-2 hover:bg-neutral-700 ${selectedFile?.path === file?.path ? "bg-neutral-900 font-medium" : "bg-neutral-800 font-normal"}`}
-                                onClick={() => setSelectedFile(file)}
-                            >
-                                <FileIcon size={16} />
-                                <span>{file.path}</span>
-                                <button
-                                    className="ml-4 cursor-pointer text-rose-600"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        handleCloseTab(file);
-                                    }}
+                <div className="flex px-1 mb-2 overflow-x-auto rounded justify-between">
+                    <div className="flex grow gap-1">
+                        {openFiles.map((file, idx) => {
+                            const FileIcon = getIconFromExtension(file.path ?? "");
+                            return (
+                                <div
+                                    key={idx}
+                                    className={`px-1.5 py-0.5 text-sm rounded-md text-white cursor-pointer flex items-center gap-2 hover:bg-neutral-700 ${selectedFile?.path === file?.path ? "bg-neutral-800 font-medium" : "bg-neutral-900 font-normal"}`}
+                                    onClick={() => setSelectedFile(file)}
                                 >
-                                    &times;
-                                </button>
-                            </div>
-                        );
-                    })}
+                                    <FileIcon size={16} />
+                                    <span>{file.path}</span>
+                                    <ActionIcon
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            void handleCloseTab(file);
+                                        }}
+                                    >
+                                        &times;
+                                    </ActionIcon>
+                                </div>
+                            );
+                        })}
+                    </div>
+                    {selectedFile && (
+                        <div className="flex">
+                            <ActionIcon onClick={openDiffView}>
+                                <IconColumns2 size={16} />
+                            </ActionIcon>
+                        </div>
+                    )}
                 </div>
 
                 {/* Editor */}
                 <div className="flex-grow overflow-hidden">
                     {selectedFile ? (
-                        <Editor
-                            repoName={selectedRepo.name}
-                            filename={selectedFile.path}
-                            value={selectedFile.content}
-                            onChange={handleEditorChange}
-                        />
+                        !diffView ? (
+                            <>
+                                <CodeEditor
+                                    repoName={selectedRepo.name}
+                                    filename={selectedFile.path}
+                                    value={selectedFile.content}
+                                    onChange={handleEditorChange}
+                                />
+                            </>
+                        ) : (
+                            <>
+                                <CodeDiffEditor
+                                    repoName={selectedRepo.name}
+                                    filename={selectedFile.path}
+                                    value={selectedFile.content}
+                                    newValue={selectedFile.content}
+                                    onChange={handleEditorChange}
+                                />
+                            </>
+                        )
                     ) : (
                         <div className="h-full flex items-center justify-center text-white rounded">
                             Select a file to edit

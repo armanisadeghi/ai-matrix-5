@@ -7,7 +7,7 @@ export type IRepoContent = {
 
 export interface IRepoData {
     name: string; // Repository name
+    description?: string;
     files: { [path: string]: string }; // Key-value pair of file paths and content
     githubUrl?: string;
-    description?: string;
 }

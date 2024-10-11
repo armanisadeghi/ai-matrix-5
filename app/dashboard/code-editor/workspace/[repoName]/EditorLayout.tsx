@@ -18,6 +18,9 @@ type EditorLayoutProps = {
     sidebar: React.ReactNode;
     fileTree: React.ReactNode;
     onCodeAnalyze: () => void;
+    selectedFile: { path: string; content: string } | null;
+    onRunCode: () => Promise<void>;
+    isExecuting: boolean;
 };
 
 export default function EditorLayout({
@@ -30,6 +33,9 @@ export default function EditorLayout({
     sidebar,
     fileTree,
     onCodeAnalyze,
+    selectedFile,
+    onRunCode,
+    isExecuting,
 }: EditorLayoutProps) {
     const [detailsOpened, { open: detailsOpen, close: detailsClose }] = useDisclosure(false);
     const [verticalSizes, setVerticalSizes] = useState([70, 30]);
@@ -73,6 +79,9 @@ export default function EditorLayout({
                     onPushToGitHub={onPushToGitHub}
                     detailsOpen={detailsOpen}
                     toggleSidebar={toggleSidebar} // New prop
+                    selectedFile={selectedFile}
+                    onRunCode={onRunCode}
+                    isExecuting={isExecuting}
                 />
 
                 {/* Main content container */}

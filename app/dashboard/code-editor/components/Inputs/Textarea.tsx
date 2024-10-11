@@ -22,7 +22,7 @@ export const Textarea: React.FC<TextareaProps> = ({
     ref,
 }) => {
     const baseClass =
-        "border border-transparent bg-neutral-700 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-700 outline-none transition duration-150 ease-in-out placeholder:text-sm";
+        "border border-neutral-600 bg-neutral-800 rounded-md focus:ring-1.5 focus:ring-blue-500 focus:border-blue-500 outline-none transition duration-150 ease-in-out placeholder:text-sm";
 
     // Define size-specific classes
     const sizeClass = {

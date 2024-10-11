@@ -2,7 +2,7 @@
 
 import MonacoEditor, { EditorProps as MonacoEditorProps } from "@monaco-editor/react";
 import React, { useEffect, useRef, useState } from "react";
-import { findParentStructure, getLanguageFromExtension, getPlaceholderText, IParentStructure } from "../utils";
+import { findParentStructure, getLanguageFromExtension, getPlaceholderText, IParentStructure } from "../../utils";
 import * as monaco from "monaco-editor";
 import { editor as coreEditor } from "monaco-editor-core";
 import { useEditorSave } from "@/app/dashboard/code-editor/hooks";
@@ -165,7 +165,7 @@ const addWidgetStyles = () => {
     document.head.appendChild(styleElement);
 };
 
-type EditorProps = MonacoEditorProps & {
+type CodeEditorProps = MonacoEditorProps & {
     repoName: string;
     value: string;
     filename: string;
@@ -173,7 +173,7 @@ type EditorProps = MonacoEditorProps & {
     height?: number | string;
 };
 
-export const Editor: React.FC<EditorProps> = ({ repoName, value, onChange, filename, height }) => {
+export const CodeEditor: React.FC<CodeEditorProps> = ({ repoName, value, onChange, filename, height }) => {
     const [content, setContent] = useState<string>(value);
     const [isLoading, setIsLoading] = useState(false);
     const language = getLanguageFromExtension(filename);
@@ -402,6 +402,7 @@ export const Editor: React.FC<EditorProps> = ({ repoName, value, onChange, filen
                     onChange={handleEditorChange}
                     onMount={handleEditorDidMount}
                     options={OPTIONS}
+                    loading={<div className="h-full flex items-center justify-center">Loading...</div>}
                 />
             </div>
         </>

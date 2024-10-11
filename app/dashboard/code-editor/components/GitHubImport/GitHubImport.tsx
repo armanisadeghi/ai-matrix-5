@@ -162,13 +162,13 @@ export const GitHubImport = ({ onRepoCloned }: { onRepoCloned: (repo: IRepoData)
 
     return (
         <div className="space-y-4">
-            <p className="text-xl font-semibold">Import project from GitHub</p>
+            <p className="text-lg font-semibold">Import project from GitHub</p>
 
             {!isAuthenticated ? (
                 <Button
                     onClick={handleGitHubLogin}
                     loading={checkAuthLoading}
-                    variant="primary"
+                    variant="light"
                     leftSection={<IconBrandGithub size={16} />}
                 >
                     {isLoading ? "Logging in..." : "Login with GitHub"}
