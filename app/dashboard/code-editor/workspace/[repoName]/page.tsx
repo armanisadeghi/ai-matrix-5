@@ -376,8 +376,8 @@ export default function Page({ params }: { params: { repoName: string } }) {
         }
     };
 
-    const openDiffView = () => {
-        setDiffView(true);
+    const toggleDiffView = () => {
+        setDiffView(!diffView);
     };
 
     const sidebarContent = (
@@ -472,7 +472,7 @@ export default function Page({ params }: { params: { repoName: string } }) {
                     </div>
                     {selectedFile && (
                         <div className="flex">
-                            <ActionIcon onClick={openDiffView}>
+                            <ActionIcon onClick={toggleDiffView}>
                                 <IconColumns2 size={16} />
                             </ActionIcon>
                         </div>
