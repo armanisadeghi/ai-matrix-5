@@ -89,6 +89,69 @@ export class IndexedDBStore {
         });
     }
 
+    /**
+     * Updates the details (name and description) of a repository.
+     * @param oldName The current name of the repository
+     * @param newName The new name for the repository
+     * @param newDescription The new description for the repository
+     * @returns A promise that resolves when the update is complete
+     */
+    async updateRepositoryDetails(oldName: string, newName: string, newDescription: string): Promise<void> {
+        if (!this.db) await this.init();
+
+        return new Promise((resolve, reject) => {
+            const transaction = this.db!.transaction([REPOS_STORE_NAME, FILES_STORE_NAME], "readwrite");
+            const repoStore = transaction.objectStore(REPOS_STORE_NAME);
+            const fileStore = transaction.objectStore(FILES_STORE_NAME);
+
+            // First, get the existing repository data
+            const getRequest = repoStore.get(oldName);
+
+            getRequest.onerror = () => reject(getRequest.error);
+            getRequest.onsuccess = () => {
+                const repo = getRequest.result as IRepoData;
+                if (!repo) {
+                    reject(new Error(`Repository "${oldName}" not found`));
+                    return;
+                }
+
+                // Update the repository details
+                repo.name = newName;
+                repo.description = newDescription;
+
+                // If the name has changed, we need to update all associated files
+                if (oldName !== newName) {
+                    // Update files in the FILES_STORE
+                    const index = fileStore.index("repoName");
+                    const cursorRequest = index.openCursor(IDBKeyRange.only(oldName));
+
+                    cursorRequest.onsuccess = (event) => {
+                        const cursor = (event.target as IDBRequest<IDBCursorWithValue>).result;
+                        if (cursor) {
+                            const file = cursor.value;
+                            file.repoName = newName;
+                            fileStore.put(file);
+                            cursor.continue();
+                        } else {
+                            // All files have been updated, now update the repository
+                            repoStore.delete(oldName);
+                            repoStore.put(repo);
+                        }
+                    };
+                } else {
+                    // If name hasn't changed, just update the repository
+                    repoStore.put(repo);
+                }
+            };
+
+            transaction.oncomplete = () => {
+                console.log(`Repository updated: ${oldName} -> ${newName}`);
+                resolve();
+            };
+            transaction.onerror = () => reject(transaction.error);
+        });
+    }
+
     //
     /**
      *  Retrieves all repositories from the database.

@@ -1,7 +1,7 @@
 "use client";
 
 import { useDisclosure } from "@mantine/hooks";
-import { IconBrandGithub, IconFolderOpen, IconFolderPlus, IconReload } from "@tabler/icons-react";
+import { IconBrandGithub, IconFolderPlus, IconQuestionMark, IconReload } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -10,6 +10,7 @@ import { indexedDBStore } from "../../utils";
 import { Button } from "../Buttons";
 import { NewProjectDrawer, NewTabOptions } from "../NewProjectDrawer";
 import { ProjectCard } from "./ProjectCard";
+import { TextInput } from "@/app/dashboard/code-editor/components";
 
 const store = indexedDBStore;
 
@@ -133,10 +134,10 @@ export const Workspace: React.FC = () => {
 
     return (
         <div className="space-y-4">
-            <div className="flex items-center justify-between">
-                <div className="flex gap-2 items-center">
-                    <IconFolderOpen />
-                    <h2 className="text-xl font-medium capitalize mb-0">Files</h2>
+            <div className="flex justify-between items-start bg-neutral-700 p-4 rounded">
+                <div className="flex flex-col items-start gap-2">
+                    <h3>Welcome to your new Free workspace!</h3>
+                    <Button leftSection={<IconQuestionMark size={16} />}>Learn more</Button>
                 </div>
                 <div className="flex gap-2 items-center">
                     <Button
@@ -161,6 +162,10 @@ export const Workspace: React.FC = () => {
                         Refresh
                     </Button>
                 </div>
+            </div>
+            <div className="flex justify-between">
+                <p className="mb-0">Pick up where you left off</p>
+                <TextInput placeholder="search" />
             </div>
             <div className="grid grid-cols-1 gap-3">
                 {repositories.map((repo) => (

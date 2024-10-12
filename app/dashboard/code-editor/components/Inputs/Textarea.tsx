@@ -35,7 +35,7 @@ export const Textarea: React.FC<TextareaProps> = ({
 
     return (
         <div className={`flex flex-col ${className}`}>
-            {label && <label className="mb-2 block text-sm font-medium leading-6 text-white">{label}</label>}
+            {label && <label className="mb-2 block text-sm font-normal leading-6 text-white">{label}</label>}
             <div className="flex">
                 {/* Render icon if provided */}
                 {icon && <span className="mr-2">{icon}</span>}

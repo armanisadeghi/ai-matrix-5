@@ -353,6 +353,27 @@ export default function Page({ params }: { params: { repoName: string } }) {
         }
     };
 
+    const handleUpdateRepo = async (oldName: string, newName: string, description: string) => {
+        try {
+            if (!newName) {
+                // You might want to show an error message here
+                return;
+            }
+
+            try {
+                await store.updateRepositoryDetails(oldName, newName, description);
+
+                router.push(
+                    `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/code-editor/workspace/${encodeURIComponent(newName)}`,
+                );
+            } catch (error) {
+                console.error("Error updating project:", error);
+                alert("Error updating project:" + error);
+                // You might want to show an error message to the user here
+            }
+        } catch (e) {}
+    };
+
     const openDiffView = () => {
         setDiffView(true);
     };
@@ -389,7 +410,7 @@ export default function Page({ params }: { params: { repoName: string } }) {
         const fetchData = async (): Promise<void> => {
             if (params?.repoName) {
                 const repoName = decodeURIComponent(params.repoName);
-                loadProject(repoName);
+                void loadProject(repoName);
             }
         };
 
@@ -417,6 +438,7 @@ export default function Page({ params }: { params: { repoName: string } }) {
             selectedFile={selectedFile}
             isExecuting={isExecuting}
             onRunCode={handleRunCode}
+            onRepoUpdate={handleUpdateRepo}
         >
             {/* Editor area */}
             <div className="flex flex-col overflow-hidden py-2 pr-2 rounded">
