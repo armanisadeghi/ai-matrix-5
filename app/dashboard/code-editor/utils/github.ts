@@ -1,7 +1,7 @@
 import { getOctokit, indexedDBStore } from ".";
 import { IRepoData } from "../types";
 
-export async function publishToGitHubRepo(repoName: string) {
+export async function publishToGitHubRepo(repoName: string, description?: string, privacy?: boolean) {
     // Step 1: Authenticate with GitHub
     // const octokit = new Octokit({
     //     auth: process.env.NEXT_PUBLIC_GITHUB_TOKEN, // Use an environment variable for the token
@@ -18,7 +18,8 @@ export async function publishToGitHubRepo(repoName: string) {
     // Step 3: Create a new repository on GitHub
     const { data: githubRepoData } = await octokit.repos.createForAuthenticatedUser({
         name: repoName,
-        private: true, // Set to true if you want a private repository
+        description: description,
+        private: privacy, // Set to true if you want a private repository
     });
 
     // Step 4: Create and push files to GitHub

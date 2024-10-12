@@ -84,8 +84,8 @@ export default function Page({ params }: { params: { repoName: string } }) {
     const [executionResult, setExecutionResult] = useState<any>();
     const [isExecuting, setIsExecuting] = useState(false);
     const [executionError, setExecutionError] = useState<any>(null);
-    const [newFileContent, setNewFileContent] = useState<string>();
     const [diffView, setDiffView] = useState(false);
+    const [isUpdating, setIsUpdating] = useState(false);
 
     const treeData = buildTree(selectedRepo);
 
@@ -238,10 +238,10 @@ export default function Page({ params }: { params: { repoName: string } }) {
     };
 
     /**
-     * publish local repo to github
+     * Publish local repo to GitHub
      * @returns
      */
-    const handlePushToGitHub = async () => {
+    const handlePushToGitHub = async (privacy?: boolean) => {
         if (!selectedRepo || !fileSystem || !user) return;
 
         if (!confirm(`Are you sure you want to proceed pushing this '${selectedRepo.name}' repository to GitHub?`)) {
@@ -251,13 +251,14 @@ export default function Page({ params }: { params: { repoName: string } }) {
         setIsPublishing(true);
 
         const REPO_NAME = selectedRepo.name; // Name of the repository to create
+        const REPO_DESC = selectedRepo.description; // Name of the repository to create
         const REPO_IS_PUBLISHED = selectedRepo?.githubUrl;
 
         try {
             if (REPO_IS_PUBLISHED) {
                 await updateGitHubRepo(REPO_NAME);
             } else {
-                await publishToGitHubRepo(REPO_NAME);
+                await publishToGitHubRepo(REPO_NAME, REPO_DESC, privacy);
             }
 
             alert("Repository created and pushed to GitHub successfully!");
@@ -354,24 +355,25 @@ export default function Page({ params }: { params: { repoName: string } }) {
     };
 
     const handleUpdateRepo = async (oldName: string, newName: string, description: string) => {
+        if (!newName) {
+            // You might want to show an error message here
+            return;
+        }
+
         try {
-            if (!newName) {
-                // You might want to show an error message here
-                return;
-            }
+            setIsUpdating(true);
+            await store.updateRepositoryDetails(oldName, newName, description);
 
-            try {
-                await store.updateRepositoryDetails(oldName, newName, description);
-
-                router.push(
-                    `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/code-editor/workspace/${encodeURIComponent(newName)}`,
-                );
-            } catch (error) {
-                console.error("Error updating project:", error);
-                alert("Error updating project:" + error);
-                // You might want to show an error message to the user here
-            }
-        } catch (e) {}
+            router.push(
+                `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/code-editor/workspace/${encodeURIComponent(newName)}`,
+            );
+        } catch (error) {
+            console.error("Error updating project:", error);
+            alert("Error updating project:" + error);
+            // You might want to show an error message to the user here
+        } finally {
+            setIsUpdating(false);
+        }
     };
 
     const openDiffView = () => {
@@ -439,6 +441,7 @@ export default function Page({ params }: { params: { repoName: string } }) {
             isExecuting={isExecuting}
             onRunCode={handleRunCode}
             onRepoUpdate={handleUpdateRepo}
+            isUpdating={isUpdating}
         >
             {/* Editor area */}
             <div className="flex flex-col overflow-hidden py-2 pr-2 rounded">

@@ -32,7 +32,9 @@ export const Button: React.FC<Props> = ({
 
     const loadingStyles = "opacity-50 cursor-not-allowed";
 
-    const buttonStyles = `${baseStyles} ${variantStyles[variant]} ${className} ${loading ? loadingStyles : ""}`;
+    const disabledStyles = "opacity-50 cursor-not-allowed";
+
+    const buttonStyles = `${baseStyles} ${variantStyles[variant]} ${className} ${loading ? loadingStyles : ""} ${disabled ? disabledStyles : ""}`;
 
     const buttonContent = loading ? "loading" : children;
 
