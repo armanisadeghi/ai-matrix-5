@@ -5,21 +5,23 @@ import { FileExplorer, Terminal } from "@/app/dashboard/code-editor-2/components
 export default function ProjectPage({ params }: { params: { projectName: string } }) {
     const { projectName } = params;
 
+    const name = decodeURIComponent(projectName);
+
     if (typeof projectName !== "string") {
         return <div>Invalid project name</div>;
     }
 
     return (
         <div>
-            <h1>Project: {projectName}</h1>
+            <h1>Project: {name}</h1>
             <div style={{ display: "flex" }}>
                 <div style={{ flex: 1 }}>
                     <h2>File Explorer</h2>
-                    <FileExplorer projectName={projectName} />
+                    <FileExplorer projectName={name} />
                 </div>
                 <div style={{ flex: 1 }}>
                     <h2>Terminal</h2>
-                    <Terminal projectName={projectName} />
+                    <Terminal projectName={name} />
                 </div>
             </div>
             <div>

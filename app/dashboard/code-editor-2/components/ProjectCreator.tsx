@@ -9,6 +9,8 @@ import {
     onProjectCreationError,
     onProjectCreationProgress,
 } from "../utils";
+import { TextInput } from "app/dashboard/code-editor-2/components/inputs";
+import { Button } from "app/dashboard/code-editor-2/components/buttons";
 
 type ProjectCreatorProps = {
     onRefresh: () => Promise<void>;
@@ -80,7 +82,7 @@ export const ProjectCreator: React.FC<ProjectCreatorProps> = ({ onRefresh }) => 
 
     return (
         <div>
-            <input
+            <TextInput
                 type="text"
                 value={projectName}
                 onChange={(e) => setProjectName(e.target.value)}
@@ -105,12 +107,12 @@ export const ProjectCreator: React.FC<ProjectCreatorProps> = ({ onRefresh }) => 
                     ))}
                 </select>
             )}
-            <button
+            <Button
                 onClick={handleCreateProject}
                 disabled={isCreating || !projectName || (!isBlankProject && !templateName)}
             >
                 Create Project
-            </button>
+            </Button>
             {creationStatus && <p>{creationStatus}</p>}
         </div>
     );
