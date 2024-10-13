@@ -137,7 +137,7 @@
     "replit-client": "latest",
     "sass": "^1.77.6",
     "simple-git": "^3.26.0",
-    "socket.io-client": "latest",
+    "socket.io-client": "^4.7.5",
     "swr": "latest",
     "ts-node": "^10.9.2",
     "uuidv4": "^6.2.13",

@@ -387,7 +387,7 @@ importers:
         specifier: ^3.26.0
         version: 3.26.0
       socket.io-client:
-        specifier: latest
+        specifier: ^4.7.5
         version: 4.7.5
       swr:
         specifier: latest

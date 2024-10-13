@@ -354,6 +354,12 @@ export default function Page({ params }: { params: { repoName: string } }) {
         }
     };
 
+    /**
+     *
+     * @param oldName
+     * @param newName
+     * @param description
+     */
     const handleUpdateRepo = async (oldName: string, newName: string, description: string) => {
         if (!newName) {
             // You might want to show an error message here
