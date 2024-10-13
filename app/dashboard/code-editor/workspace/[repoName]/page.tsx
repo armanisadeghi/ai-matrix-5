@@ -511,7 +511,7 @@ export default function Page({ params }: { params: { repoName: string } }) {
             </div>
             {/* Footer */}
             <div className="overflow-auto rounded w-full">
-                <Footer />
+                <Footer executionResult={executionResult} />
             </div>
         </EditorLayout>
     );

@@ -1,14 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import { AskAi } from "@/app/dashboard/code-editor/components";
 
-export const Footer = () => {
+type FooterProps = {
+    executionResult: ReactNode;
+};
+
+export const Footer: React.FC<FooterProps> = ({ executionResult }) => {
     const [activeTab, setActiveTab] = useState("footer-ask-ai");
 
     const tabData = [
         { id: "footer-ask-ai", title: "Ask AI", content: <AskAi /> },
-        { id: "footer-output", title: "Output", content: "No output has been detected in the workspace." },
+        { id: "footer-output", title: "Output", content: <>{executionResult}</> },
     ];
 
     return (

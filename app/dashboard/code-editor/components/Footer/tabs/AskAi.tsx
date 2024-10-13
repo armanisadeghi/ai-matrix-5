@@ -56,6 +56,7 @@ export const AskAi = () => {
                     className="w-full mb-2"
                     value={userInput}
                     onChange={handleInputChange}
+                    rows={2}
                 />
                 <Button
                     variant="primary"
