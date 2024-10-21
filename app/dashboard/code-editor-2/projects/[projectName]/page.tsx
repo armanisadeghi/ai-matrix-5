@@ -1,8 +1,8 @@
 "use client";
 
 import { ActionIcon, Button, Editor, FileExplorer, Terminal } from "@/app/dashboard/code-editor-2/components";
-import React, { useState } from "react";
-import { readFile, writeFile } from "@/app/dashboard/code-editor-2/utils";
+import React, { useEffect, useRef, useState } from "react";
+import { getProjectProxyUrl, listProjects, readFile, writeFile } from "@/app/dashboard/code-editor-2/utils";
 import { IconColumns2, IconDots, IconMessage, IconX } from "@tabler/icons-react";
 import Link from "next/link";
 
@@ -45,8 +45,27 @@ export default function ProjectPage({ params }: { params: { projectName: string 
     const { projectName } = params;
     const [openTabs, setOpenTabs] = useState<OpenTab[]>([]);
     const [activeTab, setActiveTab] = useState<string | null>(null);
+    const [proxyUrl, setProxyUrl] = useState<string>();
+    const iframeRef = useRef<HTMLIFrameElement>(null);
+    const wsRef = useRef<WebSocket | null>(null);
 
     const name = decodeURIComponent(projectName);
+
+    useEffect(() => {
+        const fetchProxyUrl = async () => {
+            try {
+                const fetchedProjectProxy = await getProjectProxyUrl(name);
+
+                setProxyUrl(fetchedProjectProxy.proxyUrl);
+            } catch (error) {
+                console.error("Error fetching proxy URL:", error);
+            }
+        };
+
+        void fetchProxyUrl();
+
+        return () => {};
+    }, [name]);
 
     const handleFileClick = async (fileName: string) => {
         const existingTab = openTabs.find((tab) => tab.fileName === fileName);
@@ -72,6 +91,12 @@ export default function ProjectPage({ params }: { params: { projectName: string 
             if (tabToSave) {
                 await writeFile(projectName, tabToSave.fileName, tabToSave.content);
                 console.log("File saved successfully!");
+                // Trigger a reload in the preview
+                if (wsRef.current) {
+                    wsRef.current.send(
+                        JSON.stringify({ type: "fileChanged", projectName: name, fileName: tabToSave.fileName }),
+                    );
+                }
             }
         }
     };
@@ -80,11 +105,11 @@ export default function ProjectPage({ params }: { params: { projectName: string 
         setOpenTabs((prev) => prev.map((tab) => (tab.fileName === activeTab ? { ...tab, content: newContent } : tab)));
     };
 
+    const activeTabContent = openTabs.find((tab) => tab.fileName === activeTab)?.content || "";
+
     if (typeof projectName !== "string") {
         return <div>Invalid project name</div>;
     }
-
-    const activeTabContent = openTabs.find((tab) => tab.fileName === activeTab)?.content || "";
 
     return (
         <div>
@@ -135,7 +160,8 @@ export default function ProjectPage({ params }: { params: { projectName: string 
                         <div>
                             <span>Live Preview</span>
                             <iframe
-                                src={`${process.env.NEXT_PUBLIC_API_URL}/preview/${projectName}`}
+                                ref={iframeRef}
+                                src={proxyUrl}
                                 style={{ width: "100%", height: "500px", border: "none" }}
                             />
                         </div>

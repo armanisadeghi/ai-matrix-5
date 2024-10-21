@@ -48,3 +48,8 @@ export const listTemplates = async () => {
     const response = await api.get("/templates");
     return response.data;
 };
+
+export const getProjectProxyUrl = async (projectName: string) => {
+    const response = await api.get(`/preview/${projectName}`);
+    return response.data;
+};

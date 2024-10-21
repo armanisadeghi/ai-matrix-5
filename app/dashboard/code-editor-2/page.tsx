@@ -3,7 +3,7 @@
 import { ProjectCard } from "./components";
 import { useEffect, useState } from "react";
 import { listProjects } from "@/app/dashboard/code-editor-2/utils";
-import { IconPlus } from "@tabler/icons-react";
+import { IconPlus, IconReload } from "@tabler/icons-react";
 import { Button, TextInput } from "@/app/dashboard/code-editor-2/components";
 import { CreateProjectModal } from "app/dashboard/code-editor-2/components/modals";
 import { useDisclosure } from "@mantine/hooks";
@@ -52,6 +52,7 @@ const HomePage: React.FC = () => {
                     <Button leftSection={<IconPlus size={16} />} onClick={createProjectOpen}>
                         Create
                     </Button>
+                    <Button leftSection={<IconReload size={16} />} onClick={handleRefresh} />
                 </div>
             </div>
             {projects.length === 0 && (

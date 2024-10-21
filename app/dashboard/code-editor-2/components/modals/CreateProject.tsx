@@ -15,7 +15,9 @@ import { IconChevronLeft } from "@tabler/icons-react";
 import { TemplateCard } from "@/app/dashboard/code-editor-2/components/cards";
 import { generate } from "random-words";
 
-const randomNouns = generate({ exactly: 2, join: "" });
+const generateRandomWords = () => {
+    return generate({ exactly: 2, join: "" });
+};
 
 interface CreateProjectProps extends DrawerProps {
     onRefresh: () => Promise<void>;
@@ -24,13 +26,14 @@ interface CreateProjectProps extends DrawerProps {
 export const CreateProjectModal: React.FC<CreateProjectProps> = ({ opened, onClose, onRefresh }) => {
     const [projectName, setProjectName] = useState("");
     const [templateName, setTemplateName] = useState<string>();
-    const [creationStatus, setCreationStatus] = useState("");
+    const [creationStatus, setCreationStatus] = useState<string[]>([]);
     const [isCreating, setIsCreating] = useState(false);
     const [templates, setTemplates] = useState<{ label: string; value: string }[]>([]);
+    const [disableButton, setDisableButton] = useState(false);
 
     const handleCreateProject = async () => {
         setIsCreating(true);
-        setCreationStatus("Initiating project creation...");
+        setCreationStatus(["Initiating project creation..."]);
 
         try {
             const temp = Boolean(templateName) ? templateName : undefined;
@@ -39,10 +42,10 @@ export const CreateProjectModal: React.FC<CreateProjectProps> = ({ opened, onClo
 
             await onRefresh();
 
-            onClose();
+            setDisableButton(true);
         } catch (error) {
             console.error("Error creating project:", error);
-            setCreationStatus("Error creating project. Please try again.");
+            setCreationStatus([...creationStatus, "Error creating project. Please try again."]);
         } finally {
             setIsCreating(false);
         }
@@ -56,24 +59,36 @@ export const CreateProjectModal: React.FC<CreateProjectProps> = ({ opened, onClo
                 </div>
                 <div className="w-3/4">
                     <p className="fw-medium text-lg mb-2">Configure</p>
-                    <TextInput
-                        value={projectName}
-                        onChange={(event) => setProjectName(event.currentTarget.value)}
-                        placeholder="project Name"
-                        className="w-full"
-                        label="Name"
-                    />
+                    <div className="flex items-end gap-2">
+                        <TextInput
+                            value={projectName}
+                            onChange={(event) => setProjectName(event.currentTarget.value)}
+                            placeholder="project Name"
+                            className="w-full"
+                            label="Name"
+                        />
+                        <Button onClick={() => setProjectName(generateRandomWords)}>Generate</Button>
+                    </div>
                     <div className="flex justify-end gap-2 mt-4">
                         <Button onClick={onClose}>Cancel</Button>
                         <Button
                             onClick={handleCreateProject}
-                            disabled={isCreating || !projectName || !templateName}
+                            disabled={isCreating || !projectName || !templateName || disableButton}
+                            loading={isCreating}
                             variant="primary"
                         >
                             Create Project
                         </Button>
                     </div>
-                    {creationStatus && <p>{creationStatus}</p>}
+                    {creationStatus && creationStatus.length > 0 && (
+                        <div className="flex flex-col max-h-48 overflow-y-auto">
+                            {creationStatus.map((c, i) => (
+                                <p key={i + c} className="mb-0 text-sm">
+                                    {c}
+                                </p>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
         ) : (
@@ -94,25 +109,25 @@ export const CreateProjectModal: React.FC<CreateProjectProps> = ({ opened, onClo
                 <Button onClick={onClose}>Cancel</Button>
             </div>
         );
-    }, [templateName, templates, projectName]);
+    }, [templateName, templates, projectName, creationStatus]);
 
     useEffect(() => {
         const socket = connectSocket();
 
         const progressHandler = (data: { message: string }) => {
             console.log("Progress:", data.message);
-            setCreationStatus(data.message);
+            setCreationStatus((prevStatus) => [...prevStatus, data.message]);
         };
 
         const completeHandler = (data: { message: string }) => {
             console.log("Complete:", data.message);
-            setCreationStatus(data.message);
+            setCreationStatus((prevStatus) => [...prevStatus, data.message]);
             setIsCreating(false);
         };
 
         const errorHandler = (data: { message: string }) => {
             console.error("Error:", data.message);
-            setCreationStatus(`Error: ${data.message}`);
+            setCreationStatus((prevStatus) => [...prevStatus, `Error: ${data.message}`]);
             setIsCreating(false);
         };
 
@@ -131,21 +146,26 @@ export const CreateProjectModal: React.FC<CreateProjectProps> = ({ opened, onClo
         const fetchTemplates = async () => {
             const fetchedTemplates = await listTemplates();
 
-            const allTemplates = ["blank", ...fetchedTemplates].map((f: string) => ({
+            const allTemplates = fetchedTemplates.map((f: string) => ({
                 label: f,
                 value: f,
             }));
 
             setTemplates(allTemplates);
-
-            console.log({ fetchedTemplates });
+            setCreationStatus([]);
         };
         void fetchTemplates();
     }, []);
 
     useEffect(() => {
-        setProjectName(randomNouns);
-    }, [randomNouns]);
+        let name = generateRandomWords;
+        if (!opened) {
+            setCreationStatus([]);
+            setIsCreating(false);
+        }
+
+        setProjectName(name);
+    }, [opened, generateRandomWords]);
 
     return (
         <Modal

@@ -40,7 +40,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, onRefresh, on
                 className="p-4 border border-neutral-700 shadow rounded cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:border-neutral-300 hover:bg-neutral-900 duration-300"
                 {...others}
             >
-                <p className="mb-0 cursor-pointer" onClick={onSelect}>
+                <p className="mb-2 cursor-pointer w-full underline-offset-2 hover:underline" onClick={onSelect}>
                     {project}
                 </p>
                 <div className="flex gap-2">
