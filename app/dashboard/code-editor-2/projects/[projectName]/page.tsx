@@ -3,31 +3,87 @@
 import { ActionIcon, Button, Editor, FileExplorer, Terminal } from "@/app/dashboard/code-editor-2/components";
 import React, { useState } from "react";
 import { readFile, writeFile } from "@/app/dashboard/code-editor-2/utils";
-import { IconColumns2, IconDots, IconMessage } from "@tabler/icons-react";
+import { IconColumns2, IconDots, IconMessage, IconX } from "@tabler/icons-react";
+
+type OpenTab = {
+    fileName: string;
+    content: string;
+};
+
+const Tabs: React.FC<{
+    tabs: OpenTab[];
+    activeTab: string | null;
+    onTabClick: (fileName: string) => void;
+    onTabClose: (fileName: string) => void;
+}> = ({ tabs, activeTab, onTabClick, onTabClose }) => (
+    <div className="flex border-b">
+        {tabs.map((tab) => (
+            <div
+                key={tab.fileName}
+                className={`px-4 py-2 cursor-pointer flex items-center ${
+                    activeTab === tab.fileName ? "bg-neutral-900" : ""
+                }`}
+                onClick={() => onTabClick(tab.fileName)}
+            >
+                {tab.fileName}
+                <ActionIcon
+                    className="ml-2"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        onTabClose(tab.fileName);
+                    }}
+                >
+                    <IconX size={12} />
+                </ActionIcon>
+            </div>
+        ))}
+    </div>
+);
 
 export default function ProjectPage({ params }: { params: { projectName: string } }) {
     const { projectName } = params;
-    const [selectedFile, setSelectedFile] = useState<string | null>(null);
-    const [fileContent, setFileContent] = useState<string>("");
+    const [openTabs, setOpenTabs] = useState<OpenTab[]>([]);
+    const [activeTab, setActiveTab] = useState<string | null>(null);
 
     const name = decodeURIComponent(projectName);
 
     const handleFileClick = async (fileName: string) => {
-        setSelectedFile(fileName);
-        const content = await readFile(projectName, fileName);
-        setFileContent(content);
+        const existingTab = openTabs.find((tab) => tab.fileName === fileName);
+        if (existingTab) {
+            setActiveTab(fileName);
+        } else {
+            const content = await readFile(projectName, fileName);
+            setOpenTabs((prev) => [...prev, { fileName, content }]);
+            setActiveTab(fileName);
+        }
+    };
+
+    const handleTabClose = (fileName: string) => {
+        setOpenTabs((prev) => prev.filter((tab) => tab.fileName !== fileName));
+        if (activeTab === fileName) {
+            setActiveTab(openTabs.length > 1 ? openTabs[0].fileName : null);
+        }
     };
 
     const handleSave = async () => {
-        if (selectedFile) {
-            await writeFile(projectName, selectedFile, fileContent);
-            console.log("File saved successfully!");
+        if (activeTab) {
+            const tabToSave = openTabs.find((tab) => tab.fileName === activeTab);
+            if (tabToSave) {
+                await writeFile(projectName, tabToSave.fileName, tabToSave.content);
+                console.log("File saved successfully!");
+            }
         }
+    };
+
+    const handleContentChange = (newContent: string) => {
+        setOpenTabs((prev) => prev.map((tab) => (tab.fileName === activeTab ? { ...tab, content: newContent } : tab)));
     };
 
     if (typeof projectName !== "string") {
         return <div>Invalid project name</div>;
     }
+
+    const activeTabContent = openTabs.find((tab) => tab.fileName === activeTab)?.content || "";
 
     return (
         <div>
@@ -53,21 +109,22 @@ export default function ProjectPage({ params }: { params: { projectName: string 
                     <FileExplorer projectName={name} onFileClick={handleFileClick} />
                 </div>
                 <div className="flex flex-col grow">
+                    {/*tabs*/}
+                    <Tabs tabs={openTabs} activeTab={activeTab} onTabClick={setActiveTab} onTabClose={handleTabClose} />
                     {/*editor & preview*/}
                     <div className="grid grid-cols-2 gap-2">
                         {/*editor*/}
                         <div className="grow">
-                            {selectedFile ? (
+                            {activeTab ? (
                                 <div className="flex flex-col">
-                                    <span>{selectedFile}</span>
                                     <Editor
-                                        value={fileContent}
-                                        onChange={(value) => setFileContent(value)}
+                                        value={activeTabContent}
+                                        onChange={handleContentChange}
                                         onSave={handleSave}
                                     />
                                 </div>
                             ) : (
-                                <p>select a file</p>
+                                <p>Select a file to edit</p>
                             )}
                         </div>
                         {/*preview*/}
