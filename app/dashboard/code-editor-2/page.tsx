@@ -45,15 +45,28 @@ const HomePage: React.FC = () => {
                     <p>Pick up where you left off</p>
                 </div>
                 <div className="flex gap-2">
-                    <TextInput placeholder="search in projects" />
+                    <TextInput
+                        placeholder="search in projects"
+                        onChange={(evt) => console.log(evt.currentTarget.value)}
+                    />
                     <Button leftSection={<IconPlus size={16} />} onClick={createProjectOpen}>
                         Create
                     </Button>
                 </div>
             </div>
+            {projects.length === 0 && (
+                <div className="p-4 border border-neutral-700 text-center rounded-md">
+                    <p className="text-md">No project created</p>
+                </div>
+            )}
             <div className="grid grid-cols-4 gap-4">
                 {projects.map((p) => (
-                    <ProjectCard key={p} project={p} onClick={() => handleProjectSelect(p)} />
+                    <ProjectCard
+                        key={p}
+                        project={p}
+                        onSelect={() => handleProjectSelect(p)}
+                        onRefresh={handleRefresh}
+                    />
                 ))}
             </div>
             <CreateProjectModal opened={createProjectOpened} onClose={createProjectClose} onRefresh={handleRefresh} />

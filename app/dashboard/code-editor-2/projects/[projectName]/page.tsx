@@ -4,6 +4,7 @@ import { ActionIcon, Button, Editor, FileExplorer, Terminal } from "@/app/dashbo
 import React, { useState } from "react";
 import { readFile, writeFile } from "@/app/dashboard/code-editor-2/utils";
 import { IconColumns2, IconDots, IconMessage, IconX } from "@tabler/icons-react";
+import Link from "next/link";
 
 type OpenTab = {
     fileName: string;
@@ -90,6 +91,9 @@ export default function ProjectPage({ params }: { params: { projectName: string 
             {/*header*/}
             <div className="flex justify-between">
                 <div className="flex">
+                    <Link href="/dashboard/code-editor-2">
+                        <Button>Home</Button>
+                    </Link>
                     <Button leftSection={<IconMessage />}>Feedback</Button>
                 </div>
                 <h1>Project: {name}</h1>

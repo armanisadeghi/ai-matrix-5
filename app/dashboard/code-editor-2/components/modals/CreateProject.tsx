@@ -13,6 +13,9 @@ import {
 } from "@/app/dashboard/code-editor-2/utils";
 import { IconChevronLeft } from "@tabler/icons-react";
 import { TemplateCard } from "@/app/dashboard/code-editor-2/components/cards";
+import { generate } from "random-words";
+
+const randomNouns = generate({ exactly: 2, join: "" });
 
 interface CreateProjectProps extends DrawerProps {
     onRefresh: () => Promise<void>;
@@ -23,8 +26,75 @@ export const CreateProjectModal: React.FC<CreateProjectProps> = ({ opened, onClo
     const [templateName, setTemplateName] = useState<string>();
     const [creationStatus, setCreationStatus] = useState("");
     const [isCreating, setIsCreating] = useState(false);
-    const [isBlankProject, setIsBlankProject] = useState(false);
     const [templates, setTemplates] = useState<{ label: string; value: string }[]>([]);
+
+    const handleCreateProject = async () => {
+        setIsCreating(true);
+        setCreationStatus("Initiating project creation...");
+
+        try {
+            const temp = Boolean(templateName) ? templateName : undefined;
+
+            await createProject(projectName, temp);
+
+            await onRefresh();
+
+            onClose();
+        } catch (error) {
+            console.error("Error creating project:", error);
+            setCreationStatus("Error creating project. Please try again.");
+        } finally {
+            setIsCreating(false);
+        }
+    };
+
+    const content = useMemo(() => {
+        return Boolean(templateName) ? (
+            <div className="flex gap-2">
+                <div className="w-1/4">
+                    <p>{templateName}</p>
+                </div>
+                <div className="w-3/4">
+                    <p className="fw-medium text-lg mb-2">Configure</p>
+                    <TextInput
+                        value={projectName}
+                        onChange={(event) => setProjectName(event.currentTarget.value)}
+                        placeholder="project Name"
+                        className="w-full"
+                        label="Name"
+                    />
+                    <div className="flex justify-end gap-2 mt-4">
+                        <Button onClick={onClose}>Cancel</Button>
+                        <Button
+                            onClick={handleCreateProject}
+                            disabled={isCreating || !projectName || !templateName}
+                            variant="primary"
+                        >
+                            Create Project
+                        </Button>
+                    </div>
+                    {creationStatus && <p>{creationStatus}</p>}
+                </div>
+            </div>
+        ) : (
+            <div className="space-y-4">
+                <div className="flex items-center justify-between mb-4">
+                    <p className="fw-medium text-lg">Templates</p>
+                    <TextInput placeholder="search templates" onChange={(e) => console.log(e.currentTarget.value)} />
+                </div>
+                <div className="grid grid-cols-4 gap-4">
+                    {templates.map((template) => (
+                        <TemplateCard
+                            key={template.label}
+                            template={template}
+                            onClick={() => setTemplateName(template.value)}
+                        />
+                    ))}
+                </div>
+                <Button onClick={onClose}>Cancel</Button>
+            </div>
+        );
+    }, [templateName, templates, projectName]);
 
     useEffect(() => {
         const socket = connectSocket();
@@ -73,71 +143,9 @@ export const CreateProjectModal: React.FC<CreateProjectProps> = ({ opened, onClo
         void fetchTemplates();
     }, []);
 
-    const handleCreateProject = async () => {
-        setIsCreating(true);
-        setCreationStatus("Initiating project creation...");
-
-        try {
-            const t = Boolean(templateName) ? templateName : undefined;
-
-            await createProject(projectName, t);
-
-            await onRefresh();
-        } catch (error) {
-            console.error("Error creating project:", error);
-            setCreationStatus("Error creating project. Please try again.");
-            setIsCreating(false);
-        }
-    };
-
-    const content = useMemo(() => {
-        return Boolean(templateName) ? (
-            <div className="flex gap-2">
-                <div className="w-1/4">
-                    <p>{templateName}</p>
-                </div>
-                <div className="w-3/4">
-                    <p className="fw-medium text-lg mb-2">Configure</p>
-                    <TextInput
-                        type="text"
-                        value={projectName}
-                        onChange={(e) => setProjectName(e.target.value)}
-                        placeholder="Project Name"
-                        className="w-full"
-                        label="Name"
-                    />
-                    <div className="flex justify-end gap-2 mt-4">
-                        <Button onClick={onClose}>Cancel</Button>
-                        <Button
-                            onClick={handleCreateProject}
-                            disabled={isCreating || !projectName || (!isBlankProject && !templateName)}
-                            variant="primary"
-                        >
-                            Create Project
-                        </Button>
-                    </div>
-                    {creationStatus && <p>{creationStatus}</p>}
-                </div>
-            </div>
-        ) : (
-            <div className="space-y-4">
-                <div className="flex items-center justify-between mb-4">
-                    <p className="fw-medium text-lg">Templates</p>
-                    <TextInput placeholder="search templates" />
-                </div>
-                <div className="grid grid-cols-4 gap-4">
-                    {templates.map((template) => (
-                        <TemplateCard
-                            key={template.label}
-                            template={template}
-                            onClick={() => setTemplateName(template.value)}
-                        />
-                    ))}
-                </div>
-                <Button onClick={onClose}>Cancel</Button>
-            </div>
-        );
-    }, [templateName, templates]);
+    useEffect(() => {
+        setProjectName(randomNouns);
+    }, [randomNouns]);
 
     return (
         <Modal
@@ -158,7 +166,7 @@ export const CreateProjectModal: React.FC<CreateProjectProps> = ({ opened, onClo
             centered
             size="xl"
         >
-            <div className="pt-2">{content}</div>
+            <div>{content}</div>
         </Modal>
     );
 };

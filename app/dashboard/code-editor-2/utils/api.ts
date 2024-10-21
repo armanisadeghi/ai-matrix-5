@@ -9,6 +9,16 @@ export const createProject = async (projectName: string, templateName?: string) 
     return response.data;
 };
 
+export const editProject = async (oldName: string, newName: string) => {
+    const response = await api.put(`/projects/${oldName}`, { newName });
+    return response.data;
+};
+
+export const deleteProject = async (projectName: string) => {
+    const response = await api.delete(`/projects/${projectName}`);
+    return response.data;
+};
+
 export const listProjects = async () => {
     const response = await api.get("/projects");
     return response.data;

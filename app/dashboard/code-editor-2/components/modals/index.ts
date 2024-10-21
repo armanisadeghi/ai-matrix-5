@@ -1,1 +1,2 @@
-export * from "./CreateProject/CreateProject";
+export * from "./CreateProject";
+export * from "./EditProject";
