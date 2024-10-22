@@ -89,3 +89,15 @@ export const onProjectCreationComplete = (callback: (data: { message: string }) 
 export const onProjectCreationError = (callback: (data: { message: string }) => void) => {
     addListener("projectCreationError", callback);
 };
+
+export const onReload = (callback: () => void) => {
+    addListener("reload", callback);
+};
+
+export const emitFileChanged = (projectName: string, fileName: string) => {
+    if (socket?.connected) {
+        socket.emit("fileChanged", { projectName, fileName });
+    } else {
+        console.warn("Socket not connected. File change notification not sent.");
+    }
+};

@@ -1,6 +1,6 @@
 import MonacoEditor, { EditorProps as MonacoEditorProps } from "@monaco-editor/react";
 import * as monaco from "monaco-editor";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getLanguageFromExtension } from "@/app/dashboard/code-editor-2/utils";
 
 // todo: prompt instruction
@@ -28,19 +28,28 @@ import { getLanguageFromExtension } from "@/app/dashboard/code-editor-2/utils";
 
 interface EditorProps extends MonacoEditorProps {
     fileName?: string;
-    onSave: () => Promise<void>;
+    onSave: (content: string) => Promise<void>;
+    initialValue?: string;
+    onChange?: (value: string, ev: any) => void;
 }
 
-export const Editor: React.FC<EditorProps> = ({ value, onSave, fileName }) => {
+export const Editor: React.FC<EditorProps> = ({
+    fileName,
+    onSave,
+    initialValue = "// start typing",
+    onChange: externalOnChange,
+}) => {
     const language = getLanguageFromExtension(fileName);
     const editorRef = useRef<any>(null);
+    const [content, setContent] = useState(initialValue);
+    const contentRef = useRef(initialValue);
 
     const handleEditorDidMount = (editor, monacoInstance) => {
         editorRef.current = editor;
 
         // Add keybinding for Ctrl + S
         editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, () => {
-            void onSave();
+            void handleSave();
         });
 
         editor.addAction({
@@ -56,19 +65,54 @@ export const Editor: React.FC<EditorProps> = ({ value, onSave, fileName }) => {
 
         // Save on blur
         editor.onDidBlurEditorWidget(() => {
-            void onSave();
+            void handleSave();
         });
     };
+
+    const handleChange = (value: string | undefined, ev: any) => {
+        if (value !== undefined) {
+            setContent(value);
+            contentRef.current = value; // Keep ref in sync
+            if (externalOnChange) {
+                externalOnChange(value, ev);
+            }
+        }
+    };
+
+    const handleSave = async () => {
+        try {
+            // Use contentRef to ensure we have the latest value
+            await onSave(contentRef.current);
+            console.log("Content saved successfully:", contentRef.current);
+        } catch (error) {
+            console.error("Error saving content:", error);
+        }
+    };
+
+    // Sync content with initialValue when it changes
+    useEffect(() => {
+        setContent(initialValue);
+        contentRef.current = initialValue;
+    }, [initialValue]);
 
     return (
         <MonacoEditor
             height="90vh"
             defaultLanguage="javascript"
-            defaultValue="// start typing"
+            defaultValue={initialValue}
             language={language}
-            value={value}
+            value={content}
+            onChange={handleChange}
             theme="vs-dark"
             onMount={handleEditorDidMount}
+            options={{
+                minimap: { enabled: false },
+                fontSize: 14,
+                wordWrap: "on",
+                formatOnPaste: true,
+                formatOnType: true,
+                automaticLayout: true,
+            }}
         />
     );
 };

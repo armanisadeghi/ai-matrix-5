@@ -1,8 +1,23 @@
 "use client";
 
-import { ActionIcon, Button, Editor, FileExplorer, Terminal } from "@/app/dashboard/code-editor-2/components";
+import {
+    ActionIcon,
+    Button,
+    Editor,
+    FileExplorer,
+    MiniBrowser,
+    Terminal,
+} from "@/app/dashboard/code-editor-2/components";
 import React, { useEffect, useRef, useState } from "react";
-import { getProjectProxyUrl, listProjects, readFile, writeFile } from "@/app/dashboard/code-editor-2/utils";
+import {
+    connectSocket,
+    disconnectSocket,
+    emitFileChanged,
+    getProjectProxyUrl,
+    onReload,
+    readFile,
+    writeFile,
+} from "@/app/dashboard/code-editor-2/utils";
 import { IconColumns2, IconDots, IconMessage, IconX } from "@tabler/icons-react";
 import Link from "next/link";
 
@@ -46,26 +61,12 @@ export default function ProjectPage({ params }: { params: { projectName: string 
     const [openTabs, setOpenTabs] = useState<OpenTab[]>([]);
     const [activeTab, setActiveTab] = useState<string | null>(null);
     const [proxyUrl, setProxyUrl] = useState<string>();
+    const [previewKey, setPreviewKey] = useState(0);
     const iframeRef = useRef<HTMLIFrameElement>(null);
-    const wsRef = useRef<WebSocket | null>(null);
 
     const name = decodeURIComponent(projectName);
-
-    useEffect(() => {
-        const fetchProxyUrl = async () => {
-            try {
-                const fetchedProjectProxy = await getProjectProxyUrl(name);
-
-                setProxyUrl(fetchedProjectProxy.proxyUrl);
-            } catch (error) {
-                console.error("Error fetching proxy URL:", error);
-            }
-        };
-
-        void fetchProxyUrl();
-
-        return () => {};
-    }, [name]);
+    // Construct preview URL directly
+    const previewUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/preview/${encodeURIComponent(name)}/`;
 
     const handleFileClick = async (fileName: string) => {
         const existingTab = openTabs.find((tab) => tab.fileName === fileName);
@@ -85,18 +86,21 @@ export default function ProjectPage({ params }: { params: { projectName: string 
         }
     };
 
-    const handleSave = async () => {
+    const handleSave = async (newContent: string) => {
         if (activeTab) {
-            const tabToSave = openTabs.find((tab) => tab.fileName === activeTab);
-            if (tabToSave) {
-                await writeFile(projectName, tabToSave.fileName, tabToSave.content);
+            try {
+                await writeFile(projectName, activeTab, newContent);
                 console.log("File saved successfully!");
-                // Trigger a reload in the preview
-                if (wsRef.current) {
-                    wsRef.current.send(
-                        JSON.stringify({ type: "fileChanged", projectName: name, fileName: tabToSave.fileName }),
-                    );
-                }
+
+                // Update the openTabs state with the new content
+                setOpenTabs((prev) =>
+                    prev.map((tab) => (tab.fileName === activeTab ? { ...tab, content: newContent } : tab)),
+                );
+
+                // Emit file changed event for HMR
+                emitFileChanged(name, activeTab);
+            } catch (error) {
+                console.error("Error saving file:", error);
             }
         }
     };
@@ -106,6 +110,24 @@ export default function ProjectPage({ params }: { params: { projectName: string 
     };
 
     const activeTabContent = openTabs.find((tab) => tab.fileName === activeTab)?.content || "";
+
+    useEffect(() => {
+        const fetchProxyUrl = async () => {
+            try {
+                const fetchedProjectProxy = await getProjectProxyUrl(name);
+
+                setProxyUrl(fetchedProjectProxy.previewUrl);
+            } catch (error) {
+                console.error("Error fetching proxy URL:", error);
+            }
+        };
+
+        void fetchProxyUrl();
+
+        return () => {};
+    }, [name, openTabs]);
+
+    console.log({ proxyUrl });
 
     if (typeof projectName !== "string") {
         return <div>Invalid project name</div>;
@@ -146,10 +168,10 @@ export default function ProjectPage({ params }: { params: { projectName: string 
                             {activeTab ? (
                                 <div className="flex flex-col">
                                     <Editor
-                                        value={activeTabContent}
-                                        onChange={handleContentChange}
+                                        initialValue={activeTabContent}
                                         onSave={handleSave}
                                         fileName={activeTab}
+                                        onChange={handleContentChange}
                                     />
                                 </div>
                             ) : (
@@ -159,11 +181,7 @@ export default function ProjectPage({ params }: { params: { projectName: string 
                         {/*preview*/}
                         <div>
                             <span>Live Preview</span>
-                            <iframe
-                                ref={iframeRef}
-                                src={proxyUrl}
-                                style={{ width: "100%", height: "500px", border: "none" }}
-                            />
+                            <MiniBrowser initialUrl={proxyUrl} />
                         </div>
                     </div>
                     {/*footer*/}
