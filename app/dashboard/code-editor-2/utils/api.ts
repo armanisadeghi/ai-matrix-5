@@ -54,9 +54,21 @@ export const getProjectProxyUrl = async (projectName: string) => {
     return response.data;
 };
 
-export const createProjectFolder = async (projectName: string, type: "file" | "folder", fullPath: string) => {
+// Edit file or folder ====
+
+export const createItem = async (projectName: string, type: "file" | "folder", fullPath: string) => {
     const response = await api.post(`/projects/${projectName}/${type === "file" ? "files" : "folders"}`, {
         path: fullPath,
     });
+    return response.data;
+};
+
+export const renameItem = async (projectName: string, oldPath: string, newPath: string): Promise<void> => {
+    const response = await api.put(`/projects/${projectName}/items/${oldPath}`, { newPath });
+    return response.data;
+};
+
+export const deleteItem = async (projectName: string, path: string): Promise<void> => {
+    const response = await axios.delete(`/projects/${projectName}/items/${path}`);
     return response.data;
 };

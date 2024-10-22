@@ -149,6 +149,7 @@ export default function ProjectPage({ params }: { params: { projectName: string 
                                         value={activeTabContent}
                                         onChange={handleContentChange}
                                         onSave={handleSave}
+                                        fileName={activeTab}
                                     />
                                 </div>
                             ) : (

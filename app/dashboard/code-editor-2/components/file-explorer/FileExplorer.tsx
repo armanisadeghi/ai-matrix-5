@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ChevronDownIcon, ChevronRightIcon, FileIcon, FolderIcon } from "lucide-react";
-import { createProjectFolder, listFiles } from "@/app/dashboard/code-editor-2/utils";
+import { createItem, deleteItem, listFiles, renameItem } from "@/app/dashboard/code-editor-2/utils";
 import { IFileNode } from "@/app/dashboard/code-editor-2/components/file-explorer/types";
 import { buildFileTree } from "@/app/dashboard/code-editor-2/components/file-explorer/utils";
 import { ActionIcon, TextInput } from "@/app/dashboard/code-editor-2/components";
-import { IconFilePlus, IconFileText, IconFolder, IconFolderPlus } from "@tabler/icons-react";
+import { IconEdit, IconFilePlus, IconFileText, IconFolder, IconFolderPlus, IconTrash } from "@tabler/icons-react";
 
 interface NewItemInputProps {
     type: "file" | "folder";
@@ -53,6 +53,8 @@ interface FileTreeNodeProps {
     onFileClick: (path: string) => void;
     level: number;
     onCreateItem: (type: "file" | "folder", name: string, path: string) => void;
+    onRenameItem: (oldPath: string, newPath: string) => void;
+    onDeleteItem: (path: string) => void;
     isCreating: boolean;
     creationType?: "file" | "folder";
     onCreateStart: (path: string, type: "file" | "folder") => void;
@@ -67,6 +69,8 @@ const FileTreeNode: React.FC<FileTreeNodeProps> = ({
     onFileClick,
     level,
     onCreateItem,
+    onRenameItem,
+    onDeleteItem,
     isCreating,
     creationType,
     onCreateStart,
@@ -76,6 +80,9 @@ const FileTreeNode: React.FC<FileTreeNodeProps> = ({
     className,
 }) => {
     const [isExpanded, setIsExpanded] = useState(false);
+    const [isRenaming, setIsRenaming] = useState(false);
+    const [newName, setNewName] = useState("");
+    const renameInputRef = useRef<HTMLInputElement>(null);
 
     const toggleExpand = () => {
         if (node.isDirectory) {
@@ -86,12 +93,40 @@ const FileTreeNode: React.FC<FileTreeNodeProps> = ({
     const displayName = node.name.split("/").pop() || "";
     const isActive = activeFile === node.name;
 
+    const startRename = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setIsRenaming(true);
+        setNewName(node.name.split("/").pop() || "");
+    };
+
+    const handleRename = () => {
+        if (newName && newName !== node.name.split("/").pop()) {
+            const parentPath = node.name.split("/").slice(0, -1).join("/");
+            const newPath = parentPath ? `${parentPath}/${newName}` : newName;
+            onRenameItem(node.name, newPath);
+        }
+        setIsRenaming(false);
+    };
+
+    const handleDelete = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (confirm(`Are you sure you want to delete ${node.name}?`)) {
+            onDeleteItem(node.name);
+        }
+    };
+
     // Automatically expand folder when creating a new item inside it
     useEffect(() => {
         if (isCreating && creatingPath === node.name) {
             setIsExpanded(true);
         }
     }, [isCreating, creatingPath]);
+
+    useEffect(() => {
+        if (isRenaming) {
+            renameInputRef.current?.focus();
+        }
+    }, [isRenaming]);
 
     const activeFileClass = `bg-blue-500/20 text-blue-400`;
     const hoverFileClass = `hover:bg-neutral-700`;
@@ -100,27 +135,62 @@ const FileTreeNode: React.FC<FileTreeNodeProps> = ({
     return (
         <div>
             <div className={fileClass}>
-                <div
-                    className="flex items-center cursor-pointer rounded flex-grow py-0.5"
-                    onClick={node.isDirectory ? toggleExpand : () => onFileClick(node.name)}
-                >
-                    {node.isDirectory && (isExpanded ? <ChevronDownIcon size={14} /> : <ChevronRightIcon size={14} />)}
-                    {node.isDirectory ? (
-                        <IconFolder size={14} className="hidden" />
-                    ) : (
-                        <IconFileText size={14} className="" />
-                    )}
-                    <span className="ml-1 text-sm">{displayName}</span>
-                </div>
-                {node.isDirectory && (
-                    <div className="space-x-2 opacity-0 mr-2 group-hover:opacity-100 transition-opacity">
-                        <ActionIcon onClick={() => onCreateStart(node.name, "file")} className="p-0">
-                            <IconFilePlus size={14} />
-                        </ActionIcon>
-                        <ActionIcon onClick={() => onCreateStart(node.name, "folder")} className="p-0">
-                            <IconFolderPlus size={14} />
-                        </ActionIcon>
+                {isRenaming ? (
+                    <div className="flex items-center flex-grow py-0.5">
+                        {node.isDirectory &&
+                            (isExpanded ? <ChevronDownIcon size={14} /> : <ChevronRightIcon size={14} />)}
+                        {node.isDirectory ? (
+                            <IconFolder size={14} className="hidden" />
+                        ) : (
+                            <IconFileText size={14} className="" />
+                        )}
+                        <TextInput
+                            ref={renameInputRef}
+                            value={newName}
+                            onChange={(e) => setNewName(e.currentTarget.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") handleRename();
+                                if (e.key === "Escape") setIsRenaming(false);
+                            }}
+                            onBlur={() => setIsRenaming(false)}
+                            className="ml-1 bg-neutral-800 border-none outline-none text-sm"
+                            size="xs"
+                        />
                     </div>
+                ) : (
+                    <>
+                        <div
+                            className="flex items-center cursor-pointer rounded flex-grow py-0.5"
+                            onClick={node.isDirectory ? toggleExpand : () => onFileClick(node.name)}
+                        >
+                            {node.isDirectory &&
+                                (isExpanded ? <ChevronDownIcon size={14} /> : <ChevronRightIcon size={14} />)}
+                            {node.isDirectory ? (
+                                <IconFolder size={14} className="hidden" />
+                            ) : (
+                                <IconFileText size={14} className="" />
+                            )}
+                            <span className="ml-1 text-sm">{displayName}</span>
+                        </div>
+                        <div className="space-x-2 opacity-0 mr-2 group-hover:opacity-100 transition-opacity">
+                            {node.isDirectory && (
+                                <>
+                                    <ActionIcon onClick={() => onCreateStart(node.name, "file")} className="p-0">
+                                        <IconFilePlus size={14} />
+                                    </ActionIcon>
+                                    <ActionIcon onClick={() => onCreateStart(node.name, "folder")} className="p-0">
+                                        <IconFolderPlus size={14} />
+                                    </ActionIcon>
+                                </>
+                            )}
+                            <ActionIcon onClick={startRename} className="p-0">
+                                <IconEdit size={14} />
+                            </ActionIcon>
+                            <ActionIcon onClick={handleDelete} className="p-0">
+                                <IconTrash size={14} />
+                            </ActionIcon>
+                        </div>
+                    </>
                 )}
             </div>
             {isExpanded && (
@@ -132,6 +202,8 @@ const FileTreeNode: React.FC<FileTreeNodeProps> = ({
                             onFileClick={onFileClick}
                             level={level + 1}
                             onCreateItem={onCreateItem}
+                            onDeleteItem={onDeleteItem}
+                            onRenameItem={onRenameItem}
                             isCreating={isCreating}
                             creationType={creationType}
                             onCreateStart={onCreateStart}
@@ -181,7 +253,7 @@ export const FileExplorer: React.FC<Props> = ({ projectName, onFileClick, active
     const handleCreateItem = async (type: "file" | "folder", name: string, path: string) => {
         try {
             const fullPath = path ? `${path}/${name}` : name;
-            await createProjectFolder(projectName, type, fullPath);
+            await createItem(projectName, type, fullPath);
             await fetchFiles();
             setIsCreating(false);
             setCreationType(undefined);
@@ -201,6 +273,24 @@ export const FileExplorer: React.FC<Props> = ({ projectName, onFileClick, active
         setIsCreating(false);
         setCreationType(undefined);
         setCreatingPath("");
+    };
+
+    const handleRenameItem = async (oldPath: string, newPath: string) => {
+        try {
+            await renameItem(projectName, oldPath, newPath);
+            await fetchFiles();
+        } catch (error) {
+            console.error("Error renaming item:", error);
+        }
+    };
+
+    const handleDeleteItem = async (path: string) => {
+        try {
+            await deleteItem(projectName, path);
+            await fetchFiles();
+        } catch (error) {
+            console.error("Error deleting item:", error);
+        }
     };
 
     return (
@@ -224,6 +314,8 @@ export const FileExplorer: React.FC<Props> = ({ projectName, onFileClick, active
                         onFileClick={onFileClick}
                         level={0}
                         onCreateItem={handleCreateItem}
+                        onRenameItem={handleRenameItem}
+                        onDeleteItem={handleDeleteItem}
                         isCreating={isCreating}
                         creationType={creationType}
                         onCreateStart={handleCreateStart}
