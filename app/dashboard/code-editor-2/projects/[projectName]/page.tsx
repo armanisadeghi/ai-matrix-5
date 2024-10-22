@@ -61,8 +61,6 @@ export default function ProjectPage({ params }: { params: { projectName: string 
     const [openTabs, setOpenTabs] = useState<OpenTab[]>([]);
     const [activeTab, setActiveTab] = useState<string | null>(null);
     const [proxyUrl, setProxyUrl] = useState<string>();
-    const [previewKey, setPreviewKey] = useState(0);
-    const iframeRef = useRef<HTMLIFrameElement>(null);
 
     const name = decodeURIComponent(projectName);
     // Construct preview URL directly
@@ -126,8 +124,6 @@ export default function ProjectPage({ params }: { params: { projectName: string 
 
         return () => {};
     }, [name, openTabs]);
-
-    console.log({ proxyUrl });
 
     if (typeof projectName !== "string") {
         return <div>Invalid project name</div>;

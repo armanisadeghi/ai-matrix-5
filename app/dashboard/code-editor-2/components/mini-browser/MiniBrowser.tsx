@@ -62,8 +62,6 @@ export const MiniBrowser = forwardRef<HTMLDivElement, Props>(({ initialUrl, ...p
         }
     };
 
-    console.log({ url, initialUrl });
-
     useEffect(() => {
         setUrl(initialUrl);
     }, [initialUrl]);

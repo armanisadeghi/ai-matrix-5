@@ -52,14 +52,6 @@ export const disconnectSocket = () => {
     }
 };
 
-export const executeCommandSocket = (projectName: string, command: string) => {
-    if (socket?.connected) {
-        socket.emit("execute", { projectName, command });
-    } else {
-        console.warn("Socket not connected. Command not sent.");
-    }
-};
-
 const addListener = (event: string, callback: (...args: any[]) => void) => {
     if (socket?.connected) {
         socket.on(event, callback);
@@ -67,6 +59,14 @@ const addListener = (event: string, callback: (...args: any[]) => void) => {
     } else {
         listenerQueue.push([event, callback]);
         console.log(`Listener queued for event: ${event}`);
+    }
+};
+
+export const executeCommandSocket = (projectName: string, command: string) => {
+    if (socket?.connected) {
+        socket.emit("execute", { projectName, command });
+    } else {
+        console.warn("Socket not connected. Command not sent.");
     }
 };
 

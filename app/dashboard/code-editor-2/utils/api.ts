@@ -69,6 +69,23 @@ export const renameItem = async (projectName: string, oldPath: string, newPath: 
 };
 
 export const deleteItem = async (projectName: string, path: string): Promise<void> => {
-    const response = await axios.delete(`/projects/${projectName}/items/${path}`);
+    const response = await api.delete(`/projects/${projectName}/items/${path}`);
+    return response.data;
+};
+
+// Container actions
+
+export const startContainer = async (projectName: string) => {
+    const response = await api.post(`/projects/${projectName}/start`);
+    return response.data;
+};
+
+export const stopContainer = async (projectName: string) => {
+    const response = await api.post(`/projects/${projectName}/stop`);
+    return response.data;
+};
+
+export const getContainerStatus = async (projectName: string) => {
+    const response = await api.get(`/projects/${projectName}/status`);
     return response.data;
 };
