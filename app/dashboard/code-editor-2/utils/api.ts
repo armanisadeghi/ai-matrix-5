@@ -53,3 +53,10 @@ export const getProjectProxyUrl = async (projectName: string) => {
     const response = await api.get(`/preview/${projectName}`);
     return response.data;
 };
+
+export const createProjectFolder = async (projectName: string, type: "file" | "folder", fullPath: string) => {
+    const response = await api.post(`/projects/${projectName}/${type === "file" ? "files" : "folders"}`, {
+        path: fullPath,
+    });
+    return response.data;
+};

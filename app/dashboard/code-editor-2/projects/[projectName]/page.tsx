@@ -134,8 +134,7 @@ export default function ProjectPage({ params }: { params: { projectName: string 
             {/*main*/}
             <div className="flex">
                 <div className="w-1/6">
-                    <h2 className="border-b">Explorer</h2>
-                    <FileExplorer projectName={name} onFileClick={handleFileClick} />
+                    <FileExplorer projectName={name} onFileClick={handleFileClick} activeFile={activeTab} />
                 </div>
                 <div className="flex flex-col grow">
                     {/*tabs*/}
