@@ -83,16 +83,16 @@ export const deleteItem = async (projectName: string, path: string): Promise<voi
 // Container actions
 
 export const startContainer = async (projectName: string) => {
-    const response = await api.post(`/projects/${projectName}/start`);
+    const response = await api.post(`/containers/${projectName}/start`);
     return response.data;
 };
 
 export const stopContainer = async (projectName: string) => {
-    const response = await api.post(`/projects/${projectName}/stop`);
+    const response = await api.post(`/containers/${projectName}/stop`);
     return response.data;
 };
 
 export const getContainerStatus = async (projectName: string) => {
-    const response = await api.get(`/projects/${projectName}/status`);
+    const response = await api.get(`/containers/${projectName}/status`);
     return response.data;
 };
