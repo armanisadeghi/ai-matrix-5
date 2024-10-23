@@ -22,6 +22,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, onRefresh, on
     const fetchContainerStatus = async () => {
         try {
             const response = await getContainerStatus(project);
+
             setContainerStatus(response.status);
             console.log(`Container status for ${project}:`, response.status); // Debug log
         } catch (error) {
