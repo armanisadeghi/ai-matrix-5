@@ -67,7 +67,7 @@ export const MiniBrowser = forwardRef<HTMLDivElement, Props>(({ initialUrl, ...p
     }, [initialUrl]);
 
     return (
-        <div ref={ref} className="flex flex-col border rounded overflow-hidden bg-neutral-900" {...props}>
+        <div ref={ref} className="flex flex-col border rounded overflow-hidden bg-neutral-900 h-[95%]" {...props}>
             <div className="flex items-center gap-2 p-2 border-b bg-neutral-800">
                 <div className="flex items-center gap-1">
                     <ActionIcon variant="subtle" onClick={handleBack} disabled={!canGoBack}>
@@ -93,7 +93,7 @@ export const MiniBrowser = forwardRef<HTMLDivElement, Props>(({ initialUrl, ...p
                     <IconExternalLink />
                 </ActionIcon>
             </div>
-            <div className="relative w-full h-[500px]">
+            <div className="relative w-full h-full">
                 <iframe
                     id="frame"
                     ref={iframeRef}

@@ -150,17 +150,17 @@ export default function ProjectPage({ params }: { params: { projectName: string 
                 </div>
             </div>
             {/*main*/}
-            <div className="flex">
+            <div className="flex border border-rose-500 h-[85vh]">
                 <div className="w-1/6">
                     <FileExplorer projectName={name} onFileClick={handleFileClick} activeFile={activeTab} />
                 </div>
-                <div className="flex flex-col grow">
+                <div className="flex flex-col grow h-full border border-amber-500">
                     {/*tabs*/}
                     <Tabs tabs={openTabs} activeTab={activeTab} onTabClick={setActiveTab} onTabClose={handleTabClose} />
                     {/*editor & preview*/}
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-2 gap-2 h-full border border-fuchsia-500">
                         {/*editor*/}
-                        <div className="grow">
+                        <div className="grow border border-green-500 h-48">
                             {activeTab ? (
                                 <div className="flex flex-col">
                                     <Editor
@@ -174,16 +174,18 @@ export default function ProjectPage({ params }: { params: { projectName: string 
                                 <p>Select a file to edit</p>
                             )}
                         </div>
-                        {/*preview*/}
-                        <div>
-                            <span>Live Preview</span>
-                            <MiniBrowser initialUrl={proxyUrl} />
+                        <div className="grid grid-cols-1 gap-2 border border-blue-500 h-[80vh]">
+                            {/*preview*/}
+                            <div className="border border-lime-500">
+                                <span>Live Preview</span>
+                                <MiniBrowser initialUrl={proxyUrl} />
+                            </div>
+                            {/*footer*/}
+                            <div className="border border-red-500">
+                                <h2>Terminal</h2>
+                                <Terminal projectName={name} />
+                            </div>
                         </div>
-                    </div>
-                    {/*footer*/}
-                    <div>
-                        <h2>Terminal</h2>
-                        <Terminal projectName={name} />
                     </div>
                 </div>
             </div>

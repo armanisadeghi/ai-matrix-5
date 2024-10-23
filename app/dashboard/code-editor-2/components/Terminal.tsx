@@ -87,7 +87,7 @@ export const Terminal: React.FC<Props> = ({ projectName }) => {
 
     return (
         <div
-            className="bg-black text-green-500 p-4 font-mono text-sm rounded-lg h-64 flex flex-col"
+            className="bg-black text-green-500 p-4 font-mono text-sm rounded-lg h-[95%] flex flex-col"
             onClick={handleTerminalClick}
         >
             <div ref={terminalRef} className="flex-1 overflow-auto">

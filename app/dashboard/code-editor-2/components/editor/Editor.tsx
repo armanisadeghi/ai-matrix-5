@@ -97,7 +97,7 @@ export const Editor: React.FC<EditorProps> = ({
 
     return (
         <MonacoEditor
-            height="90vh"
+            height="80vh"
             defaultLanguage="javascript"
             defaultValue={initialValue}
             language={language}
