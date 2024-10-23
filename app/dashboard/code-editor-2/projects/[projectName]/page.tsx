@@ -13,9 +13,11 @@ import {
     connectSocket,
     disconnectSocket,
     emitFileChanged,
+    getContainerStatus,
     getProjectProxyUrl,
     onReload,
     readFile,
+    startContainer,
     writeFile,
 } from "@/app/dashboard/code-editor-2/utils";
 import { IconColumns2, IconDots, IconMessage, IconX } from "@tabler/icons-react";
@@ -60,11 +62,10 @@ export default function ProjectPage({ params }: { params: { projectName: string 
     const { projectName } = params;
     const [openTabs, setOpenTabs] = useState<OpenTab[]>([]);
     const [activeTab, setActiveTab] = useState<string | null>(null);
-    const [proxyUrl, setProxyUrl] = useState<string>();
+    const [isPreviewVisible, setIsPreviewVisible] = useState(false);
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
     const name = decodeURIComponent(projectName);
-    // Construct preview URL directly
-    const previewUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/preview/${encodeURIComponent(name)}/`;
 
     const handleFileClick = async (fileName: string) => {
         const existingTab = openTabs.find((tab) => tab.fileName === fileName);
@@ -114,7 +115,7 @@ export default function ProjectPage({ params }: { params: { projectName: string 
             try {
                 const fetchedProjectProxy = await getProjectProxyUrl(name);
 
-                setProxyUrl(fetchedProjectProxy.previewUrl);
+                setPreviewUrl(fetchedProjectProxy.previewUrl);
             } catch (error) {
                 console.error("Error fetching proxy URL:", error);
             }
@@ -149,8 +150,8 @@ export default function ProjectPage({ params }: { params: { projectName: string 
                     </ActionIcon>
                 </div>
             </div>
-            {/*main*/}
             <div className="flex border border-rose-500 h-[85vh]">
+                {/* ... file explorer ... */}
                 <div className="w-1/6">
                     <FileExplorer projectName={name} onFileClick={handleFileClick} activeFile={activeTab} />
                 </div>
@@ -175,12 +176,18 @@ export default function ProjectPage({ params }: { params: { projectName: string 
                             )}
                         </div>
                         <div className="grid grid-cols-1 gap-2 border border-blue-500 h-[80vh]">
-                            {/*preview*/}
+                            {/* Preview section */}
                             <div className="border border-lime-500">
                                 <span>Live Preview</span>
-                                <MiniBrowser initialUrl={proxyUrl} />
+                                {isPreviewVisible && previewUrl ? (
+                                    <MiniBrowser initialUrl={previewUrl} />
+                                ) : (
+                                    <div className="flex items-center justify-center h-full">
+                                        <p className="text-gray-500">Run your development server to see the preview</p>
+                                    </div>
+                                )}
                             </div>
-                            {/*footer*/}
+                            {/* Terminal section */}
                             <div className="border border-red-500">
                                 <h2>Terminal</h2>
                                 <Terminal projectName={name} />

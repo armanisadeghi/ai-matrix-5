@@ -32,7 +32,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, onRefresh, on
 
     // Fetch status initially and set up polling
     useEffect(() => {
-        fetchContainerStatus();
+        void fetchContainerStatus();
 
         // Poll for status updates every 5 seconds
         const intervalId = setInterval(fetchContainerStatus, 5000);
