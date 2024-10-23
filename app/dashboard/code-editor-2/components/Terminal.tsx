@@ -19,9 +19,11 @@ interface ProcessingTimeout {
 
 interface Props {
     projectName: string;
+    onServerStart: (url: string) => void;
+    onServerStop: () => void;
 }
 
-export const Terminal: React.FC<Props> = ({ projectName }) => {
+export const Terminal: React.FC<Props> = ({ projectName, onServerStart, onServerStop }) => {
     const dispatch = useDispatch();
     const commands = useSelector((state: any) => selectProjectCommands(state, projectName));
 
@@ -64,13 +66,16 @@ export const Terminal: React.FC<Props> = ({ projectName }) => {
                 const { status, port } = await getContainerStatus(projectName);
                 if (status === "running") {
                     addCommandToHistory(command, "Server is already running. Port: " + port, true);
-
+                    // Still notify parent about running server
+                    onServerStart(`http://localhost:${port}`);
                     return;
                 }
 
                 const response = await startContainer(projectName);
                 addCommandToHistory(command, `Container started successfully on port ${response.port}`);
                 socketRef.current = connectSocket();
+                // Notify parent about server start with URL
+                onServerStart(`http://localhost:${response.port}`);
             } else if (command === "npm run stop") {
                 const status = await getContainerStatus(projectName);
                 if (status.status !== "running") {
@@ -129,6 +134,8 @@ Keyboard shortcuts:
                 socketRef.current = null;
             }
             addCommandToHistory("", "Server stopped successfully", false);
+            // Notify parent about server stop
+            onServerStop();
         } catch (error: any) {
             addCommandToHistory("", `Error stopping server: ${error.message}`, true);
         }

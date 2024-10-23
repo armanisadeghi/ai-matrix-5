@@ -49,8 +49,15 @@ export const listTemplates = async () => {
     return response.data;
 };
 
-export const getProjectProxyUrl = async (projectName: string) => {
+// Previews ====
+
+export const getProjectPreview = async (projectName: string) => {
     const response = await api.get(`/preview/${projectName}`);
+    return response.data;
+};
+
+export const getProjectProxyUrl = async (projectName: string) => {
+    const response = await api.get(`/preview-info/${projectName}`);
     return response.data;
 };
 

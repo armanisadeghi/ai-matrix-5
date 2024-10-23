@@ -100,6 +100,7 @@ export const MiniBrowser = forwardRef<HTMLDivElement, Props>(({ initialUrl, ...p
                     src={url}
                     className="absolute top-0 left-0 w-full h-full border-none bg-neutral-900"
                     onLoad={handleIframeLoad}
+                    sandbox="allow-scripts allow-same-origin allow-forms"
                 />
             </div>
         </div>

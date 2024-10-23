@@ -1,5 +1,9 @@
 "use client";
 
+import React, { useEffect, useState } from "react";
+import { IconColumns2, IconDots, IconMessage, IconX } from "@tabler/icons-react";
+
+import Link from "next/link";
 import {
     ActionIcon,
     Button,
@@ -8,20 +12,14 @@ import {
     MiniBrowser,
     Terminal,
 } from "@/app/dashboard/code-editor-2/components";
-import React, { useEffect, useRef, useState } from "react";
 import {
-    connectSocket,
-    disconnectSocket,
     emitFileChanged,
     getContainerStatus,
+    getProjectPreview,
     getProjectProxyUrl,
-    onReload,
     readFile,
-    startContainer,
     writeFile,
 } from "@/app/dashboard/code-editor-2/utils";
-import { IconColumns2, IconDots, IconMessage, IconX } from "@tabler/icons-react";
-import Link from "next/link";
 
 type OpenTab = {
     fileName: string;
@@ -108,23 +106,52 @@ export default function ProjectPage({ params }: { params: { projectName: string 
         setOpenTabs((prev) => prev.map((tab) => (tab.fileName === activeTab ? { ...tab, content: newContent } : tab)));
     };
 
+    // Add handlers for server state
+    const handleServerStart = (url: string) => {
+        setPreviewUrl(url);
+        setIsPreviewVisible(true);
+    };
+
+    const handleServerStop = () => {
+        setIsPreviewVisible(false);
+        setPreviewUrl(null);
+    };
+
     const activeTabContent = openTabs.find((tab) => tab.fileName === activeTab)?.content || "";
 
     useEffect(() => {
         const fetchProxyUrl = async () => {
             try {
-                const fetchedProjectProxy = await getProjectProxyUrl(name);
+                const { previewUrl, status } = await getProjectProxyUrl(name);
 
-                setPreviewUrl(fetchedProjectProxy.previewUrl);
+                if (status === "running") {
+                    setPreviewUrl(previewUrl);
+                    setIsPreviewVisible(true);
+                }
             } catch (error) {
                 console.error("Error fetching proxy URL:", error);
+                setIsPreviewVisible(false);
             }
         };
 
         void fetchProxyUrl();
+    }, [name]);
 
-        return () => {};
-    }, [name, openTabs]);
+    // Check initial server status
+    useEffect(() => {
+        const checkServerStatus = async () => {
+            try {
+                const { status, port } = await getContainerStatus(name);
+                if (status === "running") {
+                    handleServerStart(`http://localhost:${port}`);
+                }
+            } catch (error) {
+                console.error("Error checking server status:", error);
+            }
+        };
+
+        void checkServerStatus();
+    }, [name]);
 
     if (typeof projectName !== "string") {
         return <div>Invalid project name</div>;
@@ -190,7 +217,11 @@ export default function ProjectPage({ params }: { params: { projectName: string 
                             {/* Terminal section */}
                             <div className="border border-red-500">
                                 <h2>Terminal</h2>
-                                <Terminal projectName={name} />
+                                <Terminal
+                                    projectName={name}
+                                    onServerStart={handleServerStart}
+                                    onServerStop={handleServerStop}
+                                />
                             </div>
                         </div>
                     </div>
