@@ -2,7 +2,8 @@
 
 import { ReactNode } from "react";
 import { Provider } from "react-redux";
-import { store } from "@/redux/store";
+import { persistor, store } from "@/redux/store";
+import { PersistGate } from "redux-persist/integration/react";
 
 interface Props {
     children: ReactNode;
@@ -11,7 +12,9 @@ interface Props {
 function Layout({ children }: Props) {
     return (
         <Provider store={store}>
-            <div>{children}</div>
+            <PersistGate loading={null} persistor={persistor}>
+                <div>{children}</div>
+            </PersistGate>
         </Provider>
     );
 }

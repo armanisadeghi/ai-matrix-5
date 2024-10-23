@@ -1,4 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { PURGE } from "redux-persist";
+import type { RootState } from "../../store";
 
 interface Command {
     input: string;
@@ -17,7 +19,7 @@ interface TerminalState {
 
 const initialState: TerminalState = {
     commandHistory: {},
-    commandLimit: 100, // Limit the number of commands stored per project
+    commandLimit: 100,
 };
 
 const terminalSlice = createSlice({
@@ -63,15 +65,23 @@ const terminalSlice = createSlice({
         clearHistory: (state, action: PayloadAction<string>) => {
             state.commandHistory[action.payload] = [];
         },
+        clearAllHistory: (state) => {
+            state.commandHistory = {};
+        },
         setCommandLimit: (state, action: PayloadAction<number>) => {
             state.commandLimit = action.payload;
         },
     },
+    extraReducers: (builder) => {
+        // Handle redux-persist purge action
+        builder.addCase(PURGE, () => initialState);
+    },
 });
 
-export const { addCommand, clearHistory, setCommandLimit } = terminalSlice.actions;
-export default terminalSlice.reducer;
+export const { addCommand, clearHistory, clearAllHistory, setCommandLimit } = terminalSlice.actions;
 
 // Selectors
-export const selectProjectCommands = (state: { terminal: TerminalState }, projectName: string) =>
+export const selectProjectCommands = (state: RootState, projectName: string) =>
     state.terminal.commandHistory[projectName] || [];
+
+export default terminalSlice.reducer;

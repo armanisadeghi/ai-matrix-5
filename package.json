@@ -132,6 +132,7 @@
     "recoil": "latest",
     "recoil-sync": "latest",
     "redis": "latest",
+    "redux-persist": "^6.0.0",
     "reflect-metadata": "^0.2.2",
     "remark-gfm": "latest",
     "replit-client": "latest",

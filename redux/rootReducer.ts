@@ -14,6 +14,17 @@ import dynamicEventsReducer from "./features/dynamicEvents/dynamicEventsSlice";
 import configReducer from "./features/config/configSlice";
 import terminalReducer from "./features/code-editor-terminal/terminalSlice";
 
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+
+const persistConfig = {
+    key: "terminal",
+    storage,
+    whitelist: ["commandHistory"], // Only persist commandHistory
+};
+
+const persistedTerminalReducer = persistReducer(persistConfig, terminalReducer);
+
 const rootReducer = combineReducers({
     chats: chatReducer,
     messages: messageReducer,
@@ -26,7 +37,7 @@ const rootReducer = combineReducers({
     socket: socketReducer,
     dynamicEvents: dynamicEventsReducer,
     config: configReducer,
-    terminal: terminalReducer,
+    terminal: persistedTerminalReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
