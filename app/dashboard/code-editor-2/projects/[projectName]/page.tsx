@@ -481,16 +481,13 @@ export default function ProjectPage({ params }: { params: { projectName: string 
                         {/* Terminal Panel */}
                         {isTerminalVisible && (
                             <div className="flex-1">
-                                <div className="h-9 bg-neutral-800 px-3 flex items-center justify-between">
+                                <div className="flex-none h-9 bg-neutral-800 px-3 flex items-center justify-between">
                                     <span className="text-sm font-medium">Terminal</span>
-                                    <ActionIcon
-                                        // size="sm"
-                                        onClick={() => setTerminalVisible(false)}
-                                    >
+                                    <ActionIcon onClick={() => setTerminalVisible(false)}>
                                         <IconX size={16} />
                                     </ActionIcon>
                                 </div>
-                                <div className="h-[calc(100%-36px)]">
+                                <div className="h-[calc(100%-36px)] min-h-[200px] max-h-[600px]">
                                     <Terminal
                                         projectName={name}
                                         onServerStart={handleServerStart}

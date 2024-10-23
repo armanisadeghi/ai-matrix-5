@@ -6,10 +6,17 @@ import {
     executeCommandSocket,
     onExecutionError,
     onExecutionResult,
-} from "../utils/socket";
-import { getContainerStatus, startContainer, stopContainer } from "../utils/api";
+} from "../../utils/socket";
+import { getContainerStatus, startContainer, stopContainer } from "../../utils/api";
 import { useDispatch, useSelector } from "react-redux";
-import { addCommand, clearHistory, selectProjectCommands } from "@/redux/features/code-editor-terminal/terminalSlice";
+import {
+    addCommand,
+    clearHistory,
+    selectProjectCommands,
+    updateCommandOutput,
+} from "@/redux/features/code-editor-terminal/terminalSlice";
+
+import "./style.css";
 
 interface ProcessingTimeout {
     timerId: NodeJS.Timeout | null;
@@ -36,61 +43,15 @@ export const Terminal: React.FC<Props> = ({ projectName, onServerStart, onServer
         duration: 0,
     });
     const [showTimeoutWarning, setShowTimeoutWarning] = useState(false);
+    const [historyIndex, setHistoryIndex] = useState(-1);
 
     const terminalRef = useRef(null);
     const inputRef = useRef(null);
     const socketRef = useRef<any>(null);
-    const [historyIndex, setHistoryIndex] = useState(-1);
+    const isInitialMount = useRef(true);
 
     const TIMEOUT_WARNING = 10000; // 10 seconds
     const TIMEOUT_CHECK_INTERVAL = 1000; // Check every second
-
-    const addCommandToHistory = (input: string, output: string, isError = false) => {
-        dispatch(
-            addCommand({
-                input,
-                output,
-                isError,
-                projectName,
-                timestamp: Date.now(),
-            }),
-        );
-    };
-
-    const handleContainerCommand = async (command: string) => {
-        setIsProcessing(true);
-        setCurrentProcess(command);
-        try {
-            if (command === "npm run start" || command === "npm run dev") {
-                // Check if server is already running
-                const { status, port } = await getContainerStatus(projectName);
-                if (status === "running") {
-                    addCommandToHistory(command, "Server is already running. Port: " + port, true);
-                    // Still notify parent about running server
-                    onServerStart(`http://localhost:${port}`);
-                    return;
-                }
-
-                const response = await startContainer(projectName);
-                addCommandToHistory(command, `Container started successfully on port ${response.port}`);
-                socketRef.current = connectSocket();
-                // Notify parent about server start with URL
-                onServerStart(`http://localhost:${response.port}`);
-            } else if (command === "npm run stop") {
-                const status = await getContainerStatus(projectName);
-                if (status.status !== "running") {
-                    addCommandToHistory(command, "No server is currently running", true);
-                } else {
-                    await stopServer();
-                }
-            }
-        } catch (error: any) {
-            addCommandToHistory(command, `Error: ${error.message}`, true);
-        } finally {
-            setIsProcessing(false);
-            setCurrentProcess(null);
-        }
-    };
 
     const availableCommands = {
         help: () => ({
@@ -126,18 +87,171 @@ Keyboard shortcuts:
         },
     };
 
-    const stopServer = async () => {
+    const addCommandToHistory = (input: string, output: string, isError = false) => {
+        dispatch(
+            addCommand({
+                input,
+                output,
+                isError,
+                projectName,
+                timestamp: Date.now(),
+            }),
+        );
+    };
+
+    const handleCommand = async (input: string) => {
+        const trimmedInput = input.trim();
+        if (!trimmedInput) return;
+
+        setIsProcessing(true);
+        setCurrentProcess(trimmedInput);
+        startProcessingTimer();
+
+        const commandTimestamp = Date.now();
+
+        // Add command to history immediately WITHOUT output
+        dispatch(
+            addCommand({
+                input: trimmedInput,
+                output: "",
+                isError: false,
+                projectName,
+                timestamp: commandTimestamp,
+            }),
+        );
+
+        try {
+            // Handle built-in commands
+            if (availableCommands[trimmedInput]) {
+                const result = await availableCommands[trimmedInput]();
+                if (result) {
+                    // Update the command with output
+                    dispatch(
+                        updateCommandOutput({
+                            projectName,
+                            timestamp: commandTimestamp,
+                            output: result.output,
+                            isError: result.isError,
+                        }),
+                    );
+                }
+                setIsProcessing(false);
+                setCurrentProcess(null);
+                clearProcessingTimer();
+                setCurrentInput("");
+                return;
+            }
+
+            // Handle npm commands
+            if (trimmedInput.startsWith("npm run")) {
+                await handleContainerCommand(trimmedInput, commandTimestamp);
+            } else if (trimmedInput.startsWith("npm ")) {
+                executeCommandSocket(projectName, trimmedInput);
+            } else {
+                dispatch(
+                    updateCommandOutput({
+                        projectName,
+                        timestamp: commandTimestamp,
+                        output: `Command not found: ${trimmedInput}. Type 'help' for available commands.`,
+                        isError: true,
+                    }),
+                );
+                setIsProcessing(false);
+                setCurrentProcess(null);
+                clearProcessingTimer();
+            }
+        } catch (error) {
+            clearProcessingTimer();
+            setIsProcessing(false);
+            setCurrentProcess(null);
+        }
+
+        setCurrentInput("");
+    };
+
+    const handleContainerCommand = async (command: string, timestamp: number) => {
+        try {
+            if (command === "npm run start" || command === "npm run dev") {
+                const { status, port } = await getContainerStatus(projectName);
+                if (status === "running") {
+                    dispatch(
+                        updateCommandOutput({
+                            projectName,
+                            timestamp,
+                            output: "Server is already running. Port: " + port,
+                            isError: true,
+                        }),
+                    );
+                    onServerStart(`http://localhost:${port}`);
+                    return;
+                }
+
+                const response = await startContainer(projectName);
+                dispatch(
+                    updateCommandOutput({
+                        projectName,
+                        timestamp,
+                        output: `Container started successfully on port ${response.port}`,
+                        isError: false,
+                    }),
+                );
+                socketRef.current = connectSocket();
+                onServerStart(`http://localhost:${response.port}`);
+            } else if (command === "npm run stop") {
+                const status = await getContainerStatus(projectName);
+                if (status.status !== "running") {
+                    dispatch(
+                        updateCommandOutput({
+                            projectName,
+                            timestamp,
+                            output: "No server is currently running",
+                            isError: true,
+                        }),
+                    );
+                } else {
+                    await stopServer(timestamp);
+                }
+            }
+        } catch (error: any) {
+            dispatch(
+                updateCommandOutput({
+                    projectName,
+                    timestamp,
+                    output: `Error: ${error.message}`,
+                    isError: true,
+                }),
+            );
+        } finally {
+            setIsProcessing(false);
+            setCurrentProcess(null);
+        }
+    };
+
+    const stopServer = async (timestamp: number) => {
         try {
             await stopContainer(projectName);
             if (socketRef.current) {
                 disconnectSocket();
                 socketRef.current = null;
             }
-            addCommandToHistory("", "Server stopped successfully", false);
-            // Notify parent about server stop
+            dispatch(
+                updateCommandOutput({
+                    projectName,
+                    timestamp,
+                    output: "Server stopped successfully",
+                    isError: false,
+                }),
+            );
             onServerStop();
         } catch (error: any) {
-            addCommandToHistory("", `Error stopping server: ${error.message}`, true);
+            dispatch(
+                updateCommandOutput({
+                    projectName,
+                    timestamp,
+                    output: `Error stopping server: ${error.message}`,
+                    isError: true,
+                }),
+            );
         }
     };
 
@@ -172,55 +286,6 @@ Keyboard shortcuts:
         setShowTimeoutWarning(false);
     };
 
-    const handleCommand = async (input: string) => {
-        const trimmedInput = input.trim();
-        if (!trimmedInput) return;
-
-        setIsProcessing(true);
-        setCurrentProcess(trimmedInput);
-        startProcessingTimer();
-
-        // Add command to history immediately
-        addCommandToHistory(trimmedInput, "", false);
-
-        try {
-            // Handle built-in commands
-            if (availableCommands[trimmedInput]) {
-                const result = await availableCommands[trimmedInput]();
-                if (result) {
-                    addCommandToHistory("", result.output, result.isError);
-                }
-                setIsProcessing(false);
-                setCurrentProcess(null);
-                clearProcessingTimer();
-                setCurrentInput("");
-                return;
-            }
-
-            // Handle npm commands
-            if (trimmedInput.startsWith("npm run")) {
-                await handleContainerCommand(trimmedInput);
-            } else if (trimmedInput.startsWith("npm ")) {
-                executeCommandSocket(projectName, trimmedInput);
-            } else {
-                addCommandToHistory(
-                    "",
-                    `Command not found: ${trimmedInput}. Type 'help' for available commands.`,
-                    true,
-                );
-                setIsProcessing(false);
-                setCurrentProcess(null);
-                clearProcessingTimer();
-            }
-        } catch (error) {
-            clearProcessingTimer();
-            setIsProcessing(false);
-            setCurrentProcess(null);
-        }
-
-        setCurrentInput("");
-    };
-
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === "Enter" && currentInput.trim() && !isProcessing) {
             handleCommand(currentInput);
@@ -250,16 +315,37 @@ Keyboard shortcuts:
 
     const handleInterrupt = async () => {
         if (isProcessing && currentProcess) {
-            addCommandToHistory("", "^C", false);
+            const interruptTimestamp = Date.now();
+
+            // Add the ^C to the command history
+            dispatch(
+                addCommand({
+                    input: "",
+                    output: "^C",
+                    isError: false,
+                    projectName,
+                    timestamp: interruptTimestamp,
+                }),
+            );
 
             if (currentProcess === "npm run start" || currentProcess === "npm run dev") {
-                await stopServer();
+                await stopServer(interruptTimestamp);
             } else if (currentProcess.startsWith("npm ")) {
+                // For other npm commands, just stop the container
                 await stopContainer(projectName);
+                dispatch(
+                    updateCommandOutput({
+                        projectName,
+                        timestamp: interruptTimestamp,
+                        output: "Process terminated.",
+                        isError: false,
+                    }),
+                );
             }
 
             setIsProcessing(false);
             setCurrentProcess(null);
+            clearProcessingTimer();
         }
     };
 
@@ -276,16 +362,23 @@ Keyboard shortcuts:
 
     // Make sure commands are rendered in the correct order
     const renderCommands = () => {
-        return commands.map((cmd, i) => (
-            <div key={`${cmd.timestamp}-${i}`} className="mb-2">
+        // Sort commands by timestamp to ensure chronological order
+        const sortedCommands = [...commands].sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+
+        return sortedCommands.map((cmd, i) => (
+            <div key={`${cmd.timestamp}-${i}`} className="mb-2 select-text">
                 {cmd.input && (
                     <div className="flex">
-                        <span className="text-blue-400">$ </span>
-                        <span className="text-gray-300 ml-2">{cmd.input}</span>
+                        <span className="text-blue-400 select-text">$ </span>
+                        <span className="text-gray-300 ml-2 select-text">{cmd.input}</span>
                     </div>
                 )}
                 {cmd.output && (
-                    <div className={`ml-4 whitespace-pre-wrap ${cmd.isError ? "text-red-400" : "text-green-400"}`}>
+                    <div
+                        className={`ml-4 whitespace-pre-wrap select-text ${
+                            cmd.isError ? "text-red-400" : "text-green-400"
+                        }`}
+                    >
                         {cmd.output}
                     </div>
                 )}
@@ -301,21 +394,29 @@ Keyboard shortcuts:
     };
 
     useEffect(() => {
-        if (commands.length === 0) {
+        // Only run on initial mount
+        if (isInitialMount.current) {
+            isInitialMount.current = false;
             addCommandToHistory(
                 "",
                 `Terminal initialized for project: ${projectName}\nType 'help' for available commands.`,
                 false,
             );
         }
+    }, []);
 
+    useEffect(() => {
         socketRef.current = connectSocket();
 
         onExecutionResult((data) => {
             const output = data.stdout + (data.stderr ? `\nstderr: ${data.stderr}` : "");
 
-            // Find the last command without output and update it
-            const lastCommand = commands.findLast((cmd) => cmd.input && !cmd.output);
+            // Find the most recent matching command without output
+            const commandsWithoutOutput = commands.filter(
+                (cmd) => cmd.input && !cmd.output && cmd.input === currentProcess,
+            );
+            const lastCommand = commandsWithoutOutput[commandsWithoutOutput.length - 1];
+
             if (lastCommand) {
                 dispatch(
                     addCommand({
@@ -327,7 +428,8 @@ Keyboard shortcuts:
                     }),
                 );
             } else {
-                addCommandToHistory("", output, !!data.stderr);
+                // If no matching command found, add as new output
+                addCommandToHistory(currentProcess || "", output, !!data.stderr);
             }
 
             if (currentProcess && !currentProcess.includes("run dev") && !currentProcess.includes("run start")) {
@@ -339,8 +441,11 @@ Keyboard shortcuts:
         });
 
         onExecutionError((data) => {
-            // Find the last command without output and update it
-            const lastCommand = commands.findLast((cmd) => cmd.input && !cmd.output);
+            const commandsWithoutOutput = commands.filter(
+                (cmd) => cmd.input && !cmd.output && cmd.input === currentProcess,
+            );
+            const lastCommand = commandsWithoutOutput[commandsWithoutOutput.length - 1];
+
             if (lastCommand) {
                 dispatch(
                     addCommand({
@@ -352,7 +457,7 @@ Keyboard shortcuts:
                     }),
                 );
             } else {
-                addCommandToHistory("", `Error: ${data.error}`, true);
+                addCommandToHistory(currentProcess || "", `Error: ${data.error}`, true);
             }
             clearProcessingTimer();
             setCurrentInput("");
@@ -370,7 +475,7 @@ Keyboard shortcuts:
                 disconnectSocket();
             }
         };
-    }, [projectName, commands]);
+    }, [projectName, commands, currentProcess]);
 
     // Auto-scroll to bottom when new commands are added
     useEffect(() => {
@@ -395,17 +500,17 @@ Keyboard shortcuts:
             <div className="flex items-center justify-between px-4 py-2 bg-gray-800">
                 <div className="flex items-center">
                     <IconTerminal2 className="w-5 h-5 text-gray-400 mr-2" />
-                    <span className="text-gray-300 text-sm font-medium">Terminal</span>
+                    <span className="text-gray-300 text-sm font-medium select-text">Terminal</span>
                 </div>
                 {isProcessing && (
                     <div className="flex items-center">
-                        <span className="text-yellow-400 text-xs mr-2">
+                        <span className="text-yellow-400 text-xs mr-2 select-text">
                             {currentProcess?.includes("run dev") || currentProcess?.includes("run start")
                                 ? "Server running"
                                 : `Running: ${currentProcess}`}
                             {showTimeoutWarning && ` (${formatDuration(processingTimeout.duration)})`}
                         </span>
-                        <span className="text-gray-400 text-xs">(Ctrl+C to stop)</span>
+                        <span className="text-gray-400 text-xs select-text">(Ctrl+C to stop)</span>
                         {showTimeoutWarning && (
                             <div className="flex items-center ml-2 text-yellow-400">
                                 <IconExclamationCircle size={16} className="mr-1" />
@@ -417,12 +522,22 @@ Keyboard shortcuts:
             </div>
 
             {/* Terminal Content */}
-            <div ref={terminalRef} className="flex-1 overflow-y-auto p-4 font-mono text-sm bg-gray-900">
+            <div
+                ref={terminalRef}
+                className="flex-1 overflow-y-auto p-4 font-mono text-sm bg-gray-900 select-text"
+                onMouseDown={(e) => {
+                    // Prevent focus loss when selecting text
+                    if (e.detail > 1) {
+                        // double or triple click
+                        e.preventDefault();
+                    }
+                }}
+            >
                 {renderCommands()}
 
                 {/* Current Input */}
                 <div className="flex items-center">
-                    <span className="text-blue-400">$ </span>
+                    <span className="text-blue-400 select-text">$ </span>
                     <input
                         ref={inputRef}
                         type="text"
